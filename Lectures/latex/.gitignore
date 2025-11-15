@@ -1,0 +1,22 @@
+# LaTeX temporary files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.idx
+*.ilg
+*.ind
+
+# Keep the main files
+!main.tex
+!lecture-*.tex
+!*.py
+!*.md
+!*.ps1

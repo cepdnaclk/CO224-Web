@@ -22,7 +22,7 @@ def convert_markdown_to_html(md_content):
     html = re.sub(r'`([^`]+)`', r'<code>\1</code>', html)
     
     # Convert images
-    html = re.sub(r'<img src="img/', r'<img src="../Lectures/img/', html)
+    html = re.sub(r'<img src="img/', r'<img src="../img/', html)
     html = re.sub(r'!\[(.*?)\]\((.*?)\)', r'<img src="\2" alt="\1" style="max-width: 100%;">', html)
     
     # Convert links
@@ -82,13 +82,13 @@ def create_lecture_html(lecture_num, title, content, prev_num=None, next_num=Non
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title} - CO224 Computer Architecture</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="lecture-header">
         <div class="container">
-            <a href="../index.html" class="back-link">
+            <a href="../../index.html" class="back-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="19" y1="12" x2="5" y2="12"></line>
                     <polyline points="12 19 5 12 12 5"></polyline>
@@ -124,8 +124,8 @@ def create_lecture_html(lecture_num, title, content, prev_num=None, next_num=Non
 
 def main():
     """Main function to convert all lecture markdown files to HTML"""
-    lectures_dir = Path('Lectures')
-    output_dir = Path('lectures')
+    lectures_dir = Path('Lectures/markdown')
+    output_dir = Path('Lectures/html')
     output_dir.mkdir(exist_ok=True)
     
     # Get all lecture files and sort them numerically by lecture number
