@@ -482,7 +482,7 @@ section {
 .video-thumbnail {
   position: relative;
   width: 100%;
-  max-width: 800px;
+  max-width: 400px;
   margin: 0 auto;
   border-radius: 8px;
   overflow: hidden;

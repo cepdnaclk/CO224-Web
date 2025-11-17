@@ -6,6 +6,10 @@ def convert_markdown_to_html(md_content):
     """Convert markdown content to HTML"""
     html = md_content
     
+    # Remove the first H1 heading (which duplicates the lecture title)
+    # This removes lines like "# Lecture 1: Computer Abstractions and Technology"
+    html = re.sub(r'^# .*?\n', '', html, count=1, flags=re.MULTILINE)
+    
     # Convert headers
     html = re.sub(r'^# (.*?)$', r'<h1>\1</h1>', html, flags=re.MULTILINE)
     html = re.sub(r'^## (.*?)$', r'<h2>\1</h2>', html, flags=re.MULTILINE)

@@ -6,40 +6,78 @@ This script updates video links in TWO locations:
 2. Lecture pages (Lectures/html/*.html) - Video thumbnails and links
 
 Usage:
-1. Add your YouTube video IDs to the VIDEO_IDS dictionary below
+1. Add your YouTube URLs or video IDs to the VIDEO_IDS dictionary below
 2. Run: python update_video_links_complete.py
+
+Note: You can provide either full YouTube URLs or just the video IDs.
+The script will automatically extract the video ID from full URLs.
 """
 
 import re
 from pathlib import Path
+from urllib.parse import urlparse, parse_qs
+
+# =============================================================================
+# HELPER FUNCTION
+# =============================================================================
+def extract_video_id(url_or_id):
+    """
+    Extract video ID from YouTube URL or return as-is if already an ID.
+    
+    Examples:
+    - 'https://www.youtube.com/watch?v=PNaYa-LZkt4' -> 'PNaYa-LZkt4'
+    - 'https://www.youtube.com/watch?v=PNaYa-LZkt4&list=...' -> 'PNaYa-LZkt4'
+    - 'PNaYa-LZkt4' -> 'PNaYa-LZkt4'
+    """
+    if not url_or_id or 'YOUR_VIDEO_ID_HERE' in url_or_id:
+        return url_or_id
+    
+    # If it looks like a URL, parse it
+    if 'youtube.com' in url_or_id or 'youtu.be' in url_or_id:
+        try:
+            # Handle youtube.com/watch?v=ID format
+            if 'watch?v=' in url_or_id:
+                parsed = urlparse(url_or_id)
+                query_params = parse_qs(parsed.query)
+                return query_params.get('v', [url_or_id])[0]
+            # Handle youtu.be/ID format
+            elif 'youtu.be/' in url_or_id:
+                return url_or_id.split('youtu.be/')[-1].split('?')[0]
+        except:
+            pass
+    
+    # Otherwise assume it's already a video ID
+    return url_or_id
 
 # =============================================================================
 # CONFIGURE YOUR VIDEO IDS HERE
 # =============================================================================
-# Get video IDs from YouTube URLs: https://www.youtube.com/watch?v=VIDEO_ID
-# Just copy the part after "v="
+# You can provide either:
+# - Full YouTube URL: 'https://www.youtube.com/watch?v=VIDEO_ID'
+# - Just the video ID: 'VIDEO_ID'
+# The script will handle both formats automatically.
 
 VIDEO_IDS = {
-    '01': 'YOUR_VIDEO_ID_HERE',  # Lecture 1: Computer Abstractions
-    '02': 'YOUR_VIDEO_ID_HERE',  # Lecture 2: Technology Trends
-    '03': 'YOUR_VIDEO_ID_HERE',  # Lecture 3: Understanding Performance
-    '04': 'YOUR_VIDEO_ID_HERE',  # Lecture 4: Introduction to ARM Assembly
-    '05': 'YOUR_VIDEO_ID_HERE',  # Lecture 5: Number Representation and Data Processing
-    '06': 'YOUR_VIDEO_ID_HERE',  # Lecture 6: Branching
-    '07': 'YOUR_VIDEO_ID_HERE',  # Lecture 7: Function Call and Return
-    '08': 'YOUR_VIDEO_ID_HERE',  # Lecture 8: Memory Access
-    '09': 'YOUR_VIDEO_ID_HERE',  # Lecture 9: Microarchitecture and Datapath
-    '10': 'YOUR_VIDEO_ID_HERE',  # Lecture 10: Processor Control
-    '11': 'YOUR_VIDEO_ID_HERE',  # Lecture 11: Single-Cycle Execution
-    '12': 'YOUR_VIDEO_ID_HERE',  # Lecture 12: Pipelined Processors
-    '13': 'YOUR_VIDEO_ID_HERE',  # Lecture 13: Pipeline Operation and Timing
-    '14': 'YOUR_VIDEO_ID_HERE',  # Lecture 14: Memory Hierarchy and Caching
-    '15': 'YOUR_VIDEO_ID_HERE',  # Lecture 15: Direct Mapped Cache Control
-    '16': 'YOUR_VIDEO_ID_HERE',  # Lecture 16: Associative Cache Control
-    '17': 'YOUR_VIDEO_ID_HERE',  # Lecture 17: Multi-Level Caching
-    '18': 'YOUR_VIDEO_ID_HERE',  # Lecture 18: Virtual Memory
-    '19': 'YOUR_VIDEO_ID_HERE',  # Lecture 19: Multiprocessors
-    '20': 'YOUR_VIDEO_ID_HERE',  # Lecture 20: Storage and Interfacing
+    '01': 'https://www.youtube.com/watch?v=PNaYa-LZkt4',  # Lecture 1: Computer Abstractions
+    '02': 'https://www.youtube.com/watch?v=Fy2u9oCNZ1E',  # Lecture 2: Technology Trends
+    '03': 'https://www.youtube.com/watch?v=nhwsAOEidik',  # Lecture 3: Understanding Performance
+    '04': 'https://www.youtube.com/watch?v=s1X7Rr7rzag',  # Lecture 4: Introduction to ARM Assembly
+    '05': 'https://www.youtube.com/watch?v=rCS3oXcQPKo',  # Lecture 5: Number Representation and Data Processing
+    '06': 'https://www.youtube.com/watch?v=aFCmb1CNnV8',  # Lecture 6: Branching
+    '07': 'https://www.youtube.com/watch?v=T99xSt2ryKs',  # Lecture 7: Function Call and Return
+    '08': 'https://www.youtube.com/watch?v=IxaTbKoCr1Y',  # Lecture 8: Memory Access
+    '09': 'https://www.youtube.com/watch?v=v9az9n9UUD4',  # Lecture 9: Microarchitecture and Datapath
+    '10': 'https://www.youtube.com/watch?v=ZURjn6FyzkI',  # Lecture 10: Processor Control
+    '11': 'https://www.youtube.com/watch?v=TegJ2TBihPw',  # Lecture 11: Single-Cycle Execution
+    '12': 'https://www.youtube.com/watch?v=l3GqbXXB2QA',  # Lecture 12: Pipelined Processors
+    '13': 'https://www.youtube.com/watch?v=JSZYac-xI5g',  # Lecture 13: Pipeline Operation and Timing
+    '14': 'https://www.youtube.com/watch?v=vCbnFagcXjo',  # Lecture 14: Memory Hierarchy and Caching
+    '15': 'https://www.youtube.com/watch?v=BJY8nzyNMAY',  # Lecture 15: Direct Mapped Cache Control
+    '16': 'https://www.youtube.com/watch?v=eez7NbgXk9g',  # Lecture 16: Associative Cache Control
+    '17': 'https://www.youtube.com/watch?v=p6BmMrDKmTE',  # Lecture 17: Multi-Level Caching
+    '18': 'https://www.youtube.com/watch?v=O3hgbPAQhvE',  # Lecture 18: Virtual Memory
+    '19': 'https://www.youtube.com/watch?v=EcjOuKKF5eE',  # Lecture 19: Multiprocessors
+    '20': 'https://www.youtube.com/watch?v=hte_h1SxhYY',  # Lecture 20: Storage and Interfacing
 }
 
 # =============================================================================
@@ -50,6 +88,16 @@ def main():
     print("=" * 70)
     print("  YouTube Video Links Update Script")
     print("=" * 70)
+    
+    # Extract video IDs from URLs if needed
+    processed_ids = {}
+    for num, url_or_id in VIDEO_IDS.items():
+        video_id = extract_video_id(url_or_id)
+        processed_ids[num] = video_id
+        if url_or_id != video_id and 'YOUR_VIDEO_ID_HERE' not in video_id:
+            print(f"   Extracted ID for lecture {num}: {video_id}")
+    
+    VIDEO_IDS.update(processed_ids)
     
     # Check if any placeholder values remain
     placeholder_count = sum(1 for v in VIDEO_IDS.values() if 'YOUR_VIDEO_ID_HERE' in v)
@@ -73,6 +121,9 @@ def main():
         
         updated_count = 0
         for num, video_id in VIDEO_IDS.items():
+            if 'YOUR_VIDEO_ID_HERE' in video_id:
+                continue
+                
             youtube_url = f'https://www.youtube.com/watch?v={video_id}'
             
             # Replace #video-XX with actual YouTube URL
@@ -105,6 +156,9 @@ def main():
     
     updated_files = 0
     for num, video_id in VIDEO_IDS.items():
+        if 'YOUR_VIDEO_ID_HERE' in video_id:
+            continue
+            
         file_path = html_dir / f'lecture-{num}.html'
         
         if not file_path.exists():
@@ -117,7 +171,25 @@ def main():
             
             youtube_url = f'https://www.youtube.com/watch?v={video_id}'
             
-            # Replace VIDEO_ID_XX in thumbnail image URLs
+            # Replace VIDEO_ID_XX in thumbnail image URLs (older pattern)
+            content = content.replace(f'VIDEO_ID_{num}', video_id)
+            
+            # Replace YOUR_VIDEO_ID_HERE in thumbnail URLs (newer pattern)
+            # This handles files that haven't been updated yet
+            if 'YOUR_VIDEO_ID_HERE' in content:
+                content = content.replace('YOUR_VIDEO_ID_HERE', video_id)
+            
+            # Replace #video-lecture-XX in thumbnail links
+            content = content.replace(
+                f'href="#video-lecture-{num}"', 
+                f'href="{youtube_url}"'
+            )
+            
+            # Also replace href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID_HERE"
+            content = content.replace(
+                f'href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID_HERE"',
+                f'href="{youtube_url}"'
+            )
             content = content.replace(f'VIDEO_ID_{num}', video_id)
             
             # Replace #video-lecture-XX in thumbnail links
