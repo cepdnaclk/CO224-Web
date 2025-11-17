@@ -530,18 +530,6 @@ Different implementations based on:
 
 ---
 
-## 15. Next Topics
-
-### Upcoming in Course
-
-#### 1. Virtual Memory
-
-- Requires hardware support
-- Memory management concepts
-- Next week's lectures
-
----
-
 ## Key Takeaways
 
 1. Cache hierarchies reduce effective miss penalty

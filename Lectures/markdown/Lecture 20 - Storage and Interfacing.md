@@ -195,6 +195,9 @@ Availability = MTTF / (MTTF + MTTR)
 
 ### Two Approaches
 
+- MTTF
+- MTTR
+
 ---
 
 ## 8. Increase MTTF (Mean Time To Failure)
@@ -811,64 +814,6 @@ Technology to improve storage performance and dependability.
 - Redundancy protects against disk failure
 - Data not lost if one disk fails
 - Improved reliability
-
-**Note**: Lecture mentions RAID but doesn't go into detailed levels or configurations. This is a complex topic covered more thoroughly in other courses.
-
----
-
-## 24. Conclusion and Summary
-
-### I/O System Performance Measures
-
-- **Throughput**: Amount of data transferred per unit time
-- **Response time**: Time from request to completion
-- **Dependability**: Reliability and availability
-- **Cost**: Important consideration in system design
-
----
-
-## 25. Key Points
-
-### System Architecture
-
-- Buses connect CPU, memory, and I/O controllers
-- Multiple controllers manage different device types
-- Shared interconnect with arbitration
-
-### Communication Mechanisms
-
-- **Polling**: Simple, predictable, inefficient
-- **Interrupts**: Responsive, efficient CPU use
-- **DMA**: Most efficient for bulk transfers
-
-### Dependability
-
-- Critical for storage systems
-- Measured by MTTF, MTTR, MTBF, availability
-- Improved through fault tolerance and faster repair
-
-### Storage Technologies
-
-- **Magnetic disk**: Traditional, slower, cheaper per GB, mechanical
-- **Flash storage**: Modern, faster, more expensive, no moving parts
-
-### Access Methods
-
-- **Memory-mapped I/O**: I/O uses memory address space
-- **I/O instructions**: Separate instruction set for I/O
-
-### Performance Optimization
-
-- **RAID**: Improve performance and dependability
-- **DMA**: Reduce CPU overhead
-- **Interrupts**: Improve responsiveness
-
-### Exercises
-
-- Book contains practice problems
-- Calculate dependability metrics
-- Analyze disk access times
-- Compare different I/O mechanisms
 
 ---
 
