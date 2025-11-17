@@ -6,13 +6,7 @@ This lecture completes our exploration of computer architecture by examining sto
 
 ---
 
-## 1. Introduction to I/O Devices and Storage
-
-Chapter 6 covers storage devices and input/output systems that enable computers to interact with external devices and persistent storage.
-
----
-
-## 2. I/O Device Characteristics
+## 1. I/O Device Characteristics
 
 I/O devices can be characterized by three fundamental factors:
 
@@ -53,7 +47,7 @@ I/O devices can be characterized by three fundamental factors:
 
 ---
 
-## 3. I/O Bus Connections
+## 2. I/O Bus Connections
 
 ### Simplified System Architecture
 
@@ -84,7 +78,7 @@ Multiple controllers allow parallel device operation while sharing common interc
 
 ---
 
-## 4. Dependability
+## 3. Dependability
 
 Critical for I/O systems, especially storage devices.
 
@@ -103,7 +97,7 @@ Critical for I/O systems, especially storage devices.
 
 ---
 
-## 5. Service States
+## 4. Service States
 
 ### Two Primary States
 
@@ -126,7 +120,7 @@ Critical for I/O systems, especially storage devices.
 
 ---
 
-## 6. Fault Terminology
+## 5. Fault Terminology
 
 ### Fault Definition
 
@@ -145,7 +139,7 @@ Critical for I/O systems, especially storage devices.
 
 ---
 
-## 7. Dependability Measures
+## 6. Dependability Measures
 
 ### Key Metrics
 
@@ -197,13 +191,13 @@ Availability = MTTF / (MTTF + MTTR)
 
 ---
 
-## 8. Improving Availability
+## 7. Improving Availability
 
 ### Two Approaches
 
 ---
 
-## 9. 1. Increase MTTF (Mean Time To Failure)
+## 8. Increase MTTF (Mean Time To Failure)
 
 #### a) Fault Avoidance
 
@@ -234,7 +228,7 @@ Availability = MTTF / (MTTF + MTTR)
 
 ---
 
-## 10. 2. Reduce MTTR (Mean Time To Repair)
+## 9. Reduce MTTR (Mean Time To Repair)
 
 ### Methods
 
@@ -254,7 +248,7 @@ Availability = MTTF / (MTTF + MTTR)
 
 ---
 
-## 11. Magnetic Disk Storage
+## 10. Magnetic Disk Storage
 
 Traditional secondary storage technology using magnetic recording.
 
@@ -290,7 +284,7 @@ Traditional secondary storage technology using magnetic recording.
 
 ---
 
-## 12. Disk Access Process
+## 11. Disk Access Process
 
 ### Access Components and Timing
 
@@ -341,7 +335,7 @@ Traditional secondary storage technology using magnetic recording.
 
 ---
 
-## 13. Disk Access Example Calculation
+## 12. Disk Access Example Calculation
 
 ### Given Parameters
 
@@ -356,7 +350,7 @@ Traditional secondary storage technology using magnetic recording.
 
 #### 1. Seek Time
 
-4 ms (given)
+- 4 ms (given)
 
 #### 2. Rotational Latency
 
@@ -372,7 +366,7 @@ Traditional secondary storage technology using magnetic recording.
 
 #### 4. Controller Delay
 
-0.2 ms (given)
+- 0.2 ms (given)
 
 ### Total Average Read Time
 
@@ -398,7 +392,7 @@ Total = 4 + 2 + 0.005 + 0.2 = 6.2 milliseconds
 
 ---
 
-## 14. Flash Storage
+## 13. Flash Storage
 
 Modern non-volatile semiconductor storage technology.
 
@@ -422,7 +416,7 @@ Modern non-volatile semiconductor storage technology.
 
 ---
 
-## 15. Types of Flash Storage
+## 14. Types of Flash Storage
 
 ### 1. NOR Flash
 
@@ -470,7 +464,7 @@ Modern non-volatile semiconductor storage technology.
 
 ---
 
-## 16. Memory-Mapped I/O
+## 15. Memory-Mapped I/O
 
 Method of accessing I/O devices using memory addresses.
 
@@ -509,7 +503,7 @@ Method of accessing I/O devices using memory addresses.
 
 ---
 
-## 17. I/O Instructions
+## 16. I/O Instructions
 
 Alternative to memory-mapped I/O: separate I/O instructions.
 
@@ -548,7 +542,7 @@ Alternative to memory-mapped I/O: separate I/O instructions.
 
 ---
 
-## 18. Polling
+## 17. Polling
 
 Method for processor to communicate with I/O devices.
 
@@ -617,7 +611,7 @@ Method for processor to communicate with I/O devices.
 
 ---
 
-## 19. Interrupts
+## 18. Interrupts
 
 Alternative to polling: device-initiated communication.
 
@@ -704,13 +698,13 @@ Alternative to polling: device-initiated communication.
 
 ---
 
-## 20. I/O Data Transfer Methods
+## 19. I/O Data Transfer Methods
 
 Three approaches for transferring data between memory and I/O:
 
 ---
 
-## 21. 1. Polling-Driven I/O
+## 20. Polling-Driven I/O
 
 ### Process
 
@@ -727,7 +721,7 @@ Three approaches for transferring data between memory and I/O:
 
 ---
 
-## 22. 2. Interrupt-Driven I/O
+## 21. Interrupt-Driven I/O
 
 ### Process
 
@@ -743,7 +737,7 @@ Three approaches for transferring data between memory and I/O:
 
 ---
 
-## 23. 3. Direct Memory Access (DMA)
+## 22. Direct Memory Access (DMA)
 
 ### Process
 
@@ -794,7 +788,7 @@ Three approaches for transferring data between memory and I/O:
 
 ---
 
-## 24. RAID (Redundant Array of Independent Disks)
+## 23. RAID (Redundant Array of Independent Disks)
 
 Technology to improve storage performance and dependability.
 
@@ -822,7 +816,7 @@ Technology to improve storage performance and dependability.
 
 ---
 
-## 25. Conclusion and Summary
+## 24. Conclusion and Summary
 
 ### I/O System Performance Measures
 
@@ -833,7 +827,7 @@ Technology to improve storage performance and dependability.
 
 ---
 
-## 26. Key Points
+## 25. Key Points
 
 ### System Architecture
 
