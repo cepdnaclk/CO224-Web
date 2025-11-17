@@ -1,4 +1,4 @@
-# Lecture 16: Cache Hierarchies and Real Implementations
+# Lecture 17: Cache Hierarchies and Real Implementations
 
 ## Introduction
 
