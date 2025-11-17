@@ -14,8 +14,7 @@ We will trace the exponential growth in transistor density, explore how smaller 
 
 **Background and Influence:**
 
-- Co-founder of Intel Corporation
-- Intel historically the biggest manufacturer of computer chips/processors
+- Co-founder of Intel Corporation, historically the biggest manufacturer of computer chips/processors
 - Most personal computers and high-end servers use Intel processors
 - Made a prediction that shaped the entire semiconductor industry
 
@@ -100,6 +99,8 @@ Moore's Law made computationally intensive applications possible:
 ### 2.1 Transistor Count Growth (1970-2010)
 
 **Chart Analysis:**
+
+<img src="../img/Chapter%201%20Moore's%20Law.jpg" alt="Computer System Abstraction Layers" width="600">
 
 The historical data shows remarkable consistency with Moore's prediction:
 
@@ -340,7 +341,7 @@ By 2013, reality required revised predictions:
 - **2023 Target:** 7 nm
 - **2028 Target:** 5 nm
 
-**Key Observation:**
+**Key Observations:**
 
 - **Rate of reduction slowed down** compared to original predictions
 - Still following exponential trend but slower pace
@@ -511,7 +512,7 @@ The relationship between size and speed involves:
 Processor clock frequencies increased dramatically for over two decades:
 
 **Historical Progression:**
-
+<img src="../img/Chapter%201%20Power%20Wall.jpg" alt="Computer System Abstraction Layers" width="600">
 - **286 (1982):** 12.5 MHz
 - **386 (1985):** 16 MHz (author's first computer)
 - **486 (Early 1990s):** 25-33 MHz
@@ -766,6 +767,8 @@ Instead of one powerful processor, put **multiple complete processors on same ch
 **Early Multi-Core Processors:**
 
 **AMD Barcelona (2007):**
+
+<img src="../img/Chapter%201%20AMD%20Barcelona.jpg" alt="Computer System Abstraction Layers" width="600">
 
 - **4 cores** on single die
 - Shared L3 cache

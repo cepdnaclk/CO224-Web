@@ -21,10 +21,15 @@ This lecture introduces ARM assembly language programming, providing the foundat
 
 **Contrasted with CISC (Complex Instruction Set Computer)**
 
-- CISC: Variable-length instructions, complex operations
-- CISC: Fewer registers, memory operands in arithmetic
-- RISC: Simpler instructions, more instructions per program
-- RISC: Regular structure enables pipelining
+| Feature | RISC | CISC |
+|---------|------|------|
+| **Instruction Format** | Simple, uniform format | Variable-length instructions |
+| **Instruction Complexity** | Simple instructions, more instructions per program | Complex operations |
+| **Memory Access** | Load/store architecture (only LOAD/STORE access memory) | Memory operands in arithmetic operations |
+| **Registers** | Large number of general-purpose registers | Fewer registers |
+| **Hardware Design** | Hardware simplicity for higher clock rates | More complex hardware |
+| **Pipelining** | Regular structure enables efficient pipelining | More difficult to pipeline |
+
 
 **ARM Design Principles**
 
@@ -46,8 +51,8 @@ This lecture introduces ARM assembly language programming, providing the foundat
 - **R15 (PC)**: Program Counter - address of next instruction
 
 **Register Usage Conventions**
-
-```
+<img src="../img/Chapter%202%20ARM%20Conventions.jpg" alt="Computer System Abstraction Layers" width="600">
+<!-- ```
 R0-R3:   Argument/result registers
          - Pass parameters to functions
          - Return values from functions
@@ -72,7 +77,7 @@ R14 (LR): Link Register
 R15 (PC): Program Counter
          - Always points to next instruction
          - Modifying PC changes execution flow
-```
+``` -->
 
 **Why So Many Registers?**
 
