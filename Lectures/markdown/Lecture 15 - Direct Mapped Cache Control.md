@@ -36,13 +36,13 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
 
 #### Address Breakdown (Recap)
 
-```
+
 [Tag][Index][Offset]
   ^      ^       ^
   |      |       └── Identifies word/byte within block
   |      └── Identifies cache entry (direct mapping)
   └── Remaining bits for block identification
-```
+
 
 ### 1.2 Today's Focus
 
@@ -250,9 +250,9 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
 
 **Formula:**
 
-```
+
 Read Miss Time = Hit Latency + Miss Penalty
-```
+
 
 **Where:**
 
@@ -727,13 +727,13 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 
 ### 8.4 Timeline for Write Miss
 
-```
+
 Cycle 1: Write to cache (possibly wrong block) + Tag compare
 Cycle 1: Also initiate memory write (correct address)
 Cycle 2-50: Fetch correct block from memory
 Cycle 51: Overwrite cache entry with correct block
 Result: Cache correct, memory correct
-```
+
 
 ### 8.5 Safety Guarantee
 
@@ -893,12 +893,12 @@ Many programming patterns involve frequent writes:
 
 **Example Code:**
 
-```c
+c
 for (int i = 0; i < 1000; i++) {
     array[i] = compute(i);  // Store in every iteration
     sum += array[i];         // Read, accumulate, store
 }
-```
+
 
 #### With Write-Through
 

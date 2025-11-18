@@ -136,10 +136,10 @@
 
 <strong>R-Type Format</strong>
 
-``<code>
+
 <p>[Opcode][RS][RT][RD][SHAMT][Funct]</p>
 <p>6 bits  5   5   5    5      6 bits</p>
-</code>`<code>
+
 
 <p>Fields:</p>
 
@@ -154,10 +154,10 @@
 
 <strong>I-Type Format</strong>
 
-</code>`<code>
+
 <p>[Opcode][RS][RT][Immediate]</p>
 <p>6 bits  5   5   16 bits</p>
-</code>`<code>
+
 
 <p>Fields:</p>
 
@@ -170,10 +170,10 @@
 
 <strong>J-Type Format</strong>
 
-</code>`<code>
+
 <p>[Opcode][Address]</p>
 <p>6 bits  26 bits</p>
-</code>`<code>
+
 
 <p>Fields:</p>
 
@@ -216,9 +216,9 @@
 
 <ul>
 <li>AND, OR, NOT gates</li>
-<li>Multiplexers: </code>Y = (S == 0) ? I0 : I1<code></li>
-<li>Adders: </code>Y = A + B<code></li>
-<li>ALU: </code>Y = function(A, B, operation)<code></li>
+<li>Multiplexers: <code>Y = (S == 0) ? I0 : I1</code></li>
+<li>Adders: <code>Y = A + B</code></li>
+<li>ALU: <code>Y = function(A, B, operation)</code></li>
 </ul>
 
 <strong>Characteristics</strong>
@@ -275,7 +275,7 @@
 
 <strong>Clock Period and Frequency</strong>
 
-</code>`<code>
+
 <p>Clock Period (T): Duration of one cycle</p>
 <p>Clock Rate (f): Cycles per second</p>
 
@@ -284,7 +284,7 @@
 <p>Example:</p>
 <p>T = 250 ps = 0.25 ns</p>
 <p>f = 1/(250 × 10^-12) = 4 GHz</p>
-</code>`<code>
+
 
 <h3>2.5 Register Operations</h3>
 
@@ -305,12 +305,12 @@
 
 <strong>Timing Example</strong>
 
-</code>`<code>
+
 Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 <p>Write:  ‾‾‾‾|<em></em>_|‾‾‾‾‾</p>
 <p>Data:   [A][B][C][D][E]</p>
 <p>State:  [A][A][A][D][D]</p>
-</code>`<code>
+
 
 <h3>2.6 Critical Path and Clock Period</h3>
 
@@ -323,7 +323,7 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 
 <strong>Clock Period Constraint</strong>
 
-</code>`<code>
+
 <p>Clock Period ≥ Longest Path Delay</p>
 
 <p>Path: Register → Combinational Logic → Register</p>
@@ -333,7 +333,7 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 <p>2. Combinational logic computation</p>
 <p>3. Result reaching next register input</p>
 <p>4. Setup time before next clock edge</p>
-</code>`<code>
+
 
 <strong>Critical Path</strong>
 
@@ -530,7 +530,7 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 
 <h3>4.2 R-Type Execution Flow</h3>
 
-<strong>Instruction</strong>: </code>ADD $t0, $t1, $t2<code> (R0 = R1 + R2)
+<strong>Instruction</strong>: <code>ADD $t0, $t1, $t2</code> (R0 = R1 + R2)
 
 <strong>Step 1: Register Read</strong>
 
@@ -561,7 +561,7 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 
 <strong>Function Field Encoding</strong>:
 
-</code>`<code>
+
 <p>Funct     | Operation | ALU Control</p>
 <p>----------|-----------|-------------</p>
 <p>0x20      | ADD       | 0010</p>
@@ -569,7 +569,7 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 <p>0x24      | AND       | 0000</p>
 <p>0x25      | OR        | 0001</p>
 <p>0x2A      | SLT       | 0111</p>
-</code>`<code>
+
 
 <strong>ALU Control Logic</strong>:
 
@@ -611,10 +611,10 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 
 <strong>Examples</strong>:
 
-</code>`<code>
+
 <p>16-bit: 0x0005 → 32-bit: 0x00000005 (+5)</p>
 <p>16-bit: 0xFFFB → 32-bit: 0xFFFFFFFB (-5)</p>
-</code>`<code>
+
 
 <strong>Hardware</strong>: Simple wire replication (fast)
 
@@ -630,10 +630,10 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 
 <strong>ALUSrc Signal</strong>:
 
-</code>`<code>
+
 <p>ALUSrc = 0: Use register (R-type, branch)</p>
 <p>ALUSrc = 1: Use immediate (I-type)</p>
-</code>`<code>
+
 
 <h2>6. Load/Store Instruction Datapath</h2>
 
@@ -651,10 +651,10 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 
 <strong>Examples</strong>:
 
-</code>`<code>
+
 <p>LW $t1, 8($t0)    # Load from $t0 + 8</p>
 <p>SW $t2, -4($sp)   # Store to $sp - 4</p>
-</code>`<code>
+
 
 <h3>6.2 Load Word (LW)</h3>
 
@@ -798,10 +798,10 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 
 <strong>Step 4: PC Update Decision</strong>
 
-</code>`<code>
+
 <p>BEQ: PCSrc = Branch AND Zero</p>
 <p>BNE: PCSrc = Branch AND NOT(Zero)</p>
-</code>`<code>
+
 
 <strong>Multiplexer</strong>:
 
@@ -922,7 +922,7 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 
 <strong>Path for Load Word</strong> (longest):
 
-</code>`<code>
+
 <p>1. Instruction fetch:     200 ps</p>
 <p>2. Register read:         150 ps</p>
 <p>3. Sign extend:           50 ps</p>
@@ -932,7 +932,7 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 <p>7. Multiplexer:           25 ps</p>
 <p>8. Register write setup:  100 ps</p>
 <p>Total:                    950 ps</p>
-</code>``
+
 
 <strong>Clock Period</strong>: Must be ≥ 950 ps
 <strong>Max Frequency</strong>: 1/950 ps ≈ 1.05 GHz

@@ -4,7 +4,7 @@ This folder contains the LaTeX source files for generating the complete CO224 le
 
 ## 📁 Folder Structure
 
-```
+
 Lectures/
 ├── markdown/          # Original markdown lecture files
 ├── html/              # HTML versions for website
@@ -15,7 +15,7 @@ Lectures/
 │   ├── ...
 │   └── lecture-20.tex
 └── img/               # Images used in all formats
-```
+
 
 ## 🚀 Quick Start
 
@@ -23,10 +23,10 @@ Lectures/
 
 Run this to create basic LaTeX files from markdown:
 
-```bash
+bash
 cd Lectures/latex
 python create_skeletons.py
-```
+
 
 This creates `lecture-01.tex` through `lecture-20.tex` with basic structure.
 
@@ -42,17 +42,17 @@ Edit each `lecture-XX.tex` file to convert markdown content to LaTeX:
 
 ### Step 3: Compile PDF
 
-```bash
+bash
 cd Lectures/latex
 pdflatex main.tex
 pdflatex main.tex    # Run twice for TOC and references
-```
+
 
 Or use the provided script:
 
-```bash
+bash
 .\compile.ps1
-```
+
 
 ## 📝 File Descriptions
 
@@ -87,18 +87,18 @@ Python script to generate basic LaTeX files from markdown.
 
 ### Method 1: Command Line (Recommended)
 
-```bash
+bash
 cd Lectures/latex
 pdflatex main.tex
 pdflatex main.tex
-```
+
 
 ### Method 2: PowerShell Script
 
-```powershell
+powershell
 cd Lectures/latex
 .\compile.ps1
-```
+
 
 ### Method 3: LaTeX Editor
 
@@ -122,23 +122,23 @@ After compilation:
 
 Edit `main.tex` around line 35:
 
-```latex
+latex
 \definecolor{primaryblue}{RGB}{37,99,235}
 \definecolor{darkblue}{RGB}{30,64,175}
-```
+
 
 ### Page Layout
 
 Edit `main.tex` around line 25:
 
-```latex
+latex
 \geometry{
     left=3cm,
     right=2.5cm,
     top=2.5cm,
     bottom=2.5cm
 }
-```
+
 
 ### Chapter/Section Formatting
 
@@ -148,29 +148,29 @@ Edit `main.tex` around line 100-120.
 
 ### Including Images
 
-```latex
+latex
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{../img/your-image.jpg}
     \caption{Your caption}
     \label{fig:your-label}
 \end{figure}
-```
+
 
 ### Code Blocks
 
-```latex
+latex
 \begin{lstlisting}[language=C, caption={Example}]
 // Your code here
 int main() {
     return 0;
 }
 \end{lstlisting}
-```
+
 
 ### Lists
 
-```latex
+latex
 \begin{itemize}
     \item First item
     \item Second item
@@ -180,11 +180,11 @@ int main() {
     \item Numbered item
     \item Another item
 \end{enumerate}
-```
+
 
 ### Tables
 
-```latex
+latex
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|c|r|}
@@ -196,14 +196,14 @@ Data 1 & Data 2 & Data 3 \\
 \end{tabular}
 \caption{Your table caption}
 \end{table}
-```
+
 
 ### Cross-References
 
-```latex
+latex
 See Figure~\ref{fig:your-label} on page~\pageref{fig:your-label}.
 See Section~\ref{sec:your-section}.
-```
+
 
 ## 🔄 Workflow
 

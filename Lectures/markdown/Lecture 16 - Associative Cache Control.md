@@ -101,9 +101,9 @@ This lecture explores advanced cache design techniques that significantly impact
 
 ### Average Access Time Formula
 
-```
+
 T_avg = Hit Latency + Miss Rate × Miss Penalty
-```
+
 
 **Where:**
 
@@ -121,15 +121,15 @@ T_avg = Hit Latency + Miss Rate × Miss Penalty
 - Hit Latency = 1 CPU cycle
 - Clock Period = 1 nanosecond (1 GHz)
 
-```
+
 T_avg = 1 + (1 - 0.95) × 20 = 1 + 0.05 × 20 = 2 cycles = 2 nanoseconds
-```
+
 
 **If hit rate improves to 99.9%:**
 
-```
+
 T_avg = 1 + (1 - 0.999) × 20 = 1 + 0.001 × 20 = 1.02 cycles
-```
+
 
 This shows significant improvement from better hit rate.
 

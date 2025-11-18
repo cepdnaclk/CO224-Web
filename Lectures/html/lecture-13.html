@@ -389,14 +389,14 @@
 
 <strong>Encoding:</strong>
 
-``<code>
+
 <p>LW $rt, offset($rs)</p>
 
 <p>Opcode: 100011 (bits 26-31)</p>
 <p>RS:     Base register (bits 21-25)</p>
 <p>RT:     Destination register (bits 16-20)</p>
 <p>Offset: 16-bit immediate (bits 0-15)</p>
-</code>`<code>
+
 
 <strong>Operation:</strong> $rt = Memory[$rs + offset]
 
@@ -647,14 +647,14 @@
 
 <strong>Encoding:</strong>
 
-</code>`<code>
+
 <p>SW $rt, offset($rs)</p>
 
 <p>Opcode: 101011 (bits 26-31)</p>
 <p>RS:     Base register (bits 21-25)</p>
 <p>RT:     Source data register (bits 16-20)</p>
 <p>Offset: 16-bit immediate (bits 0-15)</p>
-</code>`<code>
+
 
 <strong>Operation:</strong> Memory[$rs + offset] = $rt
 
@@ -804,7 +804,7 @@
 
 <strong>Example:</strong>
 
-</code>`<code>
+
 <p>Cycle 1: LW $8, 0($10) fetched  (IF)</p>
 <p>Cycle 2: LW $9, 4($10) fetched  (IF), LW $8 in ID</p>
 <p>Cycle 3: LW $10, 8($10) fetched (IF), LW $8 in EX</p>
@@ -818,7 +818,7 @@
 <li>If using IF/ID: Would write to $14 instead of $8!</li>
 <li>WRONG REGISTER!</li>
 </ul>
-</code>`<code>
+
 
 <strong>Correct Implementation:</strong>
 
@@ -929,14 +929,14 @@
 
 <strong>Format:</strong>
 
-</code>`<code>
+
 <p>Cycle: 1    2    3    4    5    6    7    8    9</p>
 <p>Instr 1:         IF   ID   EX   MEM  WB</p>
 <p>Instr 2:              IF   ID   EX   MEM  WB</p>
 <p>Instr 3:                   IF   ID   EX   MEM  WB</p>
 <p>Instr 4:                        IF   ID   EX   MEM  WB</p>
 <p>Instr 5:                             IF   ID   EX   MEM  WB</p>
-</code>`<code>
+
 
 <strong>Shows:</strong>
 
@@ -959,7 +959,7 @@
 
 <strong>Format:</strong>
 
-</code>`<code>
+
 <p>Cycle 1:  Instr 1: [IM][RF][  ][  ][  ]</p>
 <p>Cycle 2:  Instr 1: [  ][IM][RF][  ][  ]   Instr 2: [IM][RF][  ][  ][  ]</p>
 <p>Cycle 3:  Instr 1: [  ][  ][IM][RF][  ]   Instr 2: [  ][IM][RF][  ][  ]   Instr 3: [IM][RF][  ][  ][  ]</p>
@@ -971,7 +971,7 @@
 <p>ALU: ALU operation</p>
 <p>DM: Data Memory</p>
 <p>WB: Write Back</p>
-</code>`<code>
+
 
 <strong>Shows:</strong>
 
@@ -1032,29 +1032,29 @@
 
 <strong>Stage 1: Instruction Fetch (IF)</strong>
 
-</code>`<code>
+
 <p>Pipeline Register Write:   N/A (PC register)</p>
 <p>Pipeline Register Read:    N/A</p>
 <p>Instruction Memory:        200 ps</p>
 <p>PC + 4 Adder:              70 ps (parallel)</p>
 
 <p>Total: 200 ps (memory dominant)</p>
-</code>`<code>
+
 
 <strong>Stage 2: Instruction Decode (ID)</strong>
 
-</code>`<code>
+
 <p>IF/ID Write + Read:        60 ps</p>
 <p>Register File Read:        90 ps (dominant)</p>
 <p>Control Unit Decode:       50 ps (parallel)</p>
 <p>Sign Extension:            10 ps (parallel)</p>
 
 <p>Total: 60 + 90 = 150 ps</p>
-</code>`<code>
+
 
 <strong>Stage 3: Execution (EX)</strong>
 
-</code>`<code>
+
 <p>ID/EX Write + Read:        60 ps</p>
 <p>Multiplexer:               20 ps</p>
 <p>ALU Operation:             90 ps</p>
@@ -1062,26 +1062,26 @@
 <p>Shift Left 2:              10 ps (parallel)</p>
 
 <p>Total: 60 + 20 + 90 = 170 ps</p>
-</code>`<code>
+
 
 <strong>Stage 4: Memory Access (MEM)</strong>
 
-</code>`<code>
+
 <p>EX/MEM Write + Read:       60 ps</p>
 <p>Data Memory Access:        250 ps (DOMINANT)</p>
 
 <p>Total: 60 + 250 = 310 ps ← CRITICAL PATH!</p>
-</code>`<code>
+
 
 <strong>Stage 5: Write Back (WB)</strong>
 
-</code>`<code>
+
 <p>MEM/WB Write + Read:       60 ps</p>
 <p>MemtoReg Multiplexer:      20 ps</p>
 <p>Register File Write:       30 ps (first half of cycle)</p>
 
 <p>Total: 60 + 20 + 30 = 110 ps</p>
-</code>`<code>
+
 
 <h3>8.3 Clock Frequency Determination</h3>
 
@@ -1095,13 +1095,13 @@
 
 <strong>Maximum Clock Frequency:</strong>
 
-</code>`<code>
+
 <p>f<em>max = 1 / T</em>min</p>
 <p>= 1 / 310 ps</p>
 <p>= 1 / (310 × 10^-12 s)</p>
 <p>= 3.226 GHz</p>
 <p>≈ 3.2 GHz</p>
-</code>`<code>
+
 
 <strong>Efficiency Analysis:</strong>
 
@@ -1175,7 +1175,7 @@
 
 <strong>Given Component Delays:</strong>
 
-</code>`<code>
+
 <p>Instruction Memory:      200 ps</p>
 <p>Register File (read):    90 ps</p>
 <p>Register File (write):   90 ps</p>
@@ -1187,7 +1187,7 @@
 <p>Adder:                   70 ps</p>
 <p>Shift Left 2:            10 ps</p>
 <p>Pipeline Register:       30 ps (write), 30 ps (read)</p>
-</code>`<code>
+
 
 <strong>Step 1: Calculate each stage timing</strong>
 
@@ -1207,10 +1207,10 @@
 
 <strong>Step 3: Calculate maximum frequency</strong>
 
-</code>`<code>
+
 <p>f_max = 1 / 310 ps</p>
 <p>= 3.226 GHz</p>
-</code>`<code>
+
 
 <h3>9.2 Exercise: Improving Clock Frequency</h3>
 
@@ -1344,27 +1344,27 @@
 
 <strong>Part A: Non-pipelined execution time</strong>
 
-</code>`<code>
+
 <p>Time = Instructions × Time per instruction</p>
 <p>= 10^7 × 100 ps</p>
 <p>= 10^9 ps</p>
 <p>= 1 ms (0.001 seconds)</p>
-</code>`<code>
+
 
 <strong>Part B: Speedup from 20-stage perfect pipeline</strong>
 
-</code>`<code>
+
 <p>Ideal Speedup = Number of stages = 20×</p>
-</code>`<code>
+
 
 <strong>Part C: Time with perfect pipeline</strong>
 
-</code>`<code>
+
 <p>Time = (10^7 × 100 ps) / 20</p>
 <p>= 10^9 / 20 ps</p>
 <p>= 5 × 10^7 ps</p>
 <p>= 0.05 ms</p>
-</code>`<code>
+
 
 <strong>Part D: Real pipeline overhead impact</strong>
 
@@ -1516,7 +1516,7 @@
 
 <h3>Clock Period</h3>
 
-</code>`<code>
+
 <p>T<em>clock = max(T</em>IF, T<em>ID, T</em>EX, T<em>MEM, T</em>WB)</p>
 
 <p>Where each T_stage includes:</p>
@@ -1525,41 +1525,41 @@
 <li>Pipeline register read delay</li>
 <li>Dominant component delay</li>
 </ul>
-</code>`<code>
+
 
 <h3>Maximum Frequency</h3>
 
-</code>`<code>
+
 <p>f<em>max = 1 / T</em>clock</p>
-</code>`<code>
+
 
 <h3>Pipeline Speedup</h3>
 
-</code>`<code>
+
 <p>Speedup = T<em>non-pipelined / T</em>pipelined<em>steady</em>state</p>
 <p>≈ Number of stages (ideal)</p>
 < Number of stages (actual)
-</code>`<code>
+
 
 <h3>Stage Timing General Formula</h3>
 
-</code>`<code>
+
 <p>T<em>stage = T</em>pipe<em>write + T</em>pipe<em>read + T</em>dominant<em>component + T</em>other_parallel</p>
 
 <p>Where parallel components don't add (take maximum)</p>
-</code>`<code>
+
 
 <h3>Throughput</h3>
 
-</code>`<code>
+
 <p>Throughput = 1 instruction / T_clock (steady state)</p>
-</code>`<code>
+
 
 <h3>Latency</h3>
 
-</code>`<code>
+
 <p>Latency = (Number of stages) × T_clock + Pipeline overhead</p>
-</code>``
+
 
 
 <h2>Key Takeaways</h2>

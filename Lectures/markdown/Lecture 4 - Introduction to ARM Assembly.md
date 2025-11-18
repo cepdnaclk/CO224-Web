@@ -51,7 +51,7 @@ This lecture introduces ARM assembly language programming, providing the foundat
 
 **Register Usage Conventions**
 <img src="../img/Chapter%202%20ARM%20Conventions.jpg" alt="Computer System Abstraction Layers" width="600">
-<!-- ```
+<!-- 
 R0-R3:   Argument/result registers
          - Pass parameters to functions
          - Return values from functions
@@ -76,7 +76,7 @@ R14 (LR): Link Register
 R15 (PC): Program Counter
          - Always points to next instruction
          - Modifying PC changes execution flow
-``` -->
+ -->
 
 **Why So Many Registers?**
 
@@ -91,10 +91,10 @@ R15 (PC): Program Counter
 
 - Least significant byte at lowest address
 - Example: 0x12345678 stored as:
-  ```
+  
   Address:  [base+0] [base+1] [base+2] [base+3]
   Content:     78       56       34       12
-  ```
+  
 
 **Word Alignment**
 
@@ -120,14 +120,14 @@ R15 (PC): Program Counter
 
 **Typical Instruction Fields**
 
-```
+
 [Condition][Opcode][Operands]
   4 bits    varies   varies
-```
+
 
 **Example: ADD Instruction**
 
-```
+
 ADD R1, R2, R3    ; R1 = R2 + R3
 
 Encoding includes:
@@ -136,7 +136,7 @@ Encoding includes:
 - Destination register (R1)
 - Source register 1 (R2)
 - Source register 2 (R3)
-```
+
 
 ### 2.2 Instruction Types
 
@@ -164,16 +164,16 @@ Encoding includes:
 
 **Register Operands**
 
-```
+
 ADD R0, R1, R2    ; R0 = R1 + R2 (all registers)
-```
+
 
 **Immediate Operands**
 
-```
+
 ADD R0, R1, #5    ; R0 = R1 + 5 (# indicates immediate)
 MOV R2, #100      ; R2 = 100
-```
+
 
 **Immediate Value Constraints**
 
@@ -183,10 +183,10 @@ MOV R2, #100      ; R2 = 100
 
 **Shifted Register Operands**
 
-```
+
 ADD R0, R1, R2, LSL #2    ; R0 = R1 + (R2 << 2)
 SUB R3, R4, R5, LSR #1    ; R3 = R4 - (R5 >> 1)
-```
+
 
 ## 3. Basic ARM Instructions
 
@@ -194,18 +194,18 @@ SUB R3, R4, R5, LSR #1    ; R3 = R4 - (R5 >> 1)
 
 **Addition**
 
-```
+
 ADD Rd, Rn, Rm       ; Rd = Rn + Rm
 ADD Rd, Rn, #imm     ; Rd = Rn + immediate
 
 Examples:
 ADD R0, R1, R2       ; R0 = R1 + R2
 ADD R3, R3, #1       ; R3 = R3 + 1 (increment)
-```
+
 
 **Subtraction**
 
-```
+
 SUB Rd, Rn, Rm       ; Rd = Rn - Rm
 SUB Rd, Rn, #imm     ; Rd = Rn - immediate
 RSB Rd, Rn, #imm     ; Rd = immediate - Rn (reverse subtract)
@@ -214,49 +214,49 @@ Examples:
 SUB R0, R1, R2       ; R0 = R1 - R2
 SUB R4, R4, #10      ; R4 = R4 - 10 (decrement)
 RSB R5, R6, #0       ; R5 = 0 - R6 (negate)
-```
+
 
 **Multiplication** (covered in later tutorials)
 
-```
+
 MUL Rd, Rn, Rm       ; Rd = Rn × Rm (lower 32 bits)
-```
+
 
 ### 3.2 Logical Instructions
 
 **AND Operation**
 
-```
+
 AND Rd, Rn, Rm       ; Rd = Rn AND Rm
 AND Rd, Rn, #imm     ; Rd = Rn AND immediate
 
 Usage: Bit masking, clearing specific bits
 Example: AND R0, R0, #0xFF  ; Keep only lower 8 bits
-```
+
 
 **OR Operation**
 
-```
+
 ORR Rd, Rn, Rm       ; Rd = Rn OR Rm (ORR in ARM)
 ORR Rd, Rn, #imm     ; Rd = Rn OR immediate
 
 Usage: Setting specific bits
 Example: ORR R1, R1, #0x80  ; Set bit 7
-```
+
 
 **Exclusive OR**
 
-```
+
 EOR Rd, Rn, Rm       ; Rd = Rn XOR Rm
 EOR Rd, Rn, #imm     ; Rd = Rn XOR immediate
 
 Usage: Toggling bits, fast comparison
 Example: EOR R2, R2, R2     ; R2 = 0 (XOR with itself)
-```
+
 
 **Move and Move Not**
 
-```
+
 MOV Rd, Rm           ; Rd = Rm
 MOV Rd, #imm         ; Rd = immediate
 MVN Rd, Rm           ; Rd = NOT Rm (bitwise complement)
@@ -265,47 +265,47 @@ Examples:
 MOV R0, R1           ; Copy R1 to R0
 MOV R2, #0           ; Clear R2
 MVN R3, R4           ; R3 = ~R4 (invert all bits)
-```
+
 
 ### 3.3 Shift Operations
 
 **Logical Shift Left (LSL)**
 
-```
+
 LSL Rd, Rn, #shift   ; Rd = Rn << shift
 MOV Rd, Rn, LSL #shift
 
 Effect: Multiplies by 2^shift
 Example: LSL R0, R1, #2  ; R0 = R1 × 4
-```
+
 
 **Logical Shift Right (LSR)**
 
-```
+
 LSR Rd, Rn, #shift   ; Rd = Rn >> shift (unsigned)
 MOV Rd, Rn, LSR #shift
 
 Effect: Divides by 2^shift (unsigned)
 Example: LSR R0, R1, #3  ; R0 = R1 / 8
-```
+
 
 **Arithmetic Shift Right (ASR)**
 
-```
+
 ASR Rd, Rn, #shift   ; Rd = Rn >> shift (signed)
 
 Effect: Divides by 2^shift, preserves sign
 Example: ASR R0, R1, #2  ; R0 = R1 / 4 (signed)
-```
+
 
 **Rotate Right (ROR)**
 
-```
+
 ROR Rd, Rn, #shift   ; Rotate Rn right by shift
 
 Effect: Bits rotated off right end reappear at left
 Example: ROR R0, R1, #8  ; Rotate R1 right by 8 bits
-```
+
 
 ## 4. Memory Access Instructions
 
@@ -313,7 +313,7 @@ Example: ROR R0, R1, #8  ; Rotate R1 right by 8 bits
 
 **Load Word (LDR)**
 
-```
+
 LDR Rd, [Rn]         ; Rd = Memory[Rn]
 LDR Rd, [Rn, #offset]; Rd = Memory[Rn + offset]
 
@@ -321,95 +321,95 @@ Examples:
 LDR R0, [R1]         ; Load word from address in R1
 LDR R2, [R3, #4]     ; Load from address R3+4
 LDR R4, [R5, #-8]    ; Load from address R5-8
-```
+
 
 **Load Byte (LDRB)**
 
-```
+
 LDRB Rd, [Rn, #offset]; Load one byte, zero-extend to 32 bits
 
 Example:
 LDRB R0, [R1]        ; R0 = (byte at R1), upper 24 bits = 0
-```
+
 
 **Load Halfword (LDRH)**
 
-```
+
 LDRH Rd, [Rn, #offset]; Load 16 bits, zero-extend to 32 bits
 
 Example:
 LDRH R0, [R1, #2]    ; R0 = (halfword at R1+2), upper 16 bits = 0
-```
+
 
 **Pseudo-Instruction for Loading Addresses**
 
-```
+
 LDR Rd, =label       ; Load address of label into Rd
 LDR Rd, =value       ; Load 32-bit constant into Rd
 
 Examples:
 LDR R0, =array       ; R0 = address of array
 LDR R1, =0x12345678  ; R1 = 0x12345678 (large immediate)
-```
+
 
 ### 4.2 Store Instructions
 
 **Store Word (STR)**
 
-```
+
 STR Rd, [Rn]         ; Memory[Rn] = Rd
 STR Rd, [Rn, #offset]; Memory[Rn + offset] = Rd
 
 Examples:
 STR R0, [R1]         ; Store R0 to address in R1
 STR R2, [R3, #8]     ; Store R2 to address R3+8
-```
+
 
 **Store Byte (STRB)**
 
-```
+
 STRB Rd, [Rn, #offset]; Store lower 8 bits of Rd
 
 Example:
 STRB R0, [R1]        ; Store lower byte of R0 to address R1
-```
+
 
 **Store Halfword (STRH)**
 
-```
+
 STRH Rd, [Rn, #offset]; Store lower 16 bits of Rd
 
 Example:
 STRH R0, [R1, #4]    ; Store lower halfword of R0 to R1+4
-```
+
 
 ### 4.3 Addressing Modes
 
 **Offset Addressing**
 
-```
+
 LDR R0, [R1, #4]     ; R0 = Memory[R1 + 4], R1 unchanged
-```
+
 
 **Pre-indexed Addressing**
 
-```
+
 LDR R0, [R1, #4]!    ; R1 = R1 + 4, then R0 = Memory[R1]
                       ; ! indicates update base register
-```
+
 
 **Post-indexed Addressing**
 
-```
+
 LDR R0, [R1], #4     ; R0 = Memory[R1], then R1 = R1 + 4
-```
+
 
 **Register Offset**
 
-```
+
 LDR R0, [R1, R2]     ; R0 = Memory[R1 + R2]
 LDR R0, [R1, R2, LSL #2] ; R0 = Memory[R1 + (R2 << 2)]
-```
+
 
 ## 5. Assembly Program Structure
 
@@ -417,27 +417,27 @@ LDR R0, [R1, R2, LSL #2] ; R0 = Memory[R1 + (R2 << 2)]
 
 **Section Directives**
 
-```
+
 .text                ; Code section (instructions)
 .data                ; Data section (initialized variables)
 .bss                 ; Uninitialized data section
-```
+
 
 **Global and External**
 
-```
+
 .global main         ; Make symbol visible to linker
 .extern printf       ; Declare external symbol
-```
+
 
 **Data Definition**
 
-```
+
 .word value          ; Define 32-bit word
 .byte value          ; Define byte
 .asciz "string"      ; Define null-terminated string
 .space n             ; Reserve n bytes of space
-```
+
 
 ### 5.2 Labels
 
@@ -449,18 +449,18 @@ LDR R0, [R1, R2, LSL #2] ; R0 = Memory[R1 + (R2 << 2)]
 
 **Syntax**
 
-```
+
 label:               ; Label for instruction
     MOV R0, #1
     ADD R1, R0, R2
 
 array:               ; Label for data
     .word 1, 2, 3, 4
-```
+
 
 ### 5.3 Simple Program Example
 
-```assembly
+assembly
     .text
     .global main
 
@@ -474,7 +474,7 @@ main:
     .data
 message:
     .asciz "Hello, ARM!"
-```
+
 
 ## 6. ARM Development Tools
 
@@ -506,7 +506,7 @@ message:
 
 **From C to Executable**
 
-```
+
 C Source (.c)
     ↓ [gcc -S]
 Assembly (.s)
@@ -516,11 +516,11 @@ Object Code (.o)
 Executable (a.out)
     ↓ [qemu-arm]
 Execution
-```
+
 
 **Command Examples**
 
-```bash
+bash
 # Compile C to assembly
 arm-linux-gnueabi-gcc -S program.c -o program.s
 
@@ -532,20 +532,20 @@ arm-linux-gnueabi-gcc program.o -o program
 
 # Run with emulator
 qemu-arm program
-```
+
 
 **One-Step Compilation**
 
-```bash
+bash
 # Compile, assemble, and link in one command
 arm-linux-gnueabi-gcc program.c -o program
-```
+
 
 ### 6.3 Debugging and Inspection
 
 **GDB (GNU Debugger)**
 
-```bash
+bash
 # Debug with QEMU and GDB
 qemu-arm -g 1234 program &     # Start QEMU, wait for debugger
 arm-linux-gnueabi-gdb program  # Start GDB
@@ -554,21 +554,21 @@ arm-linux-gnueabi-gdb program  # Start GDB
 (gdb) continue                 # Run to breakpoint
 (gdb) step                     # Execute one instruction
 (gdb) info registers           # Show register values
-```
+
 
 **Objdump**
 
-```bash
+bash
 # Disassemble binary to assembly
 arm-linux-gnueabi-objdump -d program
-```
+
 
 **nm**
 
-```bash
+bash
 # List symbols in object file
 arm-linux-gnueabi-nm program.o
-```
+
 
 ## 7. Programming in ARM Assembly
 
@@ -576,30 +576,30 @@ arm-linux-gnueabi-nm program.o
 
 **C Code:**
 
-```c
+c
 int a = 5;
 int b = 10;
 int c = a + b;
-```
+
 
 **ARM Assembly:**
 
-```assembly
+assembly
     MOV R0, #5       ; a = 5
     MOV R1, #10      ; b = 10
     ADD R2, R0, R1   ; c = a + b
-```
+
 
 **C Code with Array:**
 
-```c
+c
 int arr[3] = {1, 2, 3};
 int x = arr[1];
-```
+
 
 **ARM Assembly:**
 
-```assembly
+assembly
     .data
 arr:
     .word 1, 2, 3
@@ -607,45 +607,45 @@ arr:
     .text
     LDR R0, =arr     ; R0 = address of arr
     LDR R1, [R0, #4] ; R1 = arr[1] (offset 4 bytes)
-```
+
 
 ### 7.2 Common Patterns
 
 **Clearing a Register**
 
-```assembly
+assembly
 MOV R0, #0           ; Method 1
 EOR R0, R0, R0       ; Method 2 (XOR with itself)
-```
+
 
 **Negating a Value**
 
-```assembly
+assembly
 RSB R0, R0, #0       ; R0 = 0 - R0
 MVN R0, R0           ; R0 = ~R0 (bitwise, not arithmetic)
 ADD R0, R0, #1       ; Then add 1 (two's complement)
-```
+
 
 **Multiplying by Powers of 2**
 
-```assembly
+assembly
 LSL R0, R1, #3       ; R0 = R1 × 8 (faster than MUL)
-```
+
 
 **Dividing by Powers of 2**
 
-```assembly
+assembly
 LSR R0, R1, #2       ; R0 = R1 / 4 (unsigned)
 ASR R0, R1, #2       ; R0 = R1 / 4 (signed)
-```
+
 
 **Swapping Two Registers**
 
-```assembly
+assembly
 EOR R0, R0, R1       ; XOR-based swap (no temporary)
 EOR R1, R0, R1
 EOR R0, R0, R1
-```
+
 
 ## Key Takeaways
 

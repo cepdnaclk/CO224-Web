@@ -342,7 +342,7 @@
 
 <h3>4.2 Memory Hierarchy Structure</h3>
 
-``<code>
+
 <p>Level 1 (Top): SRAM (Cache)</p>
 <ul>
 <li>Smallest capacity</li>
@@ -361,7 +361,7 @@
 <li>Largest capacity</li>
 <li>Slowest speed</li>
 </ul>
-</code>`<code>
+
 
 <h3>4.3 Key Principles</h3>
 
@@ -509,9 +509,9 @@
 
 <strong>Formula:</strong>
 
-</code>`<code>
+
 <p>Hit Rate = (Number of Hits) / (Total Accesses)</p>
-</code>`<code>
+
 
 <strong>Example:</strong> 100 accesses, 90 hits → Hit Rate = 90% or 0.9
 
@@ -523,10 +523,10 @@
 
 <strong>Formula:</strong>
 
-</code>`<code>
+
 <p>Miss Rate = (Number of Misses) / (Total Accesses)</p>
 <p>Miss Rate = 1 - Hit Rate</p>
-</code>`<code>
+
 
 <strong>Example:</strong> 100 accesses, 10 misses → Miss Rate = 10% or 0.1
 
@@ -576,9 +576,9 @@
 
 <strong>Formula:</strong>
 
-</code>`<code>
+
 <p>Average Access Time = Hit Latency + (Miss Rate × Miss Penalty)</p>
-</code>`<code>
+
 
 <strong>Explanation:</strong>
 
@@ -609,21 +609,21 @@
 
 <strong>If Hit Rate = 99.9% (Miss Rate = 0.1%):</strong>
 
-</code>`<code>
+
 <p>Average Time = 1 ns + (0.001 × 100 ns)</p>
 <p>= 1 ns + 0.1 ns</p>
 <p>= 1.1 ns</p>
-</code>`<code>
+
 
 <p>Still close to 1 clock cycle!</p>
 
 <strong>If Hit Rate = 90% (Miss Rate = 10%):</strong>
 
-</code>`<code>
+
 <p>Average Time = 1 ns + (0.10 × 100 ns)</p>
 <p>= 1 ns + 10 ns</p>
 <p>= 11 ns</p>
-</code>`<code>
+
 
 <p>Unacceptable! 11× slower than CPU clock!</p>
 
@@ -698,21 +698,21 @@
 
 <strong>a) Loop Index Variables:</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>for (int i = 0; i < 100; i++) {</p>
 <p>// i is accessed every iteration</p>
 <p>// Same memory location for 'i' accessed repeatedly</p>
 <p>}</p>
-</code>`<code>
+
 
 <strong>b) Loop-Invariant Data:</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>for (int i = 0; i < n; i++) {</p>
 <p>result = result + array[i] * constant;</p>
 <p>// 'result' and 'constant' accessed every iteration</p>
 <p>}</p>
-</code>`<code>
+
 
 <strong>c) Function/Procedure Calls:</strong>
 
@@ -763,13 +763,13 @@
 
 <strong>a) Array Traversal:</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>for (int i = 0; i < 100; i++) {</p>
 <p>sum += array[i];</p>
 <p>// Access array[0], then array[1], then array[2], ...</p>
 <p>// Sequential memory addresses</p>
 <p>}</p>
-</code>`<code>
+
 
 <strong>b) Sequential Instruction Execution:</strong>
 
@@ -781,7 +781,7 @@
 
 <strong>c) Data Structures:</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>struct Student {</p>
 <p>int id;</p>
 <p>char name[50];</p>
@@ -790,17 +790,17 @@
 <p>Student s;</p>
 <p>// Accessing s.id, then s.name, then s.gpa</p>
 <p>// Nearby memory locations</p>
-</code>`<code>
+
 
 <strong>d) String Processing:</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>char str[] = "Hello";</p>
 <p>for (int i = 0; str[i] != '\0'; i++) {</p>
 <p>// Access str[0], str[1], str[2], ...</p>
 <p>// Consecutive bytes in memory</p>
 <p>}</p>
-</code>`<code>
+
 
 <h4>Music Analogy</h4>
 
@@ -943,22 +943,22 @@
 
 <strong>Example Address:</strong>
 
-</code>`<code>
+
 <p>Address: 00000000000000000000000000001010 (binary)</p>
 <p>= 10 (decimal)</p>
 <p>Points to: Byte at memory location 10</p>
-</code>`<code>
+
 
 <strong>Memory Structure:</strong>
 
-</code>`<code>
+
 <p>Address 0:  [byte 0]</p>
 <p>Address 1:  [byte 1]</p>
 <p>Address 2:  [byte 2]</p>
 <p>...</p>
 <p>Address 10: [byte 10]  ← This byte addressed by example</p>
 <p>...</p>
-</code>`<code>
+
 
 <h3>10.2 Word Address</h3>
 
@@ -978,29 +978,29 @@
 
 <h4>Word Address Format (32-bit)</h4>
 
-</code>`<code>
+
 <p>[30-bit word identifier][2-bit byte offset]</p>
 <p>└── Always "00" for word-aligned addresses</p>
-</code>`<code>
+
 
 <strong>Example:</strong>
 
-</code>`<code>
+
 <p>Address: ...00001000 (binary)</p>
 <p>- Last 2 bits: 00 → Word-aligned</p>
 <p>- Remaining bits: Identify which word</p>
 <p>- This is address 8, start of word 2</p>
-</code>`<code>
+
 
 <h4>Byte Within Word</h4>
 
 <p>Last 2 bits select byte within word:</p>
 
 <ul>
-<li></code>00<code> → First byte (address 8)</li>
-<li></code>01<code> → Second byte (address 9)</li>
-<li></code>10<code> → Third byte (address 10)</li>
-<li></code>11<code> → Fourth byte (address 11)</li>
+<li><code>00</code> → First byte (address 8)</li>
+<li><code>01</code> → Second byte (address 9)</li>
+<li><code>10</code> → Third byte (address 10)</li>
+<li><code>11</code> → Fourth byte (address 11)</li>
 </ul>
 
 <strong>Key Points:</strong>
@@ -1031,14 +1031,14 @@
 
 <h4>Block Address Format (32-bit)</h4>
 
-</code>`<code>
+
 <p>[Block Identifier][3-bit offset]</p>
 <p>└── Last 3 bits for 8-byte blocks</p>
-</code>`<code>
+
 
 <strong>Example:</strong>
 
-</code>`<code>
+
 <p>Address: 00000000000000000000000000101101 (binary)</p>
 <p>= 45 (decimal)</p>
 
@@ -1048,7 +1048,7 @@
 <li>Block address: 00000000000000000000000000101 (identifies block)</li>
 <li>This identifies the block containing address 45</li>
 </ul>
-</code>`<code>
+
 
 <h4>Offset Within Block (3 bits for 8-byte blocks)</h4>
 
@@ -1056,18 +1056,18 @@
 
 <ul>
 <li>Used to identify individual BYTE within block</li>
-<li></code>000<code> → Byte 0</li>
-<li></code>001<code> → Byte 1</li>
+<li><code>000</code> → Byte 0</li>
+<li><code>001</code> → Byte 1</li>
 <li>...</li>
-<li></code>111<code> → Byte 7</li>
+<li><code>111</code> → Byte 7</li>
 </ul>
 
 <strong>WORD OFFSET (most significant bit of offset):</strong>
 
 <ul>
 <li>Used to identify WORD within block (when block has 2 words)</li>
-<li></code>0XX<code> → First word (bytes 0-3)</li>
-<li></code>1XX<code> → Second word (bytes 4-7)</li>
+<li><code>0XX</code> → First word (bytes 0-3)</li>
+<li><code>1XX</code> → Second word (bytes 4-7)</li>
 <li>Only need 1 bit to select between 2 words</li>
 </ul>
 
@@ -1075,24 +1075,24 @@
 
 <strong>For address with 8-byte blocks, 4-byte words:</strong>
 
-</code>`<code>
+
 <p>[Block Address][Word Offset][Byte in Word]</p>
 <p>^              ^              ^</p>
 <p>|              |              └── 2 bits: Select byte within word</p>
 <p>|              └── 1 bit: Select word within block</p>
 <p>└── Remaining bits: Identify which block</p>
-</code>`<code>
+
 
 <strong>Example Breakdown:</strong>
 
-</code>`<code>
+
 <p>Address: ...00101101</p>
 <ul>
 <li>Last 2 bits (01): Byte offset within word → Byte 1 of word</li>
 <li>3rd bit from right (1): Word offset → Second word of block</li>
 <li>Remaining bits (...00101): Block address → Block 5</li>
 </ul>
-</code>`<code>
+
 
 <strong>All Bytes in Same Block:</strong>
 
@@ -1210,15 +1210,15 @@
 
 <strong>Mapping Rule:</strong>
 
-</code>`<code>
+
 <p>Cache Index = Block Address MOD (Number of Blocks in Cache)</p>
-</code>`<code>
+
 
 <strong>Formula:</strong>
 
-</code>`<code>
+
 <p>Cache Index = (Block Address) mod (Cache Size in Blocks)</p>
-</code>`<code>
+
 
 <strong>Example:</strong>
 
@@ -1274,33 +1274,33 @@
 
 <strong>Address 1:</strong>
 
-</code>`<code>
+
 <p>Binary: ...00000001[011]</p>
 <p>└─ Block address = 0</p>
 <p>└─ Offset = 3 bytes</p>
 <p>Cache index = 0 mod 8 = 0</p>
 <p>Maps to cache index 0</p>
-</code>`<code>
+
 
 <strong>Address 2 (block address in focus):</strong>
 
-</code>`<code>
+
 <p>Binary: ...00000101[000]</p>
 <p>└─ Block address = 5</p>
 <p>└─ Offset = 0</p>
 <p>Cache index = 5 mod 8 = 5</p>
 <p>Maps to cache index 5</p>
-</code>`<code>
+
 
 <h3>12.4 Address Structure for Direct-Mapped Cache</h3>
 
-</code>`<code>
+
 <p>[Tag][Index][Offset]</p>
 <p>^     ^       ^</p>
 <p>|     |       └── Identifies byte/word within block</p>
 <p>|     └── Identifies cache location (index)</p>
 <p>└── Remaining bits to differentiate blocks mapping to same index</p>
-</code>`<code>
+
 
 <h4>Bit Allocation (for 8-block cache, 8-byte blocks, 32-bit address)</h4>
 
@@ -1337,17 +1337,17 @@
 
 <strong>Address A:</strong>
 
-</code>`<code>
+
 <p>Block address: ...00000101</p>
 <p>Index bits (last 3): 101 → Index 5</p>
-</code>`<code>
+
 
 <strong>Address B:</strong>
 
-</code>`<code>
+
 <p>Block address: ...00001101</p>
 <p>Index bits (last 3): 101 → Index 5</p>
-</code>`<code>
+
 
 <p>Both map to index 5, but different blocks!</p>
 
@@ -1369,31 +1369,31 @@
 <li>Used to verify correct block is present</li>
 </ul>
 
-</code>`<code>
+
 <p>Tag = Block Address (excluding index bits)</p>
-</code>`<code>
+
 
 <h4>Example Address Breakdown</h4>
 
 <strong>Full Address:</strong>
 
-</code>`<code>
+
 <p>[26-bit Tag][3-bit Index][3-bit Offset]</p>
-</code>`<code>
+
 
 <strong>Address A:</strong>
 
-</code>`<code>
+
 <p>[00000000000000000000000000][101][000]</p>
 <p>└── Tag = 0                └─ Index=5 └─ Offset</p>
-</code>`<code>
+
 
 <strong>Address B:</strong>
 
-</code>`<code>
+
 <p>[00000000000000000000000001][101][000]</p>
 <p>└── Tag = 1                └─ Index=5 └─ Offset</p>
-</code>`<code>
+
 
 <p>Both have index 5, but DIFFERENT tags!</p>
 
@@ -1421,12 +1421,12 @@
 
 <strong>Storage Overhead:</strong>
 
-</code>`<code>
+
 <p>Overhead = (Tag + Valid) / Total</p>
 <p>= (26 + 1) / (26 + 1 + 64)</p>
 <p>= 27 / 91</p>
 <p>≈ 30% overhead in this small example</p>
-</code>`<code>
+
 
 <h4>Note on Overhead</h4>
 
@@ -1502,9 +1502,9 @@
 
 <strong>Example Address (32-bit):</strong>
 
-</code>`<code>
+
 <p>[26-bit Tag][3-bit Index][3-bit Offset]</p>
-</code>`<code>
+
 
 <h4>Step 2: INDEXING THE CACHE</h4>
 
@@ -1545,7 +1545,7 @@
 
 <strong>Example (4-bit tags):</strong>
 
-</code>`<code>
+
 <p>Stored tag:   1 0 1 1</p>
 <p>Address tag:  1 0 1 1</p>
 <p>XNOR:         1 1 1 1  → AND = 1 (MATCH!)</p>
@@ -1553,7 +1553,7 @@
 <p>Stored tag:   1 0 1 1</p>
 <p>Address tag:  1 0 0 1</p>
 <p>XNOR:         1 1 0 1  → AND = 0 (NO MATCH)</p>
-</code>`<code>
+
 
 <strong>For N-bit tag:</strong>
 
@@ -1582,11 +1582,11 @@
 
 <strong>Logic Circuit:</strong>
 
-</code>`<code>
+
 <p>Tag Match Output ─┐</p>
 <p>AND ─→ Hit/Miss Signal</p>
 <p>Valid Bit ────────┘</p>
-</code>`<code>
+
 
 <strong>Output:</strong>
 
@@ -1985,9 +1985,9 @@
 
 <h3>17.12 Average Access Time Formula</h3>
 
-</code>`<code>
+
 <p>Average Access Time = Hit Latency + (Miss Rate × Miss Penalty)</p>
-</code>``
+
 
 <ul>
 <li>Must keep Miss Rate very low for performance</li>

@@ -275,14 +275,14 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 
 **Encoding:**
 
-```
+
 LW $rt, offset($rs)
 
 Opcode: 100011 (bits 26-31)
 RS:     Base register (bits 21-25)
 RT:     Destination register (bits 16-20)
 Offset: 16-bit immediate (bits 0-15)
-```
+
 
 **Operation:** $rt = Memory[$rs + offset]
 
@@ -493,14 +493,14 @@ Offset: 16-bit immediate (bits 0-15)
 
 **Encoding:**
 
-```
+
 SW $rt, offset($rs)
 
 Opcode: 101011 (bits 26-31)
 RS:     Base register (bits 21-25)
 RT:     Source data register (bits 16-20)
 Offset: 16-bit immediate (bits 0-15)
-```
+
 
 **Operation:** Memory[$rs + offset] = $rt
 
@@ -622,7 +622,7 @@ Offset: 16-bit immediate (bits 0-15)
 
 **Example:**
 
-```
+
 Cycle 1: LW $8, 0($10) fetched  (IF)
 Cycle 2: LW $9, 4($10) fetched  (IF), LW $8 in ID
 Cycle 3: LW $10, 8($10) fetched (IF), LW $8 in EX
@@ -634,7 +634,7 @@ At Cycle 5:
 - WB should write $8 (from LW)
 - If using IF/ID: Would write to $14 instead of $8!
 - WRONG REGISTER!
-```
+
 
 **Correct Implementation:**
 
@@ -723,14 +723,14 @@ At Cycle 5:
 
 **Format:**
 
-```
+
           Cycle: 1    2    3    4    5    6    7    8    9
 Instr 1:         IF   ID   EX   MEM  WB
 Instr 2:              IF   ID   EX   MEM  WB
 Instr 3:                   IF   ID   EX   MEM  WB
 Instr 4:                        IF   ID   EX   MEM  WB
 Instr 5:                             IF   ID   EX   MEM  WB
-```
+
 
 **Shows:**
 
@@ -749,7 +749,7 @@ Instr 5:                             IF   ID   EX   MEM  WB
 
 **Format:**
 
-```
+
 Cycle 1:  Instr 1: [IM][RF][  ][  ][  ]
 Cycle 2:  Instr 1: [  ][IM][RF][  ][  ]   Instr 2: [IM][RF][  ][  ][  ]
 Cycle 3:  Instr 1: [  ][  ][IM][RF][  ]   Instr 2: [  ][IM][RF][  ][  ]   Instr 3: [IM][RF][  ][  ][  ]
@@ -761,7 +761,7 @@ RF: Register File
 ALU: ALU operation
 DM: Data Memory
 WB: Write Back
-```
+
 
 **Shows:**
 
@@ -814,29 +814,29 @@ WB: Write Back
 
 **Stage 1: Instruction Fetch (IF)**
 
-```
+
 Pipeline Register Write:   N/A (PC register)
 Pipeline Register Read:    N/A
 Instruction Memory:        200 ps
 PC + 4 Adder:              70 ps (parallel)
 
 Total: 200 ps (memory dominant)
-```
+
 
 **Stage 2: Instruction Decode (ID)**
 
-```
+
 IF/ID Write + Read:        60 ps
 Register File Read:        90 ps (dominant)
 Control Unit Decode:       50 ps (parallel)
 Sign Extension:            10 ps (parallel)
 
 Total: 60 + 90 = 150 ps
-```
+
 
 **Stage 3: Execution (EX)**
 
-```
+
 ID/EX Write + Read:        60 ps
 Multiplexer:               20 ps
 ALU Operation:             90 ps
@@ -844,26 +844,26 @@ Branch Adder:              70 ps (parallel)
 Shift Left 2:              10 ps (parallel)
 
 Total: 60 + 20 + 90 = 170 ps
-```
+
 
 **Stage 4: Memory Access (MEM)**
 
-```
+
 EX/MEM Write + Read:       60 ps
 Data Memory Access:        250 ps (DOMINANT)
 
 Total: 60 + 250 = 310 ps ← CRITICAL PATH!
-```
+
 
 **Stage 5: Write Back (WB)**
 
-```
+
 MEM/WB Write + Read:       60 ps
 MemtoReg Multiplexer:      20 ps
 Register File Write:       30 ps (first half of cycle)
 
 Total: 60 + 20 + 30 = 110 ps
-```
+
 
 ### 8.3 Clock Frequency Determination
 
@@ -875,13 +875,13 @@ Total: 60 + 20 + 30 = 110 ps
 
 **Maximum Clock Frequency:**
 
-```
+
 f_max = 1 / T_min
       = 1 / 310 ps
       = 1 / (310 × 10^-12 s)
       = 3.226 GHz
       ≈ 3.2 GHz
-```
+
 
 **Efficiency Analysis:**
 
@@ -945,7 +945,7 @@ f_max = 1 / T_min
 
 **Given Component Delays:**
 
-```
+
 Instruction Memory:      200 ps
 Register File (read):    90 ps
 Register File (write):   90 ps
@@ -957,7 +957,7 @@ Multiplexer:             20 ps
 Adder:                   70 ps
 Shift Left 2:            10 ps
 Pipeline Register:       30 ps (write), 30 ps (read)
-```
+
 
 **Step 1: Calculate each stage timing**
 
@@ -973,10 +973,10 @@ Pipeline Register:       30 ps (write), 30 ps (read)
 
 **Step 3: Calculate maximum frequency**
 
-```
+
 f_max = 1 / 310 ps
       = 3.226 GHz
-```
+
 
 ### 9.2 Exercise: Improving Clock Frequency
 
@@ -1084,27 +1084,27 @@ f_max = 1 / 310 ps
 
 **Part A: Non-pipelined execution time**
 
-```
+
 Time = Instructions × Time per instruction
      = 10^7 × 100 ps
      = 10^9 ps
      = 1 ms (0.001 seconds)
-```
+
 
 **Part B: Speedup from 20-stage perfect pipeline**
 
-```
+
 Ideal Speedup = Number of stages = 20×
-```
+
 
 **Part C: Time with perfect pipeline**
 
-```
+
 Time = (10^7 × 100 ps) / 20
      = 10^9 / 20 ps
      = 5 × 10^7 ps
      = 0.05 ms
-```
+
 
 **Part D: Real pipeline overhead impact**
 
@@ -1226,48 +1226,48 @@ Time = (10^7 × 100 ps) / 20
 
 ### Clock Period
 
-```
+
 T_clock = max(T_IF, T_ID, T_EX, T_MEM, T_WB)
 
 Where each T_stage includes:
 - Pipeline register write delay
 - Pipeline register read delay
 - Dominant component delay
-```
+
 
 ### Maximum Frequency
 
-```
+
 f_max = 1 / T_clock
-```
+
 
 ### Pipeline Speedup
 
-```
+
 Speedup = T_non-pipelined / T_pipelined_steady_state
         ≈ Number of stages (ideal)
         < Number of stages (actual)
-```
+
 
 ### Stage Timing General Formula
 
-```
+
 T_stage = T_pipe_write + T_pipe_read + T_dominant_component + T_other_parallel
 
 Where parallel components don't add (take maximum)
-```
+
 
 ### Throughput
 
-```
+
 Throughput = 1 instruction / T_clock (steady state)
-```
+
 
 ### Latency
 
-```
+
 Latency = (Number of stages) × T_clock + Pipeline overhead
-```
+
 
 
 ## Key Takeaways

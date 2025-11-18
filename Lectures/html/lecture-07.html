@@ -94,7 +94,7 @@
 
 <strong>Example</strong>
 
-<p>``<code>c</p>
+<p>c</p>
 <p>int add(int a, int b) {</p>
 <p>return a + b;</p>
 <p>}</p>
@@ -102,7 +102,7 @@
 <p>int main() {</p>
 <p>int result = add(5, 3);  // Function call</p>
 <p>}</p>
-</code>`<code>
+
 
 <h2>2. ARM Register Conventions</h2>
 
@@ -110,7 +110,7 @@
 
 <strong>Register Classification</strong>
 
-</code>`<code>
+
 <p>R0-R1:   Arguments and return results</p>
 <p>- Caller does NOT expect these preserved</p>
 <p>- Scratch registers</p>
@@ -138,7 +138,7 @@
 <p>R15 (PC): Program Counter</p>
 <p>- Next instruction address</p>
 <p>- Modified to return from function</p>
-</code>`<code>
+
 
 <h3>2.2 Shared Register File</h3>
 
@@ -161,7 +161,7 @@
 
 <strong>Example Scenario</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>main:</p>
 <p>MOV R4, #10      ; main uses R4</p>
 <p>MOV R0, #5       ; Pass argument</p>
@@ -174,7 +174,7 @@
 <p>; Can freely modify R0-R3, R12</p>
 <p>MOV R0, #20      ; Return value</p>
 <p>MOV PC, LR       ; Return</p>
-</code>`<code>
+
 
 <h2>3. Function Call Instructions</h2>
 
@@ -182,9 +182,9 @@
 
 <strong>Syntax</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BL function_label    ; Branch and Link</p>
-</code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -193,7 +193,7 @@
 
 <strong>Example</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>MOV R0, #10      ; Address: 0x1000</p>
 <p>BL fun           ; Address: 0x1004</p>
 <p>ADD R1, R0, #5   ; Address: 0x1008 (return point)</p>
@@ -202,7 +202,7 @@
 <p>; LR contains 0x1008 (address after BL)</p>
 <p>; Function code here</p>
 <p>MOV PC, LR       ; Return to 0x1008</p>
-</code>`<code>
+
 
 <strong>Why "Link"?</strong>
 
@@ -216,9 +216,9 @@
 
 <strong>Basic Return</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>MOV PC, LR           ; Copy LR to PC</p>
-</code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -230,9 +230,9 @@
 
 <strong>Alternative (older ARM)</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BX LR                ; Branch and Exchange</p>
-</code>`<code>
+
 
 <h2>4. Parameter Passing</h2>
 
@@ -248,17 +248,17 @@
 
 <strong>Example: Two Parameters</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>int multiply(int a, int b) {</p>
 <p>return a * b;</p>
 <p>}</p>
 
 <p>int result = multiply(6, 7);</p>
-</code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>MOV R0, #6       ; First argument (a)</p>
 <p>MOV R1, #7       ; Second argument (b)</p>
 <p>BL multiply      ; Call function</p>
@@ -267,7 +267,7 @@
 <p>multiply:</p>
 <p>MUL R0, R0, R1   ; R0 = R0 × R1</p>
 <p>MOV PC, LR       ; Return</p>
-</code>`<code>
+
 
 <h3>4.2 More Than 4 Arguments</h3>
 
@@ -281,15 +281,15 @@
 
 <strong>Example: 6 Arguments</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>int sum6(int a, int b, int c, int d, int e, int f) {</p>
 <p>return a + b + c + d + e + f;</p>
 <p>}</p>
-</code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>MOV R0, #1       ; arg1</p>
 <p>MOV R1, #2       ; arg2</p>
 <p>MOV R2, #3       ; arg3</p>
@@ -313,7 +313,7 @@
 <p>ADD R0, R0, R4</p>
 <p>ADD R0, R0, R5</p>
 <p>MOV PC, LR</p>
-</code>`<code>
+
 
 <h2>5. Return Values</h2>
 
@@ -329,7 +329,7 @@
 
 <strong>Example</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>add:</p>
 <p>ADD R0, R0, R1   ; R0 = R0 + R1</p>
 <p>MOV PC, LR       ; Return with result in R0</p>
@@ -339,7 +339,7 @@
 <p>MOV R1, #20</p>
 <p>BL add           ; Call function</p>
 <p>; R0 now contains 30</p>
-</code>`<code>
+
 
 <h3>5.2 64-Bit Return Values</h3>
 
@@ -353,21 +353,21 @@
 
 <strong>Example</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>long long multiply64(int a, int b) {</p>
 <p>return (long long)a * b;</p>
 <p>}</p>
-</code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>multiply64:</p>
 <p>SMULL R0, R1, R0, R1  ; Signed multiply long</p>
 <p>; R0 = lower 32 bits</p>
 <p>; R1 = upper 32 bits</p>
 <p>MOV PC, LR</p>
-</code>`<code>
+
 
 <h2>6. The Stack</h2>
 
@@ -392,7 +392,7 @@
 
 <strong>Memory Layout</strong>
 
-</code>`<code>
+
 <p>High Address</p>
 <p>┌─────────┐</p>
 <p>│  Stack  │ ← SP points here</p>
@@ -407,7 +407,7 @@
 <p>│  Text   │   (instructions)</p>
 <p>└─────────┘</p>
 <p>Low Address</p>
-</code>`<code>
+
 
 <h3>6.2 Stack Uses</h3>
 
@@ -425,10 +425,10 @@
 
 <strong>Decrement Stack Pointer</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>SUB SP, SP, #4       ; Allocate 4 bytes (1 register)</p>
 <p>SUB SP, SP, #12      ; Allocate 12 bytes (3 registers)</p>
-</code>`<code>
+
 
 <strong>Why Subtract?</strong>
 
@@ -442,49 +442,49 @@
 
 <strong>Single Register</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>SUB SP, SP, #4       ; Allocate space</p>
 <p>STR R4, [SP, #0]     ; Store R4 at top of stack</p>
-</code>`<code>
+
 
 <strong>Multiple Registers</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>SUB SP, SP, #12      ; Space for 3 registers</p>
 <p>STR R4, [SP, #0]     ; Store R4</p>
 <p>STR R5, [SP, #4]     ; Store R5</p>
 <p>STR R6, [SP, #8]     ; Store R6</p>
-</code>`<code>
+
 
 <strong>Push Multiple (Convenient)</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>PUSH {R4-R6}         ; Allocate and store in one instruction</p>
-</code>`<code>
+
 
 <h3>7.3 Loading Values from Stack</h3>
 
 <strong>Single Register</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>LDR R4, [SP, #0]     ; Load R4 from stack</p>
 <p>ADD SP, SP, #4       ; Release space</p>
-</code>`<code>
+
 
 <strong>Multiple Registers</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>LDR R4, [SP, #0]     ; Restore R4</p>
 <p>LDR R5, [SP, #4]     ; Restore R5</p>
 <p>LDR R6, [SP, #8]     ; Restore R6</p>
 <p>ADD SP, SP, #12      ; Release space</p>
-</code>`<code>
+
 
 <strong>Pop Multiple</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>POP {R4-R6}          ; Restore and release in one instruction</p>
-</code>`<code>
+
 
 <h3>7.4 Stack Space Lifecycle</h3>
 
@@ -528,7 +528,7 @@
 
 <strong>Function Template</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>function:</p>
 <p>; Prologue: Save registers</p>
 <p>SUB SP, SP, #12      ; Allocate space</p>
@@ -545,7 +545,7 @@
 <p>LDR R6, [SP, #8]     ; Restore R6</p>
 <p>ADD SP, SP, #12      ; Release space</p>
 <p>MOV PC, LR           ; Return</p>
-</code>`<code>
+
 
 <strong>Optimization</strong>
 
@@ -578,7 +578,7 @@
 
 <strong>Example Problem</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>main:</p>
 <p>BL funcA         ; LR = address after this BL</p>
 
@@ -589,13 +589,13 @@
 
 <p>funcB:</p>
 <p>MOV PC, LR       ; Correctly returns to funcA</p>
-</code>`<code>
+
 
 <h3>9.2 Solution: Save LR to Stack</h3>
 
 <strong>Pattern</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>function:</p>
 <p>; Save LR first!</p>
 <p>SUB SP, SP, #4</p>
@@ -608,11 +608,11 @@
 <p>LDR LR, [SP, #0]</p>
 <p>ADD SP, SP, #4</p>
 <p>MOV PC, LR</p>
-</code>`<code>
+
 
 <strong>Complete Example</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>main:</p>
 <p>MOV R0, #5</p>
 <p>BL outer         ; LR = return<em>to</em>main</p>
@@ -634,7 +634,7 @@
 <p>inner:</p>
 <p>MUL R0, R0, R0</p>
 <p>MOV PC, LR       ; Returns to outer</p>
-</code>`<code>
+
 
 <h2>10. Recursion Example: Factorial</h2>
 
@@ -642,14 +642,14 @@
 
 <strong>C Code</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>int fact(int n) {</p>
 <p>if (n <= 1)</p>
 <p>return 1;</p>
 <p>else</p>
 <p>return n * fact(n-1);</p>
 <p>}</p>
-</code>`<code>
+
 
 <strong>Key Points</strong>
 
@@ -662,7 +662,7 @@
 
 <h3>10.2 ARM Assembly Implementation</h3>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>fact:</p>
 <p>; Save LR and n</p>
 <p>SUB SP, SP, #8</p>
@@ -687,13 +687,13 @@
 <p>LDR LR, [SP, #4]</p>
 <p>ADD SP, SP, #8</p>
 <p>MOV PC, LR</p>
-</code>`<code>
+
 
 <h3>10.3 Stack Growth During Recursion</h3>
 
 <strong>Call: fact(3)</strong>
 
-</code>`<code>
+
 <p>Initial: SP = 0x1000</p>
 
 <p>fact(3) call:</p>
@@ -711,7 +711,7 @@
 <p>Returns to main with result 6</p>
 
 <p>Final: SP = 0x1000 (restored)</p>
-</code>`<code>
+
 
 <strong>Stack Space Per Call</strong>
 
@@ -726,7 +726,7 @@
 
 <h3>11.1 Complete Memory Layout</h3>
 
-</code>`<code>
+
 <p>High Address (0xFFFFFFFF)</p>
 <p>┌──────────────┐</p>
 <p>│   Reserved   │ OS and system</p>
@@ -749,7 +749,7 @@
 <p>│ (Code)       │   Read-only</p>
 <p>└──────────────┘</p>
 <p>Low Address (0x00000000)</p>
-</code>``
+
 
 <h3>11.2 Stack Characteristics</h3>
 

@@ -113,11 +113,11 @@ The foundational work completed in previous lectures includes:
 
 **Example: ADD $1, $2, $3**
 
-```
+
 Encoding: 000000 00010 00011 00001 00000 100000
          |Opcode| RS  | RT  | RD  |SHAMT| Funct |
          |  0   |  2  |  3  |  1  |  0  |  32   |
-```
+
 
 **Operation:** `$1 = $2 + $3`
 
@@ -259,11 +259,11 @@ Encoding: 000000 00010 00011 00001 00000 100000
 
 **Example: BEQ $1, $2, 100**
 
-```
+
 Encoding: 000100 00001 00010 0000000001100100
          |Opcode|  RS |  RT |    Immediate      |
          |  4   |  1  |  2  |       100         |
-```
+
 
 **Operation:** `If ($1 == $2) then PC = PC + 4 + (100 × 4)`
 
@@ -374,13 +374,13 @@ Encoding: 000100 00001 00010 0000000001100100
 
 **PCSrc Selection:**
 
-```
+
 PCSrc = Branch AND Zero
       = 1 AND (RS == RT ? 1 : 0)
 
 If PCSrc = 1: PC ← Branch Target (1404)
 If PCSrc = 0: PC ← PC + 4 (1004)
-```
+
 
 
 ## 5. Load Word Instruction Detailed Analysis
@@ -396,11 +396,11 @@ If PCSrc = 0: PC ← PC + 4 (1004)
 
 **Example: LW $8, 32($9)**
 
-```
+
 Encoding: 100011 01001 01000 0000000000100000
          |Opcode|  RS |  RT |    Immediate      |
          | 35   |  9  |  8  |        32         |
-```
+
 
 **Operation:** `$8 = Memory[$9 + 32]`
 
@@ -522,11 +522,11 @@ Encoding: 100011 01001 01000 0000000000100000
 
 **Example: SW $8, 32($9)**
 
-```
+
 Encoding: 101011 01001 01000 0000000000100000
          |Opcode|  RS |  RT |    Immediate      |
          | 43   |  9  |  8  |        32         |
-```
+
 
 **Operation:** `Memory[$9 + 32] = $8`
 
@@ -658,11 +658,11 @@ _"RegDst = 0 is not wrong, but best answer is X"_
 
 **Example: J 100**
 
-```
+
 Encoding: 000010 00000000000000000001100100
          |Opcode|        Target Address        |
          |  2   |            100               |
-```
+
 
 **Operation:** `PC = {PC+4[31:28], Address, 2'b00}`
 
@@ -683,14 +683,14 @@ Encoding: 000010 00000000000000000001100100
 
 **Concatenation:**
 
-```
+
 PC+4:         [31:28] [27:2] [1:0]
               ↓       (ignored)
 Jump Target:  [31:28] [Target×4] [00]
               ↑       ↑          ↑
               From    From       Append
               PC+4    instruction zeros
-```
+
 
 **Example:**
 
@@ -1049,25 +1049,25 @@ Jump Target:  [31:28] [Target×4] [00]
 
 **Variable Time (Ideal):**
 
-```
+
 Average = (0.48 × 5) + (0.22 × 7) + (0.11 × 5) + (0.19 × 5)
         = 2.40 + 1.54 + 0.55 + 0.95
         = 5.44 ns per instruction
-```
+
 
 **Single-Cycle (Actual):**
 
-```
+
 Average = 7 ns per instruction (all instructions)
-```
+
 
 **Performance Loss:**
 
-```
+
 Overhead = 7 - 5.44 = 1.56 ns per instruction
 Efficiency = 5.44 / 7 = 77.7%
 Waste = 22.3% of time
-```
+
 
 ### 9.3 Critical Path Problem
 
@@ -1201,9 +1201,9 @@ Waste = 22.3% of time
 
 **Single-Cycle:**
 
-```
+
 All instructions: 1 cycle × 7 ns = 7 ns
-```
+
 
 **Multi-Cycle (with 2 ns clock):**
 
@@ -1217,11 +1217,11 @@ All instructions: 1 cycle × 7 ns = 7 ns
 
 **Weighted Average (same program profile):**
 
-```
+
 Average = (0.48 × 8) + (0.22 × 10) + (0.11 × 8) + (0.19 × 6)
         = 3.84 + 2.20 + 0.88 + 1.14
         = 8.06 ns per instruction
-```
+
 
 **Wait, That's Worse!**
 
@@ -1246,13 +1246,13 @@ Average = (0.48 × 8) + (0.22 × 10) + (0.11 × 8) + (0.19 × 6)
 | Store       | 4      | 5.6 ns |
 | Branch      | 3      | 4.2 ns |
 
-```
+
 Average = (0.48 × 5.6) + (0.22 × 7.0) + (0.11 × 5.6) + (0.19 × 4.2)
         = 2.69 + 1.54 + 0.62 + 0.80
         = 5.65 ns per instruction
 
 Speedup = 7 / 5.65 = 1.24× faster
-```
+
 
 ### 10.5 Design Challenge
 

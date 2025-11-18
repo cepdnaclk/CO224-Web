@@ -150,13 +150,13 @@
 
 <strong>Sequential Processing:</strong>
 
-``<code>
+
 <p>Time:  6pm    7pm    8pm    9pm    10pm   11pm   12am   1am    2am</p>
 <p>A:     [Wash] [Dry]  [Fold] [Pack]</p>
 <p>B:                            [Wash] [Dry]  [Fold] [Pack]</p>
 <p>C:                                                   [Wash] [Dry]  [Fold] [Pack]</p>
 <p>D:                                                                          [Wash] [Dry]  [Fold] [Pack]</p>
-</code>`<code>
+
 
 <p>| Metric            | Value                |</p>
 <p>| ----------------- | -------------------- |</p>
@@ -185,14 +185,14 @@
 
 <strong>Pipelined Schedule:</strong>
 
-</code>`<code>
+
 <p>Time:  6:00   6:30   7:00   7:30   8:00   8:30   9:00   9:30</p>
 <p>A:     [Wash] [Dry]  [Fold] [Pack]</p>
 <p>B:            [Wash] [Dry]  [Fold] [Pack]</p>
 <p>C:                   [Wash] [Dry]  [Fold] [Pack]</p>
 <p>D:                          [Wash] [Dry]  [Fold] [Pack]</p>
 <p>E:                                 [Wash] [Dry]  [Fold] [Pack]</p>
-</code>`<code>
+
 
 <strong>Timeline Analysis:</strong>
 
@@ -224,11 +224,11 @@
 
 <strong>Speedup Calculation:</strong>
 
-</code>`<code>
+
 <p>Speedup = Non-pipelined Time / Pipelined Time</p>
 <p>= 8 hours / 3.5 hours</p>
 <p>= 2.3×</p>
-</code>`<code>
+
 
 <strong>Includes Pipeline Fill Time:</strong>
 
@@ -239,12 +239,12 @@
 
 <strong>Steady State Analysis (ignoring fill time):</strong>
 
-</code>`<code>
+
 <p>Non-pipelined: 2n hours for n loads (2 hours per load)</p>
 <p>Pipelined: 0.5n hours for n loads (0.5 hours per load)</p>
 
 <p>Steady State Speedup = 2n / 0.5n = 4×</p>
-</code>`<code>
+
 
 <strong>Theoretical Maximum Speedup:</strong>
 
@@ -424,23 +424,23 @@
 
 <strong>Instruction Stream:</strong> All Load Word instructions
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>LW $1, 0($10)</p>
 <p>LW $2, 4($10)</p>
 <p>LW $3, 8($10)</p>
 <p>LW $4, 12($10)</p>
 <p>...</p>
-</code>`<code>
+
 
 <strong>Pipeline Timing Diagram:</strong>
 
-</code>`<code>
+
 <p>Time (ps):  0-200  200-400  400-600  600-800  800-1000  1000-1200</p>
 <p>LW $1:      IF     ID       EX       MEM      WB</p>
 <p>LW $2:             IF       ID       EX       MEM       WB</p>
 <p>LW $3:                      IF       ID       EX        MEM</p>
 <p>LW $4:                               IF       ID        EX</p>
-</code>`<code>
+
 
 <strong>Single-Cycle Comparison:</strong>
 
@@ -451,12 +451,12 @@
 
 <strong>Throughput Improvement:</strong>
 
-</code>`<code>
+
 <p>Non-pipelined: 1 instruction every 800 ps</p>
 <p>Pipelined: 1 instruction every 200 ps</p>
 
 <p>Speedup = 800 / 200 = 4×</p>
-</code>`<code>
+
 
 <strong>Absolute Time per Instruction:</strong>
 
@@ -470,11 +470,11 @@
 
 <strong>Ideal Case (balanced stages):</strong>
 
-</code>`<code>
+
 <p>Time between instructions (pipelined) = Time per instruction (non-pipelined) / Number of stages</p>
 
 <p>Maximum Speedup = Number of Stages</p>
-</code>`<code>
+
 
 <strong>Actual Implementation:</strong>
 
@@ -644,7 +644,7 @@
 
 <strong>Example at Steady State:</strong>
 
-</code>`<code>
+
 <p>Time Window: 800-1000 ps</p>
 
 <p>Instruction A: WB stage (writing result)</p>
@@ -654,7 +654,7 @@
 <p>Instruction E: IF stage (fetch)</p>
 
 <p>Five instructions active simultaneously!</p>
-</code>`<code>
+
 
 <strong>Instruction-Level Parallelism (ILP):</strong>
 
@@ -744,7 +744,7 @@
 
 <strong>Conflict Example:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800</p>
 <p>LW $1:   IF      ID       EX       MEM</p>
 <p>LW $2:           IF       ID       EX</p>
@@ -758,7 +758,7 @@
 <li>Same physical memory device!</li>
 <li>Cannot access simultaneously</li>
 </ul>
-</code>`<code>
+
 
 <strong>Problem:</strong>
 
@@ -772,13 +772,13 @@
 
 <strong>Solution: Insert Bubble</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800  800-1000  1000-1200</p>
 <p>LW $1:   IF      ID       EX       MEM      WB</p>
 <p>LW $2:           IF       ID       EX       [BUBBLE]  MEM</p>
 <p>LW $3:                    IF       ID       EX        [BUBBLE]</p>
 <p>LW $4:                             IF       [BUBBLE]  ID</p>
-</code>`<code>
+
 
 <strong>Bubble Characteristics:</strong>
 
@@ -854,10 +854,10 @@
 
 <strong>Example:</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>ADD $s0, $t0, $t1      # $s0 = $t0 + $t1</p>
 <p>SUB $t2, $s0, $t3      # $t2 = $s0 - $t3 (uses $s0 from ADD)</p>
-</code>`<code>
+
 
 <strong>Problem:</strong>
 
@@ -871,14 +871,14 @@
 
 <strong>Instruction Sequence:</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>ADD $s0, $t0, $t1</p>
 <p>SUB $t2, $s0, $t3</p>
-</code>`<code>
+
 
 <strong>Pipeline Without Stalls:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800  800-1000</p>
 <p>ADD:     IF      ID       EX       MEM      WB</p>
 <p>SUB:             IF       ID       EX       MEM</p>
@@ -886,7 +886,7 @@
 <p>Reads $s0 here (old value!)</p>
 
 <p>ADD writes $s0 here ↓</p>
-</code>`<code>
+
 
 <strong>Problem Timeline:</strong>
 
@@ -903,13 +903,13 @@
 
 <strong>Insert Two Bubbles:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800  800-1000  1000-1200  1200-1400</p>
 <p>ADD:     IF      ID       EX       MEM      WB</p>
 <p>[BUBBLE]                  IF       [BUBBLE] [BUBBLE]</p>
 <p>[BUBBLE]                           IF       [BUBBLE]</p>
 <p>SUB:                                         IF        ID</p>
-</code>`<code>
+
 
 <strong>Result:</strong>
 
@@ -950,13 +950,13 @@
 
 <strong>Forwarding Logic:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800  800-1000</p>
 <p>ADD:     IF      ID       EX       MEM      WB</p>
 <p>SUB:             IF       ID       EX       MEM</p>
 <p>↑        ↑</p>
 <p>Read regs   Use forwarded value!</p>
-</code>`<code>
+
 
 <strong>Implementation:</strong>
 
@@ -1004,10 +1004,10 @@
 
 <strong>Special Case:</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>LW  $s0, 0($t0)        # Load from memory into $s0</p>
 <p>SUB $t2, $s0, $t3      # Use $s0 immediately</p>
-</code>`<code>
+
 
 <strong>Problem:</strong>
 
@@ -1019,24 +1019,24 @@
 
 <strong>Timeline:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800  800-1000</p>
 <p>LW:      IF      ID       EX       MEM      WB</p>
 <p>SUB:             IF       ID       EX       MEM</p>
 <p>↑        ↑</p>
 <p>Need value   Value first available here!</p>
-</code>`<code>
+
 
 <p>LW result available at 600-800, but SUB's EX at 600-800 (simultaneous!)</p>
 
 <strong>Unavoidable Stall:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800  800-1000  1000-1200</p>
 <p>LW:      IF      ID       EX       MEM      WB</p>
 <p>[BUBBLE]                  IF       [BUBBLE] ID</p>
 <p>SUB:                                         IF        ID</p>
-</code>`<code>
+
 
 <strong>One stall bubble required:</strong>
 
@@ -1050,14 +1050,14 @@
 
 <strong>C Code Example:</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>a = b + e;</p>
 <p>c = b + f;</p>
-</code>`<code>
+
 
 <strong>Naive Assembly (Load-Use Hazards):</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>LW   $t1, 0($t0)    # Load b into $t1</p>
 <p>LW   $t2, 4($t0)    # Load e into $t2</p>
 <p>ADD  $t3, $t1, $t2  # a = b + e ← HAZARD: uses $t2 immediately after LW</p>
@@ -1066,13 +1066,13 @@
 <p>LW   $t4, 12($t0)   # Load f into $t4</p>
 <p>ADD  $t5, $t1, $t4  # c = b + f ← HAZARD: uses $t4 immediately after LW</p>
 <p>SW   $t5, 16($t0)   # Store c</p>
-</code>`<code>
+
 
 <strong>Total:</strong> 7 instructions + 2 stalls = 9 clock cycles
 
 <strong>Optimized Assembly (Reordered):</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>LW   $t1, 0($t0)    # Load b into $t1</p>
 <p>LW   $t2, 4($t0)    # Load e into $t2</p>
 <p>LW   $t4, 12($t0)   # Load f into $t4 ← Moved here!</p>
@@ -1080,7 +1080,7 @@
 <p>SW   $t3, 8($t0)    # Store a ← Moved here!</p>
 <p>ADD  $t5, $t1, $t4  # c = b + f ← No hazard! $t4 available</p>
 <p>SW   $t5, 16($t0)   # Store c</p>
-</code>`<code>
+
 
 <strong>Total:</strong> 7 instructions + 0 stalls = 7 clock cycles
 
@@ -1129,12 +1129,12 @@
 
 <strong>Example:</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BEQ $1, $2, target     # Branch if $1 == $2</p>
 <p>ADD $3, $4, $5         # Next sequential instruction</p>
 <p>...</p>
 <p>target: SUB $6, $7, $8 # Branch target</p>
-</code>`<code>
+
 
 <strong>Which instruction to fetch after BEQ?</strong>
 
@@ -1148,9 +1148,9 @@
 
 <strong>Branch Instruction:</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BEQ $1, $2, 40         # Branch 40 instructions ahead if equal</p>
-</code>`<code>
+
 
 <strong>Pipeline Stages:</strong>
 
@@ -1169,11 +1169,11 @@
 
 <strong>Without Optimization:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800</p>
 <p>BEQ:     IF      ID       EX       MEM</p>
 <p>???:             IF       ???</p>
-</code>`<code>
+
 
 <p>Two bubbles required if wait for outcome</p>
 
@@ -1190,13 +1190,13 @@
 
 <strong>Modified Pipeline:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600</p>
 <p>BEQ:     IF      ID       EX</p>
 <p>↑</p>
 <p>Decision here!</p>
 <p>Next:            IF</p>
-</code>`<code>
+
 
 <strong>Benefit:</strong>
 
@@ -1243,21 +1243,21 @@
 
 <strong>Example (Prediction Correct):</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>ADD  $3, $4, $5</p>
 <p>BEQ  $1, $2, 14        # Actually NOT taken</p>
 <p>LW   $8, 0($9)         # Fetch this (prediction: not taken)</p>
-</code>`<code>
+
 
 <strong>Timeline:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800</p>
 <p>ADD:     IF      ID       EX       MEM</p>
 <p>BEQ:             IF      ID       EX</p>
 <p>LW:                      IF       ID</p>
 <p>↑ Fetched based on prediction</p>
-</code>`<code>
+
 
 <p>At 400-600 (after BEQ's ID):</p>
 
@@ -1270,23 +1270,23 @@
 
 <strong>Example (Prediction Incorrect):</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>ADD  $3, $4, $5</p>
 <p>BEQ  $1, $2, 14        # Actually IS taken</p>
 <p>LW   $8, 0($9)         # Fetched (but shouldn't execute)</p>
 <p>...</p>
 <p>target: SUB $6, $7, $8 # Should execute this instead</p>
-</code>`<code>
+
 
 <strong>Timeline:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800</p>
 <p>ADD:     IF      ID       EX       MEM</p>
 <p>BEQ:             IF      ID       EX</p>
 <p>LW:                      IF       [DISCARD]</p>
 <p>SUB:                              IF</p>
-</code>`<code>
+
 
 <p>At 400-600 (after BEQ's ID):</p>
 
@@ -1332,11 +1332,11 @@
 <li>Example: Loops</li>
 </ul>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>loop:</p>
 <p>...</p>
 <p>BEQ $t0, $zero, loop   # Backward branch</p>
-</code>`<code>
+
 
 <ul>
 <li>Loop iterations: Branch taken many times</li>
@@ -1351,12 +1351,12 @@
 <li>Example: If statements</li>
 </ul>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BEQ $t0, $zero, skip</p>
 <p>...                      # True case</p>
 <p>skip:</p>
 <p>...                      # After if</p>
-</code>`<code>
+
 
 <ul>
 <li>True case: Branch not taken</li>
@@ -1402,13 +1402,13 @@
 
 <strong>Example:</strong>
 
-</code>`<code>
+
 <p>Loop iteration 1: Taken → Predict taken next</p>
 <p>Loop iteration 2: Taken → Predict taken next</p>
 <p>...</p>
 <p>Loop iteration 100: Taken → Predict taken next</p>
 <p>Loop exit: Not taken → Predict not taken next (wrong for next loop!)</p>
-</code>`<code>
+
 
 <p>Problem: Wrong twice per loop (entry and exit)</p>
 
@@ -1521,39 +1521,39 @@
 
 <h3>Speedup Calculation</h3>
 
-</code>`<code>
+
 <p>Speedup = Non-pipelined Time / Pipelined Time</p>
 
 <p>Ideal Speedup = Number of Pipeline Stages</p>
 
 <p>Actual Speedup = Number of Stages / (1 + Hazard Impact)</p>
-</code>`<code>
+
 
 <h3>Throughput</h3>
 
-</code>`<code>
+
 <p>Throughput = 1 instruction / Clock Period</p>
 
 <p>Throughput Improvement = Clock Period (non-pipelined) / Clock Period (pipelined)</p>
-</code>`<code>
+
 
 <h3>Pipeline Performance</h3>
 
-</code>`<code>
+
 <p>Time = (Number of Instructions + Stages - 1) × Clock Period</p>
 
 <p>CPI (Cycles Per Instruction) = 1 + Stall Cycles per Instruction</p>
 
 <p>Effective CPI = 1 + (Structural Stalls + Data Stalls + Control Stalls)</p>
-</code>`<code>
+
 
 <h3>Branch Prediction Accuracy</h3>
 
-</code>`<code>
+
 <p>Accuracy = Correct Predictions / Total Branches</p>
 
 <p>Stall Reduction = Accuracy × Cycles Saved per Correct Prediction</p>
-</code>``
+
 
 
 <h2>Key Takeaways</h2>

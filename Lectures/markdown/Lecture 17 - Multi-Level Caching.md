@@ -69,9 +69,9 @@ From the previous lecture's example using a 4-block cache with three different o
 
 ### Cache Size Calculation
 
-```
+
 Total Cache Size = Block Size × Set Size × Associativity
-```
+
 
 ### Secondary Parameters
 
@@ -104,9 +104,9 @@ Total Cache Size = Block Size × Set Size × Associativity
 
 ### Average Access Time Equation
 
-```
+
 T_avg = Hit Latency + Miss Rate × Miss Penalty
-```
+
 
 Three main factors can be optimized as below.
 
@@ -249,9 +249,9 @@ Instead of a single cache between CPU and memory, use multiple cache levels: L1,
 
 For L1 cache:
 
-```
+
 Effective Miss Penalty = L2 Hit Latency + L2 Miss Rate × L2 Miss Penalty
-```
+
 
 If L2 has good hit rate:
 
@@ -268,9 +268,9 @@ Given:
 - L2 hit latency: 3 cycles
 - Memory penalty: 100 cycles
 
-```
+
 L1 effective penalty = 3 + 0.001 × 100 = 3.1 cycles
-```
+
 
 
 ## 8. Optimization Strategies for Multi-Level Caches

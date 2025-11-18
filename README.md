@@ -13,7 +13,7 @@ A comprehensive guide by Isuru Nawinne about this book - a professional, static 
 
 ## 📁 Project Structure
 
-```
+
 CO224-Web/
 ├── index.html              # Main landing page
 ├── assets/
@@ -33,7 +33,7 @@ CO224-Web/
 │   └── supplementary.zip (add your materials here)
 ├── convert_lectures.py     # Python script to convert MD to HTML
 └── _config.yml             # GitHub Pages configuration
-```
+
 
 ## 🚀 Deployment to GitHub Pages
 
@@ -44,11 +44,11 @@ CO224-Web/
 
 ### Step 2: Push to GitHub
 
-```bash
+bash
 git add .
 git commit -m "Add CO224 lecture series website"
 git push origin main
-```
+
 
 ### Step 3: Enable GitHub Pages
 
@@ -69,10 +69,10 @@ If you need to update the markdown files and regenerate the HTML pages:
 
 ### Method 1: Using Python Script (Recommended)
 
-```bash
+bash
 # Ensure you have Python installed
 python convert_lectures.py
-```
+
 
 This will regenerate all lecture HTML pages from the markdown files in the `Lectures/` folder.
 
@@ -86,14 +86,14 @@ You can manually edit the HTML files in the `lectures/` folder if you need to ma
 
 Edit `assets/css/style.css` and modify the CSS variables at the top:
 
-```css
+css
 :root {
   --primary-color: #2563eb; /* Main blue color */
   --primary-dark: #1e40af; /* Darker blue */
   --accent-color: #0ea5e9; /* Accent color */
   /* ... other colors */
 }
-```
+
 
 ### Updating Header/Footer
 

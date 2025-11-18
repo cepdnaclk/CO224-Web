@@ -101,10 +101,10 @@
 
 <strong>Example</strong>
 
-<p>``<code>assembly</p>
+<p>assembly</p>
 <p>CMP R1, R2           ; Compare R1 and R2 (computes R1 - R2)</p>
 <p>; Sets flags based on result</p>
-</code>`<code>
+
 
 <p>If R1 = 5, R2 = 3:</p>
 
@@ -122,10 +122,10 @@
 
 <strong>Syntax</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMP Rn, Rm           ; Compare Rn with Rm</p>
 <p>CMP Rn, #imm         ; Compare Rn with immediate</p>
-</code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -138,22 +138,22 @@
 
 <strong>Example Usage</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>MOV R1, #10</p>
 <p>MOV R2, #5</p>
 <p>CMP R1, R2           ; Compares 10 with 5</p>
 <p>; Result: 10 - 5 = 5 (positive, non-zero)</p>
 <p>; Z = 0, N = 0</p>
-</code>`<code>
+
 
 <h3>2.2 Compare Negative (CMN)</h3>
 
 <strong>Syntax</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMN Rn, Rm           ; Compare Negative</p>
 <p>CMN Rn, #imm</p>
-</code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -168,10 +168,10 @@
 
 <strong>Syntax</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>TST Rn, Rm           ; Test bits</p>
 <p>TST Rn, #imm</p>
-</code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -184,19 +184,19 @@
 
 <strong>Example: Check if bit 5 is set</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>TST R1, #0x20        ; Test bit 5</p>
 <p>BEQ bit_clear        ; Branch if bit was clear (Z=1)</p>
-</code>`<code>
+
 
 <h3>2.4 Test Equivalence (TEQ)</h3>
 
 <strong>Syntax</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>TEQ Rn, Rm           ; Test Equivalence</p>
 <p>TEQ Rn, #imm</p>
-</code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -213,9 +213,9 @@
 
 <strong>Syntax</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BEQ label            ; Branch if equal (Z=1)</p>
-</code>`<code>
+
 
 <strong>Condition</strong>
 
@@ -226,21 +226,21 @@
 
 <strong>Example</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMP R1, R2           ; Compare R1 and R2</p>
 <p>BEQ equal<em>label      ; Jump to equal</em>label if R1 == R2</p>
 <p>; Code if not equal</p>
 <p>equal_label:</p>
 <p>; Code if equal</p>
-</code>`<code>
+
 
 <h3>3.2 Branch if Not Equal (BNE)</h3>
 
 <strong>Syntax</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BNE label            ; Branch if not equal (Z=0)</p>
-</code>`<code>
+
 
 <strong>Condition</strong>
 
@@ -251,89 +251,89 @@
 
 <strong>Example</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMP R3, #0</p>
 <p>BNE not_zero         ; Jump if R3 != 0</p>
 <p>; Code if R3 is zero</p>
 <p>not_zero:</p>
 <p>; Code if R3 is non-zero</p>
-</code>`<code>
+
 
 <h3>3.3 Signed Comparison Branches</h3>
 
 <strong>Branch if Greater or Equal (BGE)</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BGE label            ; Branch if Rn >= Rm (signed)</p>
 <p>; Condition: N == V</p>
-</code>`<code>
+
 
 <strong>Branch if Less Than (BLT)</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BLT label            ; Branch if Rn < Rm (signed)</p>
 <p>; Condition: N != V</p>
-</code>`<code>
+
 
 <strong>Branch if Greater Than (BGT)</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BGT label            ; Branch if Rn > Rm (signed)</p>
 <p>; Condition: Z==0 AND N==V</p>
-</code>`<code>
+
 
 <strong>Branch if Less or Equal (BLE)</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BLE label            ; Branch if Rn <= Rm (signed)</p>
 <p>; Condition: Z==1 OR N!=V</p>
-</code>`<code>
+
 
 <strong>Example</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMP R1, R2</p>
 <p>BGE greater_equal    ; Branch if R1 >= R2 (signed)</p>
 <p>; Code if R1 < R2</p>
 <p>greater_equal:</p>
 <p>; Code if R1 >= R2</p>
-</code>`<code>
+
 
 <h3>3.4 Unsigned Comparison Branches</h3>
 
 <strong>Branch if Higher or Same (BHS)</strong> (also called BCS - Branch if Carry Set)
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BHS label            ; Branch if Rn >= Rm (unsigned)</p>
 <p>; Condition: C == 1</p>
-</code>`<code>
+
 
 <strong>Branch if Lower (BLO)</strong> (also called BCC - Branch if Carry Clear)
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BLO label            ; Branch if Rn < Rm (unsigned)</p>
 <p>; Condition: C == 0</p>
-</code>`<code>
+
 
 <strong>Branch if Higher (BHI)</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BHI label            ; Branch if Rn > Rm (unsigned)</p>
 <p>; Condition: C==1 AND Z==0</p>
-</code>`<code>
+
 
 <strong>Branch if Lower or Same (BLS)</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>BLS label            ; Branch if Rn <= Rm (unsigned)</p>
 <p>; Condition: C==0 OR Z==1</p>
-</code>`<code>
+
 
 <h3>3.5 Signed vs. Unsigned Example</h3>
 
 <strong>Key Difference</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>MOV R0, #0xFFFFFFFF  ; R0 = -1 (signed) or 4,294,967,295 (unsigned)</p>
 <p>MOV R1, #1           ; R1 = 1</p>
 <p>CMP R0, R1</p>
@@ -343,7 +343,7 @@
 
 <p>BLT less_signed      ; BRANCH TAKEN</p>
 <p>; Signed: -1 < 1</p>
-</code>`<code>
+
 
 <strong>When to Use Each</strong>
 
@@ -356,9 +356,9 @@
 
 <strong>Syntax</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>B label              ; Branch always</p>
-</code>`<code>
+
 
 <strong>Purpose</strong>
 
@@ -371,12 +371,12 @@
 
 <strong>Example</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>B end                ; Skip this section</p>
 <p>; Code to skip</p>
 <p>end:</p>
 <p>; Continue execution here</p>
-</code>`<code>
+
 
 <h2>4. Labels in Assembly</h2>
 
@@ -392,10 +392,10 @@
 
 <strong>Syntax</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>label:               ; Label definition (note colon)</p>
 <p>MOV R0, #1      ; Instruction at this label</p>
-</code>`<code>
+
 
 <strong>Naming Rules</strong>
 
@@ -408,7 +408,7 @@
 
 <strong>Example</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>start:</p>
 <p>MOV R0, #0</p>
 <p>loop:</p>
@@ -416,7 +416,7 @@
 <p>CMP R0, #10</p>
 <p>BLT loop         ; Branch to loop label</p>
 <p>B start          ; Branch to start label</p>
-</code>`<code>
+
 
 <h3>4.2 Label Resolution</h3>
 
@@ -442,16 +442,16 @@
 
 <strong>C Code</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>if (i == j)</p>
 <p>f = g + h;</p>
 <p>else</p>
 <p>f = g - h;</p>
-</code>`<code>
+
 
 <strong>ARM Assembly (Method 1: Branch on False)</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMP R3, R4       ; Compare i (R3) and j (R4)</p>
 <p>BNE else         ; Branch to else if not equal</p>
 <p>ADD R0, R1, R2   ; f = g + h (then clause)</p>
@@ -460,32 +460,32 @@
 <p>SUB R0, R1, R2   ; f = g - h (else clause)</p>
 <p>exit:</p>
 <p>; Continue...</p>
-</code>`<code>
+
 
 <strong>ARM Assembly (Method 2: Conditional Execution)</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMP R3, R4       ; Compare i and j</p>
 <p>ADDEQ R0, R1, R2 ; f = g + h (executed only if equal)</p>
 <p>SUBNE R0, R1, R2 ; f = g - h (executed only if not equal)</p>
-</code>`<code>
+
 
 <h3>5.2 If-Else Ladder</h3>
 
 <strong>C Code</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>if (x < 0)</p>
 <p>result = -1;</p>
 <p>else if (x == 0)</p>
 <p>result = 0;</p>
 <p>else</p>
 <p>result = 1;</p>
-</code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMP R1, #0       ; Compare x with 0</p>
 <p>BLT negative     ; Branch if x < 0</p>
 <p>BEQ zero         ; Branch if x == 0</p>
@@ -499,22 +499,22 @@
 <p>MOV R0, #0</p>
 <p>done:</p>
 <p>; Continue...</p>
-</code>`<code>
+
 
 <h3>5.3 While Loop</h3>
 
 <strong>C Code</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>while (i < n) {</p>
 <p>sum += i;</p>
 <p>i++;</p>
 <p>}</p>
-</code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>loop:</p>
 <p>CMP R1, R2       ; Compare i (R1) with n (R2)</p>
 <p>BGE end_loop     ; Exit if i >= n</p>
@@ -523,21 +523,21 @@
 <p>B loop           ; Branch back to loop start</p>
 <p>end_loop:</p>
 <p>; Continue...</p>
-</code>`<code>
+
 
 <h3>5.4 For Loop</h3>
 
 <strong>C Code</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>for (i = 0; i < 10; i++) {</p>
 <p>sum += i;</p>
 <p>}</p>
-</code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>MOV R1, #0       ; i = 0 (initialization)</p>
 <p>for_loop:</p>
 <p>CMP R1, #10      ; Compare i with 10</p>
@@ -547,29 +547,29 @@
 <p>B for_loop       ; Branch back to loop start</p>
 <p>end_for:</p>
 <p>; Continue...</p>
-</code>`<code>
+
 
 <h3>5.5 Do-While Loop</h3>
 
 <strong>C Code</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>do {</p>
 <p>sum += i;</p>
 <p>i++;</p>
 <p>} while (i < n);</p>
-</code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>do_loop:</p>
 <p>ADD R0, R0, R1   ; sum = sum + i (loop body first)</p>
 <p>ADD R1, R1, #1   ; i++</p>
 <p>CMP R1, R2       ; Compare i with n</p>
 <p>BLT do_loop      ; Branch back if i < n</p>
 <p>; Continue...</p>
-</code>`<code>
+
 
 <strong>Key Difference from While</strong>
 
@@ -584,14 +584,14 @@
 
 <strong>C Code</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>while (save[i] == k)</p>
 <p>i++;</p>
-</code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>; R6 = base address of save array</p>
 <p>; R3 = i (index)</p>
 <p>; R5 = k (comparison value)</p>
@@ -604,12 +604,12 @@
 <p>B loop                   ; Continue loop</p>
 <p>exit:</p>
 <p>; Continue...</p>
-</code>`<code>
+
 
 <strong>Dynamic Offset Calculation</strong>
 
 <ul>
-<li></code>R3, LSL #2<code> means R3 × 4 (shift left 2 = multiply by 4)</li>
+<li><code>R3, LSL #2</code> means R3 × 4 (shift left 2 = multiply by 4)</li>
 <li>Words are 4 bytes, so array element i is at base + (i × 4)</li>
 <li>Efficient: shift is faster than multiplication</li>
 </ul>
@@ -618,16 +618,16 @@
 
 <strong>C Code</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>int sum = 0;</p>
 <p>for (int i = 0; i < 10; i++) {</p>
 <p>sum += arr[i];</p>
 <p>}</p>
-</code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>LDR R6, =arr     ; R6 = base address of array</p>
 <p>MOV R0, #0       ; sum = 0</p>
 <p>MOV R1, #0       ; i = 0</p>
@@ -641,7 +641,7 @@
 <p>B loop</p>
 <p>done:</p>
 <p>; R0 contains sum</p>
-</code>`<code>
+
 
 <h2>7. PC-Relative Addressing</h2>
 
@@ -649,10 +649,10 @@
 
 <strong>32-Bit Format</strong>
 
-</code>`<code>
+
 <p>[Cond][1010][Offset]</p>
 <p>4-bit 4-bit 24-bit</p>
-</code>`<code>
+
 
 <strong>Fields</strong>
 
@@ -683,9 +683,9 @@
 
 <strong>Offset Calculation</strong>
 
-</code>`<code>
+
 <p>Offset = (Target Address - PC) / 4</p>
-</code>`<code>
+
 
 <strong>Why Divide by 4?</strong>
 
@@ -698,14 +698,14 @@
 
 <strong>Example</strong>
 
-</code>`<code>
+
 <p>Current PC: 0x1000</p>
 <p>Target: 0x1020</p>
 <p>Offset = (0x1020 - 0x1000) / 4 = 0x20 / 4 = 8 instructions</p>
 
 <p>Encoded offset in branch instruction: 8</p>
 <p>At execution: PC = 0x1000 + (8 × 4) = 0x1020</p>
-</code>`<code>
+
 
 <h3>7.3 Advantages of PC-Relative</h3>
 
@@ -755,27 +755,27 @@
 
 <strong>Examples</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMP R1, R2</p>
 <p>ADDEQ R0, R3, R4     ; Execute ADD only if R1 == R2</p>
 <p>SUBNE R0, R3, R4     ; Execute SUB only if R1 != R2</p>
 <p>MOVGT R5, #10        ; Execute MOV only if R1 > R2</p>
-</code>`<code>
+
 
 <h3>8.2 Conditional Execution Example</h3>
 
 <strong>C Code</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>if (a == b)</p>
 <p>max = a;</p>
 <p>else</p>
 <p>max = b;</p>
-</code>`<code>
+
 
 <strong>Method 1: Branching</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMP R1, R2       ; Compare a and b</p>
 <p>BNE else</p>
 <p>MOV R0, R1       ; max = a</p>
@@ -783,15 +783,15 @@
 <p>else:</p>
 <p>MOV R0, R2       ; max = b</p>
 <p>done:</p>
-</code>`<code>
+
 
 <strong>Method 2: Conditional Execution</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>CMP R1, R2       ; Compare a and b</p>
 <p>MOVEQ R0, R1     ; max = a (if equal)</p>
 <p>MOVNE R0, R2     ; max = b (if not equal)</p>
-</code>`<code>
+
 
 <h3>8.3 Advantages and Limitations</h3>
 
@@ -840,7 +840,7 @@
 
 <strong>Example</strong>
 
-</code>`<code>assembly
+<p>assembly</p>
 <p>; Basic Block 1 (entry point)</p>
 <p>MOV R0, #0</p>
 <p>MOV R1, #10</p>
@@ -852,7 +852,7 @@
 <p>ADD R0, R0, #1</p>
 <p>CMP R0, R1</p>
 <p>BLT block2       ; Exit point of block 2</p>
-</code>``
+
 
 <h3>9.2 Importance in Compilation</h3>
 

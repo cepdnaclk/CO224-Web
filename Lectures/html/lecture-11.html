@@ -183,13 +183,13 @@
 
 <strong>Example: ADD $1, $2, $3</strong>
 
-``<code>
+
 <p>Encoding: 000000 00010 00011 00001 00000 100000</p>
 <p>|Opcode| RS  | RT  | RD  |SHAMT| Funct |</p>
 <p>|  0   |  2  |  3  |  1  |  0  |  32   |</p>
-</code>`<code>
 
-<strong>Operation:</strong> </code>$1 = $2 + $3<code>
+
+<strong>Operation:</strong> <code>$1 = $2 + $3</code>
 
 <h3>3.2 Datapath Elements Used</h3>
 
@@ -361,13 +361,13 @@
 
 <strong>Example: BEQ $1, $2, 100</strong>
 
-</code>`<code>
+
 <p>Encoding: 000100 00001 00010 0000000001100100</p>
 <p>|Opcode|  RS |  RT |    Immediate      |</p>
 <p>|  4   |  1  |  2  |       100         |</p>
-</code>`<code>
 
-<strong>Operation:</strong> </code>If ($1 == $2) then PC = PC + 4 + (100 × 4)<code>
+
+<strong>Operation:</strong> <code>If ($1 == $2) then PC = PC + 4 + (100 × 4)</code>
 
 <h3>4.2 Datapath Elements Used</h3>
 
@@ -500,13 +500,13 @@
 
 <strong>PCSrc Selection:</strong>
 
-</code>`<code>
+
 <p>PCSrc = Branch AND Zero</p>
 <p>= 1 AND (RS == RT ? 1 : 0)</p>
 
 <p>If PCSrc = 1: PC ← Branch Target (1404)</p>
 <p>If PCSrc = 0: PC ← PC + 4 (1004)</p>
-</code>`<code>
+
 
 
 <h2>5. Load Word Instruction Detailed Analysis</h2>
@@ -524,13 +524,13 @@
 
 <strong>Example: LW $8, 32($9)</strong>
 
-</code>`<code>
+
 <p>Encoding: 100011 01001 01000 0000000000100000</p>
 <p>|Opcode|  RS |  RT |    Immediate      |</p>
 <p>| 35   |  9  |  8  |        32         |</p>
-</code>`<code>
 
-<strong>Operation:</strong> </code>$8 = Memory[$9 + 32]<code>
+
+<strong>Operation:</strong> <code>$8 = Memory[$9 + 32]</code>
 
 <h3>5.2 Datapath Elements Used</h3>
 
@@ -674,13 +674,13 @@
 
 <strong>Example: SW $8, 32($9)</strong>
 
-</code>`<code>
+
 <p>Encoding: 101011 01001 01000 0000000000100000</p>
 <p>|Opcode|  RS |  RT |    Immediate      |</p>
 <p>| 43   |  9  |  8  |        32         |</p>
-</code>`<code>
 
-<strong>Operation:</strong> </code>Memory[$9 + 32] = $8<code>
+
+<strong>Operation:</strong> <code>Memory[$9 + 32] = $8</code>
 
 <em>Note: Fixed error in lecture (was "$32", should be "32")</em>
 
@@ -840,13 +840,13 @@
 
 <strong>Example: J 100</strong>
 
-</code>`<code>
+
 <p>Encoding: 000010 00000000000000000001100100</p>
 <p>|Opcode|        Target Address        |</p>
 <p>|  2   |            100               |</p>
-</code>`<code>
 
-<strong>Operation:</strong> </code>PC = {PC+4[31:28], Address, 2'b00}<code>
+
+<strong>Operation:</strong> <code>PC = {PC+4[31:28], Address, 2'b00}</code>
 
 <h3>7.2 Jump Target Address Calculation</h3>
 
@@ -869,14 +869,14 @@
 
 <strong>Concatenation:</strong>
 
-</code>`<code>
+
 <p>PC+4:         [31:28] [27:2] [1:0]</p>
 <p>↓       (ignored)</p>
 <p>Jump Target:  [31:28] [Target×4] [00]</p>
 <p>↑       ↑          ↑</p>
 <p>From    From       Append</p>
 <p>PC+4    instruction zeros</p>
-</code>`<code>
+
 
 <strong>Example:</strong>
 
@@ -1299,25 +1299,25 @@
 
 <strong>Variable Time (Ideal):</strong>
 
-</code>`<code>
+
 <p>Average = (0.48 × 5) + (0.22 × 7) + (0.11 × 5) + (0.19 × 5)</p>
 <p>= 2.40 + 1.54 + 0.55 + 0.95</p>
 <p>= 5.44 ns per instruction</p>
-</code>`<code>
+
 
 <strong>Single-Cycle (Actual):</strong>
 
-</code>`<code>
+
 <p>Average = 7 ns per instruction (all instructions)</p>
-</code>`<code>
+
 
 <strong>Performance Loss:</strong>
 
-</code>`<code>
+
 <p>Overhead = 7 - 5.44 = 1.56 ns per instruction</p>
 <p>Efficiency = 5.44 / 7 = 77.7%</p>
 <p>Waste = 22.3% of time</p>
-</code>`<code>
+
 
 <h3>9.3 Critical Path Problem</h3>
 
@@ -1477,9 +1477,9 @@
 
 <strong>Single-Cycle:</strong>
 
-</code>`<code>
+
 <p>All instructions: 1 cycle × 7 ns = 7 ns</p>
-</code>`<code>
+
 
 <strong>Multi-Cycle (with 2 ns clock):</strong>
 
@@ -1493,11 +1493,11 @@
 
 <strong>Weighted Average (same program profile):</strong>
 
-</code>`<code>
+
 <p>Average = (0.48 × 8) + (0.22 × 10) + (0.11 × 8) + (0.19 × 6)</p>
 <p>= 3.84 + 2.20 + 0.88 + 1.14</p>
 <p>= 8.06 ns per instruction</p>
-</code>`<code>
+
 
 <strong>Wait, That's Worse!</strong>
 
@@ -1526,13 +1526,13 @@
 <p>| Store       | 4      | 5.6 ns |</p>
 <p>| Branch      | 3      | 4.2 ns |</p>
 
-</code>`<code>
+
 <p>Average = (0.48 × 5.6) + (0.22 × 7.0) + (0.11 × 5.6) + (0.19 × 4.2)</p>
 <p>= 2.69 + 1.54 + 0.62 + 0.80</p>
 <p>= 5.65 ns per instruction</p>
 
 <p>Speedup = 7 / 5.65 = 1.24× faster</p>
-</code>``
+
 
 <h3>10.5 Design Challenge</h3>
 

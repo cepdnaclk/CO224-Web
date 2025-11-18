@@ -35,7 +35,7 @@ _The diagram above illustrates the complete hierarchy from problems and algorith
 - **Gate-level circuits**: Digital logic implementations
 - **Logic gates**: AND, OR, NAND, NOR, XOR, etc.
 
-#### Circuit Level (Black)
+#### Circuit Level (Light Gray)
 
 - **Transistors**: BJT, CMOS devices
 - **Voltage levels and currents**: Electrical signals
@@ -84,7 +84,7 @@ _The diagram above illustrates the complete hierarchy from problems and algorith
 
 ### High-Level Process
 
-```
+
 Problem → Algorithm → Programming Language (C, Python, etc.)
 ↓
 Compiler (translates to assembly code)
@@ -96,7 +96,7 @@ Linker (combines with libraries)
 Machine Code / Binary Image
 ↓
 Runs on Microarchitecture (CPU)
-```
+
 
 ### Tool Chain Components
 

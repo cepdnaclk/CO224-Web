@@ -34,9 +34,9 @@ Understanding computer performance is fundamental to computer architecture and s
 
 **Mathematical Definition**
 
-```
+
 Performance = 1 / Execution Time
-```
+
 
 **Performance Comparison**
 
@@ -46,9 +46,9 @@ Performance = 1 / Execution Time
 
 **Relative Performance**
 
-```
+
 Performance_A / Performance_B = Execution Time_B / Execution Time_A
-```
+
 
 Example: If System A is 2× faster than System B:
 
@@ -77,15 +77,15 @@ Example: If System A is 2× faster than System B:
 
 **Basic Formula**
 
-```
+
 CPU Time = Clock Cycles × Clock Period
-```
+
 
 Or equivalently:
 
-```
+
 CPU Time = Clock Cycles / Clock Rate
-```
+
 
 **Key Relationships**
 
@@ -96,13 +96,13 @@ CPU Time = Clock Cycles / Clock Rate
 
 **Example Calculation**
 
-```
+
 Program requires 10 billion cycles
 Processor runs at 4 GHz (4 × 10^9 Hz)
 
 CPU Time = 10 × 10^9 cycles / (4 × 10^9 cycles/sec)
          = 2.5 seconds
-```
+
 
 ### 2.3 Instruction Count and CPI
 
@@ -114,15 +114,15 @@ CPU Time = 10 × 10^9 cycles / (4 × 10^9 cycles/sec)
 
 **Extended CPU Time Equation**
 
-```
+
 CPU Time = Instruction Count × CPI × Clock Period
-```
+
 
 Or:
 
-```
+
 CPU Time = (Instruction Count × CPI) / Clock Rate
-```
+
 
 **Three Performance Factors**
 
@@ -149,9 +149,9 @@ CPU Time = (Instruction Count × CPI) / Clock Rate
 
 **Calculating Average CPI**
 
-```
+
 Average CPI = Σ (CPI_i × Instruction Count_i) / Total Instruction Count
-```
+
 
 Where:
 
@@ -169,13 +169,13 @@ Where:
 
 **Calculation:**
 
-```
+
 Total Cycles = (50,000 × 1) + (30,000 × 3) + (20,000 × 2)
              = 50,000 + 90,000 + 40,000
              = 180,000 cycles
 
 Average CPI = 180,000 / 100,000 = 1.8
-```
+
 
 ### 3.3 Instruction Classes
 
@@ -224,9 +224,9 @@ The speedup that can be achieved by improving a particular part of a system is l
 
 **Mathematical Formula**
 
-```
+
 Speedup_overall = 1 / [(1 - P) + (P / S)]
-```
+
 
 Where:
 
@@ -236,9 +236,9 @@ Where:
 
 **Alternative Formulation**
 
-```
+
 Execution Time_new = Execution Time_old × [(1 - P) + (P / S)]
-```
+
 
 ### 4.3 Amdahl's Law Examples
 
@@ -251,7 +251,7 @@ Given:
 
 Calculation:
 
-```
+
 P = 0.80 (80% can be improved)
 S = 10 (10× speedup)
 
@@ -259,7 +259,7 @@ Speedup_overall = 1 / [(1 - 0.80) + (0.80 / 10)]
                 = 1 / [0.20 + 0.08]
                 = 1 / 0.28
                 = 3.57×
-```
+
 
 **Key Insight:** Despite 10× improvement in multiplies, overall speedup is only 3.57× because 20% of time is unaffected.
 
@@ -272,7 +272,7 @@ Given:
 
 Calculation:
 
-```
+
 P = 0.30
 S = 100
 
@@ -280,7 +280,7 @@ Speedup_overall = 1 / [(1 - 0.30) + (0.30 / 100)]
                 = 1 / [0.70 + 0.003]
                 = 1 / 0.703
                 = 1.42×
-```
+
 
 **Key Insight:** Even with 100× improvement, overall speedup is only 1.42× because only 30% of execution benefits.
 
@@ -301,14 +301,14 @@ Speedup_overall = 1 / [(1 - 0.30) + (0.30 / 100)]
 
 **Example: Multicore Scaling**
 
-```
+
 If 90% of program parallelizes perfectly:
 2 cores:  Speedup = 1.82×
 4 cores:  Speedup = 3.08×
 8 cores:  Speedup = 4.71×
 16 cores: Speedup = 6.40×
 ∞ cores:  Speedup = 10.00× (maximum possible)
-```
+
 
 The 10% serial portion ultimately limits speedup to 10×.
 
@@ -318,15 +318,15 @@ The 10% serial portion ultimately limits speedup to 10×.
 
 **Bringing It All Together**
 
-```
+
 CPU Time = (Instruction Count × CPI × Clock Period)
-```
+
 
 Expanded:
 
-```
+
 CPU Time = (Instructions) × (Cycles/Instruction) × (Seconds/Cycle)
-```
+
 
 **What Affects Each Factor**
 
@@ -362,19 +362,19 @@ Compare two implementations of the same ISA
 
 **System A:**
 
-```
+
 CPU Time_A = (1 × 10^6 instructions) × (2.0 cycles/instruction) / (2 × 10^9 cycles/sec)
            = 2 × 10^6 cycles / (2 × 10^9 cycles/sec)
            = 0.001 seconds = 1 millisecond
-```
+
 
 **System B:**
 
-```
+
 CPU Time_B = (1 × 10^6 instructions) × (3.0 cycles/instruction) / (3 × 10^9 cycles/sec)
            = 3 × 10^6 cycles / (3 × 10^9 cycles/sec)
            = 0.001 seconds = 1 millisecond
-```
+
 
 **Result:** Both systems have identical performance despite different clock rates and CPIs.
 
@@ -424,10 +424,10 @@ CPU Time_B = (1 × 10^6 instructions) × (3.0 cycles/instruction) / (3 × 10^9 c
 
 **MIPS (Million Instructions Per Second)**
 
-```
+
 MIPS = Instruction Count / (Execution Time × 10^6)
      = Clock Rate / (CPI × 10^6)
-```
+
 
 **Limitations of MIPS:**
 
@@ -453,15 +453,15 @@ MIPS = Instruction Count / (Execution Time × 10^6)
 
 **Dynamic Power Equation**
 
-```
+
 Power = Capacitance × Voltage² × Frequency
-```
+
 
 **Energy Equation**
 
-```
+
 Energy = Power × Time
-```
+
 
 **Implications:**
 

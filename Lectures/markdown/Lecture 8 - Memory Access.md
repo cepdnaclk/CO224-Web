@@ -18,13 +18,13 @@ This lecture explores character data handling, string operations, and the compil
 
 **ASCII Examples**
 
-```
+
 'A' = 65 (0x41)
 'a' = 97 (0x61)
 '0' = 48 (0x30)
 '\n' = 10 (0x0A)
 '\0' = 0 (0x00) - null terminator
-```
+
 
 ### 1.2 Latin-1 Encoding
 
@@ -58,9 +58,9 @@ This lecture explores character data handling, string operations, and the compil
 
 **Syntax**
 
-```assembly
+assembly
 LDRB Rd, [Rn, #offset]   ; Load byte from memory
-```
+
 
 **Operation**
 
@@ -70,12 +70,12 @@ LDRB Rd, [Rn, #offset]   ; Load byte from memory
 
 **Example**
 
-```assembly
+assembly
 ; Memory[0x1000] = 0x42 ('B')
 LDR R1, =0x1000
 LDRB R0, [R1]
 ; R0 = 0x00000042
-```
+
 
 **Use Cases**
 
@@ -88,9 +88,9 @@ LDRB R0, [R1]
 
 **Syntax**
 
-```assembly
+assembly
 STRB Rd, [Rn, #offset]   ; Store byte to memory
-```
+
 
 **Operation**
 
@@ -100,19 +100,19 @@ STRB Rd, [Rn, #offset]   ; Store byte to memory
 
 **Example**
 
-```assembly
+assembly
 MOV R0, #0x41        ; 'A'
 LDR R1, =0x2000
 STRB R0, [R1]        ; Memory[0x2000] = 0x41
-```
+
 
 ### 2.3 Load Register Signed Byte (LDRSB)
 
 **Syntax**
 
-```assembly
+assembly
 LDRSB Rd, [Rn, #offset]  ; Load signed byte
-```
+
 
 **Operation**
 
@@ -122,7 +122,7 @@ LDRSB Rd, [Rn, #offset]  ; Load signed byte
 
 **Example**
 
-```assembly
+assembly
 ; Memory[0x1000] = 0xFE (-2 in signed byte)
 LDR R1, =0x1000
 LDRSB R0, [R1]
@@ -131,7 +131,7 @@ LDRSB R0, [R1]
 ; Memory[0x1001] = 0x7F (+127)
 LDRSB R0, [R1, #1]
 ; R0 = 0x0000007F (+127)
-```
+
 
 **When to Use**
 
@@ -160,9 +160,9 @@ LDRSB R0, [R1, #1]
 
 **Syntax**
 
-```assembly
+assembly
 LDRH Rd, [Rn, #offset]   ; Load 16 bits
-```
+
 
 **Operation**
 
@@ -171,12 +171,12 @@ LDRH Rd, [Rn, #offset]   ; Load 16 bits
 
 **Example**
 
-```assembly
+assembly
 ; Memory[0x1000-0x1001] = 0xABCD
 LDR R1, =0x1000
 LDRH R0, [R1]
 ; R0 = 0x0000ABCD
-```
+
 
 **Use Cases**
 
@@ -188,9 +188,9 @@ LDRH R0, [R1]
 
 **Syntax**
 
-```assembly
+assembly
 STRH Rd, [Rn, #offset]   ; Store 16 bits
-```
+
 
 **Operation**
 
@@ -199,20 +199,20 @@ STRH Rd, [Rn, #offset]   ; Store 16 bits
 
 **Example**
 
-```assembly
+assembly
 MOV R0, #0x1234
 LDR R1, =0x2000
 STRH R0, [R1]
 ; Memory[0x2000-0x2001] = 0x1234
-```
+
 
 ### 3.3 Load Register Signed Half-word (LDRSH)
 
 **Syntax**
 
-```assembly
+assembly
 LDRSH Rd, [Rn, #offset]  ; Load signed 16-bit
-```
+
 
 **Operation**
 
@@ -222,11 +222,11 @@ LDRSH Rd, [Rn, #offset]  ; Load signed 16-bit
 
 **Example**
 
-```assembly
+assembly
 ; Memory = 0x8000 (-32768 as signed 16-bit)
 LDRSH R0, [R1]
 ; R0 = 0xFFFF8000 (-32768 as signed 32-bit)
-```
+
 
 ## 4. String Copy Example (strcpy)
 
@@ -234,14 +234,14 @@ LDRSH R0, [R1]
 
 **Code**
 
-```c
+c
 void strcpy(char x[], char y[]) {
     int i = 0;
     while ((x[i] = y[i]) != '\\0') {
         i++;
     }
 }
-```
+
 
 **Algorithm**
 
@@ -253,18 +253,18 @@ void strcpy(char x[], char y[]) {
 
 **Register Allocation**
 
-```
+
 R0: Base address of x (destination)
 R1: Base address of y (source)
 R4: Loop counter i
 R2: Address of y[i]
 R3: Value of y[i]
 R12: Address of x[i]
-```
+
 
 **Complete Assembly**
 
-```assembly
+assembly
 strcpy:
     ; Prologue: Save R4 (must preserve)
     SUB SP, SP, #4
@@ -299,7 +299,7 @@ done:
     LDR R4, [SP, #0]
     ADD SP, SP, #4
     MOV PC, LR           ; Return
-```
+
 
 ### 4.3 Key Points
 
@@ -329,9 +329,9 @@ done:
 
 **C Signature**
 
-```c
+c
 int scanf(const char *format, ...);
-```
+
 
 **Arguments**
 
@@ -343,14 +343,14 @@ int scanf(const char *format, ...);
 
 **C Code**
 
-```c
+c
 int x;
 scanf("%d", &x);  // Note: &x (address of x)
-```
+
 
 **ARM Assembly**
 
-```assembly
+assembly
 .data
 formatS: .asciz "%d"
 
@@ -369,7 +369,7 @@ formatS: .asciz "%d"
 
     ; Value now stored at [SP]
     LDR R2, [SP, #0]     ; R2 = x
-```
+
 
 ### 5.2 printf Function
 
@@ -380,9 +380,9 @@ formatS: .asciz "%d"
 
 **C Signature**
 
-```c
+c
 int printf(const char *format, ...);
-```
+
 
 **Arguments**
 
@@ -393,13 +393,13 @@ int printf(const char *format, ...);
 
 **C Code**
 
-```c
+c
 printf("Result: %d\\n", result);
-```
+
 
 **ARM Assembly**
 
-```assembly
+assembly
 .data
 formatP: .asciz "Result: %d\\n"
 
@@ -415,19 +415,19 @@ formatP: .asciz "Result: %d\\n"
 
     ; Call printf
     BL printf
-```
+
 
 ### 5.3 Data Section and Format Strings
 
 **Data Section**
 
-```assembly
+assembly
 .data
 formatS: .asciz "%d"      ; Input format
 formatP: .asciz "Result: %d\\n"  ; Output format
 array: .word 1, 2, 3, 4   ; Array
 message: .asciz "Hello"   ; String
-```
+
 
 **.asciz Directive**
 
@@ -437,9 +437,9 @@ message: .asciz "Hello"   ; String
 
 **Pseudo-Operation: LDR Rd, =label**
 
-```assembly
+assembly
 LDR R0, =formatS     ; Loads ADDRESS of formatS into R0
-```
+
 
 - Not actual LDR instruction
 - Assembler converts to appropriate instruction(s)
@@ -449,18 +449,18 @@ LDR R0, =formatS     ; Loads ADDRESS of formatS into R0
 
 **scanf: Needs Addresses**
 
-```assembly
+assembly
 SUB SP, SP, #4
 MOV R1, SP           ; R1 = address (where to store)
 BL scanf
-```
+
 
 **printf: Needs Values**
 
-```assembly
+assembly
 LDR R1, [SP]         ; R1 = value (what to print)
 BL printf
-```
+
 
 **Why This Difference?**
 
@@ -488,7 +488,7 @@ BL printf
 
 **Complete Process**
 
-```
+
 C Program (.c)
     ↓ [Compiler]
 Assembly (.s)
@@ -498,7 +498,7 @@ Object Module (.o)
 Executable (a.out)
     ↓ [Loader]
 Memory (running program)
-```
+
 
 ### 6.2 Compiler
 
@@ -518,19 +518,19 @@ Memory (running program)
 
 **Example**
 
-```c
+c
 int add(int a, int b) {
     return a + b;
 }
-```
+
 
 ↓ Compiler
 
-```assembly
+assembly
 add:
     ADD R0, R0, R1
     MOV PC, LR
-```
+
 
 ### 6.3 Assembler
 
@@ -589,11 +589,11 @@ add:
 
 **1. Merge Segments**
 
-```
+
 program.o:      lib.o:          Result:
 [Text1]         [Text2]     →   [Text1+Text2]
 [Data1]         [Data2]     →   [Data1+Data2]
-```
+
 
 **2. Resolve Labels**
 
@@ -692,9 +692,9 @@ program.o:      lib.o:          Result:
 
 **Example**
 
-```bash
+bash
 ./program arg1 arg2
-```
+
 
 - argc = 3
 - argv[0] = "./program"
@@ -721,18 +721,18 @@ program.o:      lib.o:          Result:
 
 **String Length**
 
-```c
+c
 int strlen(char *s) {
     int len = 0;
     while (s[len] != '\\0')
         len++;
     return len;
 }
-```
+
 
 **String Reverse**
 
-```c
+c
 void strrev(char *s) {
     int len = strlen(s);
     for (int i = 0; i < len/2; i++) {
@@ -741,23 +741,23 @@ void strrev(char *s) {
         s[len-1-i] = temp;
     }
 }
-```
+
 
 ### 7.2 Integer I/O
 
 **Read Two Integers, Print Sum**
 
-```assembly
+assembly
 ; Read x and y
 ; Print x + y
-```
+
 
 **Read n, Print 1 to n**
 
-```assembly
+assembly
 ; Read n
 ; Loop from 1 to n, print each
-```
+
 
 ### 7.3 Skills Required
 

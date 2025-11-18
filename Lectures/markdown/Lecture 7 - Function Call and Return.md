@@ -38,7 +38,7 @@ Function calling is a fundamental mechanism that enables modular programming and
 
 **Example**
 
-```c
+c
 int add(int a, int b) {
     return a + b;
 }
@@ -46,7 +46,7 @@ int add(int a, int b) {
 int main() {
     int result = add(5, 3);  // Function call
 }
-```
+
 
 ## 2. ARM Register Conventions
 
@@ -54,7 +54,7 @@ int main() {
 
 **Register Classification**
 
-```
+
 R0-R1:   Arguments and return results
          - Caller does NOT expect these preserved
          - Scratch registers
@@ -82,7 +82,7 @@ R14 (LR): Link Register
 R15 (PC): Program Counter
          - Next instruction address
          - Modified to return from function
-```
+
 
 ### 2.2 Shared Register File
 
@@ -101,7 +101,7 @@ R15 (PC): Program Counter
 
 **Example Scenario**
 
-```assembly
+assembly
 main:
     MOV R4, #10      ; main uses R4
     MOV R0, #5       ; Pass argument
@@ -114,7 +114,7 @@ function:
     ; Can freely modify R0-R3, R12
     MOV R0, #20      ; Return value
     MOV PC, LR       ; Return
-```
+
 
 ## 3. Function Call Instructions
 
@@ -122,9 +122,9 @@ function:
 
 **Syntax**
 
-```assembly
+assembly
 BL function_label    ; Branch and Link
-```
+
 
 **Operation**
 
@@ -133,7 +133,7 @@ BL function_label    ; Branch and Link
 
 **Example**
 
-```assembly
+assembly
     MOV R0, #10      ; Address: 0x1000
     BL fun           ; Address: 0x1004
     ADD R1, R0, #5   ; Address: 0x1008 (return point)
@@ -142,7 +142,7 @@ fun:
     ; LR contains 0x1008 (address after BL)
     ; Function code here
     MOV PC, LR       ; Return to 0x1008
-```
+
 
 **Why "Link"?**
 
@@ -154,9 +154,9 @@ fun:
 
 **Basic Return**
 
-```assembly
+assembly
 MOV PC, LR           ; Copy LR to PC
-```
+
 
 **Operation**
 
@@ -166,9 +166,9 @@ MOV PC, LR           ; Copy LR to PC
 
 **Alternative (older ARM)**
 
-```assembly
+assembly
 BX LR                ; Branch and Exchange
-```
+
 
 ## 4. Parameter Passing
 
@@ -182,17 +182,17 @@ BX LR                ; Branch and Exchange
 
 **Example: Two Parameters**
 
-```c
+c
 int multiply(int a, int b) {
     return a * b;
 }
 
 int result = multiply(6, 7);
-```
+
 
 **ARM Assembly**
 
-```assembly
+assembly
     MOV R0, #6       ; First argument (a)
     MOV R1, #7       ; Second argument (b)
     BL multiply      ; Call function
@@ -201,7 +201,7 @@ int result = multiply(6, 7);
 multiply:
     MUL R0, R0, R1   ; R0 = R0 × R1
     MOV PC, LR       ; Return
-```
+
 
 ### 4.2 More Than 4 Arguments
 
@@ -213,15 +213,15 @@ multiply:
 
 **Example: 6 Arguments**
 
-```c
+c
 int sum6(int a, int b, int c, int d, int e, int f) {
     return a + b + c + d + e + f;
 }
-```
+
 
 **ARM Assembly**
 
-```assembly
+assembly
     MOV R0, #1       ; arg1
     MOV R1, #2       ; arg2
     MOV R2, #3       ; arg3
@@ -245,7 +245,7 @@ sum6:
     ADD R0, R0, R4
     ADD R0, R0, R5
     MOV PC, LR
-```
+
 
 ## 5. Return Values
 
@@ -259,7 +259,7 @@ sum6:
 
 **Example**
 
-```assembly
+assembly
 add:
     ADD R0, R0, R1   ; R0 = R0 + R1
     MOV PC, LR       ; Return with result in R0
@@ -269,7 +269,7 @@ main:
     MOV R1, #20
     BL add           ; Call function
     ; R0 now contains 30
-```
+
 
 ### 5.2 64-Bit Return Values
 
@@ -281,21 +281,21 @@ main:
 
 **Example**
 
-```c
+c
 long long multiply64(int a, int b) {
     return (long long)a * b;
 }
-```
+
 
 **ARM Assembly**
 
-```assembly
+assembly
 multiply64:
     SMULL R0, R1, R0, R1  ; Signed multiply long
     ; R0 = lower 32 bits
     ; R1 = upper 32 bits
     MOV PC, LR
-```
+
 
 ## 6. The Stack
 
@@ -316,7 +316,7 @@ multiply64:
 
 **Memory Layout**
 
-```
+
 High Address
   ┌─────────┐
   │  Stack  │ ← SP points here
@@ -331,7 +331,7 @@ High Address
   │  Text   │   (instructions)
   └─────────┘
 Low Address
-```
+
 
 ### 6.2 Stack Uses
 
@@ -349,10 +349,10 @@ Low Address
 
 **Decrement Stack Pointer**
 
-```assembly
+assembly
 SUB SP, SP, #4       ; Allocate 4 bytes (1 register)
 SUB SP, SP, #12      ; Allocate 12 bytes (3 registers)
-```
+
 
 **Why Subtract?**
 
@@ -364,49 +364,49 @@ SUB SP, SP, #12      ; Allocate 12 bytes (3 registers)
 
 **Single Register**
 
-```assembly
+assembly
 SUB SP, SP, #4       ; Allocate space
 STR R4, [SP, #0]     ; Store R4 at top of stack
-```
+
 
 **Multiple Registers**
 
-```assembly
+assembly
 SUB SP, SP, #12      ; Space for 3 registers
 STR R4, [SP, #0]     ; Store R4
 STR R5, [SP, #4]     ; Store R5
 STR R6, [SP, #8]     ; Store R6
-```
+
 
 **Push Multiple (Convenient)**
 
-```assembly
+assembly
 PUSH {R4-R6}         ; Allocate and store in one instruction
-```
+
 
 ### 7.3 Loading Values from Stack
 
 **Single Register**
 
-```assembly
+assembly
 LDR R4, [SP, #0]     ; Load R4 from stack
 ADD SP, SP, #4       ; Release space
-```
+
 
 **Multiple Registers**
 
-```assembly
+assembly
 LDR R4, [SP, #0]     ; Restore R4
 LDR R5, [SP, #4]     ; Restore R5
 LDR R6, [SP, #8]     ; Restore R6
 ADD SP, SP, #12      ; Release space
-```
+
 
 **Pop Multiple**
 
-```assembly
+assembly
 POP {R4-R6}          ; Restore and release in one instruction
-```
+
 
 ### 7.4 Stack Space Lifecycle
 
@@ -444,7 +444,7 @@ POP {R4-R6}          ; Restore and release in one instruction
 
 **Function Template**
 
-```assembly
+assembly
 function:
     ; Prologue: Save registers
     SUB SP, SP, #12      ; Allocate space
@@ -461,7 +461,7 @@ function:
     LDR R6, [SP, #8]     ; Restore R6
     ADD SP, SP, #12      ; Release space
     MOV PC, LR           ; Return
-```
+
 
 **Optimization**
 
@@ -488,7 +488,7 @@ function:
 
 **Example Problem**
 
-```assembly
+assembly
 main:
     BL funcA         ; LR = address after this BL
 
@@ -499,13 +499,13 @@ funcA:
 
 funcB:
     MOV PC, LR       ; Correctly returns to funcA
-```
+
 
 ### 9.2 Solution: Save LR to Stack
 
 **Pattern**
 
-```assembly
+assembly
 function:
     ; Save LR first!
     SUB SP, SP, #4
@@ -518,11 +518,11 @@ function:
     LDR LR, [SP, #0]
     ADD SP, SP, #4
     MOV PC, LR
-```
+
 
 **Complete Example**
 
-```assembly
+assembly
 main:
     MOV R0, #5
     BL outer         ; LR = return_to_main
@@ -544,7 +544,7 @@ outer:
 inner:
     MUL R0, R0, R0
     MOV PC, LR       ; Returns to outer
-```
+
 
 ## 10. Recursion Example: Factorial
 
@@ -552,14 +552,14 @@ inner:
 
 **C Code**
 
-```c
+c
 int fact(int n) {
     if (n <= 1)
         return 1;
     else
         return n * fact(n-1);
 }
-```
+
 
 **Key Points**
 
@@ -570,7 +570,7 @@ int fact(int n) {
 
 ### 10.2 ARM Assembly Implementation
 
-```assembly
+assembly
 fact:
     ; Save LR and n
     SUB SP, SP, #8
@@ -595,13 +595,13 @@ fact_end:
     LDR LR, [SP, #4]
     ADD SP, SP, #8
     MOV PC, LR
-```
+
 
 ### 10.3 Stack Growth During Recursion
 
 **Call: fact(3)**
 
-```
+
 Initial: SP = 0x1000
 
 fact(3) call:
@@ -619,7 +619,7 @@ Unwinds to fact(3): returns 2*3 = 6
 Returns to main with result 6
 
 Final: SP = 0x1000 (restored)
-```
+
 
 **Stack Space Per Call**
 
@@ -632,7 +632,7 @@ Final: SP = 0x1000 (restored)
 
 ### 11.1 Complete Memory Layout
 
-```
+
 High Address (0xFFFFFFFF)
   ┌──────────────┐
   │   Reserved   │ OS and system
@@ -655,7 +655,7 @@ High Address (0xFFFFFFFF)
   │ (Code)       │   Read-only
   └──────────────┘
 Low Address (0x00000000)
-```
+
 
 ### 11.2 Stack Characteristics
 

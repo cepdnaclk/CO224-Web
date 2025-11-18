@@ -153,9 +153,9 @@ Critical for I/O systems, especially storage devices.
 
 **Formula**:
 
-```
+
 MTBF = MTTF + MTTR
-```
+
 
 **Definition**:
 
@@ -167,9 +167,9 @@ MTBF = MTTF + MTTR
 
 **Formula**:
 
-```
+
 Availability = MTTF / (MTTF + MTTR)
-```
+
 
 **Definition**:
 
@@ -349,9 +349,9 @@ Traditional secondary storage technology using magnetic recording.
 
 ### Total Average Read Time
 
-```
+
 Total = 4 + 2 + 0.005 + 0.2 = 6.2 milliseconds
-```
+
 
 ### Real Case Variation
 

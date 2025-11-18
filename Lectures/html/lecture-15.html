@@ -96,13 +96,13 @@
 
 <h4>Address Breakdown (Recap)</h4>
 
-``<code>
+
 <p>[Tag][Index][Offset]</p>
 <p>^      ^       ^</p>
 <p>|      |       └── Identifies word/byte within block</p>
 <p>|      └── Identifies cache entry (direct mapping)</p>
 <p>└── Remaining bits for block identification</p>
-</code>`<code>
+
 
 <h3>1.2 Today's Focus</h3>
 
@@ -356,9 +356,9 @@
 
 <strong>Formula:</strong>
 
-</code>`<code>
+
 <p>Read Miss Time = Hit Latency + Miss Penalty</p>
-</code>`<code>
+
 
 <strong>Where:</strong>
 
@@ -941,13 +941,13 @@
 
 <h3>8.4 Timeline for Write Miss</h3>
 
-</code>`<code>
+
 <p>Cycle 1: Write to cache (possibly wrong block) + Tag compare</p>
 <p>Cycle 1: Also initiate memory write (correct address)</p>
 <p>Cycle 2-50: Fetch correct block from memory</p>
 <p>Cycle 51: Overwrite cache entry with correct block</p>
 <p>Result: Cache correct, memory correct</p>
-</code>`<code>
+
 
 <h3>8.5 Safety Guarantee</h3>
 
@@ -1135,12 +1135,12 @@
 
 <strong>Example Code:</strong>
 
-</code>`<code>c
+<p>c</p>
 <p>for (int i = 0; i < 1000; i++) {</p>
 <p>array[i] = compute(i);  // Store in every iteration</p>
 <p>sum += array[i];         // Read, accumulate, store</p>
 <p>}</p>
-</code>``
+
 
 <h4>With Write-Through</h4>
 
