@@ -56,10 +56,9 @@
 
 <p>This lecture marks a crucial transition from CPU-centric topics to memory systems, introducing cache memory as the elegant solution to the fundamental processor-memory speed gap. We begin with historical context, tracing how stored-program concept revolutionized computing, then explore the memory hierarchy that creates the illusion of large, fast memory through careful exploitation of temporal and spatial locality. The direct-mapped cache organization receives detailed treatment, establishing foundational concepts of blocks, tags, indices, and valid bits that underpin all cache designs. Understanding cache memory proves as essential as understanding processor architecture, as memory system performance often determines overall computer system speed in practice.</p>
 
-
 <h2>1. Lecture Introduction and Historical Context</h2>
 
-<h3>1.1 Course Transition</h3>
+<h3>1.1 Lecture Transition</h3>
 
 <strong>Previous Topics:</strong>
 
@@ -179,7 +178,6 @@
 <li>Features from both types incorporated</li>
 </ul>
 
-
 <h2>2. Memory Technologies: Types and Characteristics</h2>
 
 <h3>2.1 Commonly Used Memory Technologies Today</h3>
@@ -278,7 +276,6 @@
 
 <strong>Note:</strong> Average numbers; varies by data location on disk. Mechanical: spinning platters, moving read/write heads.
 
-
 <h2>3. The Memory Performance Problem</h2>
 
 <h3>3.1 The CPU-Memory Speed Gap</h3>
@@ -325,7 +322,6 @@
 <li>Actual DRAM takes 50 ns</li>
 <li>"Something is not right" - how can this work?</li>
 </ul>
-
 
 <h2>4. Memory Hierarchy Concept</h2>
 
@@ -410,7 +406,6 @@
 <li>This leads to the concepts of hits, misses, and cache management</li>
 </ul>
 
-
 <h2>5. Analogy: Music Library</h2>
 
 <h3>5.1 Understanding Memory Hierarchy Through Music</h3>
@@ -483,7 +478,6 @@
 <li>All data available on internet (disk holds everything)</li>
 <li>Copy operations when data not available at higher levels</li>
 </ul>
-
 
 <h2>6. Memory Hierarchy Terminology</h2>
 
@@ -575,7 +569,6 @@
 <li>Miss penalty for DRAM access can be 100× hit latency</li>
 <li>Very expensive in terms of time!</li>
 </ul>
-
 
 <h2>7. Performance Impact and Requirements</h2>
 
@@ -671,7 +664,6 @@
 <li>Like having most songs you want to listen to already on phone</li>
 <li>Don't want to copy from computer frequently (time-consuming)</li>
 </ul>
-
 
 <h2>8. Principles of Locality</h2>
 
@@ -834,7 +826,6 @@
 <li>Foundation assumptions for cache design</li>
 </ul>
 
-
 <h2>9. Cache Memory Concept and Block-Based Operation</h2>
 
 <h3>9.1 Cache Memory Overview</h3>
@@ -935,7 +926,6 @@
 <li>Evict C (least recently used, 50 cycles ago)</li>
 <li>Keep E, B, D, A (more recently used)</li>
 </ul>
-
 
 <h2>10. Memory Addressing: Bytes, Words, and Blocks</h2>
 
@@ -1119,7 +1109,6 @@
 <li><strong>Block address:</strong> Term refers to portion of address identifying block (excluding offset)</li>
 </ul>
 
-
 <h2>11. The Cache Addressing Problem</h2>
 
 <h3>11.1 Problem Statement</h3>
@@ -1206,7 +1195,6 @@
 <li>Different mapping strategies possible</li>
 <li>Simplest: Direct Mapping (discussed next)</li>
 </ul>
-
 
 <h2>12. Direct-Mapped Cache</h2>
 
@@ -1332,7 +1320,6 @@
 <li>16 blocks → 4 index bits</li>
 <li>32 blocks → 5 index bits</li>
 </ul>
-
 
 <h2>13. The Tag Problem in Direct-Mapped Cache</h2>
 
@@ -1490,9 +1477,7 @@
 <li>Cache coherence (multi-processor systems)</li>
 <li>Invalidating stale data</li>
 <li>Handling context switches</li>
-<li>Will see more uses later in course</li>
 </ul>
-
 
 <h2>14. Cache Read Access Operation</h2>
 
@@ -1712,7 +1697,6 @@
 <li>Then serving CPU request</li>
 </ul>
 
-
 <h2>15. Cache Circuit Components Summary</h2>
 
 <h3>15.1 Key Circuit Elements</h3>
@@ -1822,7 +1806,6 @@
 <li>Only one path delay counts (whichever is longer)</li>
 </ul>
 
-
 <h2>16. Next Lecture Preview</h2>
 
 <h3>16.1 Topics to Cover</h3>
@@ -1877,15 +1860,6 @@
 <li>Multi-level caches (L1, L2, L3)</li>
 <li>Fully associative caches</li>
 </ul>
-
-<strong>Confirmed Future Class:</strong>
-
-<ul>
-<li>Additional class scheduled for Friday at 9:00 AM</li>
-<li>Notice to be posted on course platform</li>
-<li>Continue cache memory topics</li>
-</ul>
-
 
 <h2>17. Key Takeaways and Summary</h2>
 
@@ -2047,7 +2021,6 @@
 <li>Keep favorite songs on phone (exploit temporal locality)</li>
 <li>Copy whole album at once (exploit spatial locality)</li>
 </ul>
-
 
 <h2>Key Takeaways</h2>
 

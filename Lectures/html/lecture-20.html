@@ -56,7 +56,6 @@
 
 <p>This lecture completes our exploration of computer architecture by examining storage devices and input/output (I/O) systems that enable computers to interact with external devices and provide persistent data storage beyond volatile main memory. We explore storage technologies from mechanical magnetic disks to solid-state flash memory, understanding their performance characteristics, reliability metrics, and cost tradeoffs. The lecture covers I/O communication methods including polling, interrupts, and direct memory access (DMA), analyzes RAID configurations that improve both performance and dependability, and examines how storage systems connect to processors through memory-mapped I/O or dedicated I/O instructions. Understanding these peripheral systems reveals how complete computer systems integrate computation, memory, and external interaction into cohesive platforms.</p>
 
-
 <h2>1. I/O Device Characteristics</h2>
 
 <p>I/O devices can be characterized by three fundamental factors:</p>
@@ -108,7 +107,6 @@
 <li>Affects system design and communication methods</li>
 </ul>
 
-
 <h2>2. I/O Bus Connections</h2>
 
 <h3>Simplified System Architecture</h3>
@@ -144,7 +142,6 @@
 
 <p>Multiple controllers allow parallel device operation while sharing common interconnect.</p>
 
-
 <h2>3. Dependability</h2>
 
 <p>Critical for I/O systems, especially storage devices.</p>
@@ -165,7 +162,6 @@
 <li>Critical systems (servers, embedded systems)</li>
 <li>Systems with high availability requirements</li>
 </ul>
-
 
 <h2>4. Service States</h2>
 
@@ -194,7 +190,6 @@
 <li><strong>From Service Interruption to Service Accomplishment</strong>: After restoration/repair</li>
 </ul>
 
-
 <h2>5. Fault Terminology</h2>
 
 <h3>Fault Definition</h3>
@@ -215,7 +210,6 @@
 <li><strong>Component failure ≠ System failure</strong></li>
 <li>Fault tolerance allows operation despite faults</li>
 </ul>
-
 
 <h2>6. Dependability Measures</h2>
 
@@ -275,7 +269,6 @@
 <li>Expressed as percentage or decimal</li>
 </ul>
 
-
 <h2>7. Improving Availability</h2>
 
 <h3>Two Approaches</h3>
@@ -284,7 +277,6 @@
 <li>MTTF</li>
 <li>MTTR</li>
 </ul>
-
 
 <h2>8. Increase MTTF (Mean Time To Failure)</h2>
 
@@ -321,7 +313,6 @@
 <li>Replace before failure</li>
 </ul>
 
-
 <h2>9. Reduce MTTR (Mean Time To Repair)</h2>
 
 <h3>Methods</h3>
@@ -343,7 +334,6 @@
 <li>Analyze improvement strategies</li>
 <li>Students should practice these calculations</li>
 </ul>
-
 
 <h2>10. Magnetic Disk Storage</h2>
 
@@ -388,7 +378,6 @@
 <ul>
 <li><strong>Gaps</strong> between sectors (unused spaces)</li>
 </ul>
-
 
 <h2>11. Disk Access Process</h2>
 
@@ -450,7 +439,6 @@
 <li>Reading page from disk to memory: millions of cycles</li>
 <li>Much slower than memory access</li>
 </ul>
-
 
 <h2>12. Disk Access Example Calculation</h2>
 
@@ -523,7 +511,6 @@
 <li>Understand impact of each component on total time</li>
 </ul>
 
-
 <h2>13. Flash Storage</h2>
 
 <p>Modern non-volatile semiconductor storage technology.</p>
@@ -549,7 +536,6 @@
 <li>Limited write cycles (wears out over time)</li>
 <li>Technology cost higher</li>
 </ul>
-
 
 <h2>14. Types of Flash Storage</h2>
 
@@ -609,7 +595,6 @@
 
 <strong>Note</strong>: Values in lecture slides may be outdated as flash storage technology rapidly evolves.
 
-
 <h2>15. Memory-Mapped I/O</h2>
 
 <p>Method of accessing I/O devices using memory addresses.</p>
@@ -657,7 +642,6 @@
 <li>Must reserve addresses for I/O</li>
 </ul>
 
-
 <h2>16. I/O Instructions</h2>
 
 <p>Alternative to memory-mapped I/O: separate I/O instructions.</p>
@@ -704,7 +688,6 @@
 <li>More complex instruction set</li>
 <li>Additional instructions needed</li>
 </ul>
-
 
 <h2>17. Polling</h2>
 
@@ -792,7 +775,6 @@
 <ul>
 <li>Simple control flow</li>
 </ul>
-
 
 <h2>18. Interrupts</h2>
 
@@ -903,11 +885,9 @@
 <p>- State restored</p>
 <p>- Resume main program at next instruction</p>
 
-
 <h2>19. I/O Data Transfer Methods</h2>
 
 <p>Three approaches for transferring data between memory and I/O:</p>
-
 
 <h2>20. Polling-Driven I/O</h2>
 
@@ -928,7 +908,6 @@
 <li>Wastes CPU cycles</li>
 </ul>
 
-
 <h2>21. Interrupt-Driven I/O</h2>
 
 <h3>Process</h3>
@@ -946,7 +925,6 @@
 <li>CPU must move every byte</li>
 <li>Better than polling but still inefficient for bulk transfers</li>
 </ul>
-
 
 <h2>22. Direct Memory Access (DMA)</h2>
 
@@ -1011,7 +989,6 @@
 <li><strong>DMA</strong>: Most efficient, essential for high-performance I/O</li>
 </ul>
 
-
 <h2>23. RAID (Redundant Array of Independent Disks)</h2>
 
 <p>Technology to improve storage performance and dependability.</p>
@@ -1042,7 +1019,6 @@
 <li>Improved reliability</li>
 </ul>
 
-
 <h2>Key Takeaways</h2>
 
 <p>1. I/O systems connect computers to external devices and storage</p>
@@ -1056,10 +1032,9 @@
 <p>9. DMA is essential for high-speed bulk data transfers</p>
 <p>10. RAID improves both performance and reliability</p>
 
-
 <h2>Summary</h2>
 
-<p>This concludes the processor and memory sections of the course, covering the complete spectrum from CPU design through memory hierarchy to I/O systems. We have explored how computers are designed from the ground up, from basic arithmetic operations through pipelined execution, memory hierarchies, multiprocessor systems, and finally to storage and I/O mechanisms that enable computers to interact with the external world.</p>
+<p>This concludes the processor and memory sections of the lecture, covering the complete spectrum from CPU design through memory hierarchy to I/O systems. We have explored how computers are designed from the ground up, from basic arithmetic operations through pipelined execution, memory hierarchies, multiprocessor systems, and finally to storage and I/O mechanisms that enable computers to interact with the external world.</p>
 
             
             <div class="lecture-nav">

@@ -6,7 +6,6 @@ The evolution of computer technology over the past 50 years has been nothing sho
 
 We will trace the exponential growth in transistor density, explore how smaller feature sizes enabled both more complex circuits and faster operation, understand why clock frequencies stopped increasing around 2004, and see how the industry pivoted to multi-core architectures. Finally, we'll examine how computer systems are organized into three layers (hardware, system software, and application software) and follow the complete translation process from high-level code to binary execution.
 
-
 ## 1. Moore's Law - Foundation of Computer Technology Evolution
 
 ### 1.1 Who Was Gordon Moore?
@@ -30,7 +29,7 @@ We will trace the exponential growth in transistor density, explore how smaller 
 
 Moore's Law is NOT a physical law like the law of gravity. It is an observation and prediction about technology trends:
 
-> **"The number of transistors that can be placed on a standard computer chip will double every two years."**
+**"The number of transistors that can be placed on a standard computer chip will double every two years."**
 
 **Practical Interpretation:**
 
@@ -90,7 +89,6 @@ Moore's Law made computationally intensive applications possible:
 - Changed how we work, communicate, and learn
 - Enabled digital transformation of industries
 - Created new fields and destroyed old ones
-
 
 ## 2. Technology Scaling - Historical Data
 
@@ -179,7 +177,6 @@ The architecture evolved through multiple generations while maintaining compatib
 - Democratized computing beyond technical experts
 - Enabled productivity for non-technical users
 - Set expectations for modern computing
-
 
 ## 3. Feature Size Scaling - Lithography Improvements
 
@@ -277,7 +274,6 @@ Putting modern transistor sizes in perspective:
 - Affects switching speed and power consumption
 - Function of transistor geometry and materials
 - Critical parameter for circuit performance
-
 
 ## 4. Technology Roadmaps - ITRS Predictions
 
@@ -421,7 +417,6 @@ Modern approaches include:
 - More complex and diverse strategies
 - Higher costs per transistor (economic Moore's Law ending)
 
-
 ## 5. Why Smaller Transistors Improve Performance
 
 ### 5.1 Reason 1: More Complex Circuits
@@ -496,7 +491,6 @@ The relationship between size and speed involves:
 - Lower RC time constants
 - Improved frequency response
 
-
 ## 6. Clock Rate Trends - The Power Wall
 
 ### 6.1 Clock Rate Increases (1982-2004)
@@ -507,6 +501,7 @@ Processor clock frequencies increased dramatically for over two decades:
 
 **Historical Progression:**
 <img src="../img/Chapter%201%20Power%20Wall.jpg" alt="Computer System Abstraction Layers" width="600">
+
 - **286 (1982):** 12.5 MHz
 - **386 (1985):** 16 MHz (author's first computer)
 - **486 (Early 1990s):** 25-33 MHz
@@ -618,9 +613,7 @@ Various cooling methods were tried:
 
 Dynamic power consumption follows this relationship:
 
-```
 Power = Capacitance Load × Voltage² × Frequency
-```
 
 **Factor Analysis (1982-2004):**
 
@@ -647,12 +640,10 @@ Power = Capacitance Load × Voltage² × Frequency
 
 **Net Effect Calculation:**
 
-```
 Power Scaling = (Capacitance) × (Voltage²) × (Frequency)
-              = (1×) × (1/5)² × (300×)
-              = (1×) × (1/25) × (300×)
-              = 12× power increase
-```
+= (1×) × (1/5)² × (300×)
+= (1×) × (1/25) × (300×)
+= 12× power increase
 
 **Key Insight:**
 
@@ -714,7 +705,6 @@ Users could manually increase clock speed beyond rated specification:
 - Influenced product differentiation (K-series Intel chips)
 - Added revenue from premium products
 - Many processors destroyed but market remained
-
 
 ## 7. Shift to Multi-Core Processors
 
@@ -1034,7 +1024,6 @@ If parallel programming not done well:
 - Gap between industry needs and graduate preparation
 - Specialized training for HPC (high-performance computing)
 
-
 ## 8. Computer System Organization - Three Layers
 
 ### 8.1 Hardware Layer (Bottom)
@@ -1275,21 +1264,18 @@ Programmers don't need to worry about:
 - Highest productivity for programmers
 - Requires compilation/interpretation to execute
 
-
 ## 9. From High-Level Code to Machine Code - The Translation Process
 
 ### 9.1 Example: Swap Function in C
 
 **Source Code:**
 
-```c
 void swap(int v[], int k) {
-    int temp;
-    temp = v[k];
-    v[k] = v[k+1];
-    v[k+1] = temp;
+  int temp;
+  temp = v[k];
+  v[k] = v[k+1];
+  v[k+1] = temp;
 }
-```
 
 **Function Purpose:**
 
@@ -1313,14 +1299,12 @@ void swap(int v[], int k) {
 
 The compiler generates 7 MIPS instructions to implement the swap function:
 
-```assembly
 MUL  $2, $5, 4      # Multiply k by 4 (array index to byte offset)
 ADD  $2, $4, $2     # Add base address to offset (address of v[k])
 LW   $15, 0($2)     # Load v[k] into register $15 (temp = v[k])
 LW   $16, 4($2)     # Load v[k+1] into register $16
 SW   $16, 0($2)     # Store v[k+1] to v[k]
 SW   $15, 4($2)     # Store temp to v[k+1]
-```
 
 **Translation Analysis:**
 
@@ -1363,14 +1347,14 @@ SW   $15, 4($2)     # Store temp to v[k+1]
 
 Each assembly instruction translates to 32-bit binary instruction:
 
-```
+
 00000000101000100001000000011000  # MUL $2, $5, 4
 00000000100000100001000000100001  # ADD $2, $4, $2
 10001100010011110000000000000000  # LW  $15, 0($2)
 10001100010100000000000000000100  # LW  $16, 4($2)
 10101100010100000000000000000000  # SW  $16, 0($2)
 10101100010011110000000000000100  # SW  $15, 4($2)
-```
+
 
 **One-to-One Mapping:**
 
@@ -1418,7 +1402,6 @@ In the immediate value 4:
 - Stored in secondary storage (hard disk, SSD)
 - Loaded into memory when program executes
 - CPU fetches and executes instructions sequentially
-
 
 ## 10. Program Execution - Inside the CPU
 
@@ -1641,14 +1624,13 @@ In the immediate value 4:
 - Hit rate critical for performance
 - Well-designed cache can achieve >95% hit rate
 
-**Will Learn in Course:**
+**Will Learn in Lecture:**
 
 - Cache organization
 - Mapping strategies (direct-mapped, set-associative)
 - Replacement policies
 - Write policies
 - Cache coherency in multi-core
-
 
 ## 11. Real CPU Layout - AMD Barcelona Example
 
@@ -1881,11 +1863,9 @@ Physical layout shows clear quadrant organization:
 - Lower pin count than parallel buses
 - NUMA (Non-Uniform Memory Access) support for multi-socket systems
 
-### 11.5 Additional Information - WikiChip.org
+### 11.5 Additional Information 
 
-**WikiChip Database:**
-
-**Website:** https://en.wikichip.org
+**WikiChip Database:** https://en.wikichip.org
 
 **Comprehensive Processor Information:**
 
@@ -1951,7 +1931,6 @@ Physical layout shows clear quadrant organization:
   - Improved layouts and design rules
   - Multi-patterning lithography
 
-
 ## Key Takeaways
 
 1. **Moore's Law predicted transistor doubling every 2 years** - remarkably accurate for over 40 years, guiding semiconductor industry planning and investment
@@ -1993,7 +1972,6 @@ Physical layout shows clear quadrant organization:
 19. **Cache memory critical for performance** - fast on-chip memory (L1, L2, L3) stores frequently accessed data/instructions, hiding main memory latency
 
 20. **Real CPUs have complex layouts** - die photos reveal intricate organization with multiple cores, cache hierarchies, shared interconnects, memory controllers
-
 
 ## Summary
 

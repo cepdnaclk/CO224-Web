@@ -1,6 +1,6 @@
 # CO224 Materials Folder
 
-This folder contains downloadable materials for the CO224 Computer Architecture course.
+This folder contains downloadable materials for the CO224 Computer Architecture lecture.
 
 ## Contents
 

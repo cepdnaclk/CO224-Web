@@ -58,7 +58,6 @@
 
 <p>We will trace the exponential growth in transistor density, explore how smaller feature sizes enabled both more complex circuits and faster operation, understand why clock frequencies stopped increasing around 2004, and see how the industry pivoted to multi-core architectures. Finally, we'll examine how computer systems are organized into three layers (hardware, system software, and application software) and follow the complete translation process from high-level code to binary execution.</p>
 
-
 <h2>1. Moore's Law - Foundation of Computer Technology Evolution</h2>
 
 <h3>1.1 Who Was Gordon Moore?</h3>
@@ -86,7 +85,7 @@
 
 <p>Moore's Law is NOT a physical law like the law of gravity. It is an observation and prediction about technology trends:</p>
 
-> <strong>"The number of transistors that can be placed on a standard computer chip will double every two years."</strong>
+<strong>"The number of transistors that can be placed on a standard computer chip will double every two years."</strong>
 
 <strong>Practical Interpretation:</strong>
 
@@ -154,7 +153,6 @@
 <li>Enabled digital transformation of industries</li>
 <li>Created new fields and destroyed old ones</li>
 </ul>
-
 
 <h2>2. Technology Scaling - Historical Data</h2>
 
@@ -263,7 +261,6 @@
 <li>Enabled productivity for non-technical users</li>
 <li>Set expectations for modern computing</li>
 </ul>
-
 
 <h2>3. Feature Size Scaling - Lithography Improvements</h2>
 
@@ -383,7 +380,6 @@
 <li>Function of transistor geometry and materials</li>
 <li>Critical parameter for circuit performance</li>
 </ul>
-
 
 <h2>4. Technology Roadmaps - ITRS Predictions</h2>
 
@@ -559,7 +555,6 @@
 <li>Higher costs per transistor (economic Moore's Law ending)</li>
 </ul>
 
-
 <h2>5. Why Smaller Transistors Improve Performance</h2>
 
 <h3>5.1 Reason 1: More Complex Circuits</h3>
@@ -650,7 +645,6 @@
 <li>Improved frequency response</li>
 </ul>
 
-
 <h2>6. Clock Rate Trends - The Power Wall</h2>
 
 <h3>6.1 Clock Rate Increases (1982-2004)</h3>
@@ -661,6 +655,7 @@
 
 <strong>Historical Progression:</strong>
 <img src="../img/Chapter%201%20Power%20Wall.jpg" alt="Computer System Abstraction Layers" width="600">
+
 <ul>
 <li><strong>286 (1982):</strong> 12.5 MHz</li>
 <li><strong>386 (1985):</strong> 16 MHz (author's first computer)</li>
@@ -794,9 +789,7 @@
 
 <p>Dynamic power consumption follows this relationship:</p>
 
-``<code>
 <p>Power = Capacitance Load × Voltage² × Frequency</p>
-</code>`<code>
 
 <strong>Factor Analysis (1982-2004):</strong>
 
@@ -829,12 +822,10 @@
 
 <strong>Net Effect Calculation:</strong>
 
-</code>`<code>
 <p>Power Scaling = (Capacitance) × (Voltage²) × (Frequency)</p>
 <p>= (1×) × (1/5)² × (300×)</p>
 <p>= (1×) × (1/25) × (300×)</p>
 <p>= 12× power increase</p>
-</code>`<code>
 
 <strong>Key Insight:</strong>
 
@@ -910,7 +901,6 @@
 <li>Added revenue from premium products</li>
 <li>Many processors destroyed but market remained</li>
 </ul>
-
 
 <h2>7. Shift to Multi-Core Processors</h2>
 
@@ -1300,7 +1290,6 @@
 <li>Specialized training for HPC (high-performance computing)</li>
 </ul>
 
-
 <h2>8. Computer System Organization - Three Layers</h2>
 
 <h3>8.1 Hardware Layer (Bottom)</h3>
@@ -1599,21 +1588,18 @@
 <li>Requires compilation/interpretation to execute</li>
 </ul>
 
-
 <h2>9. From High-Level Code to Machine Code - The Translation Process</h2>
 
 <h3>9.1 Example: Swap Function in C</h3>
 
 <strong>Source Code:</strong>
 
-</code>`<code>c
 <p>void swap(int v[], int k) {</p>
 <p>int temp;</p>
 <p>temp = v[k];</p>
 <p>v[k] = v[k+1];</p>
 <p>v[k+1] = temp;</p>
 <p>}</p>
-</code>`<code>
 
 <strong>Function Purpose:</strong>
 
@@ -1621,8 +1607,8 @@
 <li><strong>Operation:</strong> Swap two values in array</li>
 <li><strong>Parameters:</strong></li>
 </ul>
-<p>- </code>v[]<code>: Array pointer (base address)</p>
-<p>- </code>k<code>: Index of first element to swap</p>
+<p>- <code>v[]</code>: Array pointer (base address)</p>
+<p>- <code>k</code>: Index of first element to swap</p>
 <ul>
 <li><strong>Elements Swapped:</strong> Positions k and k+1</li>
 <li><strong>Method:</strong> Uses temporary variable</li>
@@ -1641,14 +1627,12 @@
 
 <p>The compiler generates 7 MIPS instructions to implement the swap function:</p>
 
-</code>`<code>assembly
 <p>MUL  $2, $5, 4      # Multiply k by 4 (array index to byte offset)</p>
 <p>ADD  $2, $4, $2     # Add base address to offset (address of v[k])</p>
 <p>LW   $15, 0($2)     # Load v[k] into register $15 (temp = v[k])</p>
 <p>LW   $16, 4($2)     # Load v[k+1] into register $16</p>
 <p>SW   $16, 0($2)     # Store v[k+1] to v[k]</p>
 <p>SW   $15, 4($2)     # Store temp to v[k+1]</p>
-</code>`<code>
 
 <strong>Translation Analysis:</strong>
 
@@ -1701,14 +1685,14 @@
 
 <p>Each assembly instruction translates to 32-bit binary instruction:</p>
 
-</code>`<code>
+
 <p>00000000101000100001000000011000  # MUL $2, $5, 4</p>
 <p>00000000100000100001000000100001  # ADD $2, $4, $2</p>
 <p>10001100010011110000000000000000  # LW  $15, 0($2)</p>
 <p>10001100010100000000000000000100  # LW  $16, 4($2)</p>
 <p>10101100010100000000000000000000  # SW  $16, 0($2)</p>
 <p>10101100010011110000000000000100  # SW  $15, 4($2)</p>
-</code>`<code>
+
 
 <strong>One-to-One Mapping:</strong>
 
@@ -1725,7 +1709,7 @@
 
 <strong>R-Type (Register) Format:</strong>
 
-</code>`<code>
+``<code>
 <p>[Opcode 6 bits][Rs 5 bits][Rt 5 bits][Rd 5 bits][Shamt 5 bits][Funct 6 bits]</p>
 </code>`<code>
 
@@ -1764,7 +1748,6 @@
 <li>Loaded into memory when program executes</li>
 <li>CPU fetches and executes instructions sequentially</li>
 </ul>
-
 
 <h2>10. Program Execution - Inside the CPU</h2>
 
@@ -2047,7 +2030,7 @@
 <li>Well-designed cache can achieve >95% hit rate</li>
 </ul>
 
-<strong>Will Learn in Course:</strong>
+<strong>Will Learn in Lecture:</strong>
 
 <ul>
 <li>Cache organization</li>
@@ -2056,7 +2039,6 @@
 <li>Write policies</li>
 <li>Cache coherency in multi-core</li>
 </ul>
-
 
 <h2>11. Real CPU Layout - AMD Barcelona Example</h2>
 
@@ -2349,11 +2331,9 @@
 <li>NUMA (Non-Uniform Memory Access) support for multi-socket systems</li>
 </ul>
 
-<h3>11.5 Additional Information - WikiChip.org</h3>
+<h3>11.5 Additional Information </h3>
 
-<strong>WikiChip Database:</strong>
-
-<strong>Website:</strong> https://en.wikichip.org
+<strong>WikiChip Database:</strong> https://en.wikichip.org
 
 <strong>Comprehensive Processor Information:</strong>
 
@@ -2433,7 +2413,6 @@
 <p>- Improved layouts and design rules</p>
 <p>- Multi-patterning lithography</p>
 
-
 <h2>Key Takeaways</h2>
 
 <p>1. <strong>Moore's Law predicted transistor doubling every 2 years</strong> - remarkably accurate for over 40 years, guiding semiconductor industry planning and investment</p>
@@ -2475,7 +2454,6 @@
 <p>19. <strong>Cache memory critical for performance</strong> - fast on-chip memory (L1, L2, L3) stores frequently accessed data/instructions, hiding main memory latency</p>
 
 <p>20. <strong>Real CPUs have complex layouts</strong> - die photos reveal intricate organization with multiple cores, cache hierarchies, shared interconnects, memory controllers</p>
-
 
 <h2>Summary</h2>
 

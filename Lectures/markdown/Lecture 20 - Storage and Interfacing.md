@@ -4,7 +4,6 @@
 
 This lecture completes our exploration of computer architecture by examining storage devices and input/output (I/O) systems that enable computers to interact with external devices and provide persistent data storage beyond volatile main memory. We explore storage technologies from mechanical magnetic disks to solid-state flash memory, understanding their performance characteristics, reliability metrics, and cost tradeoffs. The lecture covers I/O communication methods including polling, interrupts, and direct memory access (DMA), analyzes RAID configurations that improve both performance and dependability, and examines how storage systems connect to processors through memory-mapped I/O or dedicated I/O instructions. Understanding these peripheral systems reveals how complete computer systems integrate computation, memory, and external interaction into cohesive platforms.
 
-
 ## 1. I/O Device Characteristics
 
 I/O devices can be characterized by three fundamental factors:
@@ -44,7 +43,6 @@ I/O devices can be characterized by three fundamental factors:
 - Wide variation across device types
 - Affects system design and communication methods
 
-
 ## 2. I/O Bus Connections
 
 ### Simplified System Architecture
@@ -74,7 +72,6 @@ I/O devices can be characterized by three fundamental factors:
 
 Multiple controllers allow parallel device operation while sharing common interconnect.
 
-
 ## 3. Dependability
 
 Critical for I/O systems, especially storage devices.
@@ -91,7 +88,6 @@ Critical for I/O systems, especially storage devices.
 - Storage devices (data integrity)
 - Critical systems (servers, embedded systems)
 - Systems with high availability requirements
-
 
 ## 4. Service States
 
@@ -114,7 +110,6 @@ Critical for I/O systems, especially storage devices.
 - **From Service Accomplishment to Service Interruption**: Due to failure
 - **From Service Interruption to Service Accomplishment**: After restoration/repair
 
-
 ## 5. Fault Terminology
 
 ### Fault Definition
@@ -131,7 +126,6 @@ Critical for I/O systems, especially storage devices.
 
 - **Component failure ≠ System failure**
 - Fault tolerance allows operation despite faults
-
 
 ## 6. Dependability Measures
 
@@ -183,14 +177,12 @@ Availability = MTTF / (MTTF + MTTR)
 - Ratio of operational time to total time
 - Expressed as percentage or decimal
 
-
 ## 7. Improving Availability
 
 ### Two Approaches
 
 - MTTF
 - MTTR
-
 
 ## 8. Increase MTTF (Mean Time To Failure)
 
@@ -221,7 +213,6 @@ Availability = MTTF / (MTTF + MTTR)
 - Monitor component health
 - Replace before failure
 
-
 ## 9. Reduce MTTR (Mean Time To Repair)
 
 ### Methods
@@ -239,7 +230,6 @@ Availability = MTTF / (MTTF + MTTR)
 - Calculate availability
 - Analyze improvement strategies
 - Students should practice these calculations
-
 
 ## 10. Magnetic Disk Storage
 
@@ -274,7 +264,6 @@ Traditional secondary storage technology using magnetic recording.
   - Hides defects
   - Corrects recording errors
 - **Gaps** between sectors (unused spaces)
-
 
 ## 11. Disk Access Process
 
@@ -324,7 +313,6 @@ Traditional secondary storage technology using magnetic recording.
 - Involves both hardware and operating system
 - Reading page from disk to memory: millions of cycles
 - Much slower than memory access
-
 
 ## 12. Disk Access Example Calculation
 
@@ -381,7 +369,6 @@ Total = 4 + 2 + 0.005 + 0.2 = 6.2 milliseconds
 - Students should try different scenarios
 - Understand impact of each component on total time
 
-
 ## 13. Flash Storage
 
 Modern non-volatile semiconductor storage technology.
@@ -403,7 +390,6 @@ Modern non-volatile semiconductor storage technology.
 - More expensive than magnetic disk
 - Limited write cycles (wears out over time)
 - Technology cost higher
-
 
 ## 14. Types of Flash Storage
 
@@ -451,7 +437,6 @@ Modern non-volatile semiconductor storage technology.
 
 **Note**: Values in lecture slides may be outdated as flash storage technology rapidly evolves.
 
-
 ## 15. Memory-Mapped I/O
 
 Method of accessing I/O devices using memory addresses.
@@ -489,7 +474,6 @@ Method of accessing I/O devices using memory addresses.
 - Reduces available memory address space
 - Must reserve addresses for I/O
 
-
 ## 16. I/O Instructions
 
 Alternative to memory-mapped I/O: separate I/O instructions.
@@ -526,7 +510,6 @@ Alternative to memory-mapped I/O: separate I/O instructions.
 
 - More complex instruction set
 - Additional instructions needed
-
 
 ## 17. Polling
 
@@ -594,7 +577,6 @@ Method for processor to communicate with I/O devices.
   - Check if device free
   - Make decisions based on status
 - Simple control flow
-
 
 ## 18. Interrupts
 
@@ -681,11 +663,9 @@ Alternative to polling: device-initiated communication.
   - State restored
   - Resume main program at next instruction
 
-
 ## 19. I/O Data Transfer Methods
 
 Three approaches for transferring data between memory and I/O:
-
 
 ## 20. Polling-Driven I/O
 
@@ -702,7 +682,6 @@ Three approaches for transferring data between memory and I/O:
 - Inefficient for high-speed devices
 - Wastes CPU cycles
 
-
 ## 21. Interrupt-Driven I/O
 
 ### Process
@@ -716,7 +695,6 @@ Three approaches for transferring data between memory and I/O:
 - Still CPU-intensive for data transfer
 - CPU must move every byte
 - Better than polling but still inefficient for bulk transfers
-
 
 ## 22. Direct Memory Access (DMA)
 
@@ -767,7 +745,6 @@ Three approaches for transferring data between memory and I/O:
 - **Interrupts**: Responsive, better than polling, CPU still involved in transfer
 - **DMA**: Most efficient, essential for high-performance I/O
 
-
 ## 23. RAID (Redundant Array of Independent Disks)
 
 Technology to improve storage performance and dependability.
@@ -792,7 +769,6 @@ Technology to improve storage performance and dependability.
 - Data not lost if one disk fails
 - Improved reliability
 
-
 ## Key Takeaways
 
 1. I/O systems connect computers to external devices and storage
@@ -806,7 +782,6 @@ Technology to improve storage performance and dependability.
 9. DMA is essential for high-speed bulk data transfers
 10. RAID improves both performance and reliability
 
-
 ## Summary
 
-This concludes the processor and memory sections of the course, covering the complete spectrum from CPU design through memory hierarchy to I/O systems. We have explored how computers are designed from the ground up, from basic arithmetic operations through pipelined execution, memory hierarchies, multiprocessor systems, and finally to storage and I/O mechanisms that enable computers to interact with the external world.
+This concludes the processor and memory sections of the lecture, covering the complete spectrum from CPU design through memory hierarchy to I/O systems. We have explored how computers are designed from the ground up, from basic arithmetic operations through pipelined execution, memory hierarchies, multiprocessor systems, and finally to storage and I/O mechanisms that enable computers to interact with the external world.
