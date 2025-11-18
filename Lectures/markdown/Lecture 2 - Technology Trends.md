@@ -646,10 +646,15 @@ Power = Capacitance Load × Voltage² × Frequency
 
 **Net Effect Calculation:**
 
-Power Scaling = (Capacitance) × (Voltage²) × (Frequency)
-= (1×) × (1/5)² × (300×)
-= (1×) × (1/25) × (300×)
-= 12× power increase
+
+$$
+\begin{align*}
+	ext{Power Scaling} &= (\text{Capacitance}) \times (\text{Voltage}^2) \times (\text{Frequency}) \\
+&= (1\times) \times (\frac{1}{5})^2 \times (300\times) \\
+&= (1\times) \times (\frac{1}{25}) \times (300\times) \\
+&= 12\times \text{ power increase}
+\end{align*}
+$$
 
 **Key Insight:**
 
@@ -1305,12 +1310,14 @@ void swap(int v[], int k) {
 
 The compiler generates 7 MIPS instructions to implement the swap function:
 
+```
 MUL  $2, $5, 4      # Multiply k by 4 (array index to byte offset)
 ADD  $2, $4, $2     # Add base address to offset (address of v[k])
 LW   $15, 0($2)     # Load v[k] into register $15 (temp = v[k])
 LW   $16, 4($2)     # Load v[k+1] into register $16
 SW   $16, 0($2)     # Store v[k+1] to v[k]
 SW   $15, 4($2)     # Store temp to v[k+1]
+```
 
 **Translation Analysis:**
 
@@ -1353,14 +1360,14 @@ SW   $15, 4($2)     # Store temp to v[k+1]
 
 Each assembly instruction translates to 32-bit binary instruction:
 
-
+```
 00000000101000100001000000011000  # MUL $2, $5, 4
 00000000100000100001000000100001  # ADD $2, $4, $2
 10001100010011110000000000000000  # LW  $15, 0($2)
 10001100010100000000000000000100  # LW  $16, 4($2)
 10101100010100000000000000000000  # SW  $16, 0($2)
 10101100010011110000000000000100  # SW  $15, 4($2)
-
+```
 
 **One-to-One Mapping:**
 
