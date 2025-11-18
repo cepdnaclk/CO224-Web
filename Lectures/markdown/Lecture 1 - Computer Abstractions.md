@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This lecture introduces the fundamental concepts of computer system abstractions, exploring the relationship between hardware and software while providing an overview of the CO224 course structure and topics. We examine how computer systems are built as hierarchies of abstractions, each hiding complexity while providing services to the levels above.
+This lecture introduces the fundamental concepts of computer system abstractions, exploring the relationship between hardware and software while providing an overview of the lecture series structure and topics. We examine how computer systems are built as hierarchies of abstractions, each hiding complexity while providing services to the levels above.
 
 ## The Big Picture of Computer Systems
 
@@ -195,7 +195,6 @@ Runs on Microarchitecture (CPU)
 - **Purpose**: Manipulates voltages and currents
 - **Types**: BJT, CMOS
 - Built using semiconductors
-- Learned in electronics courses
 
 #### Semiconductor Level
 
@@ -304,7 +303,7 @@ Runs on Microarchitecture (CPU)
 
 ## 7. Performance Theme
 
-### Throughout the Course
+### Throughout the lecture series
 
 Performance is a recurring theme that will be touched upon in every topic:
 
@@ -327,10 +326,10 @@ Performance is a recurring theme that will be touched upon in every topic:
 9. Labs involve ARM assembly programming and building processor using Verilog
 10. Understanding the complete system picture is essential for computer engineers
 11. All computer systems, regardless of complexity, are built on these fundamental abstractions
-12. Performance optimization is a central theme throughout the course
+12. Performance optimization is a central theme throughout the lecture series
 
 ## Summary
 
 Computer systems represent one of the most sophisticated examples of hierarchical abstraction in engineering. From the physical movement of electrons in semiconductors to high-level programming languages, each layer builds upon and hides the complexity of the layers below. The Instruction Set Architecture serves as the critical bridge between hardware and software, enabling programmers to write code without worrying about transistor-level details while allowing hardware designers to optimize implementations without breaking software compatibility.
 
-Throughout this course, we will explore these abstractions in depth, learning not just what they are, but why they exist and how they enable the remarkable computing capabilities we rely on every day. By understanding both hardware and software perspectives, computer engineers gain the ability to design, optimize, and innovate across the entire computing stack.
+Throughout this lecture series, we will explore these abstractions in depth, learning not just what they are, but why they exist and how they enable the remarkable computing capabilities we rely on every day. By understanding both hardware and software perspectives, computer engineers gain the ability to design, optimize, and innovate across the entire computing stack.
