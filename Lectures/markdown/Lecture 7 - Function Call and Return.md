@@ -456,7 +456,7 @@ POP {R4-R6}          ; Restore and release in one instruction
 
 **Function Template**
 
-assembly
+```assembly
 function:
     ; Prologue: Save registers
     SUB SP, SP, #12      ; Allocate space
@@ -473,6 +473,7 @@ function:
     LDR R6, [SP, #8]     ; Restore R6
     ADD SP, SP, #12      ; Release space
     MOV PC, LR           ; Return
+```
 
 
 **Optimization**
@@ -518,7 +519,7 @@ funcB:
 
 **Pattern**
 
-assembly
+```assembly
 function:
     ; Save LR first!
     SUB SP, SP, #4
@@ -531,11 +532,12 @@ function:
     LDR LR, [SP, #0]
     ADD SP, SP, #4
     MOV PC, LR
+```
 
 
 **Complete Example**
 
-assembly
+```assembly
 main:
     MOV R0, #5
     BL outer         ; LR = return_to_main
@@ -557,6 +559,7 @@ outer:
 inner:
     MUL R0, R0, R0
     MOV PC, LR       ; Returns to outer
+```
 
 
 ## 10. Recursion Example: Factorial
@@ -584,7 +587,7 @@ int fact(int n) {
 
 ### 10.2 ARM Assembly Implementation
 
-assembly
+```assembly
 fact:
     ; Save LR and n
     SUB SP, SP, #8

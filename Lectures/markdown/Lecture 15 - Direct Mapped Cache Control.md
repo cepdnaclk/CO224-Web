@@ -893,11 +893,12 @@ Many programming patterns involve frequent writes:
 
 **Example Code:**
 
-c
+```c
 for (int i = 0; i < 1000; i++) {
     array[i] = compute(i);  // Store in every iteration
     sum += array[i];         // Read, accumulate, store
 }
+```
 
 
 #### With Write-Through

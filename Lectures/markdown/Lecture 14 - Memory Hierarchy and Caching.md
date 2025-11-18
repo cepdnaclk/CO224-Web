@@ -538,20 +538,22 @@ Unacceptable! 11× slower than CPU clock!
 
 **a) Loop Index Variables:**
 
-c
+```c
 for (int i = 0; i < 100; i++) {
     // i is accessed every iteration
     // Same memory location for 'i' accessed repeatedly
 }
+```
 
 
 **b) Loop-Invariant Data:**
 
-c
+```c
 for (int i = 0; i < n; i++) {
     result = result + array[i] * constant;
     // 'result' and 'constant' accessed every iteration
 }
+```
 
 
 **c) Function/Procedure Calls:**
@@ -593,12 +595,13 @@ for (int i = 0; i < n; i++) {
 
 **a) Array Traversal:**
 
-c
+```c
 for (int i = 0; i < 100; i++) {
     sum += array[i];
     // Access array[0], then array[1], then array[2], ...
     // Sequential memory addresses
 }
+```
 
 
 **b) Sequential Instruction Execution:**
@@ -609,7 +612,7 @@ for (int i = 0; i < 100; i++) {
 
 **c) Data Structures:**
 
-c
+```c
 struct Student {
     int id;
     char name[50];
@@ -618,16 +621,18 @@ struct Student {
 Student s;
 // Accessing s.id, then s.name, then s.gpa
 // Nearby memory locations
+```
 
 
 **d) String Processing:**
 
-c
+```c
 char str[] = "Hello";
 for (int i = 0; str[i] != '\0'; i++) {
     // Access str[0], str[1], str[2], ...
     // Consecutive bytes in memory
 }
+```
 
 
 #### Music Analogy

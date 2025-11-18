@@ -925,11 +925,12 @@ SW   $t5, 16($t0)   # Store c
 
 **Example:**
 
-assembly
+```assembly
 BEQ $1, $2, target     # Branch if $1 == $2
 ADD $3, $4, $5         # Next sequential instruction
 ...
 target: SUB $6, $7, $8 # Branch target
+```
 
 
 **Which instruction to fetch after BEQ?**
@@ -942,8 +943,9 @@ target: SUB $6, $7, $8 # Branch target
 
 **Branch Instruction:**
 
-assembly
+```assembly
 BEQ $1, $2, 40         # Branch 40 instructions ahead if equal
+```
 
 
 **Pipeline Stages:**
