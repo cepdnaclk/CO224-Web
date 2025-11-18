@@ -4,7 +4,6 @@
 
 This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage pipeline operation, examining how instructions flow through pipeline stages with detailed attention to the pipeline registers that store intermediate results between stages. We explore the critical role of these registers in enabling independent stage operation, trace complete execution sequences for load and store instructions, analyze timing constraints and delay contributions, and work through practical exercises calculating clock frequencies and optimizing pipeline performance. This detailed examination reveals the hardware mechanisms that transform the conceptual pipeline model into functioning silicon.
 
----
 
 ## 1. Lecture Introduction and Recap
 
@@ -47,7 +46,6 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Common implementation errors
 - Practical exercises
 
----
 
 ## 2. Five-Stage MIPS Pipeline Review
 
@@ -162,7 +160,6 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Register file shared with ID stage
 - Shortest stage conceptually
 
----
 
 ## 3. Pipeline Registers: Necessity and Function
 
@@ -271,7 +268,6 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Pipelining adds latency overhead
 - But throughput gain outweighs latency cost
 
----
 
 ## 4. Load Word Instruction: Detailed Cycle-by-Cycle Analysis
 
@@ -490,7 +486,6 @@ Offset: 16-bit immediate (bits 0-15)
 - Pipelined latency: ~930 ps (with overhead)
 - But pipelined throughput: 5× better (ideally)
 
----
 
 ## 5. Store Word Instruction: Key Differences
 
@@ -609,7 +604,6 @@ Offset: 16-bit immediate (bits 0-15)
 | 4     | MEM   | Write RT to memory   | **WRITE** instead of read     |
 | 5     | WB    | Nothing (bubble)     | RegWrite=0, stage idle        |
 
----
 
 ## 6. Common Pipeline Diagram Errors
 
@@ -706,7 +700,6 @@ At Cycle 5:
 - Memory input: Address and write data
 - Memory output: Ignored (invalid)
 
----
 
 ## 7. Multi-Clock-Cycle Pipeline Diagrams
 
@@ -790,7 +783,6 @@ WB: Write Back
 - LW instruction NOT marked with DM (wrong!)
 - Always verify diagrams carefully
 
----
 
 ## 8. Timing and Clock Frequency Analysis
 
@@ -946,7 +938,6 @@ f_max = 1 / T_min
 - High frequency possible
 - But diminishing returns and hazard complexity
 
----
 
 ## 9. Practical Exercises and Solutions
 
@@ -1135,7 +1126,6 @@ Time = (10^7 × 100 ps) / 20
 - Perfect 20× becomes ~15-17× in reality
 - Critical path limits clock speed
 
----
 
 ## 10. Summary and Key Takeaways
 
@@ -1231,7 +1221,6 @@ Time = (10^7 × 100 ps) / 20
 - Speculative execution
 - Branch prediction sophistication
 
----
 
 ## 11. Important Formulas
 
@@ -1280,7 +1269,6 @@ Throughput = 1 instruction / T_clock (steady state)
 Latency = (Number of stages) × T_clock + Pipeline overhead
 ```
 
----
 
 ## Key Takeaways
 

@@ -4,7 +4,6 @@
 
 This lecture provides a comprehensive, step‑by‑step examination of how a direct‑mapped cache services read and write requests, differentiates hits from misses, and preserves data correctness. We finish the full read path (including stall + block fetch sequence), analyze write hits and misses, and introduce the write‑through policy as the simplest consistency mechanism between cache and main memory. Performance consequences of constant memory writes, the need for high hit rates, and the motivation for more advanced write‑back policies (next lecture) are emphasized. By the end you will understand exactly what the cache controller must do (state transitions, signals, data/tag/valid updates) for every access type and why write policies are a central architectural tradeoff.
 
----
 
 ## 1. Lecture Introduction and Recap
 
@@ -53,7 +52,6 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
 - Data consistency issues
 - Performance considerations
 
----
 
 ## 2. Cache Read Access - Complete Process
 
@@ -145,7 +143,6 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
 - Pipeline maintains smooth operation
 - No bubbles inserted
 
----
 
 ## 3. Cache Read Miss Handling
 
@@ -289,7 +286,6 @@ Read Miss Time = Hit Latency + Miss Penalty
 - Need to understand writes first
 - Question will be revisited
 
----
 
 ## 4. Cache Write Access - Introduction
 
@@ -406,7 +402,6 @@ Three inputs vs. two for read (no data input needed for read).
 - Need mechanism to prevent corruption
 - Solution depends on write policy (discussed next)
 
----
 
 ## 5. Write Policies - Introduction
 
@@ -440,7 +435,6 @@ Three inputs vs. two for read (no data input needed for read).
 1. **Write-Through** (discussed this lecture)
 2. **Write-Back** (mentioned, detailed in next lecture)
 
----
 
 ## 6. Write-Through Policy
 
@@ -622,7 +616,6 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 - Write-through accelerates wear
 - Reduces memory lifespan
 
----
 
 ## 7. Resolving the Old Block Question
 
@@ -690,7 +683,6 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 - Always safe to overwrite cache entry
 - Memory serves as reliable backup
 
----
 
 ## 8. Parallelism in Write Access with Write-Through
 
@@ -765,7 +757,6 @@ Result: Cache correct, memory correct
 - Write-through sacrifices write performance for simplicity
 - But enables some optimizations
 
----
 
 ## 9. Summary of Cache Operations
 
@@ -826,7 +817,6 @@ Result: Cache correct, memory correct
 - Minimize write impact (better policy needed)
 - Overall hit rate > 99.9%
 
----
 
 ## 10. Write-Through Policy Evaluation
 
@@ -886,7 +876,6 @@ Result: Cache correct, memory correct
 - Alternative: Write-back policy (next lecture)
 - Trade complexity for performance
 
----
 
 ## 11. The Need for Alternative Write Policies
 
@@ -966,7 +955,6 @@ for (int i = 0; i < 1000; i++) {
 - Added complexity in return
 - Will discuss in detail next class
 
----
 
 ## 12. Lecture Conclusion
 
@@ -1064,7 +1052,6 @@ Six-step process:
 **Key Insight:**
 Write-through sacrifices performance for simplicity. In modern systems, performance is critical, so more complex policies are necessary despite added complexity.
 
----
 
 ## Key Takeaways
 

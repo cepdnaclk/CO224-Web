@@ -56,7 +56,6 @@
 
 <p>This lecture completes the single-cycle MIPS processor design by providing comprehensive analysis of control signals for all instruction types (R-type, Branch, Load, Store, Jump), introducing detailed timing analysis with concrete delay values, and demonstrating the fundamental performance limitations that motivate the evolution toward multi-cycle and pipelined implementations. We build upon previous datapath and control unit knowledge to create a functioning processor while understanding why single-cycle design, though conceptually simple, proves inefficient in practice.</p>
 
-<p>---</p>
 
 <h2>1. Lecture Overview and Context</h2>
 
@@ -104,7 +103,6 @@
 <li>Foundation for complete processor understanding</li>
 </ul>
 
-<p>---</p>
 
 <h2>2. Control Unit Inputs and Outputs</h2>
 
@@ -167,7 +165,6 @@
 <li>To be implemented in Lab 5</li>
 </ul>
 
-<p>---</p>
 
 <h2>3. R-Type Instruction Detailed Analysis</h2>
 
@@ -348,7 +345,6 @@
 <li>Next instruction fetch begins</li>
 </ul>
 
-<p>---</p>
 
 <h2>4. Branch If Equal Instruction Detailed Analysis</h2>
 
@@ -512,7 +508,6 @@
 <p>If PCSrc = 0: PC ← PC + 4 (1004)</p>
 </code>`<code>
 
-<p>---</p>
 
 <h2>5. Load Word Instruction Detailed Analysis</h2>
 
@@ -663,7 +658,6 @@
 <li>Major performance bottleneck</li>
 </ul>
 
-<p>---</p>
 
 <h2>6. Store Word Instruction Detailed Analysis</h2>
 
@@ -824,7 +818,6 @@
 <li>Read/Write enables are critical for data integrity</li>
 </ul>
 
-<p>---</p>
 
 <h2>7. Jump Instruction Integration</h2>
 
@@ -1023,7 +1016,6 @@
 <li>Control unit with 10 control signal bits</li>
 </ul>
 
-<p>---</p>
 
 <h2>8. Timing Analysis with Concrete Delays</h2>
 
@@ -1289,7 +1281,6 @@
 <li>Tremendous inefficiency</li>
 </ul>
 
-<p>---</p>
 
 <h2>9. Performance Analysis</h2>
 
@@ -1381,7 +1372,6 @@
 <p>| Branch      | 71.4%      | 28.6% |</p>
 <p>| Load        | 100.0%     | 0%    |</p>
 
-<p>---</p>
 
 <h2>10. Path to Better Performance: Multi-Cycle Design</h2>
 
@@ -1567,7 +1557,6 @@
 <li>More control complexity (FSM needed)</li>
 </ul>
 
-<p>---</p>
 
 <h2>11. Preview: Pipelining</h2>
 
@@ -1618,7 +1607,6 @@
 <li>MIPS pipeline implementation</li>
 </ul>
 
-<p>---</p>
 
 <h2>Key Takeaways</h2>
 

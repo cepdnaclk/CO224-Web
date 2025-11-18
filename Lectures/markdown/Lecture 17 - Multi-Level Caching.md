@@ -4,7 +4,6 @@
 
 This lecture explores cache hierarchies in modern computer systems, examining how multiple levels of cache work together to optimize memory access performance through careful balance of hit latency versus hit rate. We analyze real-world implementations including Intel's Skylake architecture, understanding the design decisions behind multi-level cache organizations where L1 caches prioritize speed, L2 caches balance capacity and latency, and L3 caches provide large shared storage across processor cores. The examination of associativity tradeoffs—from direct-mapped through set-associative to fully associative designs—reveals how hardware complexity, power consumption, and performance interact in practical cache systems.
 
----
 
 ## 1. Recap: Associativity Comparison Results
 
@@ -42,7 +41,6 @@ From the previous lecture's example using a 4-block cache with three different o
 - System reaches "steady state" with mostly conflict misses after initial cold misses
 - Performance improvement comes at cost of complexity and power
 
----
 
 ## 2. Cache Configuration Parameters
 
@@ -101,7 +99,6 @@ Total Cache Size = Block Size × Set Size × Associativity
 - Performance and power consumption are determined by configuration
 - External factors: memory access patterns from CPU/program
 
----
 
 ## 3. Improving Cache Performance
 
@@ -113,7 +110,6 @@ T_avg = Hit Latency + Miss Rate × Miss Penalty
 
 Three main factors can be optimized as below.
 
----
 
 ## 4. Hit Rate Improvement
 
@@ -174,7 +170,6 @@ Three main factors can be optimized as below.
 - Requires additional hardware
 - Increases complexity
 
----
 
 ## 5. Hit Latency Optimization
 
@@ -198,7 +193,6 @@ Three main factors can be optimized as below.
 - Depends on application requirements
 - Different trade-offs for different use cases
 
----
 
 ## 6. Miss Penalty Improvement
 
@@ -222,7 +216,6 @@ Three main factors can be optimized as below.
 - Each level optimized differently
 - Most effective technique for reducing miss penalty
 
----
 
 ## 7. Cache Hierarchy (Multi-Level Caches)
 
@@ -279,7 +272,6 @@ Given:
 L1 effective penalty = 3 + 0.001 × 100 = 3.1 cycles
 ```
 
----
 
 ## 8. Optimization Strategies for Multi-Level Caches
 
@@ -289,7 +281,6 @@ L1 effective penalty = 3 + 0.001 × 100 = 3.1 cycles
 - Splitting allows specialized optimization
 - Better overall performance than single large cache
 
----
 
 ## 9. L1 Cache Optimization - Optimize for Hit Latency
 
@@ -317,7 +308,6 @@ Minimize hit latency
 - Slightly higher miss rate acceptable
 - Misses handled by L2
 
----
 
 ## 10. L2 Cache Optimization - Optimize for Hit Rate
 
@@ -344,7 +334,6 @@ Maximize hit rate
 - Not on critical path for most accesses
 - Priority is catching L1 misses
 
----
 
 ## 11. Associativity Comparison
 
@@ -369,7 +358,6 @@ Maximize hit rate
 
 **Overall result**: Much better average performance
 
----
 
 ## 12. Physical Implementation of Cache Hierarchy
 
@@ -408,7 +396,6 @@ Different implementations based on:
 - Target application
 - Number of cores
 
----
 
 ## 13. Real World Example: Intel Skylake Architecture
 
@@ -505,7 +492,6 @@ Different implementations based on:
 - Complex x86 instruction handling
 - Many optimizations for real-world performance
 
----
 
 ## 14. Recommendations for Further Study
 
@@ -528,7 +514,6 @@ Different implementations based on:
 - Compare different design approaches
 - Learn industry practices
 
----
 
 ## Key Takeaways
 
@@ -547,7 +532,6 @@ Different implementations based on:
 7. Cache takes significant portion of CPU die area
 8. Pipeline optimizations also require substantial hardware
 
----
 
 ## Summary
 

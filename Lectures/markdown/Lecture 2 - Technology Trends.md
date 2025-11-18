@@ -6,7 +6,6 @@ The evolution of computer technology over the past 50 years has been nothing sho
 
 We will trace the exponential growth in transistor density, explore how smaller feature sizes enabled both more complex circuits and faster operation, understand why clock frequencies stopped increasing around 2004, and see how the industry pivoted to multi-core architectures. Finally, we'll examine how computer systems are organized into three layers (hardware, system software, and application software) and follow the complete translation process from high-level code to binary execution.
 
----
 
 ## 1. Moore's Law - Foundation of Computer Technology Evolution
 
@@ -92,7 +91,6 @@ Moore's Law made computationally intensive applications possible:
 - Enabled digital transformation of industries
 - Created new fields and destroyed old ones
 
----
 
 ## 2. Technology Scaling - Historical Data
 
@@ -182,7 +180,6 @@ The architecture evolved through multiple generations while maintaining compatib
 - Enabled productivity for non-technical users
 - Set expectations for modern computing
 
----
 
 ## 3. Feature Size Scaling - Lithography Improvements
 
@@ -281,7 +278,6 @@ Putting modern transistor sizes in perspective:
 - Function of transistor geometry and materials
 - Critical parameter for circuit performance
 
----
 
 ## 4. Technology Roadmaps - ITRS Predictions
 
@@ -425,7 +421,6 @@ Modern approaches include:
 - More complex and diverse strategies
 - Higher costs per transistor (economic Moore's Law ending)
 
----
 
 ## 5. Why Smaller Transistors Improve Performance
 
@@ -501,7 +496,6 @@ The relationship between size and speed involves:
 - Lower RC time constants
 - Improved frequency response
 
----
 
 ## 6. Clock Rate Trends - The Power Wall
 
@@ -721,7 +715,6 @@ Users could manually increase clock speed beyond rated specification:
 - Added revenue from premium products
 - Many processors destroyed but market remained
 
----
 
 ## 7. Shift to Multi-Core Processors
 
@@ -1041,7 +1034,6 @@ If parallel programming not done well:
 - Gap between industry needs and graduate preparation
 - Specialized training for HPC (high-performance computing)
 
----
 
 ## 8. Computer System Organization - Three Layers
 
@@ -1283,7 +1275,6 @@ Programmers don't need to worry about:
 - Highest productivity for programmers
 - Requires compilation/interpretation to execute
 
----
 
 ## 9. From High-Level Code to Machine Code - The Translation Process
 
@@ -1428,7 +1419,6 @@ In the immediate value 4:
 - Loaded into memory when program executes
 - CPU fetches and executes instructions sequentially
 
----
 
 ## 10. Program Execution - Inside the CPU
 
@@ -1659,7 +1649,6 @@ In the immediate value 4:
 - Write policies
 - Cache coherency in multi-core
 
----
 
 ## 11. Real CPU Layout - AMD Barcelona Example
 
@@ -1962,7 +1951,6 @@ Physical layout shows clear quadrant organization:
   - Improved layouts and design rules
   - Multi-patterning lithography
 
----
 
 ## Key Takeaways
 
@@ -2006,7 +1994,6 @@ Physical layout shows clear quadrant organization:
 
 20. **Real CPUs have complex layouts** - die photos reveal intricate organization with multiple cores, cache hierarchies, shared interconnects, memory controllers
 
----
 
 ## Summary
 

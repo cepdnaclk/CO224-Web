@@ -4,7 +4,6 @@
 
 This lecture marks a crucial transition from CPU-centric topics to memory systems, introducing cache memory as the elegant solution to the fundamental processor-memory speed gap. We begin with historical context, tracing how stored-program concept revolutionized computing, then explore the memory hierarchy that creates the illusion of large, fast memory through careful exploitation of temporal and spatial locality. The direct-mapped cache organization receives detailed treatment, establishing foundational concepts of blocks, tags, indices, and valid bits that underpin all cache designs. Understanding cache memory proves as essential as understanding processor architecture, as memory system performance often determines overall computer system speed in practice.
 
----
 
 ## 1. Lecture Introduction and Historical Context
 
@@ -102,7 +101,6 @@ This lecture marks a crucial transition from CPU-centric topics to memory system
 - Use a MIX of both Von Neumann and Harvard architectures
 - Features from both types incorporated
 
----
 
 ## 2. Memory Technologies: Types and Characteristics
 
@@ -192,7 +190,6 @@ This lecture marks a crucial transition from CPU-centric topics to memory system
 
 **Note:** Average numbers; varies by data location on disk. Mechanical: spinning platters, moving read/write heads.
 
----
 
 ## 3. The Memory Performance Problem
 
@@ -231,7 +228,6 @@ This lecture marks a crucial transition from CPU-centric topics to memory system
 - Actual DRAM takes 50 ns
 - "Something is not right" - how can this work?
 
----
 
 ## 4. Memory Hierarchy Concept
 
@@ -296,7 +292,6 @@ Level 3 (Bottom): Disk
 - Need mechanism to copy data from lower levels
 - This leads to the concepts of hits, misses, and cache management
 
----
 
 ## 5. Analogy: Music Library
 
@@ -357,7 +352,6 @@ Level 3 (Bottom): Disk
 - All data available on internet (disk holds everything)
 - Copy operations when data not available at higher levels
 
----
 
 ## 6. Memory Hierarchy Terminology
 
@@ -440,7 +434,6 @@ Lower miss rate = better performance.
 - Miss penalty for DRAM access can be 100× hit latency
 - Very expensive in terms of time!
 
----
 
 ## 7. Performance Impact and Requirements
 
@@ -523,7 +516,6 @@ Unacceptable! 11× slower than CPU clock!
 - Like having most songs you want to listen to already on phone
 - Don't want to copy from computer frequently (time-consuming)
 
----
 
 ## 8. Principles of Locality
 
@@ -664,7 +656,6 @@ for (int i = 0; str[i] != '\0'; i++) {
 - Degree varies, but principles universally applicable
 - Foundation assumptions for cache design
 
----
 
 ## 9. Cache Memory Concept and Block-Based Operation
 
@@ -747,7 +738,6 @@ for (int i = 0; str[i] != '\0'; i++) {
 - Evict C (least recently used, 50 cycles ago)
 - Keep E, B, D, A (more recently used)
 
----
 
 ## 10. Memory Addressing: Bytes, Words, and Blocks
 
@@ -909,7 +899,6 @@ Address: ...00101101
 - **Word address:** Term refers to full address of word-aligned location
 - **Block address:** Term refers to portion of address identifying block (excluding offset)
 
----
 
 ## 11. The Cache Addressing Problem
 
@@ -982,7 +971,6 @@ Address: ...00101101
 - Different mapping strategies possible
 - Simplest: Direct Mapping (discussed next)
 
----
 
 ## 12. Direct-Mapped Cache
 
@@ -1095,7 +1083,6 @@ Maps to cache index 5
 - 16 blocks → 4 index bits
 - 32 blocks → 5 index bits
 
----
 
 ## 13. The Tag Problem in Direct-Mapped Cache
 
@@ -1236,7 +1223,6 @@ Overhead = (Tag + Valid) / Total
 - Handling context switches
 - Will see more uses later in course
 
----
 
 ## 14. Cache Read Access Operation
 
@@ -1414,7 +1400,6 @@ Valid Bit ────────┘
 - Potentially evicting old block
 - Then serving CPU request
 
----
 
 ## 15. Cache Circuit Components Summary
 
@@ -1503,7 +1488,6 @@ Valid Bit ────────┘
 - Reduces total hit latency
 - Only one path delay counts (whichever is longer)
 
----
 
 ## 16. Next Lecture Preview
 
@@ -1554,7 +1538,6 @@ Valid Bit ────────┘
 - Notice to be posted on course platform
 - Continue cache memory topics
 
----
 
 ## 17. Key Takeaways and Summary
 
@@ -1689,7 +1672,6 @@ Average Access Time = Hit Latency + (Miss Rate × Miss Penalty)
 - Keep favorite songs on phone (exploit temporal locality)
 - Copy whole album at once (exploit spatial locality)
 
----
 
 ## Key Takeaways
 

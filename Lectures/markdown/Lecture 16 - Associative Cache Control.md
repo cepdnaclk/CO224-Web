@@ -4,7 +4,6 @@
 
 This lecture explores advanced cache design techniques that significantly impact memory system performance. We examine write policies—specifically write-through and write-back strategies—understanding how each handles the critical challenge of maintaining consistency between cache and main memory while balancing performance and complexity. The lecture then progresses to associative cache organizations, from direct-mapped through set-associative to fully-associative designs, revealing how different levels of associativity affect hit rates, access latency, and hardware complexity. Through detailed examples and performance analysis, we discover how modern cache systems make strategic trade-offs between speed, capacity utilization, and implementation cost to achieve optimal memory hierarchy performance.
 
----
 
 ## 1. Recap: Write Access in Direct Mapped Cache
 
@@ -160,7 +159,6 @@ This shows significant improvement from better hit rate.
 - Total CPI = 2 + 100 + 36 = 138 cycles
 - Slowdown without caches: 138 / 5.44 = 25.37×
 
----
 
 ## 4. Improving Cache Performance
 
@@ -187,7 +185,6 @@ This shows significant improvement from better hit rate.
 - Temporal locality suggests recently accessed blocks should stay
 - But direct mapping forces eviction even when space is available
 
----
 
 ## 5. Fully Associative Cache
 
@@ -259,7 +256,6 @@ When all entries are valid, need replacement policy to choose which block to evi
 - Higher cost (more hardware)
 - Parallel tag comparison requires duplicate hardware
 
----
 
 ## 6. Set Associative Cache
 
@@ -295,7 +291,6 @@ When all entries are valid, need replacement policy to choose which block to evi
 - More complex hardware than direct mapped
 - Higher hit latency due to encoding and multiplexing delays
 
----
 
 ## 7. Associativity Spectrum
 
@@ -334,7 +329,6 @@ When all entries are valid, need replacement policy to choose which block to evi
 - Higher associativity → higher hit latency
 - Higher associativity → more power consumption and cost
 
----
 
 ## 8. Associativity Comparison Example
 
@@ -417,7 +411,6 @@ When all entries are valid, need replacement policy to choose which block to evi
 - Fully associative eliminates conflict misses (only cold misses remain)
 - But higher associativity increases hit latency and cost
 
----
 
 ## 9. Trade-Offs Summary
 
@@ -448,7 +441,6 @@ When all entries are valid, need replacement policy to choose which block to evi
 - Embedded systems often use lower associativity (FIFO replacement)
 - High-performance systems use higher associativity (PLRU replacement)
 
----
 
 ## Key Takeaways
 
@@ -465,7 +457,6 @@ When all entries are valid, need replacement policy to choose which block to evi
 9. **Real-world caches** use different associativity levels based on application requirements
 10. **Performance analysis** shows that even small improvements in hit rate significantly reduce average access time
 
----
 
 ## Summary
 

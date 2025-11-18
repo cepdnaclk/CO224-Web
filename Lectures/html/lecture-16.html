@@ -56,7 +56,6 @@
 
 <p>This lecture explores advanced cache design techniques that significantly impact memory system performance. We examine write policies—specifically write-through and write-back strategies—understanding how each handles the critical challenge of maintaining consistency between cache and main memory while balancing performance and complexity. The lecture then progresses to associative cache organizations, from direct-mapped through set-associative to fully-associative designs, revealing how different levels of associativity affect hit rates, access latency, and hardware complexity. Through detailed examples and performance analysis, we discover how modern cache systems make strategic trade-offs between speed, capacity utilization, and implementation cost to achieve optimal memory hierarchy performance.</p>
 
-<p>---</p>
 
 <h2>1. Recap: Write Access in Direct Mapped Cache</h2>
 
@@ -250,7 +249,6 @@
 <li>Slowdown without caches: 138 / 5.44 = 25.37×</li>
 </ul>
 
-<p>---</p>
 
 <h2>4. Improving Cache Performance</h2>
 
@@ -281,7 +279,6 @@
 <li>But direct mapping forces eviction even when space is available</li>
 </ul>
 
-<p>---</p>
 
 <h2>5. Fully Associative Cache</h2>
 
@@ -365,7 +362,6 @@
 <li>Parallel tag comparison requires duplicate hardware</li>
 </ul>
 
-<p>---</p>
 
 <h2>6. Set Associative Cache</h2>
 
@@ -407,7 +403,6 @@
 <li>Higher hit latency due to encoding and multiplexing delays</li>
 </ul>
 
-<p>---</p>
 
 <h2>7. Associativity Spectrum</h2>
 
@@ -456,7 +451,6 @@
 <li>Higher associativity → more power consumption and cost</li>
 </ul>
 
-<p>---</p>
 
 <h2>8. Associativity Comparison Example</h2>
 
@@ -559,7 +553,6 @@
 <li>But higher associativity increases hit latency and cost</li>
 </ul>
 
-<p>---</p>
 
 <h2>9. Trade-Offs Summary</h2>
 
@@ -598,7 +591,6 @@
 <li>High-performance systems use higher associativity (PLRU replacement)</li>
 </ul>
 
-<p>---</p>
 
 <h2>Key Takeaways</h2>
 
@@ -615,7 +607,6 @@
 <p>9. <strong>Real-world caches</strong> use different associativity levels based on application requirements</p>
 <p>10. <strong>Performance analysis</strong> shows that even small improvements in hit rate significantly reduce average access time</p>
 
-<p>---</p>
 
 <h2>Summary</h2>
 

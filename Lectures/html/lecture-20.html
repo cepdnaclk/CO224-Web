@@ -56,7 +56,6 @@
 
 <p>This lecture completes our exploration of computer architecture by examining storage devices and input/output (I/O) systems that enable computers to interact with external devices and provide persistent data storage beyond volatile main memory. We explore storage technologies from mechanical magnetic disks to solid-state flash memory, understanding their performance characteristics, reliability metrics, and cost tradeoffs. The lecture covers I/O communication methods including polling, interrupts, and direct memory access (DMA), analyzes RAID configurations that improve both performance and dependability, and examines how storage systems connect to processors through memory-mapped I/O or dedicated I/O instructions. Understanding these peripheral systems reveals how complete computer systems integrate computation, memory, and external interaction into cohesive platforms.</p>
 
-<p>---</p>
 
 <h2>1. I/O Device Characteristics</h2>
 
@@ -109,7 +108,6 @@
 <li>Affects system design and communication methods</li>
 </ul>
 
-<p>---</p>
 
 <h2>2. I/O Bus Connections</h2>
 
@@ -146,7 +144,6 @@
 
 <p>Multiple controllers allow parallel device operation while sharing common interconnect.</p>
 
-<p>---</p>
 
 <h2>3. Dependability</h2>
 
@@ -169,7 +166,6 @@
 <li>Systems with high availability requirements</li>
 </ul>
 
-<p>---</p>
 
 <h2>4. Service States</h2>
 
@@ -198,7 +194,6 @@
 <li><strong>From Service Interruption to Service Accomplishment</strong>: After restoration/repair</li>
 </ul>
 
-<p>---</p>
 
 <h2>5. Fault Terminology</h2>
 
@@ -221,7 +216,6 @@
 <li>Fault tolerance allows operation despite faults</li>
 </ul>
 
-<p>---</p>
 
 <h2>6. Dependability Measures</h2>
 
@@ -281,7 +275,6 @@
 <li>Expressed as percentage or decimal</li>
 </ul>
 
-<p>---</p>
 
 <h2>7. Improving Availability</h2>
 
@@ -292,7 +285,6 @@
 <li>MTTR</li>
 </ul>
 
-<p>---</p>
 
 <h2>8. Increase MTTF (Mean Time To Failure)</h2>
 
@@ -329,7 +321,6 @@
 <li>Replace before failure</li>
 </ul>
 
-<p>---</p>
 
 <h2>9. Reduce MTTR (Mean Time To Repair)</h2>
 
@@ -353,7 +344,6 @@
 <li>Students should practice these calculations</li>
 </ul>
 
-<p>---</p>
 
 <h2>10. Magnetic Disk Storage</h2>
 
@@ -399,7 +389,6 @@
 <li><strong>Gaps</strong> between sectors (unused spaces)</li>
 </ul>
 
-<p>---</p>
 
 <h2>11. Disk Access Process</h2>
 
@@ -462,7 +451,6 @@
 <li>Much slower than memory access</li>
 </ul>
 
-<p>---</p>
 
 <h2>12. Disk Access Example Calculation</h2>
 
@@ -535,7 +523,6 @@
 <li>Understand impact of each component on total time</li>
 </ul>
 
-<p>---</p>
 
 <h2>13. Flash Storage</h2>
 
@@ -563,7 +550,6 @@
 <li>Technology cost higher</li>
 </ul>
 
-<p>---</p>
 
 <h2>14. Types of Flash Storage</h2>
 
@@ -623,7 +609,6 @@
 
 <strong>Note</strong>: Values in lecture slides may be outdated as flash storage technology rapidly evolves.
 
-<p>---</p>
 
 <h2>15. Memory-Mapped I/O</h2>
 
@@ -672,7 +657,6 @@
 <li>Must reserve addresses for I/O</li>
 </ul>
 
-<p>---</p>
 
 <h2>16. I/O Instructions</h2>
 
@@ -721,7 +705,6 @@
 <li>Additional instructions needed</li>
 </ul>
 
-<p>---</p>
 
 <h2>17. Polling</h2>
 
@@ -810,7 +793,6 @@
 <li>Simple control flow</li>
 </ul>
 
-<p>---</p>
 
 <h2>18. Interrupts</h2>
 
@@ -921,13 +903,11 @@
 <p>- State restored</p>
 <p>- Resume main program at next instruction</p>
 
-<p>---</p>
 
 <h2>19. I/O Data Transfer Methods</h2>
 
 <p>Three approaches for transferring data between memory and I/O:</p>
 
-<p>---</p>
 
 <h2>20. Polling-Driven I/O</h2>
 
@@ -948,7 +928,6 @@
 <li>Wastes CPU cycles</li>
 </ul>
 
-<p>---</p>
 
 <h2>21. Interrupt-Driven I/O</h2>
 
@@ -968,7 +947,6 @@
 <li>Better than polling but still inefficient for bulk transfers</li>
 </ul>
 
-<p>---</p>
 
 <h2>22. Direct Memory Access (DMA)</h2>
 
@@ -1033,7 +1011,6 @@
 <li><strong>DMA</strong>: Most efficient, essential for high-performance I/O</li>
 </ul>
 
-<p>---</p>
 
 <h2>23. RAID (Redundant Array of Independent Disks)</h2>
 
@@ -1065,7 +1042,6 @@
 <li>Improved reliability</li>
 </ul>
 
-<p>---</p>
 
 <h2>Key Takeaways</h2>
 
@@ -1080,7 +1056,6 @@
 <p>9. DMA is essential for high-speed bulk data transfers</p>
 <p>10. RAID improves both performance and reliability</p>
 
-<p>---</p>
 
 <h2>Summary</h2>
 

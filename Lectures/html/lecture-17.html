@@ -56,7 +56,6 @@
 
 <p>This lecture explores cache hierarchies in modern computer systems, examining how multiple levels of cache work together to optimize memory access performance through careful balance of hit latency versus hit rate. We analyze real-world implementations including Intel's Skylake architecture, understanding the design decisions behind multi-level cache organizations where L1 caches prioritize speed, L2 caches balance capacity and latency, and L3 caches provide large shared storage across processor cores. The examination of associativity tradeoffs—from direct-mapped through set-associative to fully associative designs—reveals how hardware complexity, power consumption, and performance interact in practical cache systems.</p>
 
-<p>---</p>
 
 <h2>1. Recap: Associativity Comparison Results</h2>
 
@@ -102,7 +101,6 @@
 <li>Performance improvement comes at cost of complexity and power</li>
 </ul>
 
-<p>---</p>
 
 <h2>2. Cache Configuration Parameters</h2>
 
@@ -175,7 +173,6 @@
 <li>External factors: memory access patterns from CPU/program</li>
 </ul>
 
-<p>---</p>
 
 <h2>3. Improving Cache Performance</h2>
 
@@ -187,7 +184,6 @@
 
 <p>Three main factors can be optimized as below.</p>
 
-<p>---</p>
 
 <h2>4. Hit Rate Improvement</h2>
 
@@ -264,7 +260,6 @@
 <li>Increases complexity</li>
 </ul>
 
-<p>---</p>
 
 <h2>5. Hit Latency Optimization</h2>
 
@@ -294,7 +289,6 @@
 <li>Different trade-offs for different use cases</li>
 </ul>
 
-<p>---</p>
 
 <h2>6. Miss Penalty Improvement</h2>
 
@@ -324,7 +318,6 @@
 <li>Most effective technique for reducing miss penalty</li>
 </ul>
 
-<p>---</p>
 
 <h2>7. Cache Hierarchy (Multi-Level Caches)</h2>
 
@@ -389,7 +382,6 @@
 <p>L1 effective penalty = 3 + 0.001 × 100 = 3.1 cycles</p>
 </code>``
 
-<p>---</p>
 
 <h2>8. Optimization Strategies for Multi-Level Caches</h2>
 
@@ -401,7 +393,6 @@
 <li>Better overall performance than single large cache</li>
 </ul>
 
-<p>---</p>
 
 <h2>9. L1 Cache Optimization - Optimize for Hit Latency</h2>
 
@@ -435,7 +426,6 @@
 <li>Misses handled by L2</li>
 </ul>
 
-<p>---</p>
 
 <h2>10. L2 Cache Optimization - Optimize for Hit Rate</h2>
 
@@ -468,7 +458,6 @@
 <li>Priority is catching L1 misses</li>
 </ul>
 
-<p>---</p>
 
 <h2>11. Associativity Comparison</h2>
 
@@ -497,7 +486,6 @@
 
 <strong>Overall result</strong>: Much better average performance
 
-<p>---</p>
 
 <h2>12. Physical Implementation of Cache Hierarchy</h2>
 
@@ -544,7 +532,6 @@
 <li>Number of cores</li>
 </ul>
 
-<p>---</p>
 
 <h2>13. Real World Example: Intel Skylake Architecture</h2>
 
@@ -663,7 +650,6 @@
 <li>Many optimizations for real-world performance</li>
 </ul>
 
-<p>---</p>
 
 <h2>14. Recommendations for Further Study</h2>
 
@@ -690,7 +676,6 @@
 <li>Learn industry practices</li>
 </ul>
 
-<p>---</p>
 
 <h2>Key Takeaways</h2>
 
@@ -709,7 +694,6 @@
 <p>7. Cache takes significant portion of CPU die area</p>
 <p>8. Pipeline optimizations also require substantial hardware</p>
 
-<p>---</p>
 
 <h2>Summary</h2>
 

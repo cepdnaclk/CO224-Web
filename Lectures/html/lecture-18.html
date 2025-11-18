@@ -56,7 +56,6 @@
 
 <p>Virtual memory represents one of the most elegant abstractions in computer architecture, creating a layer between physical memory hardware and the memory view presented to programs. This lecture explores how virtual memory enables programs to use more memory than physically available by treating main memory as a cache for disk storage, supports safe execution of multiple concurrent programs through address space isolation, and provides memory protection mechanisms preventing programs from corrupting each other's data. We examine page tables, translation lookaside buffers (TLBs), page faults, and the critical design decisions that make virtual memory both practical and performant despite the enormous speed gap between RAM and disk storage.</p>
 
-<p>---</p>
 
 <h2>1. Introduction to Virtual Memory</h2>
 
@@ -69,7 +68,6 @@
 3. <strong>Enable safe and efficient memory sharing between programs</strong>
 4. <strong>Ensure programs only access their allocated memory</strong>
 
-<p>---</p>
 
 <h2>2. CPU Word Size and Address Space</h2>
 
@@ -114,7 +112,6 @@
 <li>Personal computers typically had much less memory than the theoretical maximum</li>
 </ul>
 
-<p>---</p>
 
 <h2>3. Virtual vs Physical Addresses</h2>
 
@@ -143,7 +140,6 @@
 <li>Main mechanism for making virtual memory work</li>
 </ul>
 
-<p>---</p>
 
 <h2>4. Memory Hierarchy with Virtual Memory</h2>
 
@@ -156,7 +152,6 @@
 
 <p>CPU accesses cache directly. Main memory acts as cache for disk, not just a second level cache - requires additional mechanisms.</p>
 
-<p>---</p>
 
 <h2>5. Terminology</h2>
 
@@ -182,7 +177,6 @@
 <li><strong>Page Fault</strong>: Page is not present in memory (not "miss")</li>
 </ul>
 
-<p>---</p>
 
 <h2>6. Access Latencies</h2>
 
@@ -197,7 +191,6 @@
 <p>- Influences design decisions significantly</p>
 <p>- Page faults handled in software by OS due to large penalty</p>
 
-<p>---</p>
 
 <h2>7. Virtual and Physical Address Structure</h2>
 
@@ -232,7 +225,6 @@
 <li>Frame = slot in memory that can hold a page</li>
 </ul>
 
-<p>---</p>
 
 <h2>8. Supporting Multiple Programs</h2>
 
@@ -265,7 +257,6 @@
 <li>Same virtual page number from different programs can map to different physical frames</li>
 </ul>
 
-<p>---</p>
 
 <h2>9. Page Table</h2>
 
@@ -298,7 +289,6 @@
 <li>When CPU switches programs, OS updates PTBR to point to correct page table</li>
 </ul>
 
-<p>---</p>
 
 <h2>10. Address Translation Process</h2>
 
@@ -321,7 +311,6 @@
 <li><strong>Total</strong>: Two memory accesses per data access</li>
 </ul>
 
-<p>---</p>
 
 <h2>11. Page Table Size Calculation</h2>
 
@@ -356,7 +345,6 @@
 <li>Significant memory overhead for each program</li>
 </ul>
 
-<p>---</p>
 
 <h2>12. Write Policy for Virtual Memory</h2>
 
@@ -381,7 +369,6 @@
 <li>Minimizes disk accesses</li>
 </ul>
 
-<p>---</p>
 
 <h2>13. Placement Policy</h2>
 
@@ -404,7 +391,6 @@
 <li>Address translation through page table provides necessary mechanism</li>
 </ul>
 
-<p>---</p>
 
 <h2>14. Page Fault Handling</h2>
 
@@ -472,7 +458,6 @@
 <li>Hardware optimization doesn't provide significant benefit</li>
 </ul>
 
-<p>---</p>
 
 <h2>15. Translation Lookaside Buffer (TLB)</h2>
 
@@ -570,13 +555,11 @@
 <li>> 99% of translations served by TLB</li>
 </ul>
 
-<p>---</p>
 
 <h2>16. Complete Memory Access with TLB</h2>
 
 <p>Two different approaches for handling memory access with TLB:</p>
 
-<p>---</p>
 
 <h2>17. Approach 1: Virtually Addressed Cache</h2>
 
@@ -624,7 +607,6 @@ a. <strong>Check TLB for address translation</strong>
 <li>No additional latency for TLB access on cache hit</li>
 </ul>
 
-<p>---</p>
 
 <h2>18. Approach 2: Physically Addressed Cache</h2>
 
@@ -682,7 +664,6 @@ b. <strong>Access cache with physical address</strong>
 
 <p>Both approaches are valid, and the choice depends on cache indexing method (virtual vs physical).</p>
 
-<p>---</p>
 
 <h2>Key Takeaways</h2>
 
@@ -697,7 +678,6 @@ b. <strong>Access cache with physical address</strong>
 <p>9. OS handles page faults in software</p>
 <p>10. Virtual memory enables modern multitasking operating systems</p>
 
-<p>---</p>
 
 <h2>Summary</h2>
 

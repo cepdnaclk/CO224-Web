@@ -56,7 +56,6 @@
 
 <p>This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage pipeline operation, examining how instructions flow through pipeline stages with detailed attention to the pipeline registers that store intermediate results between stages. We explore the critical role of these registers in enabling independent stage operation, trace complete execution sequences for load and store instructions, analyze timing constraints and delay contributions, and work through practical exercises calculating clock frequencies and optimizing pipeline performance. This detailed examination reveals the hardware mechanisms that transform the conceptual pipeline model into functioning silicon.</p>
 
-<p>---</p>
 
 <h2>1. Lecture Introduction and Recap</h2>
 
@@ -107,7 +106,6 @@
 <li>Practical exercises</li>
 </ul>
 
-<p>---</p>
 
 <h2>2. Five-Stage MIPS Pipeline Review</h2>
 
@@ -254,7 +252,6 @@
 <li>Shortest stage conceptually</li>
 </ul>
 
-<p>---</p>
 
 <h2>3. Pipeline Registers: Necessity and Function</h2>
 
@@ -385,7 +382,6 @@
 <li>But throughput gain outweighs latency cost</li>
 </ul>
 
-<p>---</p>
 
 <h2>4. Load Word Instruction: Detailed Cycle-by-Cycle Analysis</h2>
 
@@ -644,7 +640,6 @@
 <li>But pipelined throughput: 5× better (ideally)</li>
 </ul>
 
-<p>---</p>
 
 <h2>5. Store Word Instruction: Key Differences</h2>
 
@@ -787,7 +782,6 @@
 <p>| 4     | MEM   | Write RT to memory   | <strong>WRITE</strong> instead of read     |</p>
 <p>| 5     | WB    | Nothing (bubble)     | RegWrite=0, stage idle        |</p>
 
-<p>---</p>
 
 <h2>6. Common Pipeline Diagram Errors</h2>
 
@@ -908,7 +902,6 @@
 <li>Memory output: Ignored (invalid)</li>
 </ul>
 
-<p>---</p>
 
 <h2>7. Multi-Clock-Cycle Pipeline Diagrams</h2>
 
@@ -1006,7 +999,6 @@
 <li>Always verify diagrams carefully</li>
 </ul>
 
-<p>---</p>
 
 <h2>8. Timing and Clock Frequency Analysis</h2>
 
@@ -1176,7 +1168,6 @@
 <li>But diminishing returns and hazard complexity</li>
 </ul>
 
-<p>---</p>
 
 <h2>9. Practical Exercises and Solutions</h2>
 
@@ -1401,7 +1392,6 @@
 <li>Critical path limits clock speed</li>
 </ul>
 
-<p>---</p>
 
 <h2>10. Summary and Key Takeaways</h2>
 
@@ -1521,7 +1511,6 @@
 <li>Branch prediction sophistication</li>
 </ul>
 
-<p>---</p>
 
 <h2>11. Important Formulas</h2>
 
@@ -1572,7 +1561,6 @@
 <p>Latency = (Number of stages) × T_clock + Pipeline overhead</p>
 </code>``
 
-<p>---</p>
 
 <h2>Key Takeaways</h2>
 

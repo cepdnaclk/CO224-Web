@@ -4,7 +4,6 @@
 
 Virtual memory represents one of the most elegant abstractions in computer architecture, creating a layer between physical memory hardware and the memory view presented to programs. This lecture explores how virtual memory enables programs to use more memory than physically available by treating main memory as a cache for disk storage, supports safe execution of multiple concurrent programs through address space isolation, and provides memory protection mechanisms preventing programs from corrupting each other's data. We examine page tables, translation lookaside buffers (TLBs), page faults, and the critical design decisions that make virtual memory both practical and performant despite the enormous speed gap between RAM and disk storage.
 
----
 
 ## 1. Introduction to Virtual Memory
 
@@ -17,7 +16,6 @@ Virtual memory allows programs to use more memory than physically available by u
 3. **Enable safe and efficient memory sharing between programs**
 4. **Ensure programs only access their allocated memory**
 
----
 
 ## 2. CPU Word Size and Address Space
 
@@ -52,7 +50,6 @@ The relationship between CPU word size and addressable memory determines the max
 - Architectures were replaced when high-end systems started reaching the address space limits
 - Personal computers typically had much less memory than the theoretical maximum
 
----
 
 ## 3. Virtual vs Physical Addresses
 
@@ -75,7 +72,6 @@ The relationship between CPU word size and addressable memory determines the max
 - Translation required every time memory is accessed
 - Main mechanism for making virtual memory work
 
----
 
 ## 4. Memory Hierarchy with Virtual Memory
 
@@ -88,7 +84,6 @@ Complete hierarchy from top to bottom:
 
 CPU accesses cache directly. Main memory acts as cache for disk, not just a second level cache - requires additional mechanisms.
 
----
 
 ## 5. Terminology
 
@@ -108,7 +103,6 @@ CPU accesses cache directly. Main memory acts as cache for disk, not just a seco
 - **Page Hit**: Page is present in memory
 - **Page Fault**: Page is not present in memory (not "miss")
 
----
 
 ## 6. Access Latencies
 
@@ -121,7 +115,6 @@ Understanding the latency differences is crucial for virtual memory design:
   - Influences design decisions significantly
   - Page faults handled in software by OS due to large penalty
 
----
 
 ## 7. Virtual and Physical Address Structure
 
@@ -150,7 +143,6 @@ Understanding the latency differences is crucial for virtual memory design:
 - Memory contains "frames" where pages can be placed
 - Frame = slot in memory that can hold a page
 
----
 
 ## 8. Supporting Multiple Programs
 
@@ -177,7 +169,6 @@ Multiple programs can run simultaneously by sharing physical memory:
 - Active pages from both programs share the 4 frames
 - Same virtual page number from different programs can map to different physical frames
 
----
 
 ## 9. Page Table
 
@@ -206,7 +197,6 @@ The page table is a data structure stored in memory that contains address transl
 - **Page Table Base Register (PTBR)**: Special CPU register storing starting address of active page table
 - When CPU switches programs, OS updates PTBR to point to correct page table
 
----
 
 ## 10. Address Translation Process
 
@@ -227,7 +217,6 @@ Steps to access memory:
 - One access for actual data
 - **Total**: Two memory accesses per data access
 
----
 
 ## 11. Page Table Size Calculation
 
@@ -256,7 +245,6 @@ Steps to access memory:
 - 4 bytes × 2^22 entries = **16 MB**
 - Significant memory overhead for each program
 
----
 
 ## 12. Write Policy for Virtual Memory
 
@@ -275,7 +263,6 @@ Steps to access memory:
   - Page's dirty bit is 1
 - Minimizes disk accesses
 
----
 
 ## 13. Placement Policy
 
@@ -294,7 +281,6 @@ Steps to access memory:
 - Different from cache (doesn't use tag comparators in memory)
 - Address translation through page table provides necessary mechanism
 
----
 
 ## 14. Page Fault Handling
 
@@ -346,7 +332,6 @@ Steps to access memory:
 - Complex replacement policies better suited to software
 - Hardware optimization doesn't provide significant benefit
 
----
 
 ## 15. Translation Lookaside Buffer (TLB)
 
@@ -420,13 +405,11 @@ Steps to access memory:
 - Miss rate typically kept below 1%
 - > 99% of translations served by TLB
 
----
 
 ## 16. Complete Memory Access with TLB
 
 Two different approaches for handling memory access with TLB:
 
----
 
 ## 17. Approach 1: Virtually Addressed Cache
 
@@ -472,7 +455,6 @@ Two different approaches for handling memory access with TLB:
 - Both happen in parallel
 - No additional latency for TLB access on cache hit
 
----
 
 ## 18. Approach 2: Physically Addressed Cache
 
@@ -526,7 +508,6 @@ Two different approaches for handling memory access with TLB:
 
 Both approaches are valid, and the choice depends on cache indexing method (virtual vs physical).
 
----
 
 ## Key Takeaways
 
@@ -541,7 +522,6 @@ Both approaches are valid, and the choice depends on cache indexing method (virt
 9. OS handles page faults in software
 10. Virtual memory enables modern multitasking operating systems
 
----
 
 ## Summary
 

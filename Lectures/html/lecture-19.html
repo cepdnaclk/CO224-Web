@@ -56,13 +56,11 @@
 
 <p>Multiprocessor systems represent a fundamental paradigm shift in computer architecture, using multiple processors on the same chip to execute multiple programs or threads simultaneously when traditional performance improvement techniques—clock frequency scaling and instruction-level parallelism—reached physical and practical limits. This lecture explores the evolution toward multiprocessor architectures driven by power walls and parallelism walls, examines the critical challenge of cache coherence that arises when multiple processors maintain private caches of shared memory, and analyzes solutions including bus snooping protocols like MESI and scalable directory-based coherence schemes. We compare architectural organizations from uniform memory access (UMA) to non-uniform memory access (NUMA), understanding how different designs balance simplicity, performance, and scalability for systems ranging from dual-core smartphones to thousand-processor supercomputers.</p>
 
-<p>---</p>
 
 <h2>1. Introduction to Multiprocessors</h2>
 
 <p>Multiprocessor systems address performance limitations encountered with single processor systems by employing multiple processors on the same chip to execute multiple programs or threads simultaneously.</p>
 
-<p>---</p>
 
 <h2>2. Performance Evolution Background</h2>
 
@@ -120,7 +118,6 @@
 
 <strong>Solution</strong>: Multiple processors on same chip
 
-<p>---</p>
 
 <h2>3. Multiprocessor Approach</h2>
 
@@ -149,7 +146,6 @@
 <li>Communication is central design challenge</li>
 </ul>
 
-<p>---</p>
 
 <h2>4. Shared Memory Multiprocessors (SMM)</h2>
 
@@ -186,7 +182,6 @@
 <li>Maximize overall system utilization</li>
 </ul>
 
-<p>---</p>
 
 <h2>5. Memory Contention Problem</h2>
 
@@ -214,7 +209,6 @@
 <li>Limits scalability</li>
 </ul>
 
-<p>---</p>
 
 <h2>6. Uniform Memory Access (UMA)</h2>
 
@@ -244,7 +238,6 @@
 <li>All processors experience same average latency</li>
 </ul>
 
-<p>---</p>
 
 <h2>7. Solution to Contention: Caches</h2>
 
@@ -277,7 +270,6 @@
 <li>Need mechanism to maintain consistency</li>
 </ul>
 
-<p>---</p>
 
 <h2>8. Cache Coherence Problem</h2>
 
@@ -329,7 +321,6 @@
 <li>Latest updates must be visible to all processors</li>
 </ul>
 
-<p>---</p>
 
 <h2>9. Bus Snooping</h2>
 
@@ -362,7 +353,6 @@
 <li>Take appropriate action to maintain coherence</li>
 </ul>
 
-<p>---</p>
 
 <h2>10. Write Invalidate Protocol</h2>
 
@@ -428,7 +418,6 @@
 <li>But better performance (less memory traffic)</li>
 </ul>
 
-<p>---</p>
 
 <h2>11. Write Update Protocol</h2>
 
@@ -481,7 +470,6 @@
 <li>Higher bus bandwidth requirement</li>
 </ul>
 
-<p>---</p>
 
 <h2>12. Real Protocol Implementations</h2>
 
@@ -538,7 +526,6 @@
 <li>Good balance of performance and complexity</li>
 </ul>
 
-<p>---</p>
 
 <h2>13. MESI Protocol Details</h2>
 
@@ -584,7 +571,6 @@ Named after four states: <strong>Modified, Exclusive, Shared, Invalid</strong>
 <li>Block is "dirty"</li>
 </ul>
 
-<p>---</p>
 
 <h2>14. MESI Protocol State Transitions</h2>
 
@@ -693,7 +679,6 @@ Named after four states: <strong>Modified, Exclusive, Shared, Invalid</strong>
 <li>Write-backs occur when transitioning from Modified to Shared</li>
 </ul>
 
-<p>---</p>
 
 <h2>15. Scalability of UMA Systems</h2>
 
@@ -743,7 +728,6 @@ Named after four states: <strong>Modified, Exclusive, Shared, Invalid</strong>
 <li>Trade-off: More complex hardware</li>
 </ul>
 
-<p>---</p>
 
 <h2>16. Non-Uniform Memory Access (NUMA)</h2>
 
@@ -799,7 +783,6 @@ Named after four states: <strong>Modified, Exclusive, Shared, Invalid</strong>
 <li>Global optimization problem</li>
 </ul>
 
-<p>---</p>
 
 <h2>17. Two Types of NUMA</h2>
 
@@ -825,7 +808,6 @@ Named after four states: <strong>Modified, Exclusive, Shared, Invalid</strong>
 <li>Solution: Directory-based coherence</li>
 </ul>
 
-<p>---</p>
 
 <h2>18. Directory-Based Cache Coherence</h2>
 
@@ -883,7 +865,6 @@ Named after four states: <strong>Modified, Exclusive, Shared, Invalid</strong>
 <li>Typically use write-through policy</li>
 </ul>
 
-<p>---</p>
 
 <h2>Key Takeaways</h2>
 
@@ -898,7 +879,6 @@ Named after four states: <strong>Modified, Exclusive, Shared, Invalid</strong>
 <p>9. Operating system plays crucial role in workload balancing and optimization</p>
 <p>10. Trade-offs exist between simplicity, performance, and scalability</p>
 
-<p>---</p>
 
 <h2>Summary</h2>
 

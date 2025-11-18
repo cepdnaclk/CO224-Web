@@ -56,7 +56,6 @@
 
 <p>This lecture provides a comprehensive, step‑by‑step examination of how a direct‑mapped cache services read and write requests, differentiates hits from misses, and preserves data correctness. We finish the full read path (including stall + block fetch sequence), analyze write hits and misses, and introduce the write‑through policy as the simplest consistency mechanism between cache and main memory. Performance consequences of constant memory writes, the need for high hit rates, and the motivation for more advanced write‑back policies (next lecture) are emphasized. By the end you will understand exactly what the cache controller must do (state transitions, signals, data/tag/valid updates) for every access type and why write policies are a central architectural tradeoff.</p>
 
-<p>---</p>
 
 <h2>1. Lecture Introduction and Recap</h2>
 
@@ -115,7 +114,6 @@
 <li>Performance considerations</li>
 </ul>
 
-<p>---</p>
 
 <h2>2. Cache Read Access - Complete Process</h2>
 
@@ -229,7 +227,6 @@
 <li>No bubbles inserted</li>
 </ul>
 
-<p>---</p>
 
 <h2>3. Cache Read Miss Handling</h2>
 
@@ -405,7 +402,6 @@
 <li>Question will be revisited</li>
 </ul>
 
-<p>---</p>
 
 <h2>4. Cache Write Access - Introduction</h2>
 
@@ -554,7 +550,6 @@
 <li>Solution depends on write policy (discussed next)</li>
 </ul>
 
-<p>---</p>
 
 <h2>5. Write Policies - Introduction</h2>
 
@@ -594,7 +589,6 @@
 <p>1. <strong>Write-Through</strong> (discussed this lecture)</p>
 <p>2. <strong>Write-Back</strong> (mentioned, detailed in next lecture)</p>
 
-<p>---</p>
 
 <h2>6. Write-Through Policy</h2>
 
@@ -816,7 +810,6 @@
 <li>Reduces memory lifespan</li>
 </ul>
 
-<p>---</p>
 
 <h2>7. Resolving the Old Block Question</h2>
 
@@ -896,7 +889,6 @@
 <li>Memory serves as reliable backup</li>
 </ul>
 
-<p>---</p>
 
 <h2>8. Parallelism in Write Access with Write-Through</h2>
 
@@ -985,7 +977,6 @@
 <li>But enables some optimizations</li>
 </ul>
 
-<p>---</p>
 
 <h2>9. Summary of Cache Operations</h2>
 
@@ -1056,7 +1047,6 @@
 <li>Overall hit rate > 99.9%</li>
 </ul>
 
-<p>---</p>
 
 <h2>10. Write-Through Policy Evaluation</h2>
 
@@ -1126,7 +1116,6 @@
 <li>Trade complexity for performance</li>
 </ul>
 
-<p>---</p>
 
 <h2>11. The Need for Alternative Write Policies</h2>
 
@@ -1216,7 +1205,6 @@
 <li>Will discuss in detail next class</li>
 </ul>
 
-<p>---</p>
 
 <h2>12. Lecture Conclusion</h2>
 
@@ -1338,7 +1326,6 @@
 <strong>Key Insight:</strong>
 <p>Write-through sacrifices performance for simplicity. In modern systems, performance is critical, so more complex policies are necessary despite added complexity.</p>
 
-<p>---</p>
 
 <h2>Key Takeaways</h2>
 

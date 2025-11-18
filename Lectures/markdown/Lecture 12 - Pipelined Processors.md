@@ -4,7 +4,6 @@
 
 This lecture introduces pipelining as the primary performance enhancement technique in modern processor design, transforming the inefficient single-cycle architecture into a high-throughput execution engine. We explore how pipelining applies assembly-line principles to instruction execution, dramatically improving processor throughput while maintaining individual instruction latency. The lecture examines the three fundamental types of hazards—structural, data, and control—that threaten pipeline efficiency, and discusses practical solutions including forwarding, stalling, and branch prediction that enable real-world pipelined processors to achieve near-ideal performance.
 
----
 
 ## 1. Recap: Single-Cycle Performance Limitations
 
@@ -62,7 +61,6 @@ This lecture introduces pipelining as the primary performance enhancement techni
 - Hardware still idle during many cycles
 - Room for further improvement
 
----
 
 ## 2. Pipelining Concept: The Laundry Shop Analogy
 
@@ -200,7 +198,6 @@ Steady State Speedup = 2n / 0.5n = 4×
 - Time saved = Performance improvement
 - Overlapping execution = Instruction-level parallelism
 
----
 
 ## 3. MIPS Five-Stage Pipeline
 
@@ -377,7 +374,6 @@ Maximum Speedup = Number of Stages
 3. Hazards (discussed later)
 4. Added synchronization logic
 
----
 
 ## 4. MIPS ISA Design for Pipelining
 
@@ -485,7 +481,6 @@ Maximum Speedup = Number of Stages
 - ARM: Similar philosophy to MIPS
 - RISC principles support pipelining
 
----
 
 ## 5. Instruction-Level Parallelism (ILP)
 
@@ -555,7 +550,6 @@ Five instructions active simultaneously!
 - Transparent to programmer (mostly)
 - Foundation for all higher levels
 
----
 
 ## 6. Pipeline Hazards: Structural Hazards
 
@@ -662,7 +656,6 @@ LW $4:                             IF       [BUBBLE]  ID
 - Necessary for high-performance pipelining
 - Small area overhead for large performance gain
 
----
 
 ## 7. Data Hazards
 
@@ -904,7 +897,6 @@ SW   $t5, 16($t0)   # Store c
 - Separate dependent instructions when possible
 - Help compiler optimize
 
----
 
 ## 8. Control Hazards
 
@@ -1185,7 +1177,6 @@ Problem: Wrong twice per loop (entry and exit)
 - Update logic
 - Worthwhile for performance gain
 
----
 
 ## 9. Summary and Key Concepts
 
@@ -1247,7 +1238,6 @@ Problem: Wrong twice per loop (entry and exit)
 9. ISA design significantly impacts pipeline efficiency
 10. ILP fundamental to modern processor performance
 
----
 
 ## 10. Important Formulas and Metrics
 
@@ -1287,7 +1277,6 @@ Accuracy = Correct Predictions / Total Branches
 Stall Reduction = Accuracy × Cycles Saved per Correct Prediction
 ```
 
----
 
 ## Key Takeaways
 

@@ -4,7 +4,6 @@
 
 This lecture completes the single-cycle MIPS processor design by providing comprehensive analysis of control signals for all instruction types (R-type, Branch, Load, Store, Jump), introducing detailed timing analysis with concrete delay values, and demonstrating the fundamental performance limitations that motivate the evolution toward multi-cycle and pipelined implementations. We build upon previous datapath and control unit knowledge to create a functioning processor while understanding why single-cycle design, though conceptually simple, proves inefficient in practice.
 
----
 
 ## 1. Lecture Overview and Context
 
@@ -44,7 +43,6 @@ The foundational work completed in previous lectures includes:
 - Omits some I-type arithmetic (covered conceptually)
 - Foundation for complete processor understanding
 
----
 
 ## 2. Control Unit Inputs and Outputs
 
@@ -99,7 +97,6 @@ The foundational work completed in previous lectures includes:
 - Design method: Truth tables, Karnaugh maps, Boolean minimization
 - To be implemented in Lab 5
 
----
 
 ## 3. R-Type Instruction Detailed Analysis
 
@@ -248,7 +245,6 @@ Encoding: 000000 00010 00011 00001 00000 100000
 - PC updated to PC + 4
 - Next instruction fetch begins
 
----
 
 ## 4. Branch If Equal Instruction Detailed Analysis
 
@@ -386,7 +382,6 @@ If PCSrc = 1: PC ← Branch Target (1404)
 If PCSrc = 0: PC ← PC + 4 (1004)
 ```
 
----
 
 ## 5. Load Word Instruction Detailed Analysis
 
@@ -513,7 +508,6 @@ Encoding: 100011 01001 01000 0000000000100000
 - All other instructions must wait for this worst case
 - Major performance bottleneck
 
----
 
 ## 6. Store Word Instruction Detailed Analysis
 
@@ -646,7 +640,6 @@ _"RegDst = 0 is not wrong, but best answer is X"_
 - MemWrite MUST be correct (not X!)
 - Read/Write enables are critical for data integrity
 
----
 
 ## 7. Jump Instruction Integration
 
@@ -809,7 +802,6 @@ Jump Target:  [31:28] [Target×4] [00]
 - Shift left 2 circuits (wire routing)
 - Control unit with 10 control signal bits
 
----
 
 ## 8. Timing Analysis with Concrete Delays
 
@@ -1039,7 +1031,6 @@ Jump Target:  [31:28] [Target×4] [00]
 - Only Load Word fully utilizes clock cycle
 - Tremendous inefficiency
 
----
 
 ## 9. Performance Analysis
 
@@ -1123,7 +1114,6 @@ Waste = 22.3% of time
 | Branch      | 71.4%      | 28.6% |
 | Load        | 100.0%     | 0%    |
 
----
 
 ## 10. Path to Better Performance: Multi-Cycle Design
 
@@ -1283,7 +1273,6 @@ Speedup = 7 / 5.65 = 1.24× faster
 - Fewer hardware resources needed
 - More control complexity (FSM needed)
 
----
 
 ## 11. Preview: Pipelining
 
@@ -1326,7 +1315,6 @@ Speedup = 7 / 5.65 = 1.24× faster
 - Performance analysis
 - MIPS pipeline implementation
 
----
 
 ## Key Takeaways
 

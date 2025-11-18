@@ -53,8 +53,6 @@ _The diagram above illustrates the complete hierarchy from problems and algorith
 - Each level provides services to the level above
 - Each level hides complexity from the level above
 
----
-
 ## 2. Instruction Set Architecture (ISA) - The Key Interface
 
 ### What is an ISA?
@@ -81,8 +79,6 @@ _The diagram above illustrates the complete hierarchy from problems and algorith
 - Programs must be written using instructions from the target ISA
 - Compilers translate high-level code to ISA instructions
 - ISA is the key point combining software with hardware
-
----
 
 ## 3. From Problem to Execution - The Translation Chain
 
@@ -130,8 +126,6 @@ Runs on Microarchitecture (CPU)
 - Machine code is specific to the target ISA
 - Cannot run ARM code on MIPS processor directly
 
----
-
 ## 4. Writing Programs at Different Levels
 
 ### Machine Code (Binary)
@@ -161,8 +155,6 @@ Runs on Microarchitecture (CPU)
 - Good for large programs and general-purpose applications
 - Requires compiler to translate to assembly/machine code
 - Provides abstractions hiding hardware details
-
----
 
 ## 5. Microarchitecture Details
 
@@ -210,8 +202,6 @@ Runs on Microarchitecture (CPU)
 - Deals with electron currents
 - P-type and N-type semiconductors
 - Combined to create transistors
-
----
 
 ## 6. Abstraction Concept
 
@@ -312,8 +302,6 @@ Runs on Microarchitecture (CPU)
 - Tight coupling between hardware and software abstractions
 - Computer systems are everywhere due to these abstractions
 
----
-
 ## 7. Course Overview
 
 ### Course Objectives
@@ -395,8 +383,6 @@ Runs on Microarchitecture (CPU)
 - Running assembly programs on self-built processor
 - Complete end-to-end system
 
----
-
 ## 8. Performance Theme
 
 ### Throughout the Course
@@ -408,8 +394,6 @@ Performance is a recurring theme that will be touched upon in every topic:
 - How can performance be improved?
 - Hardware-based improvements
 - Software-based improvements
-
----
 
 ## Key Takeaways
 
@@ -425,8 +409,6 @@ Performance is a recurring theme that will be touched upon in every topic:
 10. Understanding the complete system picture is essential for computer engineers
 11. All computer systems, regardless of complexity, are built on these fundamental abstractions
 12. Performance optimization is a central theme throughout the course
-
----
 
 ## Summary
 
