@@ -1281,8 +1281,8 @@ void swap(int v[], int k) {
 
 - **Operation:** Swap two values in array
 - **Parameters:**
-  - `v[]`: Array pointer (base address)
-  - `k`: Index of first element to swap
+  - v[]: Array pointer (base address)
+  - k: Index of first element to swap
 - **Elements Swapped:** Positions k and k+1
 - **Method:** Uses temporary variable
 - **Simplicity:** Basic operation used frequently in sorting algorithms
@@ -1369,15 +1369,12 @@ Different instruction types have different bit field layouts:
 
 **R-Type (Register) Format:**
 
-```
 [Opcode 6 bits][Rs 5 bits][Rt 5 bits][Rd 5 bits][Shamt 5 bits][Funct 6 bits]
-```
 
 **I-Type (Immediate) Format:**
 
-```
 [Opcode 6 bits][Rs 5 bits][Rt 5 bits][Immediate 16 bits]
-```
+
 
 **Instruction Components Specify:**
 
