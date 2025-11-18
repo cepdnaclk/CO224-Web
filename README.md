@@ -1,6 +1,6 @@
 # Lectures on Computer Architecture
 
-A professional, static GitHub Pages website for the "Lectures on Computer Architecture" lecture series. This website provides easy access to lecture notes, downloadable materials, and organized content for students following the lecture series.
+A comprehensive guide by Isuru Nawinne about this book - a professional, static GitHub Pages website for the "Lectures on Computer Architecture" lecture series. This website provides easy access to lecture notes, downloadable materials, and organized content for students following the lecture series.
 
 ## 🌟 Features
 
