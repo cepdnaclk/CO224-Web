@@ -125,6 +125,11 @@ Encoding: 000000 00010 00011 00001 00000 100000
 
 ### 11.4.2 Datapath Elements Used
 
+<div align="center">
+  <img src="../img/Chapter 10 R Type.jpeg" width=600>
+  <p><em>Figure 1: R-Type Instruction Datapath</em></p>
+</div>
+
 **Active Elements (shown in black):**
 
 - Instruction Memory: Fetch instruction
@@ -271,6 +276,11 @@ Encoding: 000100 00001 00010 0000000001100100
 
 ### 11.5.2 Datapath Elements Used
 
+<div align="center">
+  <img src="../img/Chapter 10 Branch If Equal.jpeg" width=600>
+  <p><em>Figure 2: Branch If Equal Instruction Datapath</em></p>
+</div>
+
 **Active Elements:**
 
 - Instruction Memory: Fetch instruction
@@ -407,6 +417,11 @@ Encoding: 100011 01001 01000 0000000000100000
 **Operation:** `$8 = Memory[$9 + 32]`
 
 ### 11.6.2 Datapath Elements Used
+
+<div align="center">
+  <img src="../img/Chapter 10 Load Word.jpeg" width=600>
+  <p><em>Figure 3: Load Word Instruction Datapath</em></p>
+</div>
 
 **Active Elements:**
 
@@ -710,6 +725,11 @@ Jump Target:  [31:28] [Target×4] [00]
 - For larger jumps: Use jump register (JR) instruction
 
 ### 11.8.3 Additional Datapath Hardware
+
+<div align="center">
+  <img src="../img/Chapter 10 Jump.jpeg" width=600>
+  <p><em>Figure 4: Jump Instruction Datapath with Additional Hardware</em></p>
+</div>
 
 **New Components:**
 
