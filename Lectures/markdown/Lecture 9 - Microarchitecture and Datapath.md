@@ -1,14 +1,15 @@
-# Lecture 9: Microarchitecture and Datapath
+# Lecture 9: Microarchitecture and Datapath Design
 
-## Introduction
+*By Dr. Isuru Nawinne*
+
+## 9.1 Introduction
 
 This lecture transitions from instruction set architecture (ISA) to microarchitecture—the hardware implementation of the ISA. We explore how to build a processor that executes MIPS instructions, covering instruction formats, digital logic fundamentals, datapath construction, and single-cycle processor design. Understanding microarchitecture reveals how software instructions translate to hardware operations and provides the foundation for studying advanced processor designs including pipelining and superscalar execution.
 
----
 
-## 1. Course Context and MIPS ISA
+## 9.2 Course Context and MIPS ISA
 
-### 1.1 Transition to Hardware Implementation
+### 9.2.1 Transition to Hardware Implementation
 
 **Previous Focus**: ARM ISA
 
@@ -29,7 +30,7 @@ This lecture transitions from instruction set architecture (ISA) to microarchite
 - Well-documented architecture
 - Concepts apply to all processors
 
-### 1.2 MIPS Instruction Categories
+### 9.2.2 MIPS Instruction Categories
 
 **Three Instruction Types** (based on encoding)
 
@@ -59,7 +60,7 @@ This lecture transitions from instruction set architecture (ISA) to microarchite
 - MIPS: I-type, R-type, J-type
 - Different classification philosophy
 
-### 1.3 MIPS Instruction Encoding
+### 9.2.3 MIPS Instruction Encoding
 
 **Fixed 32-Bit Length**
 
@@ -73,6 +74,7 @@ This lecture transitions from instruction set architecture (ISA) to microarchite
 [Opcode][RS][RT][RD][SHAMT][Funct]
  6 bits  5   5   5    5      6 bits
 ```
+
 
 Fields:
 
@@ -90,6 +92,7 @@ Fields:
  6 bits  5   5   16 bits
 ```
 
+
 Fields:
 
 - **Opcode**: Varies by instruction
@@ -104,14 +107,15 @@ Fields:
  6 bits  26 bits
 ```
 
+
 Fields:
 
 - **Opcode**: 2 for J, 3 for JAL
 - **Address**: 26-bit jump target (word address)
 
-## 2. Digital Logic Review
+## 9.3 Digital Logic Review
 
-### 2.1 Information Encoding
+### 9.3.1 Information Encoding
 
 **Binary Representation**
 
@@ -125,7 +129,7 @@ Fields:
 - 32-bit instruction needs 32 wires
 - Parallel transmission within CPU
 
-### 2.2 Combinational Elements
+### 9.3.2 Combinational Elements
 
 **Definition**
 
@@ -146,7 +150,7 @@ Fields:
 - Can draw complete truth table
 - Asynchronous operation (no clock needed)
 
-### 2.3 Sequential Elements (State Elements)
+### 9.3.3 Sequential Elements (State Elements)
 
 **Definition**
 
@@ -167,7 +171,7 @@ Fields:
 - Synchronized to clock signal
 - Output depends on history
 
-### 2.4 Clocking and Timing
+### 9.3.4 Clocking and Timing
 
 **Clock Signal**
 
@@ -193,7 +197,8 @@ T = 250 ps = 0.25 ns
 f = 1/(250 × 10^-12) = 4 GHz
 ```
 
-### 2.5 Register Operations
+
+### 9.3.5 Register Operations
 
 **Basic Register**
 
@@ -248,6 +253,7 @@ Must allow time for:
 4. Setup time before next clock edge
 ```
 
+
 **Critical Path**
 
 - Longest delay path from register to register
@@ -267,7 +273,7 @@ Must allow time for:
   <p><em>Figure 3: CPU Execution Stages Overview</em></p>
 </div>
 
-### 3.1 Instruction Fetch (IF)
+### 9.4.1 Instruction Fetch (IF)
 
 **Purpose**: Retrieve next instruction from memory
 
@@ -285,7 +291,7 @@ Must allow time for:
 - Address bus from PC to memory
 - Data bus from memory to CPU
 
-### 3.2 Instruction Decode (ID)
+### 9.4.2 Instruction Decode (ID)
 
 **Purpose**: Interpret instruction and extract fields
 
@@ -318,7 +324,7 @@ Must allow time for:
 - Generates control signals
 - Determines datapath activation
 
-### 3.3 Execute (EX)
+### 9.4.3 Execute (EX)
 
 **Purpose**: Perform operation or calculate address
 
@@ -342,7 +348,7 @@ Must allow time for:
 - Zero flag indicates equality
 - Result determines branch decision
 
-### 3.4 Memory Access (MEM)
+### 9.4.4 Memory Access (MEM)
 
 **Purpose**: Read or write data memory
 
@@ -364,7 +370,7 @@ Must allow time for:
 2. Get data from RT register
 3. Write data to memory
 
-### 3.5 Register Write-Back (WB)
+### 9.4.5 Register Write-Back (WB)
 
 **Purpose**: Write result to destination register
 
@@ -380,7 +386,7 @@ Must allow time for:
 - Load: Data from memory
 - Multiplexer selects appropriate source
 
-### 3.6 PC Update
+### 9.4.6 PC Update
 
 **Purpose**: Determine next instruction address
 
@@ -394,9 +400,9 @@ Must allow time for:
 - Sequential or branch/jump target
 - Update happens at clock edge
 
-## 4. R-Type Instruction Datapath
+## 9.5 R-Type Instruction Datapath
 
-### 4.1 Register File
+### 9.5.1 Register File
 
 **Structure**:
 
@@ -418,7 +424,7 @@ Must allow time for:
 - Write Enable: Control signal
 - Synchronized (clock edge)
 
-### 4.2 R-Type Execution Flow
+### 9.5.2 R-Type Execution Flow
 
 **Instruction**: `ADD $t0, $t1, $t2` (R0 = R1 + R2)
 
@@ -441,7 +447,7 @@ Must allow time for:
 - Write Enable = 1
 - At clock edge: Result written
 
-### 4.3 ALU Control
+### 9.5.3 ALU Control
 
 **Function Field Encoding**:
 
@@ -455,15 +461,16 @@ Funct     | Operation | ALU Control
 0x2A      | SLT       | 0111
 ```
 
+
 **ALU Control Logic**:
 
 - Input: 6-bit funct field
 - Output: 4-bit ALU operation
 - Combinational logic (lookup table)
 
-## 5. I-Type Instruction Datapath
+## 9.6 I-Type Instruction Datapath
 
-### 5.1 Differences from R-Type
+### 9.6.1 Differences from R-Type
 
 **Operand Sources**:
 
@@ -476,7 +483,7 @@ Funct     | Operation | ALU Control
 - RT: Destination register (NOT source!)
 - Immediate: 16-bit operand
 
-### 5.2 Sign Extension
+### 9.6.2 Sign Extension
 
 **Problem**: 16-bit immediate, 32-bit ALU
 
@@ -494,9 +501,10 @@ Funct     | Operation | ALU Control
 16-bit: 0xFFFB → 32-bit: 0xFFFFFFFB (-5)
 ```
 
+
 **Hardware**: Simple wire replication (fast)
 
-### 5.3 Multiplexer for ALU Input
+### 9.6.3 Multiplexer for ALU Input
 
 **ALU Input B Selection**:
 
@@ -511,9 +519,10 @@ ALUSrc = 0: Use register (R-type, branch)
 ALUSrc = 1: Use immediate (I-type)
 ```
 
-## 6. Load/Store Instruction Datapath
 
-### 6.1 Address Calculation
+## 9.7 Load/Store Instruction Datapath
+
+### 9.7.1 Address Calculation
 
 **Formula**: Address = Base + Offset
 
@@ -530,7 +539,8 @@ LW $t1, 8($t0)    # Load from $t0 + 8
 SW $t2, -4($sp)   # Store to $sp - 4
 ```
 
-### 6.2 Load Word (LW)
+
+### 9.7.2 Load Word (LW)
 
 **Instruction Format**:
 
@@ -550,7 +560,7 @@ SW $t2, -4($sp)   # Store to $sp - 4
 
 - Fetch → Register Read → ALU → Memory → Register Write
 
-### 6.3 Store Word (SW)
+### 9.7.3 Store Word (SW)
 
 **Instruction Format**:
 
@@ -571,7 +581,7 @@ SW $t2, -4($sp)   # Store to $sp - 4
 - Memory write instead of read
 - No register write stage
 
-### 6.4 Data Memory
+### 9.7.4 Data Memory
 
 **Interface**:
 
@@ -590,9 +600,9 @@ SW $t2, -4($sp)   # Store to $sp - 4
 - Input 1: Memory data (load)
 - Select: MemtoReg signal
 
-## 7. Branch Instruction Datapath
+## 9.8 Branch Instruction Datapath
 
-### 7.1 Branch Types
+### 9.8.1 Branch Types
 
 **BEQ (Branch if Equal)**:
 
@@ -604,7 +614,7 @@ SW $t2, -4($sp)   # Store to $sp - 4
 - Compare RS and RT
 - Branch if RS != RT
 
-### 7.2 Branch Target Calculation
+### 9.8.2 Branch Target Calculation
 
 **Components**:
 
@@ -623,7 +633,7 @@ SW $t2, -4($sp)   # Store to $sp - 4
 - Multiply by 4: Byte offset
 - Shift left 2 (wire routing, no hardware!)
 
-### 7.3 Branch Execution
+### 9.8.3 Branch Execution
 
 **Step 1: Register Comparison**
 
@@ -649,13 +659,14 @@ BEQ: PCSrc = Branch AND Zero
 BNE: PCSrc = Branch AND NOT(Zero)
 ```
 
+
 **Multiplexer**:
 
 - Input 0: PC + 4 (sequential)
 - Input 1: Branch target
 - Select: PCSrc
 
-### 7.4 Sign Extension and Shifting
+### 9.8.4 Sign Extension and Shifting
 
 **Sign Extension**: Preserves signed offset
 
@@ -676,7 +687,7 @@ BNE: PCSrc = Branch AND NOT(Zero)
   <p><em>Figure 4: Complete Single-Cycle CPU Control and Datapath</em></p>
 </div>
 
-### 8.1 Integrated Components
+### 9.9.1 Integrated Components
 
 **Instruction Fetch**:
 
@@ -718,7 +729,7 @@ BNE: PCSrc = Branch AND NOT(Zero)
 - Register write data (ALU vs memory)
 - Next PC (PC+4 vs branch target)
 
-### 8.2 Control Signals
+### 9.9.2 Control Signals
 
 **Generated by Control Unit**:
 
@@ -731,7 +742,7 @@ BNE: PCSrc = Branch AND NOT(Zero)
 7. RegWrite: Register write enable
 8. ALUOp: ALU operation type
 
-### 8.3 Parallel Operations
+### 9.9.3 Parallel Operations
 
 **Key Insight**: Hardware operates in PARALLEL
 
@@ -745,7 +756,7 @@ BNE: PCSrc = Branch AND NOT(Zero)
 - Produces meaningless output (no immediate in R-type)
 - Multiplexer doesn't select it (ALUSrc = 0)
 
-### 8.4 Critical Path Analysis
+### 9.9.4 Critical Path Analysis
 
 **Path for Load Word** (longest):
 
@@ -761,6 +772,7 @@ BNE: PCSrc = Branch AND NOT(Zero)
 Total:                    950 ps
 ```
 
+
 **Clock Period**: Must be ≥ 950 ps
 **Max Frequency**: 1/950 ps ≈ 1.05 GHz
 
@@ -770,7 +782,7 @@ Total:                    950 ps
 - Fast R-type (650 ps) waits
 - Wasted time per fast instruction
 
-### 8.5 Single-Cycle Disadvantages
+### 9.9.5 Single-Cycle Disadvantages
 
 **Inefficiency**:
 

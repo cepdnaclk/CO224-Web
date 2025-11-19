@@ -1,14 +1,15 @@
 # Lecture 6: Branching and Control Flow
 
-## Introduction
+*By Dr. Kisaru Liyanage*
+
+## 6.1 Introduction
 
 Control flow is what distinguishes computers from simple calculators—the ability to make decisions and alter execution based on conditions. This lecture explores conditional operations and branching in ARM assembly, covering comparison instructions, conditional branches, loop implementation, and PC-relative addressing. Understanding these mechanisms is essential for translating high-level control structures (if statements, loops) into assembly code and for comprehending how processors implement dynamic program behavior.
 
----
 
-## 1. Fundamentals of Conditional Execution
+## 6.2 Fundamentals of Conditional Execution
 
-### 1.1 Decision-Making in Computers
+### 6.2.1 Decision-Making in Computers
 
 **What Makes Computers Powerful**
 
@@ -24,7 +25,7 @@ Control flow is what distinguishes computers from simple calculators—the abili
 - **Unconditional branching**: Always jump
 - **Function calls**: Branch with return address saving
 
-### 1.2 Program Status Register (PSR)
+### 6.2.2 Program Status Register (PSR)
 
 **Status Flags**
 
@@ -55,9 +56,9 @@ If R1 = 5, R2 = 3:
 - C = 1 (no borrow needed)
 - V = 0 (no overflow)
 
-## 2. Comparison Instructions
+## 6.3 Comparison Instructions
 
-### 2.1 Compare (CMP)
+### 6.3.1 Compare (CMP)
 
 **Syntax**
 
@@ -83,7 +84,7 @@ CMP R1, R2           ; Compares 10 with 5
                       ; Z = 0, N = 0
 ```
 
-### 2.2 Compare Negative (CMN)
+### 6.3.2 Compare Negative (CMN)
 
 **Syntax**
 
@@ -99,7 +100,7 @@ CMN Rn, #imm
 - Equivalent to CMP Rn, -Rm
 - Useful for checking if sum equals zero
 
-### 2.3 Test (TST)
+### 6.3.3 Test (TST)
 
 **Syntax**
 
@@ -122,7 +123,7 @@ TST R1, #0x20        ; Test bit 5
 BEQ bit_clear        ; Branch if bit was clear (Z=1)
 ```
 
-### 2.4 Test Equivalence (TEQ)
+### 6.3.4 Test Equivalence (TEQ)
 
 **Syntax**
 
@@ -138,9 +139,9 @@ TEQ Rn, #imm
 - Z=1 if values are equal
 - Used to compare values without affecting C or V flags
 
-## 3. Conditional Branch Instructions
+## 6.4 Conditional Branch Instructions
 
-### 3.1 Branch if Equal (BEQ)
+### 6.4.1 Branch if Equal (BEQ)
 
 **Syntax**
 
@@ -163,7 +164,7 @@ equal_label:
 ; Code if equal
 ```
 
-### 3.2 Branch if Not Equal (BNE)
+### 6.4.2 Branch if Not Equal (BNE)
 
 **Syntax**
 
@@ -186,7 +187,7 @@ not_zero:
 ; Code if R3 is non-zero
 ```
 
-### 3.3 Signed Comparison Branches
+### 6.4.3 Signed Comparison Branches
 
 **Branch if Greater or Equal (BGE)**
 
@@ -226,7 +227,7 @@ greater_equal:
 ; Code if R1 >= R2
 ```
 
-### 3.4 Unsigned Comparison Branches
+### 6.4.4 Unsigned Comparison Branches
 
 **Branch if Higher or Same (BHS)** (also called BCS - Branch if Carry Set)
 
@@ -256,7 +257,7 @@ BLS label            ; Branch if Rn <= Rm (unsigned)
                       ; Condition: C==0 OR Z==1
 ```
 
-### 3.5 Signed vs. Unsigned Example
+### 6.4.5 Signed vs. Unsigned Example
 
 **Key Difference**
 
@@ -277,7 +278,7 @@ BLT less_signed      ; BRANCH TAKEN
 - **Signed**: Comparing integers that can be negative (temperatures, offsets, differences)
 - **Unsigned**: Comparing addresses, array indices, sizes, counts
 
-### 3.6 Unconditional Branch
+### 6.4.6 Unconditional Branch
 
 **Syntax**
 
@@ -301,9 +302,9 @@ end:
 ; Continue execution here
 ```
 
-## 4. Labels in Assembly
+## 6.5 Labels in Assembly
 
-### 4.1 Label Definition
+### 6.5.1 Label Definition
 
 **Purpose**
 
@@ -337,7 +338,7 @@ loop:
     B start          ; Branch to start label
 ```
 
-### 4.2 Label Resolution
+### 6.5.2 Label Resolution
 
 **Assembly Process**
 
@@ -353,9 +354,9 @@ loop:
 - Third instruction: address 8
 - Physical addresses determined at load time
 
-## 5. Implementing Control Structures
+## 6.6 Implementing Control Structures
 
-### 5.1 If Statement
+### 6.6.1 If Statement
 
 **C Code**
 
@@ -373,6 +374,7 @@ else
     BNE else         ; Branch to else if not equal
     ADD R0, R1, R2   ; f = g + h (then clause)
     B exit           ; Skip else clause
+
 else:
     SUB R0, R1, R2   ; f = g - h (else clause)
 exit:
@@ -387,7 +389,8 @@ exit:
     SUBNE R0, R1, R2 ; f = g - h (executed only if not equal)
 ```
 
-### 5.2 If-Else Ladder
+
+### 6.6.2 If-Else Ladder
 
 **C Code**
 
@@ -409,6 +412,7 @@ else
     ; x > 0
     MOV R0, #1
     B done
+
 negative:
     MOV R0, #-1
     B done
@@ -418,7 +422,7 @@ done:
     ; Continue...
 ```
 
-### 5.3 While Loop
+### 6.6.3 While Loop
 
 **C Code**
 
@@ -442,7 +446,7 @@ end_loop:
     ; Continue...
 ```
 
-### 5.4 For Loop
+### 6.6.4 For Loop
 
 **C Code**
 
@@ -456,6 +460,7 @@ for (i = 0; i < 10; i++) {
 
 ```assembly
     MOV R1, #0       ; i = 0 (initialization)
+
 for_loop:
     CMP R1, #10      ; Compare i with 10
     BGE end_for      ; Exit if i >= 10
@@ -466,7 +471,7 @@ end_for:
     ; Continue...
 ```
 
-### 5.5 Do-While Loop
+### 6.6.5 Do-While Loop
 
 **C Code**
 
@@ -493,9 +498,9 @@ do_loop:
 - Body executes at least once
 - Condition checked at end, not beginning
 
-## 6. Array Access in Loops
+## 6.7 Array Access in Loops
 
-### 6.1 Static Array Indexing
+### 6.7.1 Static Array Indexing
 
 **C Code**
 
@@ -510,6 +515,7 @@ while (save[i] == k)
     ; R6 = base address of save array
     ; R3 = i (index)
     ; R5 = k (comparison value)
+
 loop:
     ADD R12, R6, R3, LSL #2  ; address = base + (i * 4)
     LDR R0, [R12, #0]        ; R0 = save[i]
@@ -527,7 +533,7 @@ exit:
 - Words are 4 bytes, so array element i is at base + (i × 4)
 - Efficient: shift is faster than multiplication
 
-### 6.2 Array Traversal
+### 6.7.2 Array Traversal
 
 **C Code**
 
@@ -544,6 +550,7 @@ for (int i = 0; i < 10; i++) {
     LDR R6, =arr     ; R6 = base address of array
     MOV R0, #0       ; sum = 0
     MOV R1, #0       ; i = 0
+
 loop:
     CMP R1, #10
     BGE done
@@ -556,16 +563,16 @@ done:
     ; R0 contains sum
 ```
 
-## 7. PC-Relative Addressing
+## 6.8 PC-Relative Addressing
 
-### 7.1 Branch Instruction Encoding
+### 6.8.1 Branch Instruction Encoding
 
 **32-Bit Format**
 
-```
+
 [Cond][1010][Offset]
  4-bit 4-bit 24-bit
-```
+
 
 **Fields**
 
@@ -573,7 +580,7 @@ done:
 - **1010**: Fixed format field for branch
 - **Offset**: 24-bit signed offset
 
-### 7.2 Address Calculation
+### 6.8.2 Address Calculation
 
 **Problem with Absolute Addressing**
 
@@ -590,9 +597,9 @@ done:
 
 **Offset Calculation**
 
-```
+
 Offset = (Target Address - PC) / 4
-```
+
 
 **Why Divide by 4?**
 
@@ -603,16 +610,16 @@ Offset = (Target Address - PC) / 4
 
 **Example**
 
-```
+
 Current PC: 0x1000
 Target: 0x1020
 Offset = (0x1020 - 0x1000) / 4 = 0x20 / 4 = 8 instructions
 
 Encoded offset in branch instruction: 8
 At execution: PC = 0x1000 + (8 × 4) = 0x1020
-```
 
-### 7.3 Advantages of PC-Relative
+
+### 6.8.3 Advantages of PC-Relative
 
 **Position-Independent Code**
 
@@ -631,9 +638,9 @@ At execution: PC = 0x1000 + (8 × 4) = 0x1020
 - PC-relative naturally handles this case
 - Absolute addressing wastes bits for nearby targets
 
-## 8. Conditional Execution (Alternative to Branching)
+## 6.9 Conditional Execution (Alternative to Branching)
 
-### 8.1 Conditional Instruction Suffixes
+### 6.9.1 Conditional Instruction Suffixes
 
 **Concept**
 
@@ -657,7 +664,7 @@ SUBNE R0, R3, R4     ; Execute SUB only if R1 != R2
 MOVGT R5, #10        ; Execute MOV only if R1 > R2
 ```
 
-### 8.2 Conditional Execution Example
+### 6.9.2 Conditional Execution Example
 
 **C Code**
 
@@ -675,6 +682,7 @@ else
     BNE else
     MOV R0, R1       ; max = a
     B done
+
 else:
     MOV R0, R2       ; max = b
 done:
@@ -688,7 +696,8 @@ done:
     MOVNE R0, R2     ; max = b (if not equal)
 ```
 
-### 8.3 Advantages and Limitations
+
+### 6.9.3 Advantages and Limitations
 
 **Advantages**
 
@@ -711,9 +720,9 @@ done:
 - Short computations with single result
 - Performance-critical paths where branches hurt
 
-## 9. Basic Blocks
+## 6.10 Basic Blocks
 
-### 9.1 Definition
+### 6.10.1 Definition
 
 **Basic Block Characteristics**
 
@@ -739,7 +748,7 @@ block2:
     BLT block2       ; Exit point of block 2
 ```
 
-### 9.2 Importance in Compilation
+### 6.10.2 Importance in Compilation
 
 **Compiler Optimizations**
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 4: Introduction to ARM Assembly - CO224 Computer Architecture</title>
+    <title>Lecture 4: Introduction to ARM Assembly - Lectures on Computer Architecture</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -18,23 +18,50 @@
                 Back to All Lectures
             </a>
             <h1 class="lecture-title">Lecture 4: Introduction to ARM Assembly</h1>
-            <p class="lecture-meta">CO224 - Computer Architecture</p>
+            <p class="lecture-meta">Lectures on Computer Architecture</p>
         </div>
     </header>
 
     <main class="lecture-content-area container">
         <div class="content-body">
-            <h1>Lecture 4: Introduction to ARM Assembly</h1>
+            <!-- Video Section -->
+            <div class="video-container">
+                <div class="video-thumbnail">
+                    <a href="https://www.youtube.com/watch?v=s1X7Rr7rzag" target="_blank" class="video-play-overlay">
+                        <img src="https://img.youtube.com/vi/s1X7Rr7rzag/maxresdefault.jpg" 
+                             alt="Lecture 4 Video Thumbnail"
+                             onerror="this.src='https://img.youtube.com/vi/s1X7Rr7rzag/hqdefault.jpg'">
+                        <div class="play-button">
+                            <svg width="68" height="48" viewBox="0 0 68 48" fill="none">
+                                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
+                                <path d="M45 24L27 14v20" fill="white"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <p class="video-notice">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Click the thumbnail above to watch the video lecture on YouTube
+                    </p>
+                </div>
+            </div>
 
-<h2>Introduction</h2>
+            
+<em>By Dr. Kisaru Liyanage</em>
+
+<h2>4.1 Introduction</h2>
 
 <p>This lecture introduces ARM assembly language programming, providing the foundation for understanding how high-level programs translate to machine code. We explore the ARM instruction set architecture (ISA), focusing on its RISC design philosophy, register organization, basic instruction formats, and the toolchain used for development. Understanding assembly language is essential for comprehending how processors execute programs and for optimizing performance-critical code.</p>
 
-<p>---</p>
 
-<h2>1. ARM Architecture Overview</h2>
+<h2>4.2 ARM Architecture Overview</h2>
 
-<h3>1.1 RISC Philosophy</h3>
+<h3>4.2.1 RISC Philosophy</h3>
 
 <strong>Reduced Instruction Set Computer (RISC)</strong>
 
@@ -49,12 +76,15 @@
 
 <strong>Contrasted with CISC (Complex Instruction Set Computer)</strong>
 
-<ul>
-<li>CISC: Variable-length instructions, complex operations</li>
-<li>CISC: Fewer registers, memory operands in arithmetic</li>
-<li>RISC: Simpler instructions, more instructions per program</li>
-<li>RISC: Regular structure enables pipelining</li>
-</ul>
+<p>| Feature | RISC | CISC |</p>
+<p>|---------|------|------|</p>
+<p>| <strong>Instruction Format</strong> | Simple, uniform format | Variable-length instructions |</p>
+<p>| <strong>Instruction Complexity</strong> | Simple instructions, more instructions per program | Complex operations |</p>
+<p>| <strong>Memory Access</strong> | Load/store architecture (only LOAD/STORE access memory) | Memory operands in arithmetic operations |</p>
+<p>| <strong>Registers</strong> | Large number of general-purpose registers | Fewer registers |</p>
+<p>| <strong>Hardware Design</strong> | Hardware simplicity for higher clock rates | More complex hardware |</p>
+<p>| <strong>Pipelining</strong> | Regular structure enables efficient pipelining | More difficult to pipeline |</p>
+
 
 <strong>ARM Design Principles</strong>
 
@@ -66,7 +96,7 @@
 <li>Consistent design across instruction types</li>
 </ul>
 
-<h3>1.2 ARM Registers</h3>
+<h3>4.2.2 ARM Registers</h3>
 
 <strong>General-Purpose Registers</strong>
 
@@ -80,8 +110,8 @@
 </ul>
 
 <strong>Register Usage Conventions</strong>
+<img src="../img/Chapter%202%20ARM%20Conventions.jpg" alt="Computer System Abstraction Layers" width="600">
 
-``<code>
 <p>R0-R3:   Argument/result registers</p>
 <p>- Pass parameters to functions</p>
 <p>- Return values from functions</p>
@@ -106,7 +136,7 @@
 <p>R15 (PC): Program Counter</p>
 <p>- Always points to next instruction</p>
 <p>- Modifying PC changes execution flow</p>
-</code>`<code>
+
 
 <strong>Why So Many Registers?</strong>
 
@@ -117,7 +147,7 @@
 <li>Improves performance through locality</li>
 </ul>
 
-<h3>1.3 Memory Organization</h3>
+<h3>4.2.3 Memory Organization</h3>
 
 <strong>Little-Endian Byte Ordering</strong>
 
@@ -125,10 +155,12 @@
 <li>Least significant byte at lowest address</li>
 <li>Example: 0x12345678 stored as:</li>
 </ul>
-</code>`<code>
+
+``<code>
 <p>Address:  [base+0] [base+1] [base+2] [base+3]</p>
 <p>Content:     78       56       34       12</p>
 </code>`<code>
+
 
 <strong>Word Alignment</strong>
 
@@ -146,9 +178,9 @@
 <li>Instructions and data in same address space (Von Neumann architecture)</li>
 </ul>
 
-<h2>2. ARM Instruction Format</h2>
+<h2>4.3 ARM Instruction Format</h2>
 
-<h3>2.1 Instruction Structure</h3>
+<h3>4.3.1 Instruction Structure</h3>
 
 <strong>Fixed 32-Bit Length</strong>
 
@@ -167,8 +199,9 @@
 
 <strong>Example: ADD Instruction</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>ADD R1, R2, R3    ; R1 = R2 + R3</p>
+</code>`<code>
 
 <p>Encoding includes:</p>
 <ul>
@@ -178,9 +211,9 @@
 <li>Source register 1 (R2)</li>
 <li>Source register 2 (R3)</li>
 </ul>
-</code>`<code>
 
-<h3>2.2 Instruction Types</h3>
+
+<h3>4.3.2 Instruction Types</h3>
 
 <strong>Data Processing Instructions</strong>
 
@@ -208,20 +241,21 @@
 <li>Return: MOV PC, LR</li>
 </ul>
 
-<h3>2.3 Operand Types</h3>
+<h3>4.3.3 Operand Types</h3>
 
 <strong>Register Operands</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>ADD R0, R1, R2    ; R0 = R1 + R2 (all registers)</p>
 </code>`<code>
 
 <strong>Immediate Operands</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>ADD R0, R1, #5    ; R0 = R1 + 5 (# indicates immediate)</p>
 <p>MOV R2, #100      ; R2 = 100</p>
 </code>`<code>
+
 
 <strong>Immediate Value Constraints</strong>
 
@@ -233,141 +267,186 @@
 
 <strong>Shifted Register Operands</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>ADD R0, R1, R2, LSL #2    ; R0 = R1 + (R2 << 2)</p>
 <p>SUB R3, R4, R5, LSR #1    ; R3 = R4 - (R5 >> 1)</p>
 </code>`<code>
 
-<h2>3. Basic ARM Instructions</h2>
 
-<h3>3.1 Arithmetic Instructions</h3>
+<h2>4.4 Basic ARM Instructions</h2>
+
+<h3>4.4.1 Arithmetic Instructions</h3>
 
 <strong>Addition</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>ADD Rd, Rn, Rm       ; Rd = Rn + Rm</p>
 <p>ADD Rd, Rn, #imm     ; Rd = Rn + immediate</p>
+</code>`<code>
 
 <p>Examples:</p>
+</code>`<code>assembly
 <p>ADD R0, R1, R2       ; R0 = R1 + R2</p>
 <p>ADD R3, R3, #1       ; R3 = R3 + 1 (increment)</p>
 </code>`<code>
 
+
 <strong>Subtraction</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>SUB Rd, Rn, Rm       ; Rd = Rn - Rm</p>
 <p>SUB Rd, Rn, #imm     ; Rd = Rn - immediate</p>
 <p>RSB Rd, Rn, #imm     ; Rd = immediate - Rn (reverse subtract)</p>
+</code>`<code>
 
 <p>Examples:</p>
+</code>`<code>assembly
 <p>SUB R0, R1, R2       ; R0 = R1 - R2</p>
 <p>SUB R4, R4, #10      ; R4 = R4 - 10 (decrement)</p>
 <p>RSB R5, R6, #0       ; R5 = 0 - R6 (negate)</p>
 </code>`<code>
 
+
 <strong>Multiplication</strong> (covered in later tutorials)
 
-</code>`<code>
+</code>`<code>assembly
 <p>MUL Rd, Rn, Rm       ; Rd = Rn × Rm (lower 32 bits)</p>
 </code>`<code>
 
-<h3>3.2 Logical Instructions</h3>
+
+<h3>4.4.2 Logical Instructions</h3>
 
 <strong>AND Operation</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>AND Rd, Rn, Rm       ; Rd = Rn AND Rm</p>
 <p>AND Rd, Rn, #imm     ; Rd = Rn AND immediate</p>
+</code>`<code>
 
 <p>Usage: Bit masking, clearing specific bits</p>
-<p>Example: AND R0, R0, #0xFF  ; Keep only lower 8 bits</p>
+
+<p>Example:</p>
+</code>`<code>assembly
+<p>AND R0, R0, #0xFF    ; Keep only lower 8 bits</p>
 </code>`<code>
+
 
 <strong>OR Operation</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>ORR Rd, Rn, Rm       ; Rd = Rn OR Rm (ORR in ARM)</p>
 <p>ORR Rd, Rn, #imm     ; Rd = Rn OR immediate</p>
+</code>`<code>
 
 <p>Usage: Setting specific bits</p>
-<p>Example: ORR R1, R1, #0x80  ; Set bit 7</p>
+
+<p>Example:</p>
+</code>`<code>assembly
+<p>ORR R1, R1, #0x80    ; Set bit 7</p>
 </code>`<code>
+
 
 <strong>Exclusive OR</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>EOR Rd, Rn, Rm       ; Rd = Rn XOR Rm</p>
 <p>EOR Rd, Rn, #imm     ; Rd = Rn XOR immediate</p>
+</code>`<code>
 
 <p>Usage: Toggling bits, fast comparison</p>
-<p>Example: EOR R2, R2, R2     ; R2 = 0 (XOR with itself)</p>
+
+<p>Example:</p>
+</code>`<code>assembly
+<p>EOR R2, R2, R2       ; R2 = 0 (XOR with itself)</p>
 </code>`<code>
+
 
 <strong>Move and Move Not</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>MOV Rd, Rm           ; Rd = Rm</p>
 <p>MOV Rd, #imm         ; Rd = immediate</p>
 <p>MVN Rd, Rm           ; Rd = NOT Rm (bitwise complement)</p>
+</code>`<code>
 
 <p>Examples:</p>
+</code>`<code>assembly
 <p>MOV R0, R1           ; Copy R1 to R0</p>
 <p>MOV R2, #0           ; Clear R2</p>
 <p>MVN R3, R4           ; R3 = ~R4 (invert all bits)</p>
 </code>`<code>
 
-<h3>3.3 Shift Operations</h3>
+
+<h3>4.4.3 Shift Operations</h3>
 
 <strong>Logical Shift Left (LSL)</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>LSL Rd, Rn, #shift   ; Rd = Rn << shift</p>
 <p>MOV Rd, Rn, LSL #shift</p>
+</code>`<code>
 
 <p>Effect: Multiplies by 2^shift</p>
-<p>Example: LSL R0, R1, #2  ; R0 = R1 × 4</p>
+
+<p>Example:</p>
+</code>`<code>assembly
+<p>LSL R0, R1, #2       ; R0 = R1 × 4</p>
 </code>`<code>
 
 <strong>Logical Shift Right (LSR)</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>LSR Rd, Rn, #shift   ; Rd = Rn >> shift (unsigned)</p>
 <p>MOV Rd, Rn, LSR #shift</p>
+</code>`<code>
 
 <p>Effect: Divides by 2^shift (unsigned)</p>
-<p>Example: LSR R0, R1, #3  ; R0 = R1 / 8</p>
+
+<p>Example:</p>
+</code>`<code>assembly
+<p>LSR R0, R1, #3       ; R0 = R1 / 8</p>
 </code>`<code>
 
 <strong>Arithmetic Shift Right (ASR)</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>ASR Rd, Rn, #shift   ; Rd = Rn >> shift (signed)</p>
+</code>`<code>
 
 <p>Effect: Divides by 2^shift, preserves sign</p>
-<p>Example: ASR R0, R1, #2  ; R0 = R1 / 4 (signed)</p>
+
+<p>Example:</p>
+</code>`<code>assembly
+<p>ASR R0, R1, #2       ; R0 = R1 / 4 (signed)</p>
 </code>`<code>
 
 <strong>Rotate Right (ROR)</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>ROR Rd, Rn, #shift   ; Rotate Rn right by shift</p>
+</code>`<code>
 
 <p>Effect: Bits rotated off right end reappear at left</p>
-<p>Example: ROR R0, R1, #8  ; Rotate R1 right by 8 bits</p>
+
+<p>Example:</p>
+</code>`<code>assembly
+<p>ROR R0, R1, #8       ; Rotate R1 right by 8 bits</p>
 </code>`<code>
 
-<h2>4. Memory Access Instructions</h2>
 
-<h3>4.1 Load Instructions</h3>
+<h2>4.5 Memory Access Instructions</h2>
+
+<h3>4.5.1 Load Instructions</h3>
 
 <strong>Load Word (LDR)</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>LDR Rd, [Rn]         ; Rd = Memory[Rn]</p>
 <p>LDR Rd, [Rn, #offset]; Rd = Memory[Rn + offset]</p>
+</code>`<code>
 
 <p>Examples:</p>
+</code>`<code>assembly
 <p>LDR R0, [R1]         ; Load word from address in R1</p>
 <p>LDR R2, [R3, #4]     ; Load from address R3+4</p>
 <p>LDR R4, [R5, #-8]    ; Load from address R5-8</p>
@@ -375,99 +454,114 @@
 
 <strong>Load Byte (LDRB)</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>LDRB Rd, [Rn, #offset]; Load one byte, zero-extend to 32 bits</p>
+</code>`<code>
 
 <p>Example:</p>
+</code>`<code>assembly
 <p>LDRB R0, [R1]        ; R0 = (byte at R1), upper 24 bits = 0</p>
 </code>`<code>
 
 <strong>Load Halfword (LDRH)</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>LDRH Rd, [Rn, #offset]; Load 16 bits, zero-extend to 32 bits</p>
+</code>`<code>
 
 <p>Example:</p>
+</code>`<code>assembly
 <p>LDRH R0, [R1, #2]    ; R0 = (halfword at R1+2), upper 16 bits = 0</p>
 </code>`<code>
 
 <strong>Pseudo-Instruction for Loading Addresses</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>LDR Rd, =label       ; Load address of label into Rd</p>
 <p>LDR Rd, =value       ; Load 32-bit constant into Rd</p>
+</code>`<code>
 
 <p>Examples:</p>
+</code>`<code>assembly
 <p>LDR R0, =array       ; R0 = address of array</p>
 <p>LDR R1, =0x12345678  ; R1 = 0x12345678 (large immediate)</p>
 </code>`<code>
 
-<h3>4.2 Store Instructions</h3>
+
+<h3>4.5.2 Store Instructions</h3>
 
 <strong>Store Word (STR)</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>STR Rd, [Rn]         ; Memory[Rn] = Rd</p>
 <p>STR Rd, [Rn, #offset]; Memory[Rn + offset] = Rd</p>
+</code>`<code>
 
 <p>Examples:</p>
+</code>`<code>assembly
 <p>STR R0, [R1]         ; Store R0 to address in R1</p>
 <p>STR R2, [R3, #8]     ; Store R2 to address R3+8</p>
 </code>`<code>
 
 <strong>Store Byte (STRB)</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>STRB Rd, [Rn, #offset]; Store lower 8 bits of Rd</p>
+</code>`<code>
 
 <p>Example:</p>
+</code>`<code>assembly
 <p>STRB R0, [R1]        ; Store lower byte of R0 to address R1</p>
 </code>`<code>
 
 <strong>Store Halfword (STRH)</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>STRH Rd, [Rn, #offset]; Store lower 16 bits of Rd</p>
+</code>`<code>
 
 <p>Example:</p>
+</code>`<code>assembly
 <p>STRH R0, [R1, #4]    ; Store lower halfword of R0 to R1+4</p>
 </code>`<code>
 
-<h3>4.3 Addressing Modes</h3>
+
+<h3>4.5.3 Addressing Modes</h3>
 
 <strong>Offset Addressing</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>LDR R0, [R1, #4]     ; R0 = Memory[R1 + 4], R1 unchanged</p>
 </code>`<code>
 
 <strong>Pre-indexed Addressing</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>LDR R0, [R1, #4]!    ; R1 = R1 + 4, then R0 = Memory[R1]</p>
 <p>; ! indicates update base register</p>
 </code>`<code>
 
 <strong>Post-indexed Addressing</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>LDR R0, [R1], #4     ; R0 = Memory[R1], then R1 = R1 + 4</p>
 </code>`<code>
 
 <strong>Register Offset</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>LDR R0, [R1, R2]     ; R0 = Memory[R1 + R2]</p>
 <p>LDR R0, [R1, R2, LSL #2] ; R0 = Memory[R1 + (R2 << 2)]</p>
 </code>`<code>
 
-<h2>5. Assembly Program Structure</h2>
 
-<h3>5.1 Directives</h3>
+<h2>4.6 Assembly Program Structure</h2>
+
+<h3>4.6.1 Directives</h3>
 
 <strong>Section Directives</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>.text                ; Code section (instructions)</p>
 <p>.data                ; Data section (initialized variables)</p>
 <p>.bss                 ; Uninitialized data section</p>
@@ -475,21 +569,22 @@
 
 <strong>Global and External</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>.global main         ; Make symbol visible to linker</p>
 <p>.extern printf       ; Declare external symbol</p>
 </code>`<code>
 
 <strong>Data Definition</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>.word value          ; Define 32-bit word</p>
 <p>.byte value          ; Define byte</p>
 <p>.asciz "string"      ; Define null-terminated string</p>
 <p>.space n             ; Reserve n bytes of space</p>
 </code>`<code>
 
-<h3>5.2 Labels</h3>
+
+<h3>4.6.2 Labels</h3>
 
 <strong>Purpose</strong>
 
@@ -501,7 +596,7 @@
 
 <strong>Syntax</strong>
 
-</code>`<code>
+</code>`<code>assembly
 <p>label:               ; Label for instruction</p>
 <p>MOV R0, #1</p>
 <p>ADD R1, R0, R2</p>
@@ -510,7 +605,8 @@
 <p>.word 1, 2, 3, 4</p>
 </code>`<code>
 
-<h3>5.3 Simple Program Example</h3>
+
+<h3>4.6.3 Simple Program Example</h3>
 
 </code>`<code>assembly
 <p>.text</p>
@@ -528,9 +624,10 @@
 <p>.asciz "Hello, ARM!"</p>
 </code>`<code>
 
-<h2>6. ARM Development Tools</h2>
 
-<h3>6.1 Toolchain Components</h3>
+<h2>4.7 ARM Development Tools</h2>
+
+<h3>4.7.1 Toolchain Components</h3>
 
 <strong>Cross-Compiler</strong>
 
@@ -562,7 +659,7 @@
 <li>Useful for testing without ARM hardware</li>
 </ul>
 
-<h3>6.2 Compilation Process</h3>
+<h3>4.7.2 Compilation Process</h3>
 
 <strong>From C to Executable</strong>
 
@@ -601,7 +698,8 @@
 <p>arm-linux-gnueabi-gcc program.c -o program</p>
 </code>`<code>
 
-<h3>6.3 Debugging and Inspection</h3>
+
+<h3>4.7.3 Debugging and Inspection</h3>
 
 <strong>GDB (GNU Debugger)</strong>
 
@@ -630,9 +728,10 @@
 <p>arm-linux-gnueabi-nm program.o</p>
 </code>`<code>
 
-<h2>7. Programming in ARM Assembly</h2>
 
-<h3>7.1 Translating C to ARM</h3>
+<h2>4.8 Programming in ARM Assembly</h2>
+
+<h3>4.8.1 Translating C to ARM</h3>
 
 <strong>C Code:</strong>
 
@@ -669,7 +768,8 @@
 <p>LDR R1, [R0, #4] ; R1 = arr[1] (offset 4 bytes)</p>
 </code>`<code>
 
-<h3>7.2 Common Patterns</h3>
+
+<h3>4.8.2 Common Patterns</h3>
 
 <strong>Clearing a Register</strong>
 
@@ -706,6 +806,7 @@
 <p>EOR R1, R0, R1</p>
 <p>EOR R0, R0, R1</p>
 </code>``
+
 
 <h2>Key Takeaways</h2>
 

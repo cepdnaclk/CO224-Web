@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 11: Single-Cycle Execution - CO224 Computer Architecture</title>
+    <title>Lecture 11: Single-Cycle Execution - Lectures on Computer Architecture</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -18,23 +18,50 @@
                 Back to All Lectures
             </a>
             <h1 class="lecture-title">Lecture 11: Single-Cycle Execution</h1>
-            <p class="lecture-meta">CO224 - Computer Architecture</p>
+            <p class="lecture-meta">Lectures on Computer Architecture</p>
         </div>
     </header>
 
     <main class="lecture-content-area container">
         <div class="content-body">
-            <h1>Lecture 11: Complete Single-Cycle MIPS Processor and Performance Analysis</h1>
+            <!-- Video Section -->
+            <div class="video-container">
+                <div class="video-thumbnail">
+                    <a href="https://www.youtube.com/watch?v=TegJ2TBihPw" target="_blank" class="video-play-overlay">
+                        <img src="https://img.youtube.com/vi/TegJ2TBihPw/maxresdefault.jpg" 
+                             alt="Lecture 11 Video Thumbnail"
+                             onerror="this.src='https://img.youtube.com/vi/TegJ2TBihPw/hqdefault.jpg'">
+                        <div class="play-button">
+                            <svg width="68" height="48" viewBox="0 0 68 48" fill="none">
+                                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
+                                <path d="M45 24L27 14v20" fill="white"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <p class="video-notice">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Click the thumbnail above to watch the video lecture on YouTube
+                    </p>
+                </div>
+            </div>
 
-<h2>Introduction</h2>
+            
+<em>By Dr. Isuru Nawinne</em>
+
+<h2>11.1 Introduction</h2>
 
 <p>This lecture completes the single-cycle MIPS processor design by providing comprehensive analysis of control signals for all instruction types (R-type, Branch, Load, Store, Jump), introducing detailed timing analysis with concrete delay values, and demonstrating the fundamental performance limitations that motivate the evolution toward multi-cycle and pipelined implementations. We build upon previous datapath and control unit knowledge to create a functioning processor while understanding why single-cycle design, though conceptually simple, proves inefficient in practice.</p>
 
-<p>---</p>
 
-<h2>1. Lecture Overview and Context</h2>
+<h2>11.2 Lecture Overview and Context</h2>
 
-<h3>1.1 Recap from Previous Lectures</h3>
+<h3>11.2.1 Recap from Previous Lectures</h3>
 
 <p>The foundational work completed in previous lectures includes:</p>
 
@@ -57,7 +84,7 @@
 <li>Performance limitations of single-cycle design</li>
 </ul>
 
-<h3>1.2 Instruction Subset Review</h3>
+<h3>11.2.2 Instruction Subset Review</h3>
 
 <strong>Selected Instructions for Study:</strong>
 
@@ -78,11 +105,10 @@
 <li>Foundation for complete processor understanding</li>
 </ul>
 
-<p>---</p>
 
-<h2>2. Control Unit Inputs and Outputs</h2>
+<h2>11.3 Control Unit Inputs and Outputs</h2>
 
-<h3>2.1 Control Unit Inputs</h3>
+<h3>11.3.1 Control Unit Inputs</h3>
 
 <strong>Total Input Bits:</strong> 12 bits
 
@@ -112,7 +138,7 @@
 <li>Combined with ALUOp for final ALU control signal</li>
 </ul>
 
-<h3>2.2 Control Unit Outputs</h3>
+<h3>11.3.2 Control Unit Outputs</h3>
 
 <strong>Total Output Bits:</strong> 9 bits (8 signals, one is 2-bit)
 
@@ -141,11 +167,10 @@
 <li>To be implemented in Lab 5</li>
 </ul>
 
-<p>---</p>
 
-<h2>3. R-Type Instruction Detailed Analysis</h2>
+<h2>11.4 R-Type Instruction Detailed Analysis</h2>
 
-<h3>3.1 Instruction Format</h3>
+<h3>11.4.1 Instruction Format</h3>
 
 <strong>Encoding Structure (32 bits):</strong>
 
@@ -160,15 +185,15 @@
 
 <strong>Example: ADD $1, $2, $3</strong>
 
-``<code>
+
 <p>Encoding: 000000 00010 00011 00001 00000 100000</p>
 <p>|Opcode| RS  | RT  | RD  |SHAMT| Funct |</p>
 <p>|  0   |  2  |  3  |  1  |  0  |  32   |</p>
-</code>`<code>
 
-<strong>Operation:</strong> </code>$1 = $2 + $3<code>
 
-<h3>3.2 Datapath Elements Used</h3>
+<strong>Operation:</strong> <code>$1 = $2 + $3</code>
+
+<h3>11.4.2 Datapath Elements Used</h3>
 
 <strong>Active Elements (shown in black):</strong>
 
@@ -193,7 +218,7 @@
 <li>Shift Left 2: Not used</li>
 </ul>
 
-<h3>3.3 Control Signal Values for R-Type</h3>
+<h3>11.4.3 Control Signal Values for R-Type</h3>
 
 <strong>Exercise Example: ADD $1, $2, $3</strong>
 
@@ -267,7 +292,7 @@
 <li>Essential for saving computation result</li>
 </ul>
 
-<h3>3.4 Execution Steps for R-Type</h3>
+<h3>11.4.4 Execution Steps for R-Type</h3>
 
 <strong>Step 1: Instruction Fetch</strong>
 
@@ -322,11 +347,10 @@
 <li>Next instruction fetch begins</li>
 </ul>
 
-<p>---</p>
 
-<h2>4. Branch If Equal Instruction Detailed Analysis</h2>
+<h2>11.5 Branch If Equal Instruction Detailed Analysis</h2>
 
-<h3>4.1 Instruction Format</h3>
+<h3>11.5.1 Instruction Format</h3>
 
 <strong>Encoding Structure (32 bits):</strong>
 
@@ -339,15 +363,15 @@
 
 <strong>Example: BEQ $1, $2, 100</strong>
 
-</code>`<code>
+
 <p>Encoding: 000100 00001 00010 0000000001100100</p>
 <p>|Opcode|  RS |  RT |    Immediate      |</p>
 <p>|  4   |  1  |  2  |       100         |</p>
-</code>`<code>
 
-<strong>Operation:</strong> </code>If ($1 == $2) then PC = PC + 4 + (100 × 4)<code>
 
-<h3>4.2 Datapath Elements Used</h3>
+<strong>Operation:</strong> <code>If ($1 == $2) then PC = PC + 4 + (100 × 4)</code>
+
+<h3>11.5.2 Datapath Elements Used</h3>
 
 <strong>Active Elements:</strong>
 
@@ -372,7 +396,7 @@
 <li>ALU Result (except Zero flag): Not used</li>
 </ul>
 
-<h3>4.3 Control Signal Values for BEQ</h3>
+<h3>11.5.3 Control Signal Values for BEQ</h3>
 
 <strong>Exercise Example: BEQ $1, $2, 100</strong>
 
@@ -447,7 +471,7 @@
 <li>If =1, would corrupt register file</li>
 </ul>
 
-<h3>4.4 Branch Target Calculation</h3>
+<h3>11.5.4 Branch Target Calculation</h3>
 
 <strong>Word Offset to Byte Offset:</strong>
 
@@ -478,19 +502,18 @@
 
 <strong>PCSrc Selection:</strong>
 
-</code>`<code>
+
 <p>PCSrc = Branch AND Zero</p>
 <p>= 1 AND (RS == RT ? 1 : 0)</p>
 
 <p>If PCSrc = 1: PC ← Branch Target (1404)</p>
 <p>If PCSrc = 0: PC ← PC + 4 (1004)</p>
-</code>`<code>
 
-<p>---</p>
 
-<h2>5. Load Word Instruction Detailed Analysis</h2>
 
-<h3>5.1 Instruction Format</h3>
+<h2>11.6 Load Word Instruction Detailed Analysis</h2>
+
+<h3>11.6.1 Instruction Format</h3>
 
 <strong>Encoding Structure (32 bits):</strong>
 
@@ -503,15 +526,15 @@
 
 <strong>Example: LW $8, 32($9)</strong>
 
-</code>`<code>
+
 <p>Encoding: 100011 01001 01000 0000000000100000</p>
 <p>|Opcode|  RS |  RT |    Immediate      |</p>
 <p>| 35   |  9  |  8  |        32         |</p>
-</code>`<code>
 
-<strong>Operation:</strong> </code>$8 = Memory[$9 + 32]<code>
 
-<h3>5.2 Datapath Elements Used</h3>
+<strong>Operation:</strong> <code>$8 = Memory[$9 + 32]</code>
+
+<h3>11.6.2 Datapath Elements Used</h3>
 
 <strong>Active Elements:</strong>
 
@@ -534,7 +557,7 @@
 <li>Branch circuitry: Not used</li>
 </ul>
 
-<h3>5.3 Control Signal Values for LW</h3>
+<h3>11.6.3 Control Signal Values for LW</h3>
 
 <strong>Exercise Example: LW $8, 32($9)</strong>
 
@@ -618,7 +641,7 @@
 <li>If 0: Data lost, load ineffective</li>
 </ul>
 
-<h3>5.4 Critical Path for Load Word</h3>
+<h3>11.6.4 Critical Path for Load Word</h3>
 
 <strong>Longest Delay in Single-Cycle:</strong>
 
@@ -637,11 +660,10 @@
 <li>Major performance bottleneck</li>
 </ul>
 
-<p>---</p>
 
-<h2>6. Store Word Instruction Detailed Analysis</h2>
+<h2>11.7 Store Word Instruction Detailed Analysis</h2>
 
-<h3>6.1 Instruction Format</h3>
+<h3>11.7.1 Instruction Format</h3>
 
 <strong>Encoding Structure (32 bits):</strong>
 
@@ -654,17 +676,17 @@
 
 <strong>Example: SW $8, 32($9)</strong>
 
-</code>`<code>
+
 <p>Encoding: 101011 01001 01000 0000000000100000</p>
 <p>|Opcode|  RS |  RT |    Immediate      |</p>
 <p>| 43   |  9  |  8  |        32         |</p>
-</code>`<code>
 
-<strong>Operation:</strong> </code>Memory[$9 + 32] = $8<code>
+
+<strong>Operation:</strong> <code>Memory[$9 + 32] = $8</code>
 
 <em>Note: Fixed error in lecture (was "$32", should be "32")</em>
 
-<h3>6.2 Datapath Elements Used</h3>
+<h3>11.7.2 Datapath Elements Used</h3>
 
 <strong>Active Elements:</strong>
 
@@ -694,7 +716,7 @@
 <li>NO register write operation</li>
 </ul>
 
-<h3>6.3 Control Signal Values for SW</h3>
+<h3>11.7.3 Control Signal Values for SW</h3>
 
 <strong>Exercise Example: SW $8, 32($9)</strong>
 
@@ -776,7 +798,7 @@
 <li>Same as Load Word</li>
 </ul>
 
-<h3>6.4 Important Lesson: Don't Care vs Zero</h3>
+<h3>11.7.4 Important Lesson: Don't Care vs Zero</h3>
 
 <strong>Student Confusion:</strong>
 <em>"RegDst = 0 is not wrong, but best answer is X"</em>
@@ -798,11 +820,10 @@
 <li>Read/Write enables are critical for data integrity</li>
 </ul>
 
-<p>---</p>
 
-<h2>7. Jump Instruction Integration</h2>
+<h2>11.8 Jump Instruction Integration</h2>
 
-<h3>7.1 Instruction Format</h3>
+<h3>11.8.1 Instruction Format</h3>
 
 <strong>Encoding Structure (32 bits):</strong>
 
@@ -821,15 +842,15 @@
 
 <strong>Example: J 100</strong>
 
-</code>`<code>
+
 <p>Encoding: 000010 00000000000000000001100100</p>
 <p>|Opcode|        Target Address        |</p>
 <p>|  2   |            100               |</p>
-</code>`<code>
 
-<strong>Operation:</strong> </code>PC = {PC+4[31:28], Address, 2'b00}<code>
 
-<h3>7.2 Jump Target Address Calculation</h3>
+<strong>Operation:</strong> <code>PC = {PC+4[31:28], Address, 2'b00}</code>
+
+<h3>11.8.2 Jump Target Address Calculation</h3>
 
 <strong>Word Address to Byte Address:</strong>
 
@@ -850,14 +871,14 @@
 
 <strong>Concatenation:</strong>
 
-</code>`<code>
+
 <p>PC+4:         [31:28] [27:2] [1:0]</p>
 <p>↓       (ignored)</p>
 <p>Jump Target:  [31:28] [Target×4] [00]</p>
 <p>↑       ↑          ↑</p>
 <p>From    From       Append</p>
 <p>PC+4    instruction zeros</p>
-</code>`<code>
+
 
 <strong>Example:</strong>
 
@@ -878,7 +899,7 @@
 <li>For larger jumps: Use jump register (JR) instruction</li>
 </ul>
 
-<h3>7.3 Additional Datapath Hardware</h3>
+<h3>11.8.3 Additional Datapath Hardware</h3>
 
 <strong>New Components:</strong>
 
@@ -928,7 +949,7 @@
 <li>Output: Final next PC value</li>
 </ul>
 
-<h3>7.4 Jump Control Signal</h3>
+<h3>11.8.4 Jump Control Signal</h3>
 
 <strong>Jump Signal:</strong>
 
@@ -967,7 +988,7 @@
 <li>Additional logic needed for return address</li>
 </ul>
 
-<h3>7.5 Complete Datapath with Jump</h3>
+<h3>11.8.5 Complete Datapath with Jump</h3>
 
 <strong>All Instruction Types Supported:</strong>
 
@@ -997,11 +1018,10 @@
 <li>Control unit with 10 control signal bits</li>
 </ul>
 
-<p>---</p>
 
-<h2>8. Timing Analysis with Concrete Delays</h2>
+<h2>11.9 Timing Analysis with Concrete Delays</h2>
 
-<h3>8.1 Assumed Component Delays</h3>
+<h3>11.9.1 Assumed Component Delays</h3>
 
 <strong>Delay Values (in nanoseconds):</strong>
 
@@ -1027,7 +1047,7 @@
 <li>Combinational logic relatively fast</li>
 </ul>
 
-<h3>8.2 Critical Path Analysis</h3>
+<h3>11.9.2 Critical Path Analysis</h3>
 
 <strong>Definition:</strong>
 
@@ -1045,7 +1065,7 @@
 <li>All instructions take same time (worst case)</li>
 </ul>
 
-<h3>8.3 Load Word Instruction Timing</h3>
+<h3>11.9.3 Load Word Instruction Timing</h3>
 
 <strong>Step-by-Step Delay Calculation:</strong>
 
@@ -1127,7 +1147,7 @@
 <li>Determines clock period for ALL instructions</li>
 </ul>
 
-<h3>8.4 Store Word Instruction Timing</h3>
+<h3>11.9.4 Store Word Instruction Timing</h3>
 
 <strong>Step-by-Step Delay:</strong>
 
@@ -1159,7 +1179,7 @@
 <li>Wastes 2 ns per Store instruction</li>
 </ul>
 
-<h3>8.5 Arithmetic Instruction Timing (ADD, SUB, AND, OR)</h3>
+<h3>11.9.5 Arithmetic Instruction Timing (ADD, SUB, AND, OR)</h3>
 
 <strong>Step-by-Step Delay:</strong>
 
@@ -1187,7 +1207,7 @@
 <li>Wastes 2 ns = 28.6% time wasted per R-type instruction</li>
 </ul>
 
-<h3>8.6 Branch Instruction Timing</h3>
+<h3>11.9.6 Branch Instruction Timing</h3>
 
 <strong>Step-by-Step Delay:</strong>
 
@@ -1218,7 +1238,7 @@
 <li>Fast like R-type</li>
 </ul>
 
-<h3>8.7 Jump Instruction Timing</h3>
+<h3>11.9.7 Jump Instruction Timing</h3>
 
 <strong>Step-by-Step Delay:</strong>
 
@@ -1242,7 +1262,7 @@
 <li>Wastes 5 ns waiting for clock period!</li>
 </ul>
 
-<h3>8.8 Timing Summary Table</h3>
+<h3>11.9.8 Timing Summary Table</h3>
 
 <p>| Instruction Type   | Time Required | Wasted Time | Efficiency |</p>
 <p>| ------------------ | ------------- | ----------- | ---------- |</p>
@@ -1263,11 +1283,10 @@
 <li>Tremendous inefficiency</li>
 </ul>
 
-<p>---</p>
 
-<h2>9. Performance Analysis</h2>
+<h2>11.10 Performance Analysis</h2>
 
-<h3>9.1 Program Composition Example</h3>
+<h3>11.10.1 Program Composition Example</h3>
 
 <strong>Typical MIPS Program Profile:</strong>
 
@@ -1278,31 +1297,31 @@
 <p>| Store Word       | 11%        | 5 ns             | 7 ns             |</p>
 <p>| Branch           | 19%        | 5 ns             | 7 ns             |</p>
 
-<h3>9.2 Average Time Calculation</h3>
+<h3>11.10.2 Average Time Calculation</h3>
 
 <strong>Variable Time (Ideal):</strong>
 
-</code>`<code>
+
 <p>Average = (0.48 × 5) + (0.22 × 7) + (0.11 × 5) + (0.19 × 5)</p>
 <p>= 2.40 + 1.54 + 0.55 + 0.95</p>
 <p>= 5.44 ns per instruction</p>
-</code>`<code>
+
 
 <strong>Single-Cycle (Actual):</strong>
 
-</code>`<code>
+
 <p>Average = 7 ns per instruction (all instructions)</p>
-</code>`<code>
+
 
 <strong>Performance Loss:</strong>
 
-</code>`<code>
+
 <p>Overhead = 7 - 5.44 = 1.56 ns per instruction</p>
 <p>Efficiency = 5.44 / 7 = 77.7%</p>
 <p>Waste = 22.3% of time</p>
-</code>`<code>
 
-<h3>9.3 Critical Path Problem</h3>
+
+<h3>11.10.3 Critical Path Problem</h3>
 
 <strong>Critical Path Determination:</strong>
 
@@ -1326,7 +1345,7 @@
 <li>Design is inefficient</li>
 </ul>
 
-<h3>9.4 Clock Period Inflexibility</h3>
+<h3>11.10.4 Clock Period Inflexibility</h3>
 
 <strong>Single-Cycle Constraint:</strong>
 
@@ -1355,11 +1374,10 @@
 <p>| Branch      | 71.4%      | 28.6% |</p>
 <p>| Load        | 100.0%     | 0%    |</p>
 
-<p>---</p>
 
-<h2>10. Path to Better Performance: Multi-Cycle Design</h2>
+<h2>11.11 Path to Better Performance: Multi-Cycle Design</h2>
 
-<h3>10.1 Multi-Cycle Concept</h3>
+<h3>11.11.1 Multi-Cycle Concept</h3>
 
 <strong>Basic Idea:</strong>
 
@@ -1379,7 +1397,7 @@
 <li>More efficient resource utilization</li>
 </ul>
 
-<h3>10.2 Stage Division</h3>
+<h3>11.11.2 Stage Division</h3>
 
 <strong>Typical Stages:</strong>
 
@@ -1433,7 +1451,7 @@
 <li><strong>Jump</strong>: IF, ID (skip EX, MEM, WB) = 2 cycles</li>
 </ul>
 
-<h3>10.3 Clock Period in Multi-Cycle</h3>
+<h3>11.11.3 Clock Period in Multi-Cycle</h3>
 
 <strong>Determining Clock Period:</strong>
 
@@ -1457,13 +1475,13 @@
 <strong>Clock Period:</strong> 2 ns (vs 7 ns single-cycle)
 <strong>Clock Frequency:</strong> 500 MHz (vs 143 MHz single-cycle)
 
-<h3>10.4 Performance Comparison</h3>
+<h3>11.11.4 Performance Comparison</h3>
 
 <strong>Single-Cycle:</strong>
 
-</code>`<code>
+
 <p>All instructions: 1 cycle × 7 ns = 7 ns</p>
-</code>`<code>
+
 
 <strong>Multi-Cycle (with 2 ns clock):</strong>
 
@@ -1477,11 +1495,11 @@
 
 <strong>Weighted Average (same program profile):</strong>
 
-</code>`<code>
+
 <p>Average = (0.48 × 8) + (0.22 × 10) + (0.11 × 8) + (0.19 × 6)</p>
 <p>= 3.84 + 2.20 + 0.88 + 1.14</p>
 <p>= 8.06 ns per instruction</p>
-</code>`<code>
+
 
 <strong>Wait, That's Worse!</strong>
 
@@ -1510,15 +1528,15 @@
 <p>| Store       | 4      | 5.6 ns |</p>
 <p>| Branch      | 3      | 4.2 ns |</p>
 
-</code>`<code>
+
 <p>Average = (0.48 × 5.6) + (0.22 × 7.0) + (0.11 × 5.6) + (0.19 × 4.2)</p>
 <p>= 2.69 + 1.54 + 0.62 + 0.80</p>
 <p>= 5.65 ns per instruction</p>
 
 <p>Speedup = 7 / 5.65 = 1.24× faster</p>
-</code>``
 
-<h3>10.5 Design Challenge</h3>
+
+<h3>11.11.5 Design Challenge</h3>
 
 <strong>Stage Balancing:</strong>
 
@@ -1541,11 +1559,10 @@
 <li>More control complexity (FSM needed)</li>
 </ul>
 
-<p>---</p>
 
-<h2>11. Preview: Pipelining</h2>
+<h2>11.12 Preview: Pipelining</h2>
 
-<h3>11.1 Next Step Beyond Multi-Cycle</h3>
+<h3>11.12.1 Next Step Beyond Multi-Cycle</h3>
 
 <strong>Pipelining Concept:</strong>
 
@@ -1579,7 +1596,7 @@
 <li>More complex control</li>
 </ul>
 
-<h3>11.2 Coming Next</h3>
+<h3>11.12.2 Coming Next</h3>
 
 <strong>Topics:</strong>
 
@@ -1592,7 +1609,6 @@
 <li>MIPS pipeline implementation</li>
 </ul>
 
-<p>---</p>
 
 <h2>Key Takeaways</h2>
 

@@ -1,575 +1,465 @@
-# Lecture 16: Cache Hierarchies and Real Implementations
+# Lecture 16: Cache Write Policies and Associative Caches
 
-## Introduction
+*By Dr. Isuru Nawinne*
 
-This lecture explores cache hierarchies in modern computer systems, examining how multiple levels of cache work together to optimize memory access performance through careful balance of hit latency versus hit rate. We analyze real-world implementations including Intel's Skylake architecture, understanding the design decisions behind multi-level cache organizations where L1 caches prioritize speed, L2 caches balance capacity and latency, and L3 caches provide large shared storage across processor cores. The examination of associativity tradeoffs—from direct-mapped through set-associative to fully associative designs—reveals how hardware complexity, power consumption, and performance interact in practical cache systems.
+## 16.1 Introduction
 
----
+This lecture explores advanced cache design techniques that significantly impact memory system performance. We examine write policies—specifically write-through and write-back strategies—understanding how each handles the critical challenge of maintaining consistency between cache and main memory while balancing performance and complexity. The lecture then progresses to associative cache organizations, from direct-mapped through set-associative to fully-associative designs, revealing how different levels of associativity affect hit rates, access latency, and hardware complexity. Through detailed examples and performance analysis, we discover how modern cache systems make strategic trade-offs between speed, capacity utilization, and implementation cost to achieve optimal memory hierarchy performance.
 
-## 1. Recap: Associativity Comparison Results
 
-From the previous lecture's example using a 4-block cache with three different organizations:
+## 16.2 Recap: Write Access in Direct Mapped Cache
 
-### Direct Mapped Cache
+### 16.2.1 Write-Through Policy
 
-- **Result**: 5 misses, 0 hits
-- **Cold misses**: 3 (compulsory, unavoidable)
-- **Conflict misses**: 2 (data evicted then accessed again)
-- **Utilization**: Poor - only 2 of 4 slots used
-- **Hit rate**: 0% in this example
+- When a write access occurs, the cache controller determines if it's a hit or miss through tag comparison
+- On a write hit: The block is in cache, update it. The cache copy becomes different from memory (inconsistent)
+- Write-through solution: Always write to both cache and memory simultaneously
+- On a write miss: Stall the CPU, fetch the missing block from memory, update the cache, and write to memory
 
-### 2-Way Set Associative Cache
+### 16.2.2 Advantages of Write-Through
 
-- **Result**: 4 misses, 1 hit
-- **Cold misses**: 3
-- **Conflict misses**: 1
-- **Utilization**: 2 of 4 slots used
-- **Hit rate**: 20% - better than direct mapped
+- Simple to implement - straightforward cache controller design
+- Old blocks can be discarded without concern since memory is always up-to-date
+- Can overlap writing and tag comparison operations since corrupted data can be safely discarded on a miss
 
-### Fully Associative Cache (4-way)
+### 16.2.3 Disadvantages of Write-Through
 
-- **Result**: 3 misses, 2 hits
-- **Cold misses**: 3 (only unavoidable misses)
-- **Conflict misses**: 0
-- **Utilization**: Best - 3 of 4 slots used
-- **Hit rate**: 40% - best performance
+- Generates heavy write traffic to memory
+- Every cache write triggers a memory write
+- Bus between cache and memory can become congested
+- Inefficient when programs have many store instructions
+- CPU must stall for 10-100 clock cycles on each memory write
 
-### Key Observations
+### 16.2.4 Write Buffer Solution
 
-- Higher associativity → better hit rate
-- Higher associativity → reduced conflict misses
-- Cold misses occur at program start and when new addresses are accessed
-- System reaches "steady state" with mostly conflict misses after initial cold misses
-- Performance improvement comes at cost of complexity and power
+- A FIFO (First In First Out) queue between cache and memory
+- Cache puts write requests in the buffer instead of directly to memory
+- Memory processes requests from buffer at its own speed
+- Allows CPU to continue without waiting for memory
+- Works well for burst writes (short sequences of writes with gaps between)
+- Limitation: If CPU generates continuous writes, buffer fills up and CPU must still stall
 
----
+## 16.3 Write-Back Policy
 
-## 2. Cache Configuration Parameters
+### 16.3.1 Basic Concept
 
-### Primary Parameters
+- Write to cache only, not to memory immediately
+- Allow cache and memory to be inconsistent
+- Write blocks back to memory only when evicted from cache
 
-#### 1. Block Size
+### 16.3.2 Dirty Bit
 
-- Size of a single block in bytes
-- Cache deals with memory in blocks
-- CPU deals with cache in words/bytes
+- An additional bit array in cache structure (alongside valid, tag, data)
+- Tracks whether a cache block has been modified
+- Set when block is written to cache
+- Indicates that memory copy is not up-to-date
 
-#### 2. Set Size
+### 16.3.3 Write-Back Operations
 
-- Number of sets in the cache
-- Direct mapped: number of sets = number of entries
-- Fully associative: only 1 set
-- Can be confusing - refers to number of sets, not size of each set
+**On Write Hit:**
 
-#### 3. Associativity
+- Simply update the cache entry
+- Set the dirty bit to indicate inconsistency
+- Do not write to memory
 
-- Number of ways in a set
-- Number of blocks that can be stored in one set
-- 1-way = direct mapped
-- 2-way = two-way set associative
-- N-way = N blocks per set
+**On Read Miss:**
 
-### Cache Size Calculation
+- Fetch missing block from memory
+- If old block at that entry is dirty (dirty bit = 1):
+  - Write old block back to memory first
+  - Then fetch new block and overwrite
+- If old block is not dirty:
+  - Directly fetch new block and overwrite
 
-```
-Total Cache Size = Block Size × Set Size × Associativity
-```
+**On Write Miss:**
 
-### Secondary Parameters
+- If old block is dirty:
+  - Write old block back to memory
+- Fetch new block from memory
+- Update cache entry only (not memory)
 
-#### 4. Replacement Policy
+### 16.3.4 Advantages of Write-Back
 
-- LRU (Least Recently Used)
-- Pseudo-LRU (PLRU)
-- FIFO (First In First Out)
-- Others
+- Significantly reduces write traffic to memory
+- More efficient when programs have many write accesses
+- Cache is fast; only writing to cache most of the time
+- Write buffer can be used for evicted dirty blocks
 
-#### 5. Write Policy
+### 16.3.5 Disadvantages of Write-Back
 
-- Write-through
-- Write-back
+- More complex cache controller
+- Need to maintain and check dirty bit
+- More hardware required
+- More logic in controller design
 
-#### 6. Other Optimization Techniques
+### 16.3.6 Write-Back Cache Structure
 
-- Prefetching mechanisms
-- Write buffer size
-- Communication protocols
+- Data array
+- Tag array
+- Valid bit array
+- Dirty bit array (new addition)
 
-### Configuration Definition
+## 16.4 Cache Performance
 
-- Fixing values for all these parameters defines a specific cache configuration
-- Performance and power consumption are determined by configuration
-- External factors: memory access patterns from CPU/program
+### 16.4.1 Average Access Time Formula
 
----
 
-## 3. Improving Cache Performance - Comprehensive Review
-
-### Average Access Time Equation
-
-```
 T_avg = Hit Latency + Miss Rate × Miss Penalty
-```
 
-Three main factors can be optimized:
 
----
+**Where:**
 
-## 4. Hit Rate Improvement
+- Hit Latency: Time to determine a hit (always present)
+- Miss Rate: 1 - Hit Rate (fraction of accesses that are misses)
+- Miss Penalty: Time to fetch missing block from memory
+- Can be expressed in absolute time (nanoseconds) or clock cycles
 
-### Method 1: Increase Cache Size
+### 16.4.2 Example Calculation
 
-**Approach**:
+**Given:**
 
-- Most obvious and intuitive method
-- More slots → can hold more data → more likely to get hits
+- Miss Penalty = 20 CPU cycles
+- Hit Rate = 95% (0.95)
+- Hit Latency = 1 CPU cycle
+- Clock Period = 1 nanosecond (1 GHz)
 
-**Limitations**:
 
-- Very expensive (SRAM costs ~$2000/GB)
-- SRAM uses cutting-edge technology, same as CPU
-- Must be fast enough to work at CPU speed
-- Usually located inside CPU core
-- Practical limit on how much cache can be added
+T_avg = 1 + (1 - 0.95) × 20 = 1 + 0.05 × 20 = 2 cycles = 2 nanoseconds
 
-### Method 2: Increase Associativity
 
-**Benefits**:
+**If hit rate improves to 99.9%:**
 
+
+T_avg = 1 + (1 - 0.999) × 20 = 1 + 0.001 × 20 = 1.02 cycles
+
+
+This shows significant improvement from better hit rate.
+
+### 16.4.3 Performance Example Problem
+
+**Given:**
+
+- Program with 36% load/store instructions
+- Ideal CPI = 2 (assuming perfect caches)
+- Instruction cache miss rate = 2%
+- Data cache miss rate = 4%
+- Miss penalty = 100 cycles
+
+**Calculating Actual CPI:**
+
+- Stalls from instruction cache misses: I × 0.02 × 100 = 2I cycles
+- Stalls from data cache misses: I × 0.36 × 0.04 × 100 = 1.44I cycles
+- Total stall cycles: 3.44I
+- Actual CPI = 2 + 3.44 = 5.44 cycles per instruction
+
+**Speedup with ideal caches:** 5.44 / 2 = 2.72×
+
+**CPI with no caches:**
+
+- Every instruction fetch: 100 cycles
+- 36% need data memory: 0.36 × 100 = 36 cycles
+- Total CPI = 2 + 100 + 36 = 138 cycles
+- Slowdown without caches: 138 / 5.44 = 25.37×
+
+
+## 16.5 Improving Cache Performance
+
+### 16.5.1 Three Factors to Improve
+
+1. Hit Rate - increase the percentage of hits
+2. Hit Latency - reduce time to determine hits
+3. Miss Penalty - reduce time to fetch missing blocks
+
+### 16.5.2 Improving Hit Rate
+
+**Method 1: Larger Cache Size**
+
+- More cache blocks means more index bits
+- Reduces probability of multiple addresses mapping to same index
+- Better exploitation of temporal locality
+- Trade-off: Higher cost (SRAM is expensive, ~$2000 per gigabyte)
+- Trade-off: More chip area required
+
+### 16.5.3 Direct Mapped Cache Limitation
+
+- Multiple memory blocks can map to same cache index
+- Even with empty cache blocks elsewhere, conflicts cause evictions
+- Temporal locality suggests recently accessed blocks should stay
+- But direct mapping forces eviction even when space is available
+
+
+## 16.6 Fully Associative Cache
+
+### 16.6.1 Concept
+
+- Eliminate index field - no fixed mapping
+- A block can be placed anywhere in cache
+- Address divided into: Tag + Offset (no index)
+- Tag is larger since no index bits
+
+### 16.6.2 Finding Blocks
+
+- Cannot use index to locate block
+- Sequential search is too slow
+- Solution: Parallel tag comparison
+- Compare incoming tag with all stored tags simultaneously
+- Requires one comparator per cache entry
+
+### 16.6.3 Implementation
+
+- Need duplicate comparator hardware for each entry
+- Practical only for small number of entries (8, 16, 32, 64)
+- As entries increase: more comparators, longer wires, more delays
+
+### 16.6.4 Block Placement
+
+- Find first available invalid entry
+- Use sequential logic to search for invalid bit
+- Takes more time than direct mapped
+
+### 16.6.5 Block Replacement
+
+When all entries are valid, need replacement policy to choose which block to evict.
+
+### 16.6.6 Replacement Policies
+
+1. LRU (Least Recently Used) - IDEAL:
+
+   - Evict the block that was used longest ago
+   - Best exploits temporal locality
+   - Very complex to implement
+   - Need to timestamp every access
+   - Expensive in hardware
+
+2. Pseudo-LRU (PLRU):
+
+   - Approximation of LRU
+   - Simpler mechanism than true LRU
+   - 90-99% of time picks least recently used
+   - Better balance of performance and complexity
+
+3. FIFO (First In First Out):
+   - Evict block that entered cache first
+   - Very simple implementation
+   - Only update when new block fetched (not on every access)
+   - Lower likelihood of picking LRU block
+   - Used in embedded systems for simplicity and low power
+
+### 16.6.7 Fully Associative - Advantages
+
+- High utilization of cache space
+- Better hit rate (fewer conflict misses)
+- Can choose replacement policy based on needs
+
+### 16.6.8 Fully Associative - Disadvantages
+
+- Block placement is slow (increases miss penalty)
+- Higher power consumption
+- Higher cost (more hardware)
+- Parallel tag comparison requires duplicate hardware
+
+
+## 16.7 Set Associative Cache
+
+### 16.7.1 Concept
+
+- Combines direct mapped and fully associative approaches
+- Add multiple "ways" - duplicate the tag/valid/data arrays
+- Each index refers to a "set" containing multiple blocks
+- Called "N-way set associative" where N is number of ways
+
+### 16.7.2 Two-Way Set Associative
+
+- Two copies of tag/valid/data arrays
+- Each index points to a set with 2 blocks
+- Index field selects the set
+- Tag comparison done in parallel within the set
+- Doubles cache capacity compared to direct mapped with same number of sets
+
+### 16.7.3 Read Access Process
+
+1. Use index to select correct set (via demultiplexer)
+2. Extract both stored tags from the set
+3. Parallel comparison of both tags with incoming tag
+4. Each way has hit status (hit0, hit1)
+5. Use encoder to generate select signal for multiplexer
+6. Select correct data block based on which way hit
+7. Use offset to select correct word within block
+
+### 16.7.4 Important Notes
+
+- Only one tag can match (each tag identifies unique block)
+- If no tags match, it's a miss
+- More complex hardware than direct mapped
+- Higher hit latency due to encoding and multiplexing delays
+
+
+## 16.8 Associativity Spectrum
+
+### 16.8.1 For an 8-Block Cache, Different Organizations
+
+1-way set associative (Direct Mapped):
+
+- 8 entries, 1 way each
+- 3-bit index
+- Each block has fixed location
+
+2-way set associative:
+
+- 4 entries, 2 ways each
+- 2-bit index
+- Each set can hold 2 different blocks
+
+<img src="../img/Memory%20Systems.jpg" alt="Memory System" width="500">
+
+4-way set associative:
+
+- 2 entries, 4 ways each
+- 1-bit index
+- Each set can hold 4 different blocks
+
+8-way set associative (Fully Associative):
+
+- 1 entry, 8 ways
+- No index field (0 bits)
+- Any block can go anywhere
+
+### 16.8.2 Design Considerations
+
+- Choice depends on: program behavior, CPU architecture, performance goals, power budget
 - Higher associativity → better hit rate
-- Reduces conflict misses
-- Most popular technique for given cache size
+- Higher associativity → higher hit latency
+- Higher associativity → more power consumption and cost
 
-**Trade-offs**:
 
-- Increases hit latency
-- Increases power consumption
-- Increases hardware cost
+## 16.9 Associativity Comparison Example
 
-### Method 3: Cache Prefetching
+### 16.9.1 Setup
 
-**Concept**:
+- Four-block cache (4 different blocks)
+- Block size = 1 word = 4 bytes
+- 8-bit addresses
+- Compare: Direct Mapped, 2-way Set Associative, Fully Associative (4-way)
 
-- Fetch data before it's needed
-- Similar to branch prediction in CPU
-- Reduces cold misses (compulsory misses)
-- Can also reduce conflict misses
+### Initial State
 
-**Types of Prefetching**:
+- All valid bits = 0 (invalid)
+- All tags = 0
+- Data unknown (don't care)
 
-- Software prefetching (compiler-based)
-- Hardware prefetching
-- Hybrid software-hardware approaches
+### 16.9.2 Tag and Index Sizes
 
-**Benefits**:
+- Direct Mapped: 4-bit tag, 2-bit index, 2-bit offset
+- 2-way Set Associative: 5-bit tag, 1-bit index, 2-bit offset
+- Fully Associative: 6-bit tag, 0-bit index, 2-bit offset
 
-- Can predict and fetch data before CPU requests it
-- Reduces effective miss rate
-- Can significantly improve performance for predictable access patterns
+### 16.9.3 Memory Access Sequence
 
-**Limitations**:
+**Access 1: Block Address 0**
 
-- Not 100% accurate
-- Wrong predictions waste power and bandwidth
-- Requires additional hardware
-- Increases complexity
+- All three caches: MISS (cold miss - first time accessed)
+- All valid bits were 0
+- Fetch from memory, update tag, set valid bit
 
----
+**Score:** Direct Mapped: 0 hits, 1 miss | 2-way: 0 hits, 1 miss | Fully: 0 hits, 1 miss
 
-## 5. Hit Latency Optimization
+**Access 2: Block Address 8**
 
-### Relationship with Hit Rate
+- All three caches: MISS (cold miss - first time accessed)
+- Tags don't match existing entries
+- Fetch from memory, place in cache
 
-**Fundamental Trade-off**:
+**Score:** Direct Mapped: 0 hits, 2 misses | 2-way: 0 hits, 2 misses | Fully: 0 hits, 2 misses
 
-- Hit rate and hit latency are tied together
-- Improving hit rate often increases hit latency
-- Improving hit latency often reduces hit rate
-- Need to find optimal balance
+**Access 3: Block Address 0 (repeated)**
 
-**Examples**:
+- Direct Mapped: MISS (conflict miss - block 8 overwrote block 0 at same index)
+- 2-way Set Associative: HIT (both blocks 0 and 8 fit in same set)
+- Fully Associative: HIT (both blocks present)
+- Demonstrates advantage of associativity
 
-- Higher associativity → better hit rate BUT higher hit latency
-- Smaller, simpler cache → lower hit latency BUT worse hit rate
+**Score:** Direct Mapped: 0 hits, 3 misses | 2-way: 1 hit, 2 misses | Fully: 1 hit, 2 misses
 
-**Design Challenge**:
+**Access 4: Block Address 6**
 
-- Must balance these competing factors
-- Depends on application requirements
-- Different trade-offs for different use cases
+- All three: MISS (cold miss)
+- 2-way: Set full, need replacement
+- LRU replacement: evict block 8 (least recently used)
+- FIFO replacement: would evict block 0 (first in)
+- Fully Associative: Still has empty space
 
----
+**Score:** Direct Mapped: 0 hits, 4 misses | 2-way: 1 hit, 3 misses | Fully: 1 hit, 3 misses
 
-## 6. Miss Penalty Improvement
+**Access 5: Block Address 8 (repeated)**
 
-### Miss Penalty Definition
+- Direct Mapped: MISS (conflict miss - keeps conflicting at index 0)
+- 2-way: MISS (conflict miss - block 8 was evicted by block 6)
+- Fully Associative: HIT (block 8 still in cache)
 
-- Time spent servicing a cache miss
-- Time to fetch missing block from memory
+### Final Score
 
-### Method 1: Optimize Communication
+- Direct Mapped: 0 hits, 5 misses (all misses after cold misses)
+- 2-way Set Associative: 1 hit, 4 misses (one conflict miss)
+- Fully Associative: 2 hits, 3 misses (only cold misses)
 
-- Improve bus technology between cache and memory
-- Increase bus width
-- Increase bus speed
-- Optimize bus arbitration
-- Better communication protocols
-- This assumes best possible communication is already in place
+### 16.9.4 Types of Misses
 
-### Method 2: Cache Hierarchy (Main Focus)
+1. Cold Misses: First access to address (unavoidable)
+2. Conflict Misses: Block evicted due to mapping, accessed again later
 
-- Use multiple levels of cache
-- Each level optimized differently
-- Most effective technique for reducing miss penalty
+### 16.9.5 Key Observations
 
----
+- Higher associativity reduces conflict misses
+- Fully associative eliminates conflict misses (only cold misses remain)
+- But higher associativity increases hit latency and cost
 
-## 7. Cache Hierarchy (Multi-Level Caches)
 
-### Concept
+## 16.10 Trade-Offs Summary
 
-Instead of a single cache between CPU and memory, use multiple cache levels: L1, L2, L3, etc., with each level serving as backup for the level above.
+### 16.10.1 Hit Rate
 
-### Terminology
+- Increases with higher associativity
+- Direct mapped has most conflict misses
+- Fully associative has only cold misses
 
-- **L1 (Level 1)**: Top-level cache, closest to CPU
-- **L2 (Level 2)**: Second-level cache
-- **L3 (Level 3)**: Third-level cache (in some systems)
-- **Top-level cache**: Fastest, smallest
-- **Last-level cache**: Slowest (but still fast), largest
+### 16.10.2 Hit Latency
 
-### Operation
+- Increases with higher associativity
+- More comparators, encoders, multiplexers add delay
+- Direct mapped is fastest
 
-1. CPU requests data from L1
-2. L1 miss → request goes to L2 (not directly to memory)
-3. L2 miss → request goes to L3 (if exists)
-4. Last-level miss → request goes to main memory
+### 16.10.3 Power and Cost
 
-### Benefits
+- Increases with higher associativity
+- More hardware for parallel comparison
+- More complex control logic
 
-- Reduced effective miss penalty for L1
-- Most L1 misses served by L2 in few cycles (2-4 cycles)
-- Only L2 misses incur full memory penalty (100+ cycles)
-- Overall average miss penalty greatly reduced
+### 16.10.4 Design Decision Factors
 
-### Effective Miss Penalty
-
-For L1 cache:
-
-```
-Effective Miss Penalty = L2 Hit Latency + L2 Miss Rate × L2 Miss Penalty
-```
-
-If L2 has good hit rate:
-
-- L2 miss rate is low
-- Most L1 misses served quickly by L2
-- Effective penalty much less than going to memory
-
-### Example Calculation
-
-Given:
-
-- L1 miss rate: 5%
-- L2 hit rate: 99.9%
-- L2 hit latency: 3 cycles
-- Memory penalty: 100 cycles
-
-```
-L1 effective penalty = 3 + 0.001 × 100 = 3.1 cycles
-```
-
-vs. 100 cycles if going directly to memory
-
----
-
-## 8. Optimization Strategies for Multi-Level Caches
-
-### Why Not One Big Cache?
-
-- Different levels can be optimized for different goals
-- Splitting allows specialized optimization
-- Better overall performance than single large cache
-
----
-
-## 9. L1 Cache Optimization - Optimize for Hit Latency
-
-### Goal
-
-Minimize hit latency
-
-### Rationale
-
-- Critical for CPU clock cycle time
-- Memory access is slowest pipeline stage
-- Determines overall CPU clock period
-- Lower L1 hit latency → shorter clock cycle → higher CPU frequency
-
-### Characteristics
-
-- Small size
-- Lower associativity (2-way, 4-way, sometimes 8-way)
-- Fast response time
-- Accept moderate hit rate (e.g., 95%)
-
-### Trade-off
-
-- Sacrifice some hit rate for speed
-- Slightly higher miss rate acceptable
-- Misses handled by L2
-
----
-
-## 10. L2 Cache Optimization - Optimize for Hit Rate
-
-### Goal
-
-Maximize hit rate
-
-### Rationale
-
-- Serve most L1 misses
-- Minimize accesses to main memory
-- Reduce effective L1 miss penalty
-
-### Characteristics
-
-- Larger size
-- Higher associativity (8-way, 16-way, or even fully associative)
-- Very high hit rate (99.9% or better)
-- Can tolerate higher hit latency
-
-### Trade-off
-
-- Higher latency acceptable
-- Not on critical path for most accesses
-- Priority is catching L1 misses
-
----
-
-## 11. Associativity Comparison
-
-**Question**: Which level has higher associativity?
-
-**Answer**: L2 (and L3 if present) have higher associativity
-
-### Reasoning
-
-- L2 optimized for hit rate
-- Higher associativity → better hit rate
-- L1 optimized for latency
-- Lower associativity → faster access
-
-### Combined Effect
-
-- **L1**: Fast but moderate hit rate (e.g., 95-98%)
-- **L2**: Slower but excellent hit rate (e.g., 99-99.9%)
-- **Most accesses**: L1 hit (fast path)
-- **Most L1 misses**: L2 hit (medium path, few cycles)
-- **Very few accesses**: Main memory (slow path, 100+ cycles)
-
-**Overall result**: Much better average performance
-
----
-
-## 12. Physical Implementation of Cache Hierarchy
-
-### L1 Cache
-
-- Almost always on-chip (inside CPU die)
-- Integrated within CPU core
-- Smallest but fastest
-- Typically split into:
-  - L1 instruction cache (L1-I)
-  - L1 data cache (L1-D)
-
-### L2 Cache
-
-- Usually on-chip (same die as CPU)
-- Can be off-chip in some designs
-- Larger than L1
-- May be unified (instruction + data) or split
-- If multi-core: may be per-core or shared
-
-### L3 Cache
-
-- Common in multi-processor/multi-core systems
-- Usually on-chip in modern designs
-- Can be off-chip in some architectures
-- Typically unified and shared among all cores
-- Largest cache level
-
-### Design Variations
-
-Different implementations based on:
-
-- Performance requirements
+- Application requirements
+- Performance goals
 - Power budget
 - Cost constraints
-- Target application
-- Number of cores
+- Embedded systems often use lower associativity (FIFO replacement)
+- High-performance systems use higher associativity (PLRU replacement)
 
----
-
-## 13. Real World Example: Intel Skylake Architecture
-
-**Source**: wikichip.org (recommended resource)
-
-### Architecture Overview
-
-- Mainstream Intel architecture from ~2015
-- Used in Core i3, i5, i7 processors
-- Standard desktop/PC processors
-
-### Dual-Core Layout Analysis
-
-#### Execution Units
-
-- Two separate processor cores visible
-- Integer ALUs (arithmetic logic units)
-- Floating-point units
-- Multipliers, dividers
-- Other arithmetic hardware
-
-#### Pipeline Support Hardware
-
-- Takes up as much space as execution units
-- Out-of-order scheduling logic
-- Branch prediction units
-- Multiple issue hardware
-- Decoding logic
-- Control logic
-
-### Cache Implementation
-
-#### L1 Data Cache
-
-- Separate for each core
-- Located close to execution units and memory management
-- **8-way set associative**
-- Smaller size (32KB typical)
-- Close to where addresses are generated
-
-#### L1 Instruction Cache
-
-- Separate for each core
-- Located close to instruction fetch and decode units
-- Near out-of-order scheduling hardware
-- **8-way set associative**
-- Smaller size (32KB typical)
-
-#### L2 Cache
-
-- Shared between instruction and data
-- Larger than L1 (256KB in this example)
-- **4-way set associative** (in this design)
-- Located between L1 and memory
-- Serves both L1-I and L1-D misses
-
-### Memory Hierarchy
-
-- Separate buffers for load and store instructions
-- Buffers before and after cache
-- Memory management unit
-- Connection to L3 cache (if present) via bus
-
-### Design Observations
-
-- Physical placement matches logical function
-- Data cache near execution units
-- Instruction cache near fetch/decode
-- Shared L2 in middle position
-- Significant die area for cache
-- Even more area for pipeline optimization
-
-### Why Higher L1 Associativity Here?
-
-- 8-way seems high for L1
-- But size is small (32KB)
-- Other pipeline stages may be bottleneck
-- Clock period limited by other factors
-- Can afford higher associativity without hurting cycle time
-- Depends on overall CPU design
-
-### Multi-Core Configuration
-
-- Each core has own L1-I and L1-D
-- Each core has own L2
-- All cores share L3
-- L3 connects via bus system
-
-### Additional Features
-
-- Physical register files (integer and vector)
-- Store/load buffers
-- Pre-decoding hardware
-- Complex x86 instruction handling
-- Many optimizations for real-world performance
-
----
-
-## 14. Recommendations for Further Study
-
-### Resource: wikichip.org
-
-**Content Available**:
-
-- Detailed CPU architecture information
-- Real implementation details
-- Various processor families:
-  - Intel x86 architectures
-  - ARM implementations
-  - AMD processors
-  - Other architectures
-
-**Benefits**:
-
-- See concepts in real hardware
-- Understand practical trade-offs
-- Compare different design approaches
-- Learn industry practices
-
----
-
-## 15. Next Topics
-
-### Upcoming in Course
-
-#### 1. Virtual Memory
-
-- Requires hardware support
-- Memory management concepts
-- Next week's lectures
-
-#### 2. Lab 6 (Next Week)
-
-- Implement cache memory
-- Add memory modules to CPU
-- Build on Lab 5 CPU implementation
-- Apply concepts learned
-
----
 
 ## Key Takeaways
 
-1. Cache hierarchies reduce effective miss penalty
-2. Different levels optimized for different goals:
-   - L1: Hit latency (speed)
-   - L2/L3: Hit rate (coverage)
-3. Multi-level caches balance competing requirements
-4. Real implementations show concepts in practice
-5. Design decisions depend on:
-   - Performance targets
-   - Power budget
-   - Cost constraints
-   - Application requirements
-6. Modern CPUs use sophisticated cache hierarchies
-7. Cache takes significant portion of CPU die area
-8. Pipeline optimizations also require substantial hardware
+1. **Write policies** manage cache-memory consistency:
+   - Write-through: Simple but generates heavy memory traffic
+   - Write-back: More efficient but requires dirty bit tracking
+2. **Write buffers** improve write-through performance by decoupling cache and memory writes
+3. **Cache performance** depends on three factors: hit rate, hit latency, and miss penalty
+4. **Associativity spectrum** ranges from direct-mapped (1-way) to fully associative (N-way)
+5. **Higher associativity** reduces conflict misses and improves hit rate but increases complexity
+6. **Set-associative caches** balance the trade-offs between direct-mapped and fully associative designs
+7. **Replacement policies** (LRU, PLRU, FIFO) determine which block to evict in associative caches
+8. **Design decisions** must balance performance, power consumption, cost, and complexity
+9. **Real-world caches** use different associativity levels based on application requirements
+10. **Performance analysis** shows that even small improvements in hit rate significantly reduce average access time
 
----
 
 ## Summary
 
-Cache hierarchies represent one of the most effective techniques for improving memory system performance. By using multiple levels of cache, each optimized for different objectives, modern processors achieve both low latency and high hit rates. The L1 cache prioritizes speed to minimize clock cycle time, while L2 and L3 caches prioritize capacity and hit rate to reduce memory access frequency. Real-world implementations, such as Intel's Skylake architecture, demonstrate these principles in practice, showing how careful cache design enables high-performance computing while managing the constraints of power, cost, and chip area.
+This lecture examined two critical aspects of cache design: write policies and associativity. Write-through and write-back policies each offer distinct trade-offs between simplicity and efficiency, with write buffers providing a middle ground that improves performance without excessive complexity. The exploration of associative cache organizations revealed how different levels of associativity—from direct-mapped through set-associative to fully-associative—affect hit rates, access latency, and hardware complexity. Through detailed performance analysis and practical examples, we discovered that while higher associativity generally improves hit rates by reducing conflict misses, it comes at the cost of increased hit latency, power consumption, and implementation complexity. Modern cache systems carefully balance these competing factors, with set-associative designs emerging as an effective compromise that captures most of the benefits of full associativity while maintaining reasonable complexity. Understanding these design trade-offs is essential for optimizing memory hierarchy performance in real-world computer systems.

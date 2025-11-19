@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 17: Multi-Level Caching - CO224 Computer Architecture</title>
+    <title>Lecture 17: Multi-Level Caching - Lectures on Computer Architecture</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -18,664 +18,688 @@
                 Back to All Lectures
             </a>
             <h1 class="lecture-title">Lecture 17: Multi-Level Caching</h1>
-            <p class="lecture-meta">CO224 - Computer Architecture</p>
+            <p class="lecture-meta">Lectures on Computer Architecture</p>
         </div>
     </header>
 
     <main class="lecture-content-area container">
         <div class="content-body">
-            <h1>Lecture 17: Virtual Memory</h1>
+            <!-- Video Section -->
+            <div class="video-container">
+                <div class="video-thumbnail">
+                    <a href="https://www.youtube.com/watch?v=p6BmMrDKmTE" target="_blank" class="video-play-overlay">
+                        <img src="https://img.youtube.com/vi/p6BmMrDKmTE/maxresdefault.jpg" 
+                             alt="Lecture 17 Video Thumbnail"
+                             onerror="this.src='https://img.youtube.com/vi/p6BmMrDKmTE/hqdefault.jpg'">
+                        <div class="play-button">
+                            <svg width="68" height="48" viewBox="0 0 68 48" fill="none">
+                                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
+                                <path d="M45 24L27 14v20" fill="white"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <p class="video-notice">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Click the thumbnail above to watch the video lecture on YouTube
+                    </p>
+                </div>
+            </div>
 
-<h2>Introduction</h2>
+            
+<em>By Dr. Isuru Nawinne</em>
 
-<p>Virtual memory represents one of the most elegant abstractions in computer architecture, creating a layer between physical memory hardware and the memory view presented to programs. This lecture explores how virtual memory enables programs to use more memory than physically available by treating main memory as a cache for disk storage, supports safe execution of multiple concurrent programs through address space isolation, and provides memory protection mechanisms preventing programs from corrupting each other's data. We examine page tables, translation lookaside buffers (TLBs), page faults, and the critical design decisions that make virtual memory both practical and performant despite the enormous speed gap between RAM and disk storage.</p>
+<h2>17.1 Introduction</h2>
 
-<p>---</p>
+<p>This lecture explores cache hierarchies in modern computer systems, examining how multiple levels of cache work together to optimize memory access performance through careful balance of hit latency versus hit rate. We analyze real-world implementations including Intel's Skylake architecture, understanding the design decisions behind multi-level cache organizations where L1 caches prioritize speed, L2 caches balance capacity and latency, and L3 caches provide large shared storage across processor cores. The examination of associativity tradeoffs—from direct-mapped through set-associative to fully associative designs—reveals how hardware complexity, power consumption, and performance interact in practical cache systems.</p>
 
-<h2>1. Introduction to Virtual Memory</h2>
 
-<p>Virtual memory allows programs to use more memory than physically available by using main memory as a cache for secondary storage.</p>
+<h2>17.2 Recap: Associativity Comparison Results</h2>
 
-<h3>Key Purposes of Virtual Memory</h3>
+<p>From the previous lecture's example using a 4-block cache with three different organizations:</p>
 
-1. <strong>Allow programs to use more memory than actually available</strong>
-2. <strong>Support multiple programs running simultaneously on a CPU</strong>
-3. <strong>Enable safe and efficient memory sharing between programs</strong>
-4. <strong>Ensure programs only access their allocated memory</strong>
-
-<p>---</p>
-
-<h2>2. CPU Word Size and Address Space</h2>
-
-<p>The relationship between CPU word size and addressable memory determines the maximum amount of memory that can be addressed.</p>
-
-<h3>Address Space by CPU Word Size</h3>
-
-<h4>8-bit CPU</h4>
-
-<ul>
-<li><strong>Maximum addressable memory</strong>: 256 bytes (2^8)</li>
-</ul>
-
-<h4>16-bit CPU</h4>
-
-<ul>
-<li><strong>Maximum addressable memory</strong>: 64 kilobytes (2^16)</li>
-</ul>
-
-<h4>32-bit CPU</h4>
-
-<ul>
-<li><strong>Maximum addressable memory</strong>: 4 gigabytes (2^32)</li>
-<li>Became mainstream in early 1980s</li>
-<li>Was replaced when systems started reaching 4 GB memory limit</li>
-</ul>
-
-<h4>64-bit CPU</h4>
+<h3>17.2.1 Direct Mapped Cache</h3>
 
 <ul>
-<li><strong>Maximum addressable memory</strong>: 16 exabytes (2^64)</li>
-<li>About 16 million gigabytes</li>
-<li>Current mainstream word size</li>
-<li>Became mainstream around 2002-2003</li>
+<li><strong>Result</strong>: 5 misses, 0 hits</li>
+<li><strong>Cold misses</strong>: 3 (compulsory, unavoidable)</li>
+<li><strong>Conflict misses</strong>: 2 (data evicted then accessed again)</li>
+<li><strong>Utilization</strong>: Poor - only 2 of 4 slots used</li>
+<li><strong>Hit rate</strong>: 0% in this example</li>
 </ul>
 
-<h3>Historical Pattern</h3>
+<h3>17.2.2 2-Way Set Associative Cache</h3>
 
 <ul>
-<li>Maximum address space sizes were always much larger than commonly used RAM sizes</li>
-<li>Architectures were replaced when high-end systems started reaching the address space limits</li>
-<li>Personal computers typically had much less memory than the theoretical maximum</li>
+<li><strong>Result</strong>: 4 misses, 1 hit</li>
+<li><strong>Cold misses</strong>: 3</li>
+<li><strong>Conflict misses</strong>: 1</li>
+<li><strong>Utilization</strong>: 2 of 4 slots used</li>
+<li><strong>Hit rate</strong>: 20% - better than direct mapped</li>
 </ul>
 
-<p>---</p>
-
-<h2>3. Virtual vs Physical Addresses</h2>
-
-<h3>Virtual Address</h3>
+<h3>17.2.3 Fully Associative Cache (4-way)</h3>
 
 <ul>
-<li><strong>Address generated by CPU</strong></li>
-<li>Refers to entire theoretical address space</li>
-<li>CPU thinks it has access to full address space</li>
-<li>In 64-bit CPU: can address up to 16 exabytes</li>
+<li><strong>Result</strong>: 3 misses, 2 hits</li>
+<li><strong>Cold misses</strong>: 3 (only unavoidable misses)</li>
+<li><strong>Conflict misses</strong>: 0</li>
+<li><strong>Utilization</strong>: Best - 3 of 4 slots used</li>
+<li><strong>Hit rate</strong>: 40% - best performance</li>
 </ul>
 
-<h3>Physical Address</h3>
+<h3>17.2.4 Key Observations</h3>
 
 <ul>
-<li><strong>Actual address in real memory (RAM)</strong></li>
-<li>Much smaller range than virtual addresses</li>
-<li>Typical modern RAM: 8-16 GB (much less than 16 exabytes)</li>
+<li>Higher associativity → better hit rate</li>
+<li>Higher associativity → reduced conflict misses</li>
+<li>Cold misses occur at program start and when new addresses are accessed</li>
+<li>System reaches "steady state" with mostly conflict misses after initial cold misses</li>
+<li>Performance improvement comes at cost of complexity and power</li>
 </ul>
 
-<h3>Address Translation</h3>
+
+<h2>17.3 Cache Configuration Parameters</h2>
+
+<h3>17.3.1 Primary Parameters</h3>
+
+<h4>1. Block Size</h4>
 
 <ul>
-<li>Virtual addresses must be translated to physical addresses</li>
-<li>Translation required every time memory is accessed</li>
-<li>Main mechanism for making virtual memory work</li>
+<li>Size of a single block in bytes</li>
+<li>Cache deals with memory in blocks</li>
+<li>CPU deals with cache in words/bytes</li>
 </ul>
 
-<p>---</p>
-
-<h2>4. Memory Hierarchy with Virtual Memory</h2>
-
-<p>Complete hierarchy from top to bottom:</p>
-
-<p>1. <strong>CPU</strong> (generates virtual addresses, thinks memory is large and fast)</p>
-<p>2. <strong>Cache</strong> (virtually or physically addressed)</p>
-<p>3. <strong>Main Memory</strong> (acts as cache for secondary storage)</p>
-<p>4. <strong>Secondary Storage/Disk</strong> (contains all pages)</p>
-
-<p>CPU accesses cache directly. Main memory acts as cache for disk, not just a second level cache - requires additional mechanisms.</p>
-
-<p>---</p>
-
-<h2>5. Terminology</h2>
-
-<h3>CPU Level</h3>
+<h4>2. Set Size</h4>
 
 <ul>
-<li><strong>Accesses</strong>: Words (1, 4, or 8 bytes)</li>
-<li>Hit/Miss terminology used</li>
+<li>Number of sets in the cache</li>
+<li>Direct mapped: number of sets = number of entries</li>
+<li>Fully associative: only 1 set</li>
+<li>Can be confusing - refers to number of sets, not size of each set</li>
 </ul>
 
-<h3>Cache Level</h3>
+<h4>3. Associativity</h4>
 
 <ul>
-<li><strong>Transfers</strong>: Blocks (16-256 bytes typically)</li>
-<li>Hit/Miss terminology used</li>
+<li>Number of ways in a set</li>
+<li>Number of blocks that can be stored in one set</li>
+<li>1-way = direct mapped</li>
+<li>2-way = two-way set associative</li>
+<li>N-way = N blocks per set</li>
 </ul>
 
-<h3>Memory Level</h3>
+<h3>17.3.2 Cache Size Calculation</h3>
+
+
+<p>Total Cache Size = Block Size × Set Size × Associativity</p>
+
+
+<h3>17.3.3 Secondary Parameters</h3>
+
+<h4>4. Replacement Policy</h4>
 
 <ul>
-<li><strong>Transfers</strong>: Pages (1 KB to 64 KB typically)</li>
-<li><strong>Page Hit</strong>: Page is present in memory</li>
-<li><strong>Page Fault</strong>: Page is not present in memory (not "miss")</li>
+<li>LRU (Least Recently Used)</li>
+<li>Pseudo-LRU (PLRU)</li>
+<li>FIFO (First In First Out)</li>
+<li>Others</li>
 </ul>
 
-<p>---</p>
-
-<h2>6. Access Latencies</h2>
-
-<p>Understanding the latency differences is crucial for virtual memory design:</p>
+<h4>5. Write Policy</h4>
 
 <ul>
-<li><strong>Cache Hit</strong>: Under 1 cycle</li>
-<li><strong>Cache Miss</strong> (accessing main memory): 10-100 cycles</li>
-<li><strong>Page Fault</strong> (accessing disk): ~1 million cycles</li>
+<li>Write-through</li>
+<li>Write-back</li>
 </ul>
-<p>- Extremely large penalty</p>
-<p>- Influences design decisions significantly</p>
-<p>- Page faults handled in software by OS due to large penalty</p>
 
-<p>---</p>
-
-<h2>7. Virtual and Physical Address Structure</h2>
-
-<h3>Example with 32-bit Addresses</h3>
-
-<h4>Virtual Address (32 bits)</h4>
+<h4>6. Other Optimization Techniques</h4>
 
 <ul>
-<li><strong>Virtual Page Number</strong>: 22 bits (most significant)</li>
-<li><strong>Page Offset</strong>: 10 bits (least significant)</li>
-<li><strong>Virtual address space</strong>: 4 GB</li>
-<li><strong>Number of virtual pages</strong>: 2^22 pages</li>
-<li><strong>Page size</strong>: 2^10 = 1 KB</li>
+<li>Prefetching mechanisms</li>
+<li>Write buffer size</li>
+<li>Communication protocols</li>
 </ul>
 
-<h4>Physical Address (28 bits)</h4>
+<h3>17.3.4 Configuration Definition</h3>
 
 <ul>
-<li><strong>Physical Page Number (Frame Number)</strong>: 18 bits (most significant)</li>
-<li><strong>Page Offset</strong>: 10 bits (least significant)</li>
-<li><strong>Physical address space</strong>: 256 MB</li>
-<li><strong>Number of frames</strong>: 2^18 frames</li>
-<li><strong>Page size</strong>: 1 KB (same as virtual)</li>
+<li>Fixing values for all these parameters defines a specific cache configuration</li>
+<li>Performance and power consumption are determined by configuration</li>
+<li>External factors: memory access patterns from CPU/program</li>
 </ul>
 
-<h3>Key Points</h3>
+
+<h2>17.4 Improving Cache Performance</h2>
+
+<h3>17.4.1 Average Access Time Equation</h3>
+
+
+<p>T_avg = Hit Latency + Miss Rate × Miss Penalty</p>
+
+
+<p>Three main factors can be optimized as below.</p>
+
+
+<h2>17.5 Hit Rate Improvement</h2>
+
+<h3>17.5.1 Method 1: Increase Cache Size</h3>
+
+<strong>Approach</strong>:
 
 <ul>
-<li>Page offset has same number of bits in virtual and physical addresses</li>
-<li>Physical address space is smaller than virtual address space</li>
-<li>Memory contains "frames" where pages can be placed</li>
-<li>Frame = slot in memory that can hold a page</li>
+<li>Most obvious and intuitive method</li>
+<li>More slots → can hold more data → more likely to get hits</li>
 </ul>
 
-<p>---</p>
-
-<h2>8. Supporting Multiple Programs</h2>
-
-<p>Multiple programs can run simultaneously by sharing physical memory:</p>
-
-<h3>Each Program</h3>
+<strong>Limitations</strong>:
 
 <ul>
-<li>Has its own virtual address space</li>
-<li>Thinks it has entire memory to itself</li>
-<li>CPU switches between programs quickly</li>
-<li>Creates impression of simultaneous execution</li>
+<li>Very expensive (SRAM costs ~$2000/GB)</li>
+<li>SRAM uses cutting-edge technology, same as CPU</li>
+<li>Must be fast enough to work at CPU speed</li>
+<li>Usually located inside CPU core</li>
+<li>Practical limit on how much cache can be added</li>
 </ul>
 
-<h3>Memory Sharing</h3>
+<h3>17.5.2 Method 2: Increase Associativity</h3>
+
+<strong>Benefits</strong>:
 
 <ul>
-<li>Physical memory contains active pages from all running programs</li>
-<li>Each program's virtual pages map to different physical frames</li>
-<li>Operating system ensures programs only access their own memory</li>
+<li>Higher associativity → better hit rate</li>
+<li>Reduces conflict misses</li>
+<li>Most popular technique for given cache size</li>
 </ul>
 
-<h3>Example</h3>
+<strong>Trade-offs</strong>:
 
 <ul>
-<li>Program 1 virtual address space: 8 virtual pages</li>
-<li>Program 2 virtual address space: 8 virtual pages</li>
-<li>Physical memory: Only 4 frames available</li>
-<li>Active pages from both programs share the 4 frames</li>
-<li>Same virtual page number from different programs can map to different physical frames</li>
+<li>Increases hit latency</li>
+<li>Increases power consumption</li>
+<li>Increases hardware cost</li>
 </ul>
 
-<p>---</p>
+<h3>17.5.3 Method 3: Cache Prefetching</h3>
 
-<h2>9. Page Table</h2>
-
-<p>The page table is a data structure stored in memory that contains address translations.</p>
-
-<h3>Purpose</h3>
+<strong>Concept</strong>:
 
 <ul>
-<li>Stores virtual-to-physical address translations</li>
-<li>One page table per program</li>
-<li>Contains entries for ALL virtual pages (not just active ones)</li>
+<li>Fetch data before it's needed</li>
+<li>Similar to branch prediction in CPU</li>
+<li>Reduces cold misses (compulsory misses)</li>
+<li>Can also reduce conflict misses</li>
 </ul>
 
-<h3>Page Table Entry Contents</h3>
-
-<p>1. <strong>Physical Page Number</strong> (main component)</p>
-<p>2. <strong>Valid Bit</strong>: Is the page currently in memory?</p>
-<p>- 1 = Page is in memory (translation valid)</p>
-<p>- 0 = Page not in memory (page fault)</p>
-<p>3. <strong>Dirty Bit</strong>: Has page been modified?</p>
-<p>- 1 = Page modified, inconsistent with disk</p>
-<p>- 0 = Page not modified, consistent with disk</p>
-<p>4. <strong>Additional bits</strong>: Access permissions, memory protection status</p>
-
-<h3>Finding Page Table</h3>
+<strong>Types of Prefetching</strong>:
 
 <ul>
-<li>Page tables stored at fixed locations in memory</li>
-<li><strong>Page Table Base Register (PTBR)</strong>: Special CPU register storing starting address of active page table</li>
-<li>When CPU switches programs, OS updates PTBR to point to correct page table</li>
+<li>Software prefetching (compiler-based)</li>
+<li>Hardware prefetching</li>
+<li>Hybrid software-hardware approaches</li>
 </ul>
 
-<p>---</p>
-
-<h2>10. Address Translation Process</h2>
-
-<p>Steps to access memory:</p>
-
-<p>1. <strong>CPU generates virtual address</strong> (virtual page number + page offset)</p>
-<p>2. <strong>Access page table</strong> using PTBR + virtual page number as index</p>
-<p>3. <strong>Read page table entry</strong>:</p>
-<p>- If valid bit = 0: Page fault (handled by OS)</p>
-<p>- If valid bit = 1: Read physical page number</p>
-<p>4. <strong>Construct physical address</strong>: Physical page number + page offset</p>
-<p>5. <strong>Access physical memory</strong> with physical address</p>
-6. <strong>Return data to CPU</strong>
-
-<h3>Memory Accesses Required</h3>
+<strong>Benefits</strong>:
 
 <ul>
-<li>One access for page table</li>
-<li>One access for actual data</li>
-<li><strong>Total</strong>: Two memory accesses per data access</li>
+<li>Can predict and fetch data before CPU requests it</li>
+<li>Reduces effective miss rate</li>
+<li>Can significantly improve performance for predictable access patterns</li>
 </ul>
 
-<p>---</p>
-
-<h2>11. Page Table Size Calculation</h2>
-
-<h3>Example: 4 GB Virtual, 1 GB Physical, 1 KB Pages</h3>
-
-<h4>Number of Entries</h4>
+<strong>Limitations</strong>:
 
 <ul>
-<li>Virtual address: 32 bits</li>
-<li>Page offset: 10 bits (for 1 KB pages)</li>
-<li>Virtual page number: 22 bits</li>
-<li><strong>Number of entries</strong>: 2^22 = ~4 million entries</li>
+<li>Not 100% accurate</li>
+<li>Wrong predictions waste power and bandwidth</li>
+<li>Requires additional hardware</li>
+<li>Increases complexity</li>
 </ul>
 
-<h4>Entry Size</h4>
+
+<h2>17.6 Hit Latency Optimization</h2>
+
+<h3>17.6.1 Relationship with Hit Rate</h3>
+
+<strong>Fundamental Trade-off</strong>:
 
 <ul>
-<li>Physical address: 30 bits (for 1 GB)</li>
-<li>Page offset: 10 bits</li>
-<li>Physical page number: 20 bits</li>
-<li>Valid bit: 1 bit</li>
-<li>Dirty bit: 1 bit</li>
-<li>Total needed: 22 bits</li>
-<li>Actual storage: 32 bits (word-aligned)</li>
-<li><strong>Size per entry</strong>: 4 bytes</li>
+<li>Hit rate and hit latency are tied together</li>
+<li>Improving hit rate often increases hit latency</li>
+<li>Improving hit latency often reduces hit rate</li>
+<li>Need to find optimal balance</li>
 </ul>
 
-<h4>Total Page Table Size</h4>
+<strong>Examples</strong>:
 
 <ul>
-<li>4 bytes × 2^22 entries = <strong>16 MB</strong></li>
-<li>Significant memory overhead for each program</li>
+<li>Higher associativity → better hit rate BUT higher hit latency</li>
+<li>Smaller, simpler cache → lower hit latency BUT worse hit rate</li>
 </ul>
 
-<p>---</p>
-
-<h2>12. Write Policy for Virtual Memory</h2>
-
-<h3>Write-Through: NOT USED</h3>
+<strong>Design Challenge</strong>:
 
 <ul>
-<li>Would require writing to disk on every write</li>
-<li>1 million cycle penalty unacceptable</li>
-<li>Not a good design decision</li>
+<li>Must balance these competing factors</li>
+<li>Depends on application requirements</li>
+<li>Different trade-offs for different use cases</li>
 </ul>
 
-<h3>Write-Back: USED (Standard Policy)</h3>
+
+<h2>17.7 Miss Penalty Improvement</h2>
+
+<h3>17.7.1 Miss Penalty Definition</h3>
 
 <ul>
-<li>Writes only update memory</li>
-<li>Dirty bit tracks modified pages</li>
-<li>Only write to disk when:</li>
-</ul>
-<p>- Page is evicted from memory</p>
-<p>- Page's dirty bit is 1</p>
-<ul>
-<li>Minimizes disk accesses</li>
+<li>Time spent servicing a cache miss</li>
+<li>Time to fetch missing block from memory</li>
 </ul>
 
-<p>---</p>
-
-<h2>13. Placement Policy</h2>
-
-<h3>Fully Associative Placement</h3>
+<h3>17.7.2 Method 1: Optimize Communication</h3>
 
 <ul>
-<li>Any page from disk can go to any frame in memory</li>
-<li>Memory treated as one large set containing all frames</li>
-<li>No direct mapping or set restrictions</li>
-<li>Maximizes flexibility in page placement</li>
-<li>Reduces page faults</li>
+<li>Improve bus technology between cache and memory</li>
+<li>Increase bus width</li>
+<li>Increase bus speed</li>
+<li>Optimize bus arbitration</li>
+<li>Better communication protocols</li>
+<li>This assumes best possible communication is already in place</li>
 </ul>
 
-<h3>Why Fully Associative?</h3>
+<h3>17.7.3 Method 2: Cache Hierarchy (Main Focus)</h3>
 
 <ul>
-<li>Minimizes page faults (primary goal)</li>
-<li>Large page fault penalty (1 million cycles) justifies complexity</li>
-<li>Different from cache (doesn't use tag comparators in memory)</li>
-<li>Address translation through page table provides necessary mechanism</li>
+<li>Use multiple levels of cache</li>
+<li>Each level optimized differently</li>
+<li>Most effective technique for reducing miss penalty</li>
 </ul>
 
-<p>---</p>
 
-<h2>14. Page Fault Handling</h2>
+<h2>17.8 Cache Hierarchy (Multi-Level Caches)</h2>
 
-<h3>What Operating System Must Do</h3>
+<h3>17.8.1 Concept</h3>
 
-<h4>1. Fetch Missing Page</h4>
+<p>Instead of a single cache between CPU and memory, use multiple cache levels: L1, L2, L3, etc., with each level serving as backup for the level above.</p>
+
+<h3>17.8.2 Terminology</h3>
 
 <ul>
-<li>Access disk to retrieve page</li>
-<li>OS must know disk location of page</li>
-<li>OS maintains data structures tracking page locations</li>
+<li><strong>L1 (Level 1)</strong>: Top-level cache, closest to CPU</li>
+<li><strong>L2 (Level 2)</strong>: Second-level cache</li>
+<li><strong>L3 (Level 3)</strong>: Third-level cache (in some systems)</li>
+<li><strong>Top-level cache</strong>: Fastest, smallest</li>
+<li><strong>Last-level cache</strong>: Slowest (but still fast), largest</li>
 </ul>
 
-<h4>2. Find Unused Frame</h4>
+<h3>17.8.3 Operation</h3>
+
+<p>1. CPU requests data from L1</p>
+<p>2. L1 miss → request goes to L2 (not directly to memory)</p>
+<p>3. L2 miss → request goes to L3 (if exists)</p>
+<p>4. Last-level miss → request goes to main memory</p>
+
+<h3>17.8.4 Benefits</h3>
 
 <ul>
-<li>OS tracks which frames are currently used</li>
-<li>Can determine this through page tables</li>
-<li>If unused frame exists: Place page in unused frame</li>
+<li>Reduced effective miss penalty for L1</li>
+<li>Most L1 misses served by L2 in few cycles (2-4 cycles)</li>
+<li>Only L2 misses incur full memory penalty (100+ cycles)</li>
+<li>Overall average miss penalty greatly reduced</li>
 </ul>
 
-<h4>3. If Memory Full (No Unused Frames)</h4>
+<h3>17.8.5 Effective Miss Penalty</h3>
+
+<p>For L1 cache:</p>
+
+
+<p>Effective Miss Penalty = L2 Hit Latency + L2 Miss Rate × L2 Miss Penalty</p>
+
+
+<p>If L2 has good hit rate:</p>
 
 <ul>
-<li>Select active page to replace using replacement policy</li>
-<li>Common replacement policies:</li>
-</ul>
-<p>- Least Recently Used (LRU)</p>
-<p>- Pseudo-LRU (PLRU)</p>
-<p>- First-In-First-Out (FIFO)</p>
-<p>- Least Frequently Used (LFU)</p>
-<ul>
-<li>Goal: Exploit temporal locality (keep recently/frequently used pages)</li>
+<li>L2 miss rate is low</li>
+<li>Most L1 misses served quickly by L2</li>
+<li>Effective penalty much less than going to memory</li>
 </ul>
 
-<h4>4. Check Dirty Bit of Page to be Replaced</h4>
+<h3>17.8.6 Example Calculation</h3>
+
+<p>Given:</p>
 
 <ul>
-<li>If dirty bit = 1: Write page back to disk before replacement</li>
-<li>If dirty bit = 0: Can directly overwrite (data consistent with disk)</li>
-<li>Prevents data loss</li>
+<li>L1 miss rate: 5%</li>
+<li>L2 hit rate: 99.9%</li>
+<li>L2 hit latency: 3 cycles</li>
+<li>Memory penalty: 100 cycles</li>
 </ul>
 
-<h4>5. Update Data Structures</h4>
+
+<p>L1 effective penalty = 3 + 0.001 × 100 = 3.1 cycles</p>
+
+
+
+<h2>17.9 Optimization Strategies for Multi-Level Caches</h2>
+
+<h3>17.9.1 Why Not One Big Cache?</h3>
 
 <ul>
-<li>Update page table entry for new page</li>
-<li>Update page table entry for replaced page (set valid = 0)</li>
-<li>Place fetched page in frame</li>
+<li>Different levels can be optimized for different goals</li>
+<li>Splitting allows specialized optimization</li>
+<li>Better overall performance than single large cache</li>
 </ul>
 
-<h3>Optimization</h3>
+
+<h2>17.10 L1 Cache Optimization - Optimize for Hit Latency</h2>
+
+<h3>17.10.1 Goal</h3>
+
+<p>Minimize hit latency</p>
+
+<h3>17.10.2 Rationale</h3>
 
 <ul>
-<li>Many operations can occur in parallel during disk fetch</li>
-<li>While fetching data, OS can determine placement and handle replacement</li>
-<li>Use buffers for write-back operations</li>
+<li>Critical for CPU clock cycle time</li>
+<li>Memory access is slowest pipeline stage</li>
+<li>Determines overall CPU clock period</li>
+<li>Lower L1 hit latency → shorter clock cycle → higher CPU frequency</li>
 </ul>
 
-<h3>Why Software Handling?</h3>
+<h3>17.10.3 Characteristics</h3>
 
 <ul>
-<li>1 million cycle penalty is so large that software overhead is negligible</li>
-<li>Complex replacement policies better suited to software</li>
-<li>Hardware optimization doesn't provide significant benefit</li>
+<li>Small size</li>
+<li>Lower associativity (2-way, 4-way, sometimes 8-way)</li>
+<li>Fast response time</li>
+<li>Accept moderate hit rate (e.g., 95%)</li>
 </ul>
 
-<p>---</p>
-
-<h2>15. Translation Lookaside Buffer (TLB)</h2>
-
-<h3>Purpose</h3>
+<h3>17.10.4 Trade-off</h3>
 
 <ul>
-<li>Avoid accessing memory twice for every data access</li>
-<li>Act as cache for page table entries</li>
-<li>Reduce address translation overhead</li>
+<li>Sacrifice some hit rate for speed</li>
+<li>Slightly higher miss rate acceptable</li>
+<li>Misses handled by L2</li>
 </ul>
 
-<h3>What is TLB?</h3>
+
+<h2>17.11 L2 Cache Optimization - Optimize for Hit Rate</h2>
+
+<h3>17.11.1 Goal</h3>
+
+<p>Maximize hit rate</p>
+
+<h3>17.11.2 Rationale</h3>
 
 <ul>
-<li>Hardware cache specifically for page table entries</li>
-<li>Stores recently used address translations</li>
-<li>Based on locality of page table entry accesses</li>
-<li>Exploits temporal and spatial locality of page accesses</li>
+<li>Serve most L1 misses</li>
+<li>Minimize accesses to main memory</li>
+<li>Reduce effective L1 miss penalty</li>
 </ul>
 
-<h3>TLB Entry Structure</h3>
+<h3>17.11.3 Characteristics</h3>
 
 <ul>
-<li><strong>Tag</strong>: Virtual address tag (or physical address tag)</li>
-<li><strong>Physical Page Number</strong>: The address translation</li>
-<li><strong>Valid Bit</strong>: Is this TLB entry valid?</li>
-</ul>
-<p>- Different from page table valid bit</p>
-<p>- Indicates if TLB entry contains valid translation</p>
-<ul>
-<li><strong>Dirty Bit</strong>: Same meaning as in page table</li>
+<li>Larger size</li>
+<li>Higher associativity (8-way, 16-way, or even fully associative)</li>
+<li>Very high hit rate (99.9% or better)</li>
+<li>Can tolerate higher hit latency</li>
 </ul>
 
-<h3>TLB Parameters</h3>
-
-<h4>Size</h4>
+<h3>17.11.4 Trade-off</h3>
 
 <ul>
-<li><strong>16-512 page table entries</strong> (typical range)</li>
+<li>Higher latency acceptable</li>
+<li>Not on critical path for most accesses</li>
+<li>Priority is catching L1 misses</li>
 </ul>
 
-<h4>Block Size</h4>
+
+<h2>17.12 Associativity Comparison</h2>
+
+<strong>Question</strong>: Which level has higher associativity?
+
+<strong>Answer</strong>: L2 (and L3 if present) have higher associativity
+
+<h3>17.12.1 Reasoning</h3>
 
 <ul>
-<li><strong>1-2 address translations</strong></li>
-<li>Small blocks because spatial locality between pages is larger</li>
-<li>Adjacent pages not as closely related as adjacent cache blocks</li>
+<li>L2 optimized for hit rate</li>
+<li>Higher associativity → better hit rate</li>
+<li>L1 optimized for latency</li>
+<li>Lower associativity → faster access</li>
 </ul>
 
-<h4>Placement Policy</h4>
+<h3>17.12.2 Combined Effect</h3>
 
 <ul>
-<li>Fully associative or set associative</li>
-<li>Fully associative for smaller TLBs (~16 entries)</li>
-<li>Set associative for larger TLBs</li>
-<li>Goal: Keep miss rate below 1%</li>
+<li><strong>L1</strong>: Fast but moderate hit rate (e.g., 95-98%)</li>
+<li><strong>L2</strong>: Slower but excellent hit rate (e.g., 99-99.9%)</li>
+<li><strong>Most accesses</strong>: L1 hit (fast path)</li>
+<li><strong>Most L1 misses</strong>: L2 hit (medium path, few cycles)</li>
+<li><strong>Very few accesses</strong>: Main memory (slow path, 100+ cycles)</li>
 </ul>
 
-<h4>Hit Latency</h4>
+<strong>Overall result</strong>: Much better average performance
+
+
+<h2>17.13 Physical Implementation of Cache Hierarchy</h2>
+
+<h3>17.13.1 L1 Cache</h3>
 
 <ul>
-<li><strong>Much less than 1 cycle</strong></li>
+<li>Almost always on-chip (inside CPU die)</li>
+<li>Integrated within CPU core</li>
+<li>Smallest but fastest</li>
+<li>Typically split into:</li>
 </ul>
+<p>- L1 instruction cache (L1-I)</p>
+<p>- L1 data cache (L1-D)</p>
 
-<h4>Miss Penalty</h4>
+<h3>17.13.2 L2 Cache</h3>
 
 <ul>
-<li><strong>10-100 cycles</strong> (memory access required)</li>
+<li>Usually on-chip (same die as CPU)</li>
+<li>Can be off-chip in some designs</li>
+<li>Larger than L1</li>
+<li>May be unified (instruction + data) or split</li>
+<li>If multi-core: may be per-core or shared</li>
 </ul>
 
-<h3>TLB Operation</h3>
-
-<h4>Hit</h4>
+<h3>17.13.3 L3 Cache</h3>
 
 <ul>
-<li>Address translation available in TLB</li>
-<li>Use translation directly without accessing memory</li>
-<li>Only one memory access needed (for data)</li>
+<li>Common in multi-processor/multi-core systems</li>
+<li>Usually on-chip in modern designs</li>
+<li>Can be off-chip in some architectures</li>
+<li>Typically unified and shared among all cores</li>
+<li>Largest cache level</li>
 </ul>
 
-<h4>Miss</h4>
+<h3>17.13.4 Design Variations</h3>
+
+<p>Different implementations based on:</p>
 
 <ul>
-<li>Translation not in TLB</li>
-<li>Must access page table in memory</li>
-<li>Total: Two memory accesses (page table + data)</li>
+<li>Performance requirements</li>
+<li>Power budget</li>
+<li>Cost constraints</li>
+<li>Target application</li>
+<li>Number of cores</li>
 </ul>
 
-<h3>Why Low Miss Rate Essential?</h3>
+
+<h2>17.14 Real World Example: Intel Skylake Architecture</h2>
+
+<strong>Source</strong>: wikichip.org
+
+<h3>17.14.1 Architecture Overview</h3>
 
 <ul>
-<li>TLB misses double memory access time</li>
-<li>Must access page table (10-100 cycles) then data</li>
-<li>Miss rate typically kept below 1%</li>
-<li>> 99% of translations served by TLB</li>
+<li>Mainstream Intel architecture from ~2015</li>
+<li>Used in Core i3, i5, i7 processors</li>
+<li>Standard desktop/PC processors</li>
 </ul>
 
-<p>---</p>
+<h3>17.14.2 Dual-Core Layout Analysis</h3>
 
-<h2>16. Complete Memory Access with TLB</h2>
-
-<p>Two different approaches for handling memory access with TLB:</p>
-
-<p>---</p>
-
-<h2>17. Approach 1: Virtually Addressed Cache</h2>
-
-<h3>Process</h3>
-
-1. <strong>CPU generates virtual address</strong>
-<p>2. <strong>Access cache with virtual address</strong> (parallel with TLB)</p>
-<p>3. <strong>Cache Hit</strong>: Return data to CPU immediately</p>
-<p>4. <strong>Cache Miss</strong>:</p>
-
-a. <strong>Check TLB for address translation</strong>
-
-<p>b. <strong>TLB Hit</strong>:</p>
-
-<p>- Get physical address</p>
-<p>- Access memory with physical address</p>
-<p>- Fetch missing block</p>
-<p>- Update cache</p>
-<p>- Send word to CPU</p>
-
-<p>c. <strong>TLB Miss</strong>:</p>
-
-<p>- Access page table in memory</p>
-<p>- <strong>Page Hit</strong>:</p>
-<p>- Get translation</p>
-<p>- Access memory for data</p>
-<p>- Update TLB</p>
-<p>- Update cache</p>
-<p>- Send word to CPU</p>
-<p>- <strong>Page Fault</strong>:</p>
-<p>- OS accesses disk</p>
-<p>- Fetch missing page</p>
-<p>- Find unused frame or replace page</p>
-<p>- If replaced page dirty: write back</p>
-<p>- Update page table</p>
-<p>- Update TLB</p>
-<p>- Update cache</p>
-<p>- Send word to CPU</p>
-
-<h3>Advantage</h3>
+<h4>Execution Units</h4>
 
 <ul>
-<li>TLB access overlapped with cache access</li>
-<li>Both happen in parallel</li>
-<li>No additional latency for TLB access on cache hit</li>
+<li>Two separate processor cores visible</li>
+<li>Integer ALUs (arithmetic logic units)</li>
+<li>Floating-point units</li>
+<li>Multipliers, dividers</li>
+<li>Other arithmetic hardware</li>
 </ul>
 
-<p>---</p>
-
-<h2>18. Approach 2: Physically Addressed Cache</h2>
-
-<h3>Process</h3>
-
-1. <strong>CPU generates virtual address</strong>
-2. <strong>Access TLB for translation first</strong>
-<p>3. <strong>TLB Hit</strong>:</p>
-
-<p>a. Get physical address</p>
-
-b. <strong>Access cache with physical address</strong>
-
-<p>c. <strong>Cache Hit</strong>: Return data to CPU</p>
-
-<p>d. <strong>Cache Miss</strong>:</p>
-
-<p>- Access memory with physical address</p>
-<p>- Fetch missing block</p>
-<p>- Update cache</p>
-<p>- Send word to CPU</p>
-
-<p>4. <strong>TLB Miss</strong>:</p>
-
-<p>a. Access page table in memory</p>
-
-<p>b. <strong>Page Hit</strong>:</p>
-
-<p>- Get translation</p>
-<p>- Update TLB</p>
-<p>- Access cache with physical address</p>
-<p>- If cache hit: return data</p>
-<p>- If cache miss: fetch from memory, update cache, return data</p>
-
-<p>c. <strong>Page Fault</strong>:</p>
-
-<p>- OS handles as described above</p>
-<p>- Update page table, TLB, cache</p>
-<p>- Return data to CPU</p>
-
-<h3>Advantage</h3>
+<h4>Pipeline Support Hardware</h4>
 
 <ul>
-<li>Cache physically indexed and tagged</li>
-<li>Simpler cache design</li>
-<li>No aliasing issues</li>
+<li>Takes up as much space as execution units</li>
+<li>Out-of-order scheduling logic</li>
+<li>Branch prediction units</li>
+<li>Multiple issue hardware</li>
+<li>Decoding logic</li>
+<li>Control logic</li>
 </ul>
 
-<h3>Key Difference</h3>
+<h3>17.14.3 Cache Implementation</h3>
+
+<h4>L1 Data Cache</h4>
 
 <ul>
-<li><strong>Approach 1</strong>: Cache uses virtual addresses, TLB access parallel</li>
-<li><strong>Approach 2</strong>: Cache uses physical addresses, TLB access sequential</li>
+<li>Separate for each core</li>
+<li>Located close to execution units and memory management</li>
+<li><strong>8-way set associative</strong></li>
+<li>Smaller size (32KB typical)</li>
+<li>Close to where addresses are generated</li>
 </ul>
 
-<p>Both approaches are valid, and the choice depends on cache indexing method (virtual vs physical).</p>
+<h4>L1 Instruction Cache</h4>
 
-<p>---</p>
+<ul>
+<li>Separate for each core</li>
+<li>Located close to instruction fetch and decode units</li>
+<li>Near out-of-order scheduling hardware</li>
+<li><strong>8-way set associative</strong></li>
+<li>Smaller size (32KB typical)</li>
+</ul>
+
+<h4>L2 Cache</h4>
+
+<ul>
+<li>Shared between instruction and data</li>
+<li>Larger than L1 (256KB in this example)</li>
+<li><strong>4-way set associative</strong> (in this design)</li>
+<li>Located between L1 and memory</li>
+<li>Serves both L1-I and L1-D misses</li>
+</ul>
+
+<h3>17.14.4 Memory Hierarchy</h3>
+
+<ul>
+<li>Separate buffers for load and store instructions</li>
+<li>Buffers before and after cache</li>
+<li>Memory management unit</li>
+<li>Connection to L3 cache (if present) via bus</li>
+</ul>
+
+<h3>17.14.5 Design Observations</h3>
+
+<ul>
+<li>Physical placement matches logical function</li>
+<li>Data cache near execution units</li>
+<li>Instruction cache near fetch/decode</li>
+<li>Shared L2 in middle position</li>
+<li>Significant die area for cache</li>
+<li>Even more area for pipeline optimization</li>
+</ul>
+
+<h3>17.14.6 Why Higher L1 Associativity Here?</h3>
+
+<ul>
+<li>8-way seems high for L1</li>
+<li>But size is small (32KB)</li>
+<li>Other pipeline stages may be bottleneck</li>
+<li>Clock period limited by other factors</li>
+<li>Can afford higher associativity without hurting cycle time</li>
+<li>Depends on overall CPU design</li>
+</ul>
+
+<h3>17.14.7 Multi-Core Configuration</h3>
+
+<ul>
+<li>Each core has own L1-I and L1-D</li>
+<li>Each core has own L2</li>
+<li>All cores share L3</li>
+<li>L3 connects via bus system</li>
+</ul>
+
+<h3>17.14.8 Additional Features</h3>
+
+<ul>
+<li>Physical register files (integer and vector)</li>
+<li>Store/load buffers</li>
+<li>Pre-decoding hardware</li>
+<li>Complex x86 instruction handling</li>
+<li>Many optimizations for real-world performance</li>
+</ul>
+
+
+<h2>17.15 Recommendations for Further Study</h2>
+
+<h3>17.15.1 Resource: wikichip.org</h3>
+
+<strong>Content Available</strong>:
+
+<ul>
+<li>Detailed CPU architecture information</li>
+<li>Real implementation details</li>
+<li>Various processor families:</li>
+</ul>
+<p>- Intel x86 architectures</p>
+<p>- ARM implementations</p>
+<p>- AMD processors</p>
+<p>- Other architectures</p>
+
+<strong>Benefits</strong>:
+
+<ul>
+<li>See concepts in real hardware</li>
+<li>Understand practical trade-offs</li>
+<li>Compare different design approaches</li>
+<li>Learn industry practices</li>
+</ul>
+
 
 <h2>Key Takeaways</h2>
 
-<p>1. Virtual memory provides memory abstraction and protection</p>
-<p>2. Address translation is fundamental to virtual memory operation</p>
-<p>3. Page tables map virtual addresses to physical addresses</p>
-<p>4. TLB caches translations to avoid double memory access</p>
-<p>5. Page faults are extremely expensive (~1 million cycles)</p>
-<p>6. Write-back policy is essential for virtual memory</p>
-<p>7. Fully associative placement minimizes page faults</p>
-<p>8. Multiple programs can safely share physical memory</p>
-<p>9. OS handles page faults in software</p>
-<p>10. Virtual memory enables modern multitasking operating systems</p>
+<p>1. Cache hierarchies reduce effective miss penalty</p>
+<p>2. Different levels optimized for different goals:</p>
+<p>- L1: Hit latency (speed)</p>
+<p>- L2/L3: Hit rate (coverage)</p>
+<p>3. Multi-level caches balance competing requirements</p>
+<p>4. Real implementations show concepts in practice</p>
+<p>5. Design decisions depend on:</p>
+<p>- Performance targets</p>
+<p>- Power budget</p>
+<p>- Cost constraints</p>
+<p>- Application requirements</p>
+<p>6. Modern CPUs use sophisticated cache hierarchies</p>
+<p>7. Cache takes significant portion of CPU die area</p>
+<p>8. Pipeline optimizations also require substantial hardware</p>
 
-<p>---</p>
 
 <h2>Summary</h2>
 
-<p>Virtual memory represents a crucial abstraction in modern computing, enabling efficient and safe memory management across multiple concurrent programs while providing each program with the illusion of abundant, dedicated memory resources.</p>
+<p>Cache hierarchies represent one of the most effective techniques for improving memory system performance. By using multiple levels of cache, each optimized for different objectives, modern processors achieve both low latency and high hit rates. The L1 cache prioritizes speed to minimize clock cycle time, while L2 and L3 caches prioritize capacity and hit rate to reduce memory access frequency. Real-world implementations, such as Intel's Skylake architecture, demonstrate these principles in practice, showing how careful cache design enables high-performance computing while managing the constraints of power, cost, and chip area.</p>
 
             
             <div class="lecture-nav">

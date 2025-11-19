@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CO224 - Computer Architecture Lecture Series</title>
+    <title>Lectures on Computer Architecture</title>
     <link rel="stylesheet" href="assets/css/style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
@@ -13,14 +13,16 @@
   <body>
     <header>
       <div class="container">
-        <h1>CO224: Computer Architecture</h1>
-        <p class="subtitle">A Comprehensive Lecture Series</p>
+        <h1>Lectures on Computer Architecture</h1>
+        <p class="subtitle">A Comprehensive Guide by Dr. Isuru Nawinne</p>
       </div>
     </header>
 
     <main class="container">
+      <!-- About Lectures on Computer Architecture -->
       <section class="intro">
-        <h2>About This Course</h2>
+        <h2>About <em>Lectures on Computer Architecture</em></h2>
+        <p class="lecture-instructor" style="margin-top: -0.5rem; margin-bottom: 1rem;">By Dr. Isuru Nawinne</p>
         <p>
           This lecture series provides a comprehensive guide to computer
           architecture, covering topics from fundamental abstractions to
@@ -29,10 +31,1286 @@
           examples to support your learning journey.
         </p>
 
+        <div class="downloads">
+          <a
+            href="materials/CO224-Complete-Notes.pdf"
+            class="btn btn-primary"
+            download
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download PDF
+          </a>
+        </div>
+
+        <details class="expandable-section">
+          <summary>Publishing Info</summary>
+          <div class="expandable-content">
+              <div class="publishing-info-license" style="margin-top:1rem; margin-bottom:1rem;">
+                <p style="font-size:0.95em; color:#444;">
+                  &copy; 2025, by Creative Commons. This work is licensed under a <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-NonCommercial 4.0 International</a>.<br>
+                  To view a copy of this license, visit <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">https://creativecommons.org/licenses/by-nc/4.0/</a> or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.<br>
+                  This license allows reusers to distribute, remix, adapt, and build upon the material in any medium or format, so long as attribution is given to the creator. The license allows only for non-commercial use.
+                </p>
+              </div>
+              <div class="publishing-info-grid">
+              <div class="publishing-info-column">
+                <p><strong>Title:</strong> Lectures on Computer Architecture</p>
+                <p><strong>Author:</strong> Dr. Isuru Nawinne</p>
+                <p><strong>Institution:</strong> Department of Computer Engineering, University of Peradeniya</p>
+                <p><strong>ISBN:</strong> 978-624-92913-0-0</p>
+                <!-- <p><strong>Year:</strong> 2025</p> -->
+              </div>
+              <div class="publishing-info-column">
+                <img src="assets/images/barcode-isbn.png" alt="ISBN Barcode" style="max-width: 200px; height: auto;">
+              </div>
+            </div>
+          </div>
+        </details>
+
+          
+
+        <!-- Preface Subsection -->
+        <div class="book-subsection">
+          <details class="inline-expandable">
+            <summary>
+              <h3>Preface</h3>
+              <p class="preview-text">
+                Computer architecture is the foundation upon which all computing systems are built. This comprehensive lecture series has been developed over years of teaching experience at the University of Peradeniya...
+              </p>
+            </summary>
+            <div class="expandable-content">
+              <p>
+                Computer architecture is the foundation upon which all computing systems are built. This comprehensive lecture series has been developed over years of teaching experience at the University of Peradeniya, refined through continuous interaction with students and industry feedback. The materials presented here represent a careful balance between theoretical foundations and practical applications.
+              </p>
+              <p>
+                The journey through computer architecture begins with fundamental abstractions and progressively builds towards understanding complex systems including multicore processors, cache hierarchies, and virtual memory. Each lecture is designed to be both self-contained and part of a larger narrative that reveals how modern computers achieve their remarkable capabilities.
+              </p>
+              <p>
+                These materials are intended for undergraduate students in computer engineering and computer science, as well as professionals seeking to deepen their understanding of computer systems. The accompanying video lectures provide additional context and explanations that complement the written notes.
+              </p>
+              <p>
+                I hope this series serves you well in your journey to master computer architecture, whether you're building the next generation of processors or simply seeking to understand the remarkable machines that have transformed our world.
+              </p>
+              <p style="margin-top: 1rem;"><em>— Dr. Isuru Nawinne</em></p>
+            </div>
+          </details>
+        </div>
+
+        <!-- Learning Methods Subsection -->
+        <div class="book-subsection">
+          <details class="inline-expandable">
+            <summary>
+              <h3>Learning Methods</h3>
+              <p class="preview-text">
+                This course employs a multi-modal learning approach designed to maximize understanding and retention through video lectures, written notes, and practical labs...
+              </p>
+            </summary>
+            <div class="expandable-content">
+              <h4>How to Use These Materials</h4>
+              <p>
+                This course employs a multi-modal learning approach designed to maximize understanding and retention:
+              </p>
+              <ul>
+                <li><strong>Video Lectures:</strong> Watch the corresponding YouTube video for each lecture to get a comprehensive explanation with visual aids and real-time problem-solving demonstrations.</li>
+                <li><strong>Written Notes:</strong> Use these detailed notes as reference material during and after watching videos. They include additional examples and clarifications.</li>
+                <li><strong>Practical Labs:</strong> Apply concepts through hands-on programming exercises in ARM assembly and Verilog HDL.</li>
+                <li><strong>Active Learning:</strong> Pause videos to work through examples independently before seeing solutions.</li>
+                <li><strong>Spaced Repetition:</strong> Review previous lectures periodically to reinforce foundational concepts.</li>
+              </ul>
+              <h4>Recommended Study Approach</h4>
+              <ol>
+                <li>Read the lecture notes introduction to understand key topics</li>
+                <li>Watch the video lecture, taking brief notes on unclear concepts</li>
+                <li>Re-read the detailed notes, focusing on sections that need clarification</li>
+                <li>Complete any associated laboratory exercises</li>
+                <li>Review key takeaways and summary sections</li>
+                <li>Attempt practice problems and discuss with peers</li>
+              </ol>
+            </div>
+          </details>
+        </div>
+
+        <!-- Introduction Subsection -->
+        <div class="book-subsection">
+          <details class="inline-expandable">
+            <summary>
+              <h3>Introduction</h3>
+              <p class="preview-text">
+                Computer architecture is the science and art of designing computer systems. It sits at the critical intersection of hardware and software, defining how processors execute instructions...
+              </p>
+            </summary>
+            <div class="expandable-content">
+              <p>
+                Computer architecture is the science and art of designing computer systems. It sits at the critical intersection of hardware and software, defining how processors execute instructions, how memory is organized, and how data flows through a system. Understanding computer architecture is essential for anyone who wants to write efficient code, design new computing systems, or optimize existing ones.
+              </p>
+              <h4>What You Will Learn</h4>
+              <p>
+                This lecture series covers the complete spectrum of computer architecture topics:
+              </p>
+              <ul>
+                <li><strong>Foundations:</strong> Computer abstractions, technology trends, and performance analysis</li>
+                <li><strong>Instruction Set Architecture:</strong> The ARM architecture and assembly programming</li>
+                <li><strong>Processor Design:</strong> Datapath, control units, and pipelining</li>
+                <li><strong>Memory Systems:</strong> Cache hierarchies, virtual memory, and optimization techniques</li>
+                <li><strong>Advanced Topics:</strong> Multiprocessors, parallel computing, and I/O systems</li>
+              </ul>
+              <h4>Prerequisites</h4>
+              <p>
+                Students should have a basic understanding of digital logic design and programming in at least one high-level language (C, Python, Java, etc.). Familiarity with binary number systems and Boolean algebra is helpful but will be reviewed as needed.
+              </p>
+              <h4>Learning Outcomes</h4>
+              <p>
+                Upon completing this course, you will be able to:
+              </p>
+              <ul>
+                <li>Understand how high-level programs are translated into machine instructions</li>
+                <li>Write and debug programs in ARM assembly language</li>
+                <li>Design and implement a functional processor using hardware description languages</li>
+                <li>Analyze and optimize computer system performance</li>
+                <li>Understand modern processor features including pipelining, caching, and virtual memory</li>
+                <li>Make informed decisions about hardware-software trade-offs</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- About Practicals on Computer Architecture -->
+      <section class="intro">
+        <h2>About <em>Practicals on Computer Architecture</em></h2>
+        <p>
+          Hands-on practical series to complement the lecture series, providing practical experience processor microarchitecture and memory systems using Verilog. Students build their own processors and implement memory hierarchy with caching.
+        </p>
+
+        <div class="downloads">
+          <a
+            href="materials/CO224-Lab-Manual.pdf"
+            class="btn btn-primary"
+            download
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Lab Manual
+          </a>
+          <a
+            href="materials/supplementary.zip"
+            class="btn btn-secondary"
+            download
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Supplementary Materials (.zip)
+          </a>
+        </div>
+
+        <details class="expandable-section">
+          <summary>Publishing Info</summary>
+          <div class="expandable-content">
+            <div class="publishing-info-license" style="margin-top:1rem; margin-bottom:1rem;">
+              <p style="font-size:0.95em; color:#444;">
+                &copy; 2025, by Creative Commons. This work is licensed under a <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-NonCommercial 4.0 International</a>.<br>
+                To view a copy of this license, visit <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">https://creativecommons.org/licenses/by-nc/4.0/</a> or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.<br>
+                This license allows reusers to distribute, remix, adapt, and build upon the material in any medium or format, so long as attribution is given to the creator. The license allows only for non-commercial use.
+              </p>
+            </div>
+            <div class="publishing-info-grid">
+              <div class="publishing-info-column">
+                <p><strong>Title:</strong> Practicals on Computer Architecture</p>
+                <p><strong>Lab Coordinator:</strong> Dr. Isuru Nawinne</p>
+                <p><strong>Institution:</strong> Department of Computer Engineering, University of Peradeniya</p>
+                <p><strong>ISBN:</strong> 978-624-92913-0-0</p>
+                <!-- <p><strong>Format:</strong> Hands-on laboratory sessions with ARM assembly and Verilog HDL</p> -->
+              </div>
+              <div class="publishing-info-column">
+                <img src="assets/images/barcode-isbn.png" alt="ISBN Barcode" style="max-width: 200px; height: auto;">
+              </div>
+            </div>
+          </div>
+        </details>
+
+          
+      </section>
+
+      <section class="lectures">
+        <h2>Lecture Notes</h2>
+        <p class="section-description">
+          Click on any lecture to view the detailed notes and diagrams.
+        </p>
+
+        <div class="lecture-grid">
+          <!-- Lectures 1-3: Foundations -->
+          <div class="lecture-category">
+            <h3 class="category-title">Foundations</h3>
+            <div class="lecture-card">
+              <div class="lecture-number">01</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-01.html"
+                    >Computer Abstractions</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  Introduction to the lecture series on Computer Architecture.
+                  This lecture introduces the fundamental concepts of computer
+                  system abstractions and the relationship between hardware and
+                  software.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=https://www.youtube.com/watch?v=PNaYa-LZkt4&list=PLF_wt90BmDnBApJoc4Ck7CSGBNKS39foD"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-01.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">02</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-02.html">Technology Trends</a>
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture covers the historical development of computer
+                  technology, Moore's Law, technology scaling trends, the power
+                  wall problem, the shift to multi-core processors, and how
+                  programs are compiled and executed in computer systems.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=Fy2u9oCNZ1E"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-02.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">03</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-03.html"
+                    >Understanding Performance</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture provides a comprehensive exploration of
+                  performance concepts in computer systems, including response
+                  time, throughput, CPU time, clock cycles, CPI (Cycles Per
+                  Instruction), and Amdahl's Law.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=nhwsAOEidik"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-03.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          <!-- Lectures 4-8: Programming Concepts -->
+          <div class="lecture-category">
+            <h3 class="category-title">Programming Concepts</h3>
+            <div class="lecture-card">
+              <div class="lecture-number">04</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-04.html"
+                    >Introduction to ARM Assembly</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Kisaru Liyanage</p>
+                <p>
+                  This lecture provides an introduction to ARM Assembly language
+                  programming, and covers the core concept of computer
+                  instructions. By Dr. Kisaru Liyanage.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=s1X7Rr7rzag"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-04.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">05</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-05.html"
+                    >Number Representation and Data Processing</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Kisaru Liyanage</p>
+                <p>
+                  This lecture covers the number representation in an ARM CPU,
+                  and introduces data processing instructions for arithmetic and
+                  logic operations.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=rCS3oXcQPKo"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-05.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">06</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-06.html">Branching</a>
+                </h4>
+                <p class="lecture-instructor">By Dr. Kisaru Liyanage</p>
+                <p>
+                  This lecture introduces branch instructions and flow control
+                  in an ARM Assembly programs.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=aFCmb1CNnV8"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-06.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">07</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-07.html"
+                    >Function Call and Return</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Kisaru Liyanage</p>
+                <p>
+                  This lecture covers function calling conventions in ARM, and
+                  stack management.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=T99xSt2ryKs"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-07.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">08</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-08.html">Memory Access</a>
+                </h4>
+                <p class="lecture-instructor">By Dr. Kisaru Liyanage.</p>
+                <p>
+                  This lecture covers loading data from memory, storing data to
+                  memory, and the build process of an assembly program.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=IxaTbKoCr1Y"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-08.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lectures 9-13: Processor Design -->
+          <div class="lecture-category">
+            <h3 class="category-title">Processor Design</h3>
+            <div class="lecture-card">
+              <div class="lecture-number">09</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-09.html"
+                    >Microarchitecture and Datapath</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture introduces processor microarchitecture, focusing
+                  on implementing the MIPS ISA through hardware design. The
+                  lecture covers MIPS instruction types, basic digital logic
+                  review, datapath construction, and single-cycle processor
+                  design.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=v9az9n9UUD4"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-09.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">10</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-10.html">Processor Control</a>
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture covers the design of the control unit for a MIPS
+                  processor, with specific focus on generating ALU control
+                  signals through a two-stage approach. The lecture builds upon
+                  the datapath elements covered previously and demonstrates how
+                  control signals are generated from instruction opcodes and
+                  function fields.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=ZURjn6FyzkI"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-10.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">11</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-11.html"
+                    >Single-Cycle Execution</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture completes the single-cycle MIPS processor design
+                  by analyzing control signals for all instruction types
+                  (R-type, Branch, Load, Store, Jump), introduces timing
+                  analysis with delay values, and demonstrates performance
+                  limitations that motivate multi-cycle and pipelined
+                  implementations.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=TegJ2TBihPw"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-11.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">12</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-12.html"
+                    >Pipelined Processors</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture introduces pipelining as a performance
+                  enhancement technique for MIPS processors, explains the
+                  concept using real-world analogies, analyzes the three types
+                  of hazards (structural, data, and control) that impede
+                  pipelining efficiency, and discusses solutions including
+                  forwarding and branch prediction.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=l3GqbXXB2QA"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-12.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">13</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-13.html"
+                    >Pipeline Operation and Timing</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture provides an in-depth analysis of MIPS five-stage
+                  pipeline operation, introduces pipeline registers required
+                  between stages, examines load/store instruction execution
+                  cycle-by-cycle, discusses timing and delay considerations, and
+                  includes practical exercises on clock frequency calculation
+                  and pipeline optimization.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=JSZYac-xI5g"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-13.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lectures 14-18: Memory Systems -->
+          <div class="lecture-category">
+            <h3 class="category-title">Memory Systems</h3>
+            <div class="lecture-card">
+              <div class="lecture-number">14</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-14.html"
+                    >Memory Hierarchy and Caching</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture introduces memory systems, starting with
+                  historical context and transitioning into the fundamental
+                  concepts of cache memory and memory hierarchy.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=vCbnFagcXjo"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-14.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">15</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-15.html"
+                    >Direct Mapped Cache Control</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture continues the discussion on cache memory,
+                  focusing on detailed read and write operations in a
+                  direct-mapped cache, handling cache misses, and introducing
+                  write policies (specifically write-through). The lecture
+                  explores how the cache controller manages different access
+                  scenarios and maintains data consistency.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=BJY8nzyNMAY"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-15.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">16</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-16.html"
+                    >Associative Cache Control</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture continues the discussion on caching, with a focus
+                  on associative caches and performance implications.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=eez7NbgXk9g"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-16.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">17</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-17.html"
+                    >Multi-Level Caching</a
+                  >
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture discusses mutli level cache hierarchy
+                  implementations, and their performance considerations.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=p6BmMrDKmTE"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-17.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">18</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-18.html">Virtual Memory</a>
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture introduces the concept of virtual memory in
+                  computer systems.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=O3hgbPAQhvE"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-18.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lectures 19-20: Advanced Topics -->
+          <div class="lecture-category">
+            <h3 class="category-title">Advanced Topics</h3>
+            <div class="lecture-card">
+              <div class="lecture-number">19</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-19.html">Multiprocessors</a>
+                </h4>
+                <p class="lecture-instructor">By Dr. Isuru Nawinne</p>
+                <p>
+                  This lecture introduces multiprocessing and different types of
+                  multiprocessor architectures./p>
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=EcjOuKKF5eE"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-19.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="lecture-card">
+              <div class="lecture-number">20</div>
+              <div class="lecture-content">
+                <h4>
+                  <a href="Lectures/html/lecture-20.html"
+                    >Storage and Interfacing</a
+                  >
+                </h4>
+                <p class="lecture-instructor">
+                  By Dr. Swarnalatha Radhakrishnan
+                </p>
+                <p>
+                  This lecture covers storage and interfacing design
+                  considerations in computer systems.
+                </p>
+                <div class="lecture-links">
+                  <a
+                    href="https://www.youtube.com/watch?v=hte_h1SxhYY"
+                    class="lecture-link-btn video-link"
+                    target="_blank"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Video
+                  </a>
+                  <a
+                    href="Lectures/html/lecture-20.html"
+                    class="lecture-link-btn notes-link"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    Read Notes
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="instructor-section">
         <div class="instructor-info">
-          <h3>Course Instructor</h3>
-          <div class="instructor-card">
-            <div class="instructor-details">
+          <h2>About the Author</h2>
+            <div class="instructor-card" style="display:flex; align-items:flex-start; gap:2rem;">
+              <div class="instructor-image" style="flex:0 0 140px; max-width:140px;">
+                <img src="Lectures/img/isuru-nawinne.png" alt="Dr. Isuru Nawinne" style="width:100%; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+              </div>
+              <div class="instructor-details" style="flex:1;">
               <h4>Dr. Isuru Nawinne</h4>
               <p class="instructor-title">
                 Senior Lecturer, Department of Computer Engineering
@@ -53,9 +1331,7 @@
                 South Wales, Sydney, Australia (2016). He teaches one of the
                 best computer architecture foundational courses in the world,
                 with materials and delivery methods that consistently produce
-                impressive outcomes. His students are regularly recruited by
-                world-leading computer architecture companies including ARM and
-                SiFive.
+                impressive outcomes. His students often pursue PhD research at world renowned universities, and are regularly recruited by world-leading computer architecture companies including ARM and SiFive.
               </p>
               <div class="instructor-links">
                 <a
@@ -139,330 +1415,13 @@
             </div>
           </div>
         </div>
-
-        <div class="downloads">
-          <h3>Course Materials</h3>
-          <div class="download-buttons">
-            <a
-              href="materials/CO224-Complete-Notes.pdf"
-              class="btn btn-primary"
-              download
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              Download Complete PDF
-            </a>
-            <a
-              href="materials/supplementary.zip"
-              class="btn btn-secondary"
-              download
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              Supplementary Materials
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section class="lectures">
-        <h2>Lecture Notes</h2>
-        <p class="section-description">
-          Click on any lecture to view the detailed notes and diagrams.
-        </p>
-
-        <div class="lecture-grid">
-          <!-- Lectures 1-5: Foundations -->
-          <div class="lecture-category">
-            <h3 class="category-title">Foundations</h3>
-            <div class="lecture-card">
-              <div class="lecture-number">01</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-01.html"
-                    >Computer Abstractions</a
-                  >
-                </h4>
-                <p>
-                  Introduction to computer system abstractions and the hierarchy
-                  of computing layers
-                </p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">02</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-02.html">Technology Trends</a>
-                </h4>
-                <p>Evolution of computer technology and performance trends</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">03</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-03.html"
-                    >Understanding Performance</a
-                  >
-                </h4>
-                <p>
-                  Metrics and methods for evaluating computer system performance
-                </p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">04</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-04.html"
-                    >Introduction to ARM Assembly</a
-                  >
-                </h4>
-                <p>Basics of ARM assembly language and instruction sets</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">05</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-05.html"
-                    >Number Representation and Data Processing</a
-                  >
-                </h4>
-                <p>Binary representation and data processing operations</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Lectures 6-9: Programming Concepts -->
-          <div class="lecture-category">
-            <h3 class="category-title">Programming Concepts</h3>
-            <div class="lecture-card">
-              <div class="lecture-number">06</div>
-              <div class="lecture-content">
-                <h4><a href="Lectures/html/lecture-06.html">Branching</a></h4>
-                <p>Conditional execution and control flow in assembly</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">07</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-07.html"
-                    >Function Call and Return</a
-                  >
-                </h4>
-                <p>Procedure calling conventions and stack management</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">08</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-08.html">Memory Access</a>
-                </h4>
-                <p>Load and store operations, addressing modes</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">09</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-09.html"
-                    >Microarchitecture and Datapath</a
-                  >
-                </h4>
-                <p>Internal processor organization and data flow</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Lectures 10-13: Processor Design -->
-          <div class="lecture-category">
-            <h3 class="category-title">Processor Design</h3>
-            <div class="lecture-card">
-              <div class="lecture-number">10</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-10.html">Processor Control</a>
-                </h4>
-                <p>Control unit design and instruction execution</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">11</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-11.html"
-                    >Single-Cycle Execution</a
-                  >
-                </h4>
-                <p>Single-cycle processor design and timing analysis</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">12</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-12.html"
-                    >Pipelined Processors</a
-                  >
-                </h4>
-                <p>Introduction to instruction pipelining for performance</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">13</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-13.html"
-                    >Pipeline Operation and Timing</a
-                  >
-                </h4>
-                <p>Pipeline stages, hazards, and forwarding techniques</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Lectures 14-18: Memory Systems -->
-          <div class="lecture-category">
-            <h3 class="category-title">Memory Systems</h3>
-            <div class="lecture-card">
-              <div class="lecture-number">14</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-14.html"
-                    >Memory Hierarchy and Caching</a
-                  >
-                </h4>
-                <p>Cache memory principles and memory hierarchy design</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">15</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-15.html"
-                    >Direct Mapped Cache Control</a
-                  >
-                </h4>
-                <p>Direct-mapped cache organization and control logic</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">16</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-16.html"
-                    >Associative Cache Control</a
-                  >
-                </h4>
-                <p>Set-associative and fully-associative cache designs</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">17</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-17.html"
-                    >Multi-Level Caching</a
-                  >
-                </h4>
-                <p>Multi-level cache hierarchies and optimization</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">18</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-18.html">Virtual Memory</a>
-                </h4>
-                <p>Virtual memory concepts, paging, and address translation</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Lectures 19-20: Advanced Topics -->
-          <div class="lecture-category">
-            <h3 class="category-title">Advanced Topics</h3>
-            <div class="lecture-card">
-              <div class="lecture-number">19</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-19.html">Multiprocessors</a>
-                </h4>
-                <p>Parallel processing architectures and synchronization</p>
-              </div>
-            </div>
-            <div class="lecture-card">
-              <div class="lecture-number">20</div>
-              <div class="lecture-content">
-                <h4>
-                  <a href="Lectures/html/lecture-20.html"
-                    >Storage and Interfacing</a
-                  >
-                </h4>
-                <p>I/O systems, storage devices, and peripheral interfaces</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="about">
-        <h2>About the Course</h2>
-        <p>
-          This lecture series is designed to accompany a comprehensive YouTube
-          video series on computer architecture. The materials provided here
-          serve as detailed references for students following the video
-          lectures.
-        </p>
-
-        <div class="disclaimer">
-          <h3>Disclaimer</h3>
-          <p>
-            The authors provide these materials on an "as is" basis and make no
-            representations or warranties of any kind with respect to the
-            content. The authors disclaim all such representations and
-            warranties, including but not limited to warranties for a particular
-            purpose. In addition, the authors assume no responsibility for
-            errors, inaccuracies, omissions, or any other inconsistencies
-            herein.
-          </p>
-        </div>
       </section>
     </main>
 
     <footer>
       <div class="container">
         <p>
-          &copy; 2025 CO224 Computer Architecture Lecture Series. All rights
-          reserved.
+          &copy; 2025 Computer Architecture Lecture Series. All rights reserved.
         </p>
         <p>Department of Computer Engineering, University of Peradeniya</p>
       </div>

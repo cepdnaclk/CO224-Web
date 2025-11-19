@@ -1,14 +1,15 @@
 # Lecture 7: Function Call and Return
 
-## Introduction
+*By Dr. Kisaru Liyanage*
+
+## 7.1 Introduction
 
 Function calling is a fundamental mechanism that enables modular programming and code reuse. This lecture explores how ARM assembly implements function calls, covering parameter passing, return value handling, the call stack, register preservation conventions, and recursion. Understanding these mechanisms is essential for translating high-level function-based programs into assembly and for comprehending how processors manage execution context across function boundaries.
 
----
 
-## 1. Function Calling Fundamentals
+## 7.2 Function Calling Fundamentals
 
-### 1.1 Function Calling Steps
+### 7.2.1 Function Calling Steps
 
 **Complete Call Sequence**
 
@@ -28,7 +29,7 @@ Function calling is a fundamental mechanism that enables modular programming and
 - Provides local storage for function variables
 - Supports arbitrary call depth
 
-### 1.2 Why Use Functions?
+### 7.2.2 Why Use Functions?
 
 **Benefits**
 
@@ -49,9 +50,9 @@ int main() {
 }
 ```
 
-## 2. ARM Register Conventions
+## 7.3 ARM Register Conventions
 
-### 2.1 Register Usage Rules
+### 7.3.1 Register Usage Rules
 
 **Register Classification**
 
@@ -85,7 +86,8 @@ R15 (PC): Program Counter
          - Modified to return from function
 ```
 
-### 2.2 Shared Register File
+
+### 7.3.2 Shared Register File
 
 **Key Concept**
 
@@ -117,15 +119,16 @@ function:
     MOV PC, LR       ; Return
 ```
 
-## 3. Function Call Instructions
+## 7.4 Function Call Instructions
 
-### 3.1 Branch and Link (BL)
+### 7.4.1 Branch and Link (BL)
 
 **Syntax**
 
 ```assembly
 BL function_label    ; Branch and Link
 ```
+
 
 **Operation**
 
@@ -139,6 +142,7 @@ BL function_label    ; Branch and Link
     BL fun           ; Address: 0x1004
     ADD R1, R0, #5   ; Address: 0x1008 (return point)
 
+
 fun:
     ; LR contains 0x1008 (address after BL)
     ; Function code here
@@ -151,7 +155,7 @@ fun:
 - LR provides the connection
 - Enables function to return
 
-### 3.2 Return from Function
+### 7.4.2 Return from Function
 
 **Basic Return**
 
@@ -171,9 +175,9 @@ MOV PC, LR           ; Copy LR to PC
 BX LR                ; Branch and Exchange
 ```
 
-## 4. Parameter Passing
+## 7.5 Parameter Passing
 
-### 4.1 Using R0-R3
+### 7.5.1 Using R0-R3
 
 **Convention**
 
@@ -199,12 +203,13 @@ int result = multiply(6, 7);
     BL multiply      ; Call function
     ; R0 now contains result (42)
 
+
 multiply:
     MUL R0, R0, R1   ; R0 = R0 × R1
     MOV PC, LR       ; Return
 ```
 
-### 4.2 More Than 4 Arguments
+### 7.5.2 More Than 4 Arguments
 
 **Solution: Use Stack**
 
@@ -235,6 +240,7 @@ int sum6(int a, int b, int c, int d, int e, int f) {
     BL sum6
     ADD SP, SP, #8   ; Clean up stack
 
+
 sum6:
     ; R0-R3 have first 4 args
     ; Load arg5 and arg6 from stack
@@ -248,9 +254,9 @@ sum6:
     MOV PC, LR
 ```
 
-## 5. Return Values
+## 7.6 Return Values
 
-### 5.1 Primary Return Register (R0)
+### 7.6.1 Primary Return Register (R0)
 
 **Convention**
 
@@ -272,7 +278,7 @@ main:
     ; R0 now contains 30
 ```
 
-### 5.2 64-Bit Return Values
+### 7.6.2 64-Bit Return Values
 
 **Convention**
 
@@ -298,9 +304,10 @@ multiply64:
     MOV PC, LR
 ```
 
-## 6. The Stack
 
-### 6.1 Stack Structure
+## 7.7 The Stack
+
+### 7.7.1 Stack Structure
 
 **Definition**
 
@@ -334,7 +341,8 @@ High Address
 Low Address
 ```
 
-### 6.2 Stack Uses
+
+### 7.7.2 Stack Uses
 
 **Primary Purposes**
 
@@ -344,9 +352,9 @@ Low Address
 4. **Extra function arguments** (beyond R0-R3)
 5. **Storing local arrays** that don't fit in registers
 
-## 7. Stack Operations
+## 7.8 Stack Operations
 
-### 7.1 Allocating Stack Space (Pushing)
+### 7.8.1 Allocating Stack Space (Pushing)
 
 **Decrement Stack Pointer**
 
@@ -355,13 +363,14 @@ SUB SP, SP, #4       ; Allocate 4 bytes (1 register)
 SUB SP, SP, #12      ; Allocate 12 bytes (3 registers)
 ```
 
+
 **Why Subtract?**
 
 - Stack grows toward lower addresses
 - Allocating space moves SP downward
 - Each 32-bit register needs 4 bytes
 
-### 7.2 Storing Values to Stack
+### 7.8.2 Storing Values to Stack
 
 **Single Register**
 
@@ -369,6 +378,7 @@ SUB SP, SP, #12      ; Allocate 12 bytes (3 registers)
 SUB SP, SP, #4       ; Allocate space
 STR R4, [SP, #0]     ; Store R4 at top of stack
 ```
+
 
 **Multiple Registers**
 
@@ -385,7 +395,8 @@ STR R6, [SP, #8]     ; Store R6
 PUSH {R4-R6}         ; Allocate and store in one instruction
 ```
 
-### 7.3 Loading Values from Stack
+
+### 7.8.3 Loading Values from Stack
 
 **Single Register**
 
@@ -393,6 +404,7 @@ PUSH {R4-R6}         ; Allocate and store in one instruction
 LDR R4, [SP, #0]     ; Load R4 from stack
 ADD SP, SP, #4       ; Release space
 ```
+
 
 **Multiple Registers**
 
@@ -409,7 +421,8 @@ ADD SP, SP, #12      ; Release space
 POP {R4-R6}          ; Restore and release in one instruction
 ```
 
-### 7.4 Stack Space Lifecycle
+
+### 7.8.4 Stack Space Lifecycle
 
 **Pattern**
 
@@ -423,9 +436,9 @@ POP {R4-R6}          ; Restore and release in one instruction
 - Unbalanced stack causes bugs and crashes
 - SP must be restored before return
 
-## 8. Register Preservation
+## 7.9 Register Preservation
 
-### 8.1 Why Preserve R4-R11?
+### 7.9.1 Why Preserve R4-R11?
 
 **Problem**
 
@@ -441,7 +454,7 @@ POP {R4-R6}          ; Restore and release in one instruction
 - Restores R4-R11 from stack before return
 - Caller expects R4-R11 unchanged
 
-### 8.2 Preservation Pattern
+### 7.9.2 Preservation Pattern
 
 **Function Template**
 
@@ -464,15 +477,16 @@ function:
     MOV PC, LR           ; Return
 ```
 
+
 **Optimization**
 
 - Only preserve registers actually used
 - If function doesn't use R5, don't save/restore it
 - Saves stack space and execution time
 
-## 9. Nested Function Calls (Non-Leaf Functions)
+## 7.10 Nested Function Calls (Non-Leaf Functions)
 
-### 9.1 The Problem
+### 7.10.1 The Problem
 
 **Leaf Function**
 
@@ -502,7 +516,8 @@ funcB:
     MOV PC, LR       ; Correctly returns to funcA
 ```
 
-### 9.2 Solution: Save LR to Stack
+
+### 7.10.2 Solution: Save LR to Stack
 
 **Pattern**
 
@@ -520,6 +535,7 @@ function:
     ADD SP, SP, #4
     MOV PC, LR
 ```
+
 
 **Complete Example**
 
@@ -547,9 +563,10 @@ inner:
     MOV PC, LR       ; Returns to outer
 ```
 
-## 10. Recursion Example: Factorial
 
-### 10.1 Factorial Function
+## 7.11 Recursion Example: Factorial
+
+### 7.11.1 Factorial Function
 
 **C Code**
 
@@ -562,6 +579,7 @@ int fact(int n) {
 }
 ```
 
+
 **Key Points**
 
 - Base case: n ≤ 1, return 1
@@ -569,7 +587,7 @@ int fact(int n) {
 - Each call creates new stack frame
 - Stack unwinds as recursion returns
 
-### 10.2 ARM Assembly Implementation
+### 7.11.2 ARM Assembly Implementation
 
 ```assembly
 fact:
@@ -598,7 +616,7 @@ fact_end:
     MOV PC, LR
 ```
 
-### 10.3 Stack Growth During Recursion
+### 7.11.3 Stack Growth During Recursion
 
 **Call: fact(3)**
 
@@ -622,6 +640,7 @@ Returns to main with result 6
 Final: SP = 0x1000 (restored)
 ```
 
+
 **Stack Space Per Call**
 
 - 8 bytes (LR + n)
@@ -629,9 +648,9 @@ Final: SP = 0x1000 (restored)
 - fact(10) needs 80 bytes
 - Deep recursion can overflow stack!
 
-## 11. Memory Layout and Stack vs. Heap
+## 7.12 Memory Layout and Stack vs. Heap
 
-### 11.1 Complete Memory Layout
+### 7.12.1 Complete Memory Layout
 
 ```
 High Address (0xFFFFFFFF)
@@ -658,7 +677,8 @@ High Address (0xFFFFFFFF)
 Low Address (0x00000000)
 ```
 
-### 11.2 Stack Characteristics
+
+### 7.12.2 Stack Characteristics
 
 **Automatic Storage**
 
@@ -684,7 +704,7 @@ Low Address (0x00000000)
 - Not accessible after return
 - Perfect for temporary data
 
-### 11.3 Heap Characteristics
+### 7.12.3 Heap Characteristics
 
 **Dynamic Allocation**
 

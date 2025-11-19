@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 7: Function Call and Return - CO224 Computer Architecture</title>
+    <title>Lecture 7: Function Call and Return - Lectures on Computer Architecture</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -18,23 +18,50 @@
                 Back to All Lectures
             </a>
             <h1 class="lecture-title">Lecture 7: Function Call and Return</h1>
-            <p class="lecture-meta">CO224 - Computer Architecture</p>
+            <p class="lecture-meta">Lectures on Computer Architecture</p>
         </div>
     </header>
 
     <main class="lecture-content-area container">
         <div class="content-body">
-            <h1>Lecture 7: Function Call and Return</h1>
+            <!-- Video Section -->
+            <div class="video-container">
+                <div class="video-thumbnail">
+                    <a href="https://www.youtube.com/watch?v=T99xSt2ryKs" target="_blank" class="video-play-overlay">
+                        <img src="https://img.youtube.com/vi/T99xSt2ryKs/maxresdefault.jpg" 
+                             alt="Lecture 7 Video Thumbnail"
+                             onerror="this.src='https://img.youtube.com/vi/T99xSt2ryKs/hqdefault.jpg'">
+                        <div class="play-button">
+                            <svg width="68" height="48" viewBox="0 0 68 48" fill="none">
+                                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
+                                <path d="M45 24L27 14v20" fill="white"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <p class="video-notice">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Click the thumbnail above to watch the video lecture on YouTube
+                    </p>
+                </div>
+            </div>
 
-<h2>Introduction</h2>
+            
+<em>By Dr. Kisaru Liyanage</em>
+
+<h2>7.1 Introduction</h2>
 
 <p>Function calling is a fundamental mechanism that enables modular programming and code reuse. This lecture explores how ARM assembly implements function calls, covering parameter passing, return value handling, the call stack, register preservation conventions, and recursion. Understanding these mechanisms is essential for translating high-level function-based programs into assembly and for comprehending how processors manage execution context across function boundaries.</p>
 
-<p>---</p>
 
-<h2>1. Function Calling Fundamentals</h2>
+<h2>7.2 Function Calling Fundamentals</h2>
 
-<h3>1.1 Function Calling Steps</h3>
+<h3>7.2.1 Function Calling Steps</h3>
 
 <strong>Complete Call Sequence</strong>
 
@@ -56,7 +83,7 @@
 <li>Supports arbitrary call depth</li>
 </ul>
 
-<h3>1.2 Why Use Functions?</h3>
+<h3>7.2.2 Why Use Functions?</h3>
 
 <strong>Benefits</strong>
 
@@ -79,9 +106,9 @@
 <p>}</p>
 </code>`<code>
 
-<h2>2. ARM Register Conventions</h2>
+<h2>7.3 ARM Register Conventions</h2>
 
-<h3>2.1 Register Usage Rules</h3>
+<h3>7.3.1 Register Usage Rules</h3>
 
 <strong>Register Classification</strong>
 
@@ -115,7 +142,8 @@
 <p>- Modified to return from function</p>
 </code>`<code>
 
-<h3>2.2 Shared Register File</h3>
+
+<h3>7.3.2 Shared Register File</h3>
 
 <strong>Key Concept</strong>
 
@@ -151,15 +179,16 @@
 <p>MOV PC, LR       ; Return</p>
 </code>`<code>
 
-<h2>3. Function Call Instructions</h2>
+<h2>7.4 Function Call Instructions</h2>
 
-<h3>3.1 Branch and Link (BL)</h3>
+<h3>7.4.1 Branch and Link (BL)</h3>
 
 <strong>Syntax</strong>
 
 </code>`<code>assembly
 <p>BL function_label    ; Branch and Link</p>
 </code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -172,6 +201,7 @@
 <p>MOV R0, #10      ; Address: 0x1000</p>
 <p>BL fun           ; Address: 0x1004</p>
 <p>ADD R1, R0, #5   ; Address: 0x1008 (return point)</p>
+
 
 <p>fun:</p>
 <p>; LR contains 0x1008 (address after BL)</p>
@@ -187,7 +217,7 @@
 <li>Enables function to return</li>
 </ul>
 
-<h3>3.2 Return from Function</h3>
+<h3>7.4.2 Return from Function</h3>
 
 <strong>Basic Return</strong>
 
@@ -209,9 +239,9 @@
 <p>BX LR                ; Branch and Exchange</p>
 </code>`<code>
 
-<h2>4. Parameter Passing</h2>
+<h2>7.5 Parameter Passing</h2>
 
-<h3>4.1 Using R0-R3</h3>
+<h3>7.5.1 Using R0-R3</h3>
 
 <strong>Convention</strong>
 
@@ -239,12 +269,13 @@
 <p>BL multiply      ; Call function</p>
 <p>; R0 now contains result (42)</p>
 
+
 <p>multiply:</p>
 <p>MUL R0, R0, R1   ; R0 = R0 × R1</p>
 <p>MOV PC, LR       ; Return</p>
 </code>`<code>
 
-<h3>4.2 More Than 4 Arguments</h3>
+<h3>7.5.2 More Than 4 Arguments</h3>
 
 <strong>Solution: Use Stack</strong>
 
@@ -277,6 +308,7 @@
 <p>BL sum6</p>
 <p>ADD SP, SP, #8   ; Clean up stack</p>
 
+
 <p>sum6:</p>
 <p>; R0-R3 have first 4 args</p>
 <p>; Load arg5 and arg6 from stack</p>
@@ -290,9 +322,9 @@
 <p>MOV PC, LR</p>
 </code>`<code>
 
-<h2>5. Return Values</h2>
+<h2>7.6 Return Values</h2>
 
-<h3>5.1 Primary Return Register (R0)</h3>
+<h3>7.6.1 Primary Return Register (R0)</h3>
 
 <strong>Convention</strong>
 
@@ -316,7 +348,7 @@
 <p>; R0 now contains 30</p>
 </code>`<code>
 
-<h3>5.2 64-Bit Return Values</h3>
+<h3>7.6.2 64-Bit Return Values</h3>
 
 <strong>Convention</strong>
 
@@ -344,9 +376,10 @@
 <p>MOV PC, LR</p>
 </code>`<code>
 
-<h2>6. The Stack</h2>
 
-<h3>6.1 Stack Structure</h3>
+<h2>7.7 The Stack</h2>
+
+<h3>7.7.1 Stack Structure</h3>
 
 <strong>Definition</strong>
 
@@ -384,7 +417,8 @@
 <p>Low Address</p>
 </code>`<code>
 
-<h3>6.2 Stack Uses</h3>
+
+<h3>7.7.2 Stack Uses</h3>
 
 <strong>Primary Purposes</strong>
 
@@ -394,9 +428,9 @@
 <p>4. <strong>Extra function arguments</strong> (beyond R0-R3)</p>
 <p>5. <strong>Storing local arrays</strong> that don't fit in registers</p>
 
-<h2>7. Stack Operations</h2>
+<h2>7.8 Stack Operations</h2>
 
-<h3>7.1 Allocating Stack Space (Pushing)</h3>
+<h3>7.8.1 Allocating Stack Space (Pushing)</h3>
 
 <strong>Decrement Stack Pointer</strong>
 
@@ -404,6 +438,7 @@
 <p>SUB SP, SP, #4       ; Allocate 4 bytes (1 register)</p>
 <p>SUB SP, SP, #12      ; Allocate 12 bytes (3 registers)</p>
 </code>`<code>
+
 
 <strong>Why Subtract?</strong>
 
@@ -413,7 +448,7 @@
 <li>Each 32-bit register needs 4 bytes</li>
 </ul>
 
-<h3>7.2 Storing Values to Stack</h3>
+<h3>7.8.2 Storing Values to Stack</h3>
 
 <strong>Single Register</strong>
 
@@ -421,6 +456,7 @@
 <p>SUB SP, SP, #4       ; Allocate space</p>
 <p>STR R4, [SP, #0]     ; Store R4 at top of stack</p>
 </code>`<code>
+
 
 <strong>Multiple Registers</strong>
 
@@ -437,7 +473,8 @@
 <p>PUSH {R4-R6}         ; Allocate and store in one instruction</p>
 </code>`<code>
 
-<h3>7.3 Loading Values from Stack</h3>
+
+<h3>7.8.3 Loading Values from Stack</h3>
 
 <strong>Single Register</strong>
 
@@ -445,6 +482,7 @@
 <p>LDR R4, [SP, #0]     ; Load R4 from stack</p>
 <p>ADD SP, SP, #4       ; Release space</p>
 </code>`<code>
+
 
 <strong>Multiple Registers</strong>
 
@@ -461,7 +499,8 @@
 <p>POP {R4-R6}          ; Restore and release in one instruction</p>
 </code>`<code>
 
-<h3>7.4 Stack Space Lifecycle</h3>
+
+<h3>7.8.4 Stack Space Lifecycle</h3>
 
 <strong>Pattern</strong>
 
@@ -477,9 +516,9 @@
 <li>SP must be restored before return</li>
 </ul>
 
-<h2>8. Register Preservation</h2>
+<h2>7.9 Register Preservation</h2>
 
-<h3>8.1 Why Preserve R4-R11?</h3>
+<h3>7.9.1 Why Preserve R4-R11?</h3>
 
 <strong>Problem</strong>
 
@@ -499,7 +538,7 @@
 <li>Caller expects R4-R11 unchanged</li>
 </ul>
 
-<h3>8.2 Preservation Pattern</h3>
+<h3>7.9.2 Preservation Pattern</h3>
 
 <strong>Function Template</strong>
 
@@ -522,6 +561,7 @@
 <p>MOV PC, LR           ; Return</p>
 </code>`<code>
 
+
 <strong>Optimization</strong>
 
 <ul>
@@ -530,9 +570,9 @@
 <li>Saves stack space and execution time</li>
 </ul>
 
-<h2>9. Nested Function Calls (Non-Leaf Functions)</h2>
+<h2>7.10 Nested Function Calls (Non-Leaf Functions)</h2>
 
-<h3>9.1 The Problem</h3>
+<h3>7.10.1 The Problem</h3>
 
 <strong>Leaf Function</strong>
 
@@ -566,7 +606,8 @@
 <p>MOV PC, LR       ; Correctly returns to funcA</p>
 </code>`<code>
 
-<h3>9.2 Solution: Save LR to Stack</h3>
+
+<h3>7.10.2 Solution: Save LR to Stack</h3>
 
 <strong>Pattern</strong>
 
@@ -584,6 +625,7 @@
 <p>ADD SP, SP, #4</p>
 <p>MOV PC, LR</p>
 </code>`<code>
+
 
 <strong>Complete Example</strong>
 
@@ -611,9 +653,10 @@
 <p>MOV PC, LR       ; Returns to outer</p>
 </code>`<code>
 
-<h2>10. Recursion Example: Factorial</h2>
 
-<h3>10.1 Factorial Function</h3>
+<h2>7.11 Recursion Example: Factorial</h2>
+
+<h3>7.11.1 Factorial Function</h3>
 
 <strong>C Code</strong>
 
@@ -626,6 +669,7 @@
 <p>}</p>
 </code>`<code>
 
+
 <strong>Key Points</strong>
 
 <ul>
@@ -635,7 +679,7 @@
 <li>Stack unwinds as recursion returns</li>
 </ul>
 
-<h3>10.2 ARM Assembly Implementation</h3>
+<h3>7.11.2 ARM Assembly Implementation</h3>
 
 </code>`<code>assembly
 <p>fact:</p>
@@ -664,7 +708,7 @@
 <p>MOV PC, LR</p>
 </code>`<code>
 
-<h3>10.3 Stack Growth During Recursion</h3>
+<h3>7.11.3 Stack Growth During Recursion</h3>
 
 <strong>Call: fact(3)</strong>
 
@@ -688,6 +732,7 @@
 <p>Final: SP = 0x1000 (restored)</p>
 </code>`<code>
 
+
 <strong>Stack Space Per Call</strong>
 
 <ul>
@@ -697,9 +742,9 @@
 <li>Deep recursion can overflow stack!</li>
 </ul>
 
-<h2>11. Memory Layout and Stack vs. Heap</h2>
+<h2>7.12 Memory Layout and Stack vs. Heap</h2>
 
-<h3>11.1 Complete Memory Layout</h3>
+<h3>7.12.1 Complete Memory Layout</h3>
 
 </code>`<code>
 <p>High Address (0xFFFFFFFF)</p>
@@ -726,7 +771,8 @@
 <p>Low Address (0x00000000)</p>
 </code>``
 
-<h3>11.2 Stack Characteristics</h3>
+
+<h3>7.12.2 Stack Characteristics</h3>
 
 <strong>Automatic Storage</strong>
 
@@ -760,7 +806,7 @@
 <li>Perfect for temporary data</li>
 </ul>
 
-<h3>11.3 Heap Characteristics</h3>
+<h3>7.12.3 Heap Characteristics</h3>
 
 <strong>Dynamic Allocation</strong>
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 2: Technology Trends - CO224 Computer Architecture</title>
+    <title>Lecture 2: Technology Trends - Lectures on Computer Architecture</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -18,31 +18,56 @@
                 Back to All Lectures
             </a>
             <h1 class="lecture-title">Lecture 2: Technology Trends</h1>
-            <p class="lecture-meta">CO224 - Computer Architecture</p>
+            <p class="lecture-meta">Lectures on Computer Architecture</p>
         </div>
     </header>
 
     <main class="lecture-content-area container">
         <div class="content-body">
-            <h1>Lecture 2: Technology Trends, Moore's Law, and Computer System Organization</h1>
+            <!-- Video Section -->
+            <div class="video-container">
+                <div class="video-thumbnail">
+                    <a href="https://www.youtube.com/watch?v=Fy2u9oCNZ1E" target="_blank" class="video-play-overlay">
+                        <img src="https://img.youtube.com/vi/Fy2u9oCNZ1E/maxresdefault.jpg" 
+                             alt="Lecture 2 Video Thumbnail"
+                             onerror="this.src='https://img.youtube.com/vi/Fy2u9oCNZ1E/hqdefault.jpg'">
+                        <div class="play-button">
+                            <svg width="68" height="48" viewBox="0 0 68 48" fill="none">
+                                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
+                                <path d="M45 24L27 14v20" fill="white"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <p class="video-notice">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Click the thumbnail above to watch the video lecture on YouTube
+                    </p>
+                </div>
+            </div>
 
-<h2>Introduction</h2>
+            
+<em>By Dr. Isuru Nawinne</em>
+
+<h2>2.1 Introduction</h2>
 
 <p>The evolution of computer technology over the past 50 years has been nothing short of revolutionary. From room-sized scientific calculators to powerful smartphones in our pockets, this transformation has been guided by a prediction made by Intel co-founder Gordon Moore. This lecture examines the technological trends that enabled this revolution, the physical limitations that eventually constrained traditional scaling approaches, and the architectural innovations that emerged in response.</p>
 
 <p>We will trace the exponential growth in transistor density, explore how smaller feature sizes enabled both more complex circuits and faster operation, understand why clock frequencies stopped increasing around 2004, and see how the industry pivoted to multi-core architectures. Finally, we'll examine how computer systems are organized into three layers (hardware, system software, and application software) and follow the complete translation process from high-level code to binary execution.</p>
 
-<p>---</p>
+<h2>2.2 Moore's Law - Foundation of Computer Technology Evolution</h2>
 
-<h2>1. Moore's Law - Foundation of Computer Technology Evolution</h2>
-
-<h3>1.1 Who Was Gordon Moore?</h3>
+<h3>2.2.1 Who Was Gordon Moore?</h3>
 
 <strong>Background and Influence:</strong>
 
 <ul>
-<li>Co-founder of Intel Corporation</li>
-<li>Intel historically the biggest manufacturer of computer chips/processors</li>
+<li>Co-founder of Intel Corporation, historically the biggest manufacturer of computer chips/processors</li>
 <li>Most personal computers and high-end servers use Intel processors</li>
 <li>Made a prediction that shaped the entire semiconductor industry</li>
 </ul>
@@ -56,13 +81,13 @@
 <li>Created benchmark for technology expectations</li>
 </ul>
 
-<h3>1.2 Moore's Law Definition</h3>
+<h3>2.2.2 Moore's Law Definition</h3>
 
 <strong>The Prediction:</strong>
 
 <p>Moore's Law is NOT a physical law like the law of gravity. It is an observation and prediction about technology trends:</p>
 
-> <strong>"The number of transistors that can be placed on a standard computer chip will double every two years."</strong>
+<strong>"The number of transistors that can be placed on a standard computer chip will double every two years."</strong>
 
 <strong>Practical Interpretation:</strong>
 
@@ -82,7 +107,7 @@
 <li>Influenced research priorities and manufacturing investments</li>
 </ul>
 
-<h3>1.3 Impact of Moore's Law</h3>
+<h3>2.2.3 Impact of Moore's Law</h3>
 
 <strong>Computer Evolution Enabled:</strong>
 
@@ -131,13 +156,13 @@
 <li>Created new fields and destroyed old ones</li>
 </ul>
 
-<p>---</p>
+<h2>2.3 Technology Scaling - Historical Data</h2>
 
-<h2>2. Technology Scaling - Historical Data</h2>
-
-<h3>2.1 Transistor Count Growth (1970-2010)</h3>
+<h3>2.3.1 Transistor Count Growth (1970-2010)</h3>
 
 <strong>Chart Analysis:</strong>
+
+<img src="../img/Chapter%201%20Moore's%20Law.jpg" alt="Computer System Abstraction Layers" width="600">
 
 <p>The historical data shows remarkable consistency with Moore's prediction:</p>
 
@@ -169,7 +194,7 @@
 <li>Set performance expectations for consumers</li>
 </ul>
 
-<h3>2.2 The x86 Architecture</h3>
+<h3>2.3.2 The x86 Architecture</h3>
 
 <strong>Origin and Naming:</strong>
 
@@ -209,7 +234,7 @@
 <li>Balanced innovation with stability</li>
 </ul>
 
-<h3>2.3 Historical Context</h3>
+<h3>2.3.3 Historical Context</h3>
 
 <strong>Early Computing Era (1985-1990):</strong>
 
@@ -239,11 +264,9 @@
 <li>Set expectations for modern computing</li>
 </ul>
 
-<p>---</p>
+<h2>2.4 Feature Size Scaling - Lithography Improvements</h2>
 
-<h2>3. Feature Size Scaling - Lithography Improvements</h2>
-
-<h3>3.1 What Made Transistor Count Increase Possible?</h3>
+<h3>2.4.1 What Made Transistor Count Increase Possible?</h3>
 
 <strong>The Answer: Smaller Transistors</strong>
 
@@ -267,11 +290,15 @@
 <li><strong>2006:</strong> 65 nanometer</li>
 <li><strong>2008:</strong> 45 nanometer (very famous generation, many developments)</li>
 <li><strong>Continuing:</strong> 32 nm, 22 nm processes</li>
-<li><strong>Current (2021):</strong> 7 nanometer and 5 nanometer in production</li>
-<li><strong>Future Roadmap:</strong> 3 nanometer, 2 nanometer, 1 nanometer under discussion</li>
+<li><strong>2013 Actual:</strong> 22 nm achieved</li>
+<li><strong>2015 Target:</strong> 16 nm achieved</li>
+<li><strong>2019 Target:</strong> 12 nm achieved</li>
+<li><strong>2023 Target:</strong> 7 nm achieved</li>
+<li><strong>2028 Target:</strong> 5 nm exceeded</li>
+<li><strong>Future Roadmap:</strong> 3nm and 2nm are currently in production, future is 1nm and sub-1nm</li>
 </ul>
 
-<h3>3.2 What is "Feature Size"?</h3>
+<h3>2.4.2 What is "Feature Size"?</h3>
 
 <strong>Original Definition:</strong>
 
@@ -311,7 +338,7 @@
 <li>Marketing convenience over physical precision</li>
 </ul>
 
-<h3>3.3 How Tiny Are Transistors?</h3>
+<h3>2.4.3 How Tiny Are Transistors?</h3>
 
 <strong>Mind-Boggling Scale:</strong>
 
@@ -332,7 +359,7 @@
 <li>Remarkable engineering achievement</li>
 </ul>
 
-<h3>3.4 Transistor Structure</h3>
+<h3>2.4.4 Transistor Structure</h3>
 
 <strong>Basic Components:</strong>
 
@@ -360,11 +387,9 @@
 <li>Critical parameter for circuit performance</li>
 </ul>
 
-<p>---</p>
+<h2>2.5 Technology Roadmaps - ITRS Predictions</h2>
 
-<h2>4. Technology Roadmaps - ITRS Predictions</h2>
-
-<h3>4.1 ITRS Organization</h3>
+<h3>2.5.1 ITRS Organization</h3>
 
 <strong>International Technology Roadmap for Semiconductors:</strong>
 
@@ -396,7 +421,7 @@
 <li>Dissolved in 2015 due to paradigm shift</li>
 </ul>
 
-<h3>4.2 Original Roadmap (2001)</h3>
+<h3>2.5.2 Original Roadmap (2001)</h3>
 
 <strong>Optimistic Projections:</strong>
 
@@ -418,7 +443,7 @@
 <li>Economic sustainability of smaller features</li>
 </ul>
 
-<h3>4.3 Revised Roadmap (2013)</h3>
+<h3>2.5.3 Revised Roadmap (2013)</h3>
 
 <strong>Adjusted Expectations:</strong>
 
@@ -432,7 +457,7 @@
 <li><strong>2028 Target:</strong> 5 nm</li>
 </ul>
 
-<strong>Key Observation:</strong>
+<strong>Key Observations:</strong>
 
 <ul>
 <li><strong>Rate of reduction slowed down</strong> compared to original predictions</li>
@@ -441,7 +466,7 @@
 <li>Need for alternative approaches emerging</li>
 </ul>
 
-<h3>4.4 Final Roadmap (2015)</h3>
+<h3>2.5.4 Final Roadmap (2015)</h3>
 
 <strong>Dramatic Shift in Direction:</strong>
 
@@ -464,7 +489,7 @@
 <li>End of traditional Moore's Law scaling</li>
 </ul>
 
-<h3>4.5 Why the Change? - 3D Technology</h3>
+<h3>2.5.5 Why the Change? - 3D Technology</h3>
 
 <strong>Major Paradigm Shift (2013-2015):</strong>
 
@@ -504,7 +529,7 @@
 <li>Thermal management solutions</li>
 </ul>
 
-<h3>4.6 Dissolution of ITRS (2015)</h3>
+<h3>2.5.6 Dissolution of ITRS (2015)</h3>
 
 <strong>Reasons for Dissolution:</strong>
 
@@ -536,11 +561,9 @@
 <li>Higher costs per transistor (economic Moore's Law ending)</li>
 </ul>
 
-<p>---</p>
+<h2>2.6 Why Smaller Transistors Improve Performance</h2>
 
-<h2>5. Why Smaller Transistors Improve Performance</h2>
-
-<h3>5.1 Reason 1: More Complex Circuits</h3>
+<h3>2.6.1 Reason 1: More Complex Circuits</h3>
 
 <strong>Increased Transistor Budget:</strong>
 
@@ -578,7 +601,7 @@
 <li>Hardware accelerators for specific tasks</li>
 </ul>
 
-<h3>5.2 Reason 2: Faster Switching</h3>
+<h3>2.6.2 Reason 2: Faster Switching</h3>
 
 <strong>Electrical Advantages of Smaller Size:</strong>
 
@@ -628,17 +651,16 @@
 <li>Improved frequency response</li>
 </ul>
 
-<p>---</p>
+<h2>2.7 Clock Rate Trends - The Power Wall</h2>
 
-<h2>6. Clock Rate Trends - The Power Wall</h2>
-
-<h3>6.1 Clock Rate Increases (1982-2004)</h3>
+<h3>2.7.1 Clock Rate Increases (1982-2004)</h3>
 
 <strong>Exponential Growth Era:</strong>
 
 <p>Processor clock frequencies increased dramatically for over two decades:</p>
 
 <strong>Historical Progression:</strong>
+<img src="../img/Chapter%201%20Power%20Wall.jpg" alt="Computer System Abstraction Layers" width="600">
 
 <ul>
 <li><strong>286 (1982):</strong> 12.5 MHz</li>
@@ -658,7 +680,7 @@
 <li>Consumer expectation of continuous frequency increases</li>
 </ul>
 
-<h3>6.2 The Turning Point (2004-2007)</h3>
+<h3>2.7.2 The Turning Point (2004-2007)</h3>
 
 <strong>Sudden Deceleration:</strong>
 
@@ -689,9 +711,9 @@
 <li>End of "free" performance scaling</li>
 </ul>
 
-<h3>6.3 The Power Wall Problem</h3>
+<h3>2.7.3 The Power Wall Problem</h3>
 
-<strong>Power Consumption Growth Crisis:</strong>
+<em></em>Power Consumption Growth Crisis:
 
 <p>As clock rates increased, power consumption grew unsustainably:</p>
 
@@ -767,15 +789,13 @@
 <li>Not scalable to mass market</li>
 </ul>
 
-<h3>6.4 Dynamic Power Equation</h3>
+<h3>2.7.4 Dynamic Power Equation</h3>
 
-<strong>The Physics of Power Consumption:</strong>
+<em></em>The Physics of Power Consumption:
 
 <p>Dynamic power consumption follows this relationship:</p>
 
-``<code>
 <p>Power = Capacitance Load × Voltage² × Frequency</p>
-</code>`<code>
 
 <strong>Factor Analysis (1982-2004):</strong>
 
@@ -808,12 +828,15 @@
 
 <strong>Net Effect Calculation:</strong>
 
-</code>`<code>
-<p>Power Scaling = (Capacitance) × (Voltage²) × (Frequency)</p>
-<p>= (1×) × (1/5)² × (300×)</p>
-<p>= (1×) × (1/25) × (300×)</p>
-<p>= 12× power increase</p>
-</code>`<code>
+
+<p>$$</p>
+<p>\begin{align*}</p>
+<p>ext{Power Scaling} &= (\text{Capacitance}) \times (\text{Voltage}^2) \times (\text{Frequency}) \\</p>
+<p>&= (1\times) \times (\frac{1}{5})^2 \times (300\times) \\</p>
+<p>&= (1\times) \times (\frac{1}{25}) \times (300\times) \\</p>
+<p>&= 12\times \text{ power increase}</p>
+<p>\end{align*}</p>
+<p>$$</p>
 
 <strong>Key Insight:</strong>
 
@@ -834,9 +857,9 @@
 <li>Leakage current increases at lower voltages</li>
 </ul>
 
-<h3>6.5 Overclocking Phenomenon</h3>
+<h3>2.7.5 Overclocking Phenomenon</h3>
 
-<strong>Marketing and User Community Response:</strong>
+<em></em>Marketing and User Community Response:
 
 <p>Emerged prominently around early 2000s during the MHz wars:</p>
 
@@ -890,11 +913,9 @@
 <li>Many processors destroyed but market remained</li>
 </ul>
 
-<p>---</p>
+<h2>2.8 Shift to Multi-Core Processors</h2>
 
-<h2>7. Shift to Multi-Core Processors</h2>
-
-<h3>7.1 The Challenge</h3>
+<h3>2.8.1 The Challenge</h3>
 
 <strong>The Industry Dilemma:</strong>
 
@@ -924,9 +945,9 @@
 <li>How to maintain Moore's Law performance benefits?</li>
 </ul>
 
-<h3>7.2 Solution: Multiple Processor Cores</h3>
+<h3>2.8.2 Solution: Multiple Processor Cores</h3>
 
-<strong>Paradigm Shift (2004-2008):</strong>
+<em></em>Paradigm Shift (2004-2008):
 
 <p>Industry pivoted from single-core to multi-core architectures:</p>
 
@@ -944,6 +965,8 @@
 <strong>Early Multi-Core Processors:</strong>
 
 <strong>AMD Barcelona (2007):</strong>
+
+<img src="../img/Chapter%201%20AMD%20Barcelona.jpg" alt="Computer System Abstraction Layers" width="600">
 
 <ul>
 <li><strong>4 cores</strong> on single die</li>
@@ -985,7 +1008,7 @@
 <li><strong>Thermal Management:</strong> Distribute heat across die</li>
 </ul>
 
-<h3>7.3 The Plan</h3>
+<h3>2.8.3 The Plan</h3>
 
 <strong>Initial Industry Vision:</strong>
 
@@ -1029,7 +1052,7 @@
 <li>Growth much slower than initial projections</li>
 </ul>
 
-<h3>7.4 Why Multi-Core Growth Slowed</h3>
+<h3>2.8.4 Why Multi-Core Growth Slowed</h3>
 
 <strong>The Fundamental Problem: Parallel Programming Difficulty</strong>
 
@@ -1157,7 +1180,7 @@
 <li><strong>Unpredictable Results:</strong> Race conditions cause incorrect output</li>
 </ul>
 
-<h3>7.5 Instruction-Level Parallelism vs Multi-Core Parallelism</h3>
+<h3>2.8.5 Instruction-Level Parallelism vs Multi-Core Parallelism</h3>
 
 <strong>Instruction-Level Parallelism (ILP):</strong>
 
@@ -1225,7 +1248,7 @@
 <p>| Applicability | All code  | Limited patterns |</p>
 <p>| Overhead      | Hidden    | Must manage      |</p>
 
-<h3>7.6 Impact on Software Development</h3>
+<h3>2.8.6 Impact on Software Development</h3>
 
 <strong>For Regular Programmers:</strong>
 
@@ -1278,11 +1301,9 @@
 <li>Specialized training for HPC (high-performance computing)</li>
 </ul>
 
-<p>---</p>
+<h2>2.9 Computer System Organization - Three Layers</h2>
 
-<h2>8. Computer System Organization - Three Layers</h2>
-
-<h3>8.1 Hardware Layer (Bottom)</h3>
+<h3>2.9.1 Hardware Layer (Bottom)</h3>
 
 <strong>Physical Components:</strong>
 
@@ -1366,9 +1387,9 @@
 <li>Provide computational substrate</li>
 </ul>
 
-<h3>8.2 System Software Layer (Middle)</h3>
+<h3>2.9.2 System Software Layer (Middle)</h3>
 
-<strong>Tool Chain Components:</strong>
+<em></em>Tool Chain Components:
 
 <strong>Compiler:</strong>
 
@@ -1519,7 +1540,7 @@
 <li>Device I/O without hardware specifics</li>
 </ul>
 
-<h3>8.3 Application Software Layer (Top)</h3>
+<h3>2.9.3 Application Software Layer (Top)</h3>
 
 <strong>User-Level Programs:</strong>
 
@@ -1578,22 +1599,18 @@
 <li>Requires compilation/interpretation to execute</li>
 </ul>
 
-<p>---</p>
+<h2>2.10 From High-Level Code to Machine Code - The Translation Process</h2>
 
-<h2>9. From High-Level Code to Machine Code - The Translation Process</h2>
-
-<h3>9.1 Example: Swap Function in C</h3>
+<h3>2.10.1 Example: Swap Function in C</h3>
 
 <strong>Source Code:</strong>
 
-</code>`<code>c
 <p>void swap(int v[], int k) {</p>
 <p>int temp;</p>
 <p>temp = v[k];</p>
 <p>v[k] = v[k+1];</p>
 <p>v[k+1] = temp;</p>
 <p>}</p>
-</code>`<code>
 
 <strong>Function Purpose:</strong>
 
@@ -1601,8 +1618,8 @@
 <li><strong>Operation:</strong> Swap two values in array</li>
 <li><strong>Parameters:</strong></li>
 </ul>
-<p>- </code>v[]<code>: Array pointer (base address)</p>
-<p>- </code>k<code>: Index of first element to swap</p>
+<p>- v[]: Array pointer (base address)</p>
+<p>- k: Index of first element to swap</p>
 <ul>
 <li><strong>Elements Swapped:</strong> Positions k and k+1</li>
 <li><strong>Method:</strong> Uses temporary variable</li>
@@ -1615,13 +1632,13 @@
 <p>2. Copy v[k+1] to v[k]</p>
 <p>3. Copy temporary to v[k+1]</p>
 
-<h3>9.2 After Compilation - MIPS Assembly Code</h3>
+<h3>2.10.2 After Compilation - MIPS Assembly Code</h3>
 
 <strong>Assembly Translation:</strong>
 
 <p>The compiler generates 7 MIPS instructions to implement the swap function:</p>
 
-</code>`<code>assembly
+``<code>
 <p>MUL  $2, $5, 4      # Multiply k by 4 (array index to byte offset)</p>
 <p>ADD  $2, $4, $2     # Add base address to offset (address of v[k])</p>
 <p>LW   $15, 0($2)     # Load v[k] into register $15 (temp = v[k])</p>
@@ -1675,7 +1692,7 @@
 <li>Explicit memory addressing</li>
 </ul>
 
-<h3>9.3 After Assembly - Machine Code</h3>
+<h3>2.10.3 After Assembly - Machine Code</h3>
 
 <strong>Binary Representation:</strong>
 
@@ -1688,7 +1705,7 @@
 <p>10001100010100000000000000000100  # LW  $16, 4($2)</p>
 <p>10101100010100000000000000000000  # SW  $16, 0($2)</p>
 <p>10101100010011110000000000000100  # SW  $15, 4($2)</p>
-</code>`<code>
+</code>``
 
 <strong>One-to-One Mapping:</strong>
 
@@ -1705,15 +1722,12 @@
 
 <strong>R-Type (Register) Format:</strong>
 
-</code>`<code>
 <p>[Opcode 6 bits][Rs 5 bits][Rt 5 bits][Rd 5 bits][Shamt 5 bits][Funct 6 bits]</p>
-</code>`<code>
 
 <strong>I-Type (Immediate) Format:</strong>
 
-</code>`<code>
 <p>[Opcode 6 bits][Rs 5 bits][Rt 5 bits][Immediate 16 bits]</p>
-</code>``
+
 
 <strong>Instruction Components Specify:</strong>
 
@@ -1745,11 +1759,9 @@
 <li>CPU fetches and executes instructions sequentially</li>
 </ul>
 
-<p>---</p>
+<h2>2.11 Program Execution - Inside the CPU</h2>
 
-<h2>10. Program Execution - Inside the CPU</h2>
-
-<h3>10.1 Block Diagram of Computer</h3>
+<h3>2.11.1 Block Diagram of Computer</h3>
 
 <strong>System Components:</strong>
 
@@ -1827,7 +1839,7 @@
 <li>Results displayed or saved</li>
 </ul>
 
-<h3>10.2 Inside the CPU - Two Main Components</h3>
+<h3>2.11.2 Inside the CPU - Two Main Components</h3>
 
 <strong>Datapath:</strong>
 
@@ -1904,7 +1916,7 @@
 <li>Together implement instruction execution</li>
 </ul>
 
-<h3>10.3 Execution Process (Conveyor Belt Analogy)</h3>
+<h3>2.11.3 Execution Process (Conveyor Belt Analogy)</h3>
 
 <strong>Instruction Execution Cycle:</strong>
 
@@ -1968,7 +1980,7 @@
 <li>Pipelining overlaps multiple instructions (discussed in later lectures)</li>
 </ul>
 
-<h3>10.4 Cache Memory</h3>
+<h3>2.11.4 Cache Memory</h3>
 
 <strong>Purpose and Motivation:</strong>
 
@@ -2028,7 +2040,7 @@
 <li>Well-designed cache can achieve >95% hit rate</li>
 </ul>
 
-<strong>Will Learn in Course:</strong>
+<strong>Will Learn in Lecture:</strong>
 
 <ul>
 <li>Cache organization</li>
@@ -2038,11 +2050,9 @@
 <li>Cache coherency in multi-core</li>
 </ul>
 
-<p>---</p>
+<h2>2.12 Real CPU Layout - AMD Barcelona Example</h2>
 
-<h2>11. Real CPU Layout - AMD Barcelona Example</h2>
-
-<h3>11.1 Overview</h3>
+<h3>2.12.1 Overview</h3>
 
 <strong>AMD Barcelona Processor:</strong>
 
@@ -2064,7 +2074,7 @@
 <li>Educational value for understanding architecture</li>
 </ul>
 
-<h3>11.2 Four Processor Cores</h3>
+<h3>2.12.2 Four Processor Cores</h3>
 
 <strong>Core Distribution:</strong>
 
@@ -2086,7 +2096,7 @@
 <li><strong>Interconnect Balance:</strong> Equal distances to shared resources</li>
 </ul>
 
-<h3>11.3 Inside Each Core</h3>
+<h3>2.12.3 Inside Each Core</h3>
 
 <strong>Floating-Point Unit (FPU):</strong>
 
@@ -2249,7 +2259,7 @@
 <li>May use different associativity than L1</li>
 </ul>
 
-<h3>11.4 Shared Components</h3>
+<h3>2.12.4 Shared Components</h3>
 
 <strong>North Bridge (Central Hub):</strong>
 
@@ -2331,11 +2341,9 @@
 <li>NUMA (Non-Uniform Memory Access) support for multi-socket systems</li>
 </ul>
 
-<h3>11.5 Additional Information - WikiChip.org</h3>
+<h3>2.12.5 Additional Information </h3>
 
-<strong>WikiChip Database:</strong>
-
-<strong>Website:</strong> https://en.wikichip.org
+<strong>WikiChip Database:</strong> https://en.wikichip.org
 
 <strong>Comprehensive Processor Information:</strong>
 
@@ -2415,8 +2423,6 @@
 <p>- Improved layouts and design rules</p>
 <p>- Multi-patterning lithography</p>
 
-<p>---</p>
-
 <h2>Key Takeaways</h2>
 
 <p>1. <strong>Moore's Law predicted transistor doubling every 2 years</strong> - remarkably accurate for over 40 years, guiding semiconductor industry planning and investment</p>
@@ -2459,11 +2465,9 @@
 
 <p>20. <strong>Real CPUs have complex layouts</strong> - die photos reveal intricate organization with multiple cores, cache hierarchies, shared interconnects, memory controllers</p>
 
-<p>---</p>
-
 <h2>Summary</h2>
 
-<p>This lecture provided a comprehensive examination of computer technology evolution from the 1970s to present day. Moore's Law, predicting transistor count doubling every two years, served as the guiding principle for the semiconductor industry and enabled the transformation of computers from room-sized machines to powerful pocket devices.</p>
+<p>This lecture provides a comprehensive examination of computer technology evolution from the 1970s to present day. Moore's Law, predicting transistor count doubling every two years, serves as the guiding principle for the semiconductor industry and enables the transformation of computers from room-sized machines to powerful pocket devices.</p>
 
 <p>The progression of manufacturing technology steadily reduced feature sizes from 90 nanometers to current 7nm and 5nm processes. Smaller transistors provided two key advantages: more transistors per chip enabling complex functionality, and faster switching speeds enabling higher clock frequencies. Clock rates grew exponentially from 12.5 MHz in 1982 to 3.6 GHz in 2004.</p>
 

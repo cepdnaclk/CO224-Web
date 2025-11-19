@@ -1,14 +1,15 @@
 # Lecture 11: Complete Single-Cycle MIPS Processor and Performance Analysis
 
-## Introduction
+*By Dr. Isuru Nawinne*
+
+## 11.1 Introduction
 
 This lecture completes the single-cycle MIPS processor design by providing comprehensive analysis of control signals for all instruction types (R-type, Branch, Load, Store, Jump), introducing detailed timing analysis with concrete delay values, and demonstrating the fundamental performance limitations that motivate the evolution toward multi-cycle and pipelined implementations. We build upon previous datapath and control unit knowledge to create a functioning processor while understanding why single-cycle design, though conceptually simple, proves inefficient in practice.
 
----
 
-## 1. Lecture Overview and Context
+## 11.2 Lecture Overview and Context
 
-### 1.1 Recap from Previous Lectures
+### 11.2.1 Recap from Previous Lectures
 
 The foundational work completed in previous lectures includes:
 
@@ -27,7 +28,7 @@ The foundational work completed in previous lectures includes:
 - Timing analysis with concrete delay values
 - Performance limitations of single-cycle design
 
-### 1.2 Instruction Subset Review
+### 11.2.2 Instruction Subset Review
 
 **Selected Instructions for Study:**
 
@@ -44,11 +45,10 @@ The foundational work completed in previous lectures includes:
 - Omits some I-type arithmetic (covered conceptually)
 - Foundation for complete processor understanding
 
----
 
-## 2. Control Unit Inputs and Outputs
+## 11.3 Control Unit Inputs and Outputs
 
-### 2.1 Control Unit Inputs
+### 11.3.1 Control Unit Inputs
 
 **Total Input Bits:** 12 bits
 
@@ -72,7 +72,7 @@ The foundational work completed in previous lectures includes:
 - Funct field examined only when opcode = 0 (R-type)
 - Combined with ALUOp for final ALU control signal
 
-### 2.2 Control Unit Outputs
+### 11.3.2 Control Unit Outputs
 
 **Total Output Bits:** 9 bits (8 signals, one is 2-bit)
 
@@ -99,11 +99,10 @@ The foundational work completed in previous lectures includes:
 - Design method: Truth tables, Karnaugh maps, Boolean minimization
 - To be implemented in Lab 5
 
----
 
-## 3. R-Type Instruction Detailed Analysis
+## 11.4 R-Type Instruction Detailed Analysis
 
-### 3.1 Instruction Format
+### 11.4.1 Instruction Format
 
 **Encoding Structure (32 bits):**
 
@@ -116,15 +115,15 @@ The foundational work completed in previous lectures includes:
 
 **Example: ADD $1, $2, $3**
 
-```
+
 Encoding: 000000 00010 00011 00001 00000 100000
          |Opcode| RS  | RT  | RD  |SHAMT| Funct |
          |  0   |  2  |  3  |  1  |  0  |  32   |
-```
+
 
 **Operation:** `$1 = $2 + $3`
 
-### 3.2 Datapath Elements Used
+### 11.4.2 Datapath Elements Used
 
 **Active Elements (shown in black):**
 
@@ -145,7 +144,7 @@ Encoding: 000000 00010 00011 00001 00000 100000
 - Branch Target Adder: Calculated but not used
 - Shift Left 2: Not used
 
-### 3.3 Control Signal Values for R-Type
+### 11.4.3 Control Signal Values for R-Type
 
 **Exercise Example: ADD $1, $2, $3**
 
@@ -205,7 +204,7 @@ Encoding: 000000 00010 00011 00001 00000 100000
 - Result written to RD at clock edge
 - Essential for saving computation result
 
-### 3.4 Execution Steps for R-Type
+### 11.4.4 Execution Steps for R-Type
 
 **Step 1: Instruction Fetch**
 
@@ -248,11 +247,10 @@ Encoding: 000000 00010 00011 00001 00000 100000
 - PC updated to PC + 4
 - Next instruction fetch begins
 
----
 
-## 4. Branch If Equal Instruction Detailed Analysis
+## 11.5 Branch If Equal Instruction Detailed Analysis
 
-### 4.1 Instruction Format
+### 11.5.1 Instruction Format
 
 **Encoding Structure (32 bits):**
 
@@ -263,15 +261,15 @@ Encoding: 000000 00010 00011 00001 00000 100000
 
 **Example: BEQ $1, $2, 100**
 
-```
+
 Encoding: 000100 00001 00010 0000000001100100
          |Opcode|  RS |  RT |    Immediate      |
          |  4   |  1  |  2  |       100         |
-```
+
 
 **Operation:** `If ($1 == $2) then PC = PC + 4 + (100 × 4)`
 
-### 4.2 Datapath Elements Used
+### 11.5.2 Datapath Elements Used
 
 **Active Elements:**
 
@@ -292,7 +290,7 @@ Encoding: 000100 00001 00010 0000000001100100
 - Register Write: Not writing to registers
 - ALU Result (except Zero flag): Not used
 
-### 4.3 Control Signal Values for BEQ
+### 11.5.3 Control Signal Values for BEQ
 
 **Exercise Example: BEQ $1, $2, 100**
 
@@ -353,7 +351,7 @@ Encoding: 000100 00001 00010 0000000001100100
 - Essential to prevent accidental writes
 - If =1, would corrupt register file
 
-### 4.4 Branch Target Calculation
+### 11.5.4 Branch Target Calculation
 
 **Word Offset to Byte Offset:**
 
@@ -378,19 +376,18 @@ Encoding: 000100 00001 00010 0000000001100100
 
 **PCSrc Selection:**
 
-```
+
 PCSrc = Branch AND Zero
       = 1 AND (RS == RT ? 1 : 0)
 
 If PCSrc = 1: PC ← Branch Target (1404)
 If PCSrc = 0: PC ← PC + 4 (1004)
-```
 
----
 
-## 5. Load Word Instruction Detailed Analysis
 
-### 5.1 Instruction Format
+## 11.6 Load Word Instruction Detailed Analysis
+
+### 11.6.1 Instruction Format
 
 **Encoding Structure (32 bits):**
 
@@ -401,15 +398,15 @@ If PCSrc = 0: PC ← PC + 4 (1004)
 
 **Example: LW $8, 32($9)**
 
-```
+
 Encoding: 100011 01001 01000 0000000000100000
          |Opcode|  RS |  RT |    Immediate      |
          | 35   |  9  |  8  |        32         |
-```
+
 
 **Operation:** `$8 = Memory[$9 + 32]`
 
-### 5.2 Datapath Elements Used
+### 11.6.2 Datapath Elements Used
 
 **Active Elements:**
 
@@ -428,7 +425,7 @@ Encoding: 100011 01001 01000 0000000000100000
 - Second register read (RT as source): Not used
 - Branch circuitry: Not used
 
-### 5.3 Control Signal Values for LW
+### 11.6.3 Control Signal Values for LW
 
 **Exercise Example: LW $8, 32($9)**
 
@@ -496,7 +493,7 @@ Encoding: 100011 01001 01000 0000000000100000
 - Data from memory → Register $8
 - If 0: Data lost, load ineffective
 
-### 5.4 Critical Path for Load Word
+### 11.6.4 Critical Path for Load Word
 
 **Longest Delay in Single-Cycle:**
 
@@ -513,11 +510,10 @@ Encoding: 100011 01001 01000 0000000000100000
 - All other instructions must wait for this worst case
 - Major performance bottleneck
 
----
 
-## 6. Store Word Instruction Detailed Analysis
+## 11.7 Store Word Instruction Detailed Analysis
 
-### 6.1 Instruction Format
+### 11.7.1 Instruction Format
 
 **Encoding Structure (32 bits):**
 
@@ -528,17 +524,17 @@ Encoding: 100011 01001 01000 0000000000100000
 
 **Example: SW $8, 32($9)**
 
-```
+
 Encoding: 101011 01001 01000 0000000000100000
          |Opcode|  RS |  RT |    Immediate      |
          | 43   |  9  |  8  |        32         |
-```
+
 
 **Operation:** `Memory[$9 + 32] = $8`
 
 _Note: Fixed error in lecture (was "$32", should be "32")_
 
-### 6.2 Datapath Elements Used
+### 11.7.2 Datapath Elements Used
 
 **Active Elements:**
 
@@ -562,7 +558,7 @@ _Note: Fixed error in lecture (was "$32", should be "32")_
 - Memory write instead of read
 - NO register write operation
 
-### 6.3 Control Signal Values for SW
+### 11.7.3 Control Signal Values for SW
 
 **Exercise Example: SW $8, 32($9)**
 
@@ -628,7 +624,7 @@ _Note: Fixed error in lecture (was "$32", should be "32")_
 - Need immediate offset
 - Same as Load Word
 
-### 6.4 Important Lesson: Don't Care vs Zero
+### 11.7.4 Important Lesson: Don't Care vs Zero
 
 **Student Confusion:**
 _"RegDst = 0 is not wrong, but best answer is X"_
@@ -646,11 +642,10 @@ _"RegDst = 0 is not wrong, but best answer is X"_
 - MemWrite MUST be correct (not X!)
 - Read/Write enables are critical for data integrity
 
----
 
-## 7. Jump Instruction Integration
+## 11.8 Jump Instruction Integration
 
-### 7.1 Instruction Format
+### 11.8.1 Instruction Format
 
 **Encoding Structure (32 bits):**
 
@@ -665,15 +660,15 @@ _"RegDst = 0 is not wrong, but best answer is X"_
 
 **Example: J 100**
 
-```
+
 Encoding: 000010 00000000000000000001100100
          |Opcode|        Target Address        |
          |  2   |            100               |
-```
+
 
 **Operation:** `PC = {PC+4[31:28], Address, 2'b00}`
 
-### 7.2 Jump Target Address Calculation
+### 11.8.2 Jump Target Address Calculation
 
 **Word Address to Byte Address:**
 
@@ -690,14 +685,14 @@ Encoding: 000010 00000000000000000001100100
 
 **Concatenation:**
 
-```
+
 PC+4:         [31:28] [27:2] [1:0]
               ↓       (ignored)
 Jump Target:  [31:28] [Target×4] [00]
               ↑       ↑          ↑
               From    From       Append
               PC+4    instruction zeros
-```
+
 
 **Example:**
 
@@ -714,7 +709,7 @@ Jump Target:  [31:28] [Target×4] [00]
 - Upper 4 bits fixed by current PC region
 - For larger jumps: Use jump register (JR) instruction
 
-### 7.3 Additional Datapath Hardware
+### 11.8.3 Additional Datapath Hardware
 
 **New Components:**
 
@@ -752,7 +747,7 @@ Jump Target:  [31:28] [Target×4] [00]
 - Select: Jump signal
 - Output: Final next PC value
 
-### 7.4 Jump Control Signal
+### 11.8.4 Jump Control Signal
 
 **Jump Signal:**
 
@@ -785,7 +780,7 @@ Jump Target:  [31:28] [Target×4] [00]
 - RegDst = ? (special: write to $31)
 - Additional logic needed for return address
 
-### 7.5 Complete Datapath with Jump
+### 11.8.5 Complete Datapath with Jump
 
 **All Instruction Types Supported:**
 
@@ -809,11 +804,10 @@ Jump Target:  [31:28] [Target×4] [00]
 - Shift left 2 circuits (wire routing)
 - Control unit with 10 control signal bits
 
----
 
-## 8. Timing Analysis with Concrete Delays
+## 11.9 Timing Analysis with Concrete Delays
 
-### 8.1 Assumed Component Delays
+### 11.9.1 Assumed Component Delays
 
 **Delay Values (in nanoseconds):**
 
@@ -837,7 +831,7 @@ Jump Target:  [31:28] [Target×4] [00]
 - Memory accesses typically slowest
 - Combinational logic relatively fast
 
-### 8.2 Critical Path Analysis
+### 11.9.2 Critical Path Analysis
 
 **Definition:**
 
@@ -851,7 +845,7 @@ Jump Target:  [31:28] [Target×4] [00]
 - Clock period ≥ Critical path delay
 - All instructions take same time (worst case)
 
-### 8.3 Load Word Instruction Timing
+### 11.9.3 Load Word Instruction Timing
 
 **Step-by-Step Delay Calculation:**
 
@@ -917,7 +911,7 @@ Jump Target:  [31:28] [Target×4] [00]
 - Longest instruction in single-cycle design
 - Determines clock period for ALL instructions
 
-### 8.4 Store Word Instruction Timing
+### 11.9.4 Store Word Instruction Timing
 
 **Step-by-Step Delay:**
 
@@ -945,7 +939,7 @@ Jump Target:  [31:28] [Target×4] [00]
 - But must use 7 ns clock period anyway (single-cycle)
 - Wastes 2 ns per Store instruction
 
-### 8.5 Arithmetic Instruction Timing (ADD, SUB, AND, OR)
+### 11.9.5 Arithmetic Instruction Timing (ADD, SUB, AND, OR)
 
 **Step-by-Step Delay:**
 
@@ -969,7 +963,7 @@ Jump Target:  [31:28] [Target×4] [00]
 - Forced to wait 7 ns (Load Word limitation)
 - Wastes 2 ns = 28.6% time wasted per R-type instruction
 
-### 8.6 Branch Instruction Timing
+### 11.9.6 Branch Instruction Timing
 
 **Step-by-Step Delay:**
 
@@ -998,7 +992,7 @@ Jump Target:  [31:28] [Target×4] [00]
 - No memory access needed
 - Fast like R-type
 
-### 8.7 Jump Instruction Timing
+### 11.9.7 Jump Instruction Timing
 
 **Step-by-Step Delay:**
 
@@ -1020,7 +1014,7 @@ Jump Target:  [31:28] [Target×4] [00]
 - No sequential dependencies
 - Wastes 5 ns waiting for clock period!
 
-### 8.8 Timing Summary Table
+### 11.9.8 Timing Summary Table
 
 | Instruction Type   | Time Required | Wasted Time | Efficiency |
 | ------------------ | ------------- | ----------- | ---------- |
@@ -1039,11 +1033,10 @@ Jump Target:  [31:28] [Target×4] [00]
 - Only Load Word fully utilizes clock cycle
 - Tremendous inefficiency
 
----
 
-## 9. Performance Analysis
+## 11.10 Performance Analysis
 
-### 9.1 Program Composition Example
+### 11.10.1 Program Composition Example
 
 **Typical MIPS Program Profile:**
 
@@ -1054,31 +1047,31 @@ Jump Target:  [31:28] [Target×4] [00]
 | Store Word       | 11%        | 5 ns             | 7 ns             |
 | Branch           | 19%        | 5 ns             | 7 ns             |
 
-### 9.2 Average Time Calculation
+### 11.10.2 Average Time Calculation
 
 **Variable Time (Ideal):**
 
-```
+
 Average = (0.48 × 5) + (0.22 × 7) + (0.11 × 5) + (0.19 × 5)
         = 2.40 + 1.54 + 0.55 + 0.95
         = 5.44 ns per instruction
-```
+
 
 **Single-Cycle (Actual):**
 
-```
+
 Average = 7 ns per instruction (all instructions)
-```
+
 
 **Performance Loss:**
 
-```
+
 Overhead = 7 - 5.44 = 1.56 ns per instruction
 Efficiency = 5.44 / 7 = 77.7%
 Waste = 22.3% of time
-```
 
-### 9.3 Critical Path Problem
+
+### 11.10.3 Critical Path Problem
 
 **Critical Path Determination:**
 
@@ -1098,7 +1091,7 @@ Waste = 22.3% of time
 - Common case forced to slow down
 - Design is inefficient
 
-### 9.4 Clock Period Inflexibility
+### 11.10.4 Clock Period Inflexibility
 
 **Single-Cycle Constraint:**
 
@@ -1123,11 +1116,10 @@ Waste = 22.3% of time
 | Branch      | 71.4%      | 28.6% |
 | Load        | 100.0%     | 0%    |
 
----
 
-## 10. Path to Better Performance: Multi-Cycle Design
+## 11.11 Path to Better Performance: Multi-Cycle Design
 
-### 10.1 Multi-Cycle Concept
+### 11.11.1 Multi-Cycle Concept
 
 **Basic Idea:**
 
@@ -1143,7 +1135,7 @@ Waste = 22.3% of time
 - Better average performance
 - More efficient resource utilization
 
-### 10.2 Stage Division
+### 11.11.2 Stage Division
 
 **Typical Stages:**
 
@@ -1185,7 +1177,7 @@ Waste = 22.3% of time
 - **Branch**: IF, ID, EX (skip MEM, WB) = 3 cycles
 - **Jump**: IF, ID (skip EX, MEM, WB) = 2 cycles
 
-### 10.3 Clock Period in Multi-Cycle
+### 11.11.3 Clock Period in Multi-Cycle
 
 **Determining Clock Period:**
 
@@ -1207,13 +1199,13 @@ Waste = 22.3% of time
 **Clock Period:** 2 ns (vs 7 ns single-cycle)  
 **Clock Frequency:** 500 MHz (vs 143 MHz single-cycle)
 
-### 10.4 Performance Comparison
+### 11.11.4 Performance Comparison
 
 **Single-Cycle:**
 
-```
+
 All instructions: 1 cycle × 7 ns = 7 ns
-```
+
 
 **Multi-Cycle (with 2 ns clock):**
 
@@ -1227,11 +1219,11 @@ All instructions: 1 cycle × 7 ns = 7 ns
 
 **Weighted Average (same program profile):**
 
-```
+
 Average = (0.48 × 8) + (0.22 × 10) + (0.11 × 8) + (0.19 × 6)
         = 3.84 + 2.20 + 0.88 + 1.14
         = 8.06 ns per instruction
-```
+
 
 **Wait, That's Worse!**
 
@@ -1256,15 +1248,15 @@ Average = (0.48 × 8) + (0.22 × 10) + (0.11 × 8) + (0.19 × 6)
 | Store       | 4      | 5.6 ns |
 | Branch      | 3      | 4.2 ns |
 
-```
+
 Average = (0.48 × 5.6) + (0.22 × 7.0) + (0.11 × 5.6) + (0.19 × 4.2)
         = 2.69 + 1.54 + 0.62 + 0.80
         = 5.65 ns per instruction
 
 Speedup = 7 / 5.65 = 1.24× faster
-```
 
-### 10.5 Design Challenge
+
+### 11.11.5 Design Challenge
 
 **Stage Balancing:**
 
@@ -1283,11 +1275,10 @@ Speedup = 7 / 5.65 = 1.24× faster
 - Fewer hardware resources needed
 - More control complexity (FSM needed)
 
----
 
-## 11. Preview: Pipelining
+## 11.12 Preview: Pipelining
 
-### 11.1 Next Step Beyond Multi-Cycle
+### 11.12.1 Next Step Beyond Multi-Cycle
 
 **Pipelining Concept:**
 
@@ -1315,7 +1306,7 @@ Speedup = 7 / 5.65 = 1.24× faster
 - Need forwarding and stall logic
 - More complex control
 
-### 11.2 Coming Next
+### 11.12.2 Coming Next
 
 **Topics:**
 
@@ -1326,7 +1317,6 @@ Speedup = 7 / 5.65 = 1.24× faster
 - Performance analysis
 - MIPS pipeline implementation
 
----
 
 ## Key Takeaways
 

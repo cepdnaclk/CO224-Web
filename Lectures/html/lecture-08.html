@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 8: Memory Access - CO224 Computer Architecture</title>
+    <title>Lecture 8: Memory Access - Lectures on Computer Architecture</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -18,23 +18,50 @@
                 Back to All Lectures
             </a>
             <h1 class="lecture-title">Lecture 8: Memory Access</h1>
-            <p class="lecture-meta">CO224 - Computer Architecture</p>
+            <p class="lecture-meta">Lectures on Computer Architecture</p>
         </div>
     </header>
 
     <main class="lecture-content-area container">
         <div class="content-body">
-            <h1>Lecture 8: Memory Access and String Operations</h1>
+            <!-- Video Section -->
+            <div class="video-container">
+                <div class="video-thumbnail">
+                    <a href="https://www.youtube.com/watch?v=IxaTbKoCr1Y" target="_blank" class="video-play-overlay">
+                        <img src="https://img.youtube.com/vi/IxaTbKoCr1Y/maxresdefault.jpg" 
+                             alt="Lecture 8 Video Thumbnail"
+                             onerror="this.src='https://img.youtube.com/vi/IxaTbKoCr1Y/hqdefault.jpg'">
+                        <div class="play-button">
+                            <svg width="68" height="48" viewBox="0 0 68 48" fill="none">
+                                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
+                                <path d="M45 24L27 14v20" fill="white"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <p class="video-notice">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Click the thumbnail above to watch the video lecture on YouTube
+                    </p>
+                </div>
+            </div>
 
-<h2>Introduction</h2>
+            
+<em>By Dr. Kisaru Liyanage</em>
+
+<h2>8.1 Introduction</h2>
 
 <p>This lecture explores character data handling, string operations, and the compilation/linking/loading process. We examine byte and half-word memory operations, implement string manipulation functions, use library functions like scanf and printf, and understand how programs transform from source code to executable binaries. These topics bridge high-level programming concepts and low-level assembly implementation, essential for systems programming and understanding program execution.</p>
 
-<p>---</p>
 
-<h2>1. Character Data and Encoding</h2>
+<h2>8.2 Character Data and Encoding</h2>
 
-<h3>1.1 ASCII Encoding</h3>
+<h3>8.2.1 ASCII Encoding</h3>
 
 <strong>Basic 7-Bit Standard</strong>
 
@@ -55,7 +82,8 @@
 <p>'\0' = 0 (0x00) - null terminator</p>
 </code>`<code>
 
-<h3>1.2 Latin-1 Encoding</h3>
+
+<h3>8.2.2 Latin-1 Encoding</h3>
 
 <strong>Extended 8-Bit Standard</strong>
 
@@ -66,7 +94,7 @@
 <li>European language support (accented characters)</li>
 </ul>
 
-<h3>1.3 Unicode Encoding</h3>
+<h3>8.2.3 Unicode Encoding</h3>
 
 <strong>Modern Universal Standard</strong>
 
@@ -87,15 +115,16 @@
 <li>Historical scripts and languages</li>
 </ul>
 
-<h2>2. Byte Load/Store Operations</h2>
+<h2>8.3 Byte Load/Store Operations</h2>
 
-<h3>2.1 Load Register Byte (LDRB)</h3>
+<h3>8.3.1 Load Register Byte (LDRB)</h3>
 
 <strong>Syntax</strong>
 
 </code>`<code>assembly
 <p>LDRB Rd, [Rn, #offset]   ; Load byte from memory</p>
 </code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -114,6 +143,7 @@
 <p>; R0 = 0x00000042</p>
 </code>`<code>
 
+
 <strong>Use Cases</strong>
 
 <ul>
@@ -123,13 +153,14 @@
 <li>I/O port access</li>
 </ul>
 
-<h3>2.2 Store Register Byte (STRB)</h3>
+<h3>8.3.2 Store Register Byte (STRB)</h3>
 
 <strong>Syntax</strong>
 
 </code>`<code>assembly
 <p>STRB Rd, [Rn, #offset]   ; Store byte to memory</p>
 </code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -147,13 +178,15 @@
 <p>STRB R0, [R1]        ; Memory[0x2000] = 0x41</p>
 </code>`<code>
 
-<h3>2.3 Load Register Signed Byte (LDRSB)</h3>
+
+<h3>8.3.3 Load Register Signed Byte (LDRSB)</h3>
 
 <strong>Syntax</strong>
 
 </code>`<code>assembly
 <p>LDRSB Rd, [Rn, #offset]  ; Load signed byte</p>
 </code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -176,6 +209,7 @@
 <p>; R0 = 0x0000007F (+127)</p>
 </code>`<code>
 
+
 <strong>When to Use</strong>
 
 <ul>
@@ -184,7 +218,7 @@
 <li>Signed offsets or deltas</li>
 </ul>
 
-<h3>2.4 Memory Alignment</h3>
+<h3>8.3.4 Memory Alignment</h3>
 
 <strong>LDRB Advantages</strong>
 
@@ -203,15 +237,16 @@
 <li>Unaligned access causes errors or performance penalties</li>
 </ul>
 
-<h2>3. Half-Word Load/Store Operations</h2>
+<h2>8.4 Half-Word Load/Store Operations</h2>
 
-<h3>3.1 Load Register Half-word (LDRH)</h3>
+<h3>8.4.1 Load Register Half-word (LDRH)</h3>
 
 <strong>Syntax</strong>
 
 </code>`<code>assembly
 <p>LDRH Rd, [Rn, #offset]   ; Load 16 bits</p>
 </code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -229,6 +264,7 @@
 <p>; R0 = 0x0000ABCD</p>
 </code>`<code>
 
+
 <strong>Use Cases</strong>
 
 <ul>
@@ -237,13 +273,14 @@
 <li>16-bit data types</li>
 </ul>
 
-<h3>3.2 Store Register Half-word (STRH)</h3>
+<h3>8.4.2 Store Register Half-word (STRH)</h3>
 
 <strong>Syntax</strong>
 
 </code>`<code>assembly
 <p>STRH Rd, [Rn, #offset]   ; Store 16 bits</p>
 </code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -261,13 +298,15 @@
 <p>; Memory[0x2000-0x2001] = 0x1234</p>
 </code>`<code>
 
-<h3>3.3 Load Register Signed Half-word (LDRSH)</h3>
+
+<h3>8.4.3 Load Register Signed Half-word (LDRSH)</h3>
 
 <strong>Syntax</strong>
 
 </code>`<code>assembly
 <p>LDRSH Rd, [Rn, #offset]  ; Load signed 16-bit</p>
 </code>`<code>
+
 
 <strong>Operation</strong>
 
@@ -285,9 +324,10 @@
 <p>; R0 = 0xFFFF8000 (-32768 as signed 32-bit)</p>
 </code>`<code>
 
-<h2>4. String Copy Example (strcpy)</h2>
 
-<h3>4.1 C Implementation</h3>
+<h2>8.5 String Copy Example (strcpy)</h2>
+
+<h3>8.5.1 C Implementation</h3>
 
 <strong>Code</strong>
 
@@ -300,13 +340,14 @@
 <p>}</p>
 </code>`<code>
 
+
 <strong>Algorithm</strong>
 
 <p>1. Copy characters from y to x one at a time</p>
 <p>2. Stop when null terminator ('\\0') encountered</p>
 <p>3. Null terminator also copied</p>
 
-<h3>4.2 ARM Assembly Implementation</h3>
+<h3>8.5.2 ARM Assembly Implementation</h3>
 
 <strong>Register Allocation</strong>
 
@@ -318,6 +359,7 @@
 <p>R3: Value of y[i]</p>
 <p>R12: Address of x[i]</p>
 </code>`<code>
+
 
 <strong>Complete Assembly</strong>
 
@@ -358,7 +400,8 @@
 <p>MOV PC, LR           ; Return</p>
 </code>`<code>
 
-<h3>4.3 Key Points</h3>
+
+<h3>8.5.3 Key Points</h3>
 
 <strong>Why LDRB/STRB?</strong>
 
@@ -381,9 +424,9 @@
 <li>Cannot use </code>[R2, R3]<code> directly without proper syntax</li>
 </ul>
 
-<h2>5. Library Functions: scanf and printf</h2>
+<h2>8.6 Library Functions: scanf and printf</h2>
 
-<h3>5.1 scanf Function</h3>
+<h3>8.6.1 scanf Function</h3>
 
 <strong>Purpose</strong>
 
@@ -397,6 +440,7 @@
 </code>`<code>c
 <p>int scanf(const char *format, ...);</p>
 </code>`<code>
+
 
 <strong>Arguments</strong>
 
@@ -414,6 +458,7 @@
 <p>int x;</p>
 <p>scanf("%d", &x);  // Note: &x (address of x)</p>
 </code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
@@ -438,7 +483,8 @@
 <p>LDR R2, [SP, #0]     ; R2 = x</p>
 </code>`<code>
 
-<h3>5.2 printf Function</h3>
+
+<h3>8.6.2 printf Function</h3>
 
 <strong>Purpose</strong>
 
@@ -452,6 +498,7 @@
 </code>`<code>c
 <p>int printf(const char *format, ...);</p>
 </code>`<code>
+
 
 <strong>Arguments</strong>
 
@@ -467,6 +514,7 @@
 </code>`<code>c
 <p>printf("Result: %d\\n", result);</p>
 </code>`<code>
+
 
 <strong>ARM Assembly</strong>
 
@@ -488,7 +536,8 @@
 <p>BL printf</p>
 </code>`<code>
 
-<h3>5.3 Data Section and Format Strings</h3>
+
+<h3>8.6.3 Data Section and Format Strings</h3>
 
 <strong>Data Section</strong>
 
@@ -499,6 +548,7 @@
 <p>array: .word 1, 2, 3, 4   ; Array</p>
 <p>message: .asciz "Hello"   ; String</p>
 </code>`<code>
+
 
 <strong>.asciz Directive</strong>
 
@@ -514,13 +564,14 @@
 <p>LDR R0, =formatS     ; Loads ADDRESS of formatS into R0</p>
 </code>`<code>
 
+
 <ul>
 <li>Not actual LDR instruction</li>
 <li>Assembler converts to appropriate instruction(s)</li>
 <li>Loads memory address (pointer), not content</li>
 </ul>
 
-<h3>5.4 scanf vs printf Argument Differences</h3>
+<h3>8.6.4 scanf vs printf Argument Differences</h3>
 
 <strong>scanf: Needs Addresses</strong>
 
@@ -537,6 +588,7 @@
 <p>BL printf</p>
 </code>`<code>
 
+
 <strong>Why This Difference?</strong>
 
 <ul>
@@ -544,7 +596,7 @@
 <li>printf only reads values (copies values)</li>
 </ul>
 
-<h3>5.5 Calling Convention Rules</h3>
+<h3>8.6.5 Calling Convention Rules</h3>
 
 <strong>Follow Exact Order</strong>
 
@@ -563,25 +615,26 @@
 <li>Match assembly to C function prototype</li>
 </ul>
 
-<h2>6. Compilation, Linking, and Loading</h2>
+<h2>8.7 Compilation, Linking, and Loading</h2>
 
-<h3>6.1 Translation Overview</h3>
+<h3>8.7.1 Translation Overview</h3>
 
 <strong>Complete Process</strong>
 
-</code>`<code>
+
 <p>C Program (.c)</p>
 <p>↓ [Compiler]</p>
-<p>Assembly (.s)</p>
+</code>`<code>assembly
 <p>↓ [Assembler]</p>
+</code>`<code>
 <p>Object Module (.o)</p>
 <p>↓ [Linker]</p>
 <p>Executable (a.out)</p>
 <p>↓ [Loader]</p>
 <p>Memory (running program)</p>
-</code>`<code>
 
-<h3>6.2 Compiler</h3>
+
+<h3>8.7.2 Compiler</h3>
 
 <strong>Function</strong>
 
@@ -617,7 +670,8 @@
 <p>MOV PC, LR</p>
 </code>`<code>
 
-<h3>6.3 Assembler</h3>
+
+<h3>8.7.3 Assembler</h3>
 
 <strong>Function</strong>
 
@@ -677,7 +731,7 @@
 <li>Used by debuggers (gdb)</li>
 </ul>
 
-<h3>6.4 Linker</h3>
+<h3>8.7.4 Linker</h3>
 
 <strong>Function</strong>
 
@@ -696,6 +750,7 @@
 <p>[Data1]         [Data2]     →   [Data1+Data2]</p>
 </code>`<code>
 
+
 <strong>2. Resolve Labels</strong>
 
 <ul>
@@ -712,7 +767,7 @@
 <li>May leave some for loader</li>
 </ul>
 
-<h3>6.5 Static vs Dynamic Linking</h3>
+<h3>8.7.5 Static vs Dynamic Linking</h3>
 
 <strong>Static Linking</strong>
 
@@ -773,7 +828,7 @@
 <li>Example: msvcrt.dll (C runtime library)</li>
 </ul>
 
-<h3>6.6 Loader</h3>
+<h3>8.7.6 Loader</h3>
 
 <strong>Function</strong>
 
@@ -825,6 +880,7 @@
 <p>./program arg1 arg2</p>
 </code>`<code>
 
+
 <ul>
 <li>argc = 3</li>
 <li>argv[0] = "./program"</li>
@@ -850,9 +906,9 @@
 <li>When main returns, calls exit()</li>
 </ul>
 
-<h2>7. Lab Exercise Topics</h2>
+<h2>8.8 Exercises</h2>
 
-<h3>7.1 Common String Operations</h3>
+<h3>8.8.1 Common String Operations</h3>
 
 <strong>String Length</strong>
 
@@ -864,6 +920,7 @@
 <p>return len;</p>
 <p>}</p>
 </code>`<code>
+
 
 <strong>String Reverse</strong>
 
@@ -878,7 +935,8 @@
 <p>}</p>
 </code>`<code>
 
-<h3>7.2 Integer I/O</h3>
+
+<h3>8.8.2 Integer I/O</h3>
 
 <strong>Read Two Integers, Print Sum</strong>
 
@@ -894,7 +952,8 @@
 <p>; Loop from 1 to n, print each</p>
 </code>``
 
-<h3>7.3 Skills Required</h3>
+
+<h3>8.8.3 Skills Required</h3>
 
 <ul>
 <li>Character data handling (LDRB/STRB)</li>

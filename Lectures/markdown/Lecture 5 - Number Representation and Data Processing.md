@@ -1,14 +1,15 @@
-# Lecture 5: Number Representation and Data Processing
+# Lecture 5: Number Representation and Instruction Encoding
 
-## Introduction
+*By Dr. Kisaru Liyanage*
+
+## 5.1 Introduction
 
 This lecture delves into how computers represent and manipulate data at the binary level. We explore number systems, two's complement representation for signed integers, instruction encoding formats in ARM assembly, and logical operations for bit manipulation. Understanding these fundamentals is essential for programming efficiently in assembly language and comprehending how processors execute arithmetic and logical operations.
 
----
 
-## 1. Number Representation Systems
+## 5.2 Number Representation Systems
 
-### 1.1 Unsigned Binary Integers
+### 5.2.1 Unsigned Binary Integers
 
 **Binary System Basics**
 
@@ -26,6 +27,7 @@ Value = (1 × 2³) + (0 × 2²) + (1 × 2¹) + (1 × 2⁰)
       = 11 (decimal)
 ```
 
+
 **N-Bit Unsigned Range**
 
 - N bits can represent 2^N different values
@@ -42,7 +44,8 @@ Example: 10110101
 = 181
 ```
 
-### 1.2 Two's Complement Representation
+
+### 5.2.2 Two's Complement Representation
 
 **Purpose of Two's Complement**
 
@@ -70,6 +73,7 @@ Example: 10110101
   ```
   2^8 - 5 = 256 - 5 = 251 = 11111011
   ```
+  
 
 **Two's Complement Conversion**
 Method 1 (Invert and Add):
@@ -86,11 +90,13 @@ Invert:    11111010
 Add 1:     11111011  (this is -5)
 ```
 
+
 Method 2 (Subtraction):
 
 ```
 -5 = 2^8 - 5 = 256 - 5 = 251 = 11111011
 ```
+
 
 **N-Bit Signed Range**
 
@@ -105,7 +111,7 @@ Method 2 (Subtraction):
   - Has no positive counterpart!
   - Negating gives overflow
 
-### 1.3 Sign Extension
+### 5.2.3 Sign Extension
 
 **Purpose**
 
@@ -126,6 +132,7 @@ Method 2 (Subtraction):
 11111011 (-5) → 11111111 11111111 11111111 11111011 (-5)
 ```
 
+
 **ARM Instructions for Sign Extension**
 
 - **LDRH**: Load halfword (16 bits), zero-extend to 32 bits
@@ -143,7 +150,8 @@ LDRB R0, [R1]     ; R0 = 0x000000AB (zero-extended)
 LDRSB R0, [R1]    ; R0 = 0xFFFFFFAB (sign-extended if bit 7 = 1)
 ```
 
-### 1.4 Hexadecimal Notation
+
+### 5.2.4 Hexadecimal Notation
 
 **Why Hexadecimal?**
 
@@ -175,6 +183,7 @@ Binary  | Hex | Decimal
 1111    |  F  |  15
 ```
 
+
 **Conversion Examples**
 
 ```
@@ -187,6 +196,7 @@ Binary: 0011 1111
 Decimal: 63
 ```
 
+
 **ARM Hexadecimal Usage**
 
 ```assembly
@@ -195,9 +205,10 @@ MOV R1, #0x100       ; R1 = 256
 LDR R2, =0xDEADBEEF  ; R2 = 3735928559
 ```
 
-## 2. ARM Instruction Encoding
 
-### 2.1 Fixed-Length Instructions
+## 5.3 ARM Instruction Encoding
+
+### 5.3.1 Fixed-Length Instructions
 
 **32-Bit Instruction Format**
 
@@ -217,7 +228,7 @@ LDR R2, =0xDEADBEEF  ; R2 = 3735928559
 - Immediate values limited in size
 - Code density lower than variable-length (e.g., x86)
 
-### 2.2 Data Processing Instruction Format
+### 5.3.2 Data Processing Instruction Format
 
 **Format Structure**
 
@@ -225,6 +236,7 @@ LDR R2, =0xDEADBEEF  ; R2 = 3735928559
 [Cond][00][I][Opcode][S][Rn][Rd][Operand2]
  4-bit 2  1   4-bit   1  4   4   12-bit
 ```
+
 
 **Field Descriptions**
 
@@ -283,7 +295,8 @@ Encoding fields:
 Result: 0xE0810002
 ```
 
-### 2.3 Data Transfer Instruction Format
+
+### 5.3.3 Data Transfer Instruction Format
 
 **Format Structure**
 
@@ -291,6 +304,7 @@ Result: 0xE0810002
 [Cond][01][I][P][U][B][W][L][Rn][Rd][Offset]
  4-bit 2  1  1  1  1  1  1  4   4   12-bit
 ```
+
 
 **Key Fields**
 
@@ -349,7 +363,8 @@ Encoding fields:
 Result: 0xE5910004
 ```
 
-### 2.4 Immediate Value Encoding
+
+### 5.3.4 Immediate Value Encoding
 
 **Challenge**
 
@@ -369,6 +384,7 @@ Result: 0xE5910004
 Actual Value = Immediate × ROR (2 × Rotation)
 ```
 
+
 **Examples**
 
 ```
@@ -381,6 +397,7 @@ Immediate=0xFF, Rotation=8:
 Immediate=0xFF, Rotation=12:
   Value = 0xFF ROR 24 = 0xFF000000
 ```
+
 
 **Allowed Immediates**
 
@@ -397,10 +414,11 @@ Immediate=0xFF, Rotation=12:
   ```assembly
   LDR R0, =0x12345678  ; Loads from literal pool
   ```
+  
 
-## 3. Logical Operations
+## 5.4 Logical Operations
 
-### 3.1 Bitwise AND
+### 5.4.1 Bitwise AND
 
 **Operation**
 
@@ -418,12 +436,14 @@ A | B | A AND B
 1 | 1 |   1
 ```
 
+
 **ARM Instruction**
 
 ```assembly
 AND Rd, Rn, Rm       ; Rd = Rn AND Rm
 AND Rd, Rn, #imm     ; Rd = Rn AND immediate
 ```
+
 
 **Common Uses**
 
@@ -439,12 +459,14 @@ MOV R0, R1
 AND R0, R0, #0xFF00  ; R0 = R1 & 0xFF00 (keep bits 8-15)
 ```
 
+
 **Clearing Specific Bits**
 
 ```assembly
 ; Clear bit 5 of R1
 AND R1, R1, #0xFFFFFFDF  ; Bit 5 mask: ~(1 << 5)
 ```
+
 
 **Checking if Bit Set**
 
@@ -454,7 +476,8 @@ CMP R2, #0           ; Compare with zero
 BEQ bit_clear        ; Branch if bit was clear
 ```
 
-### 3.2 Bitwise OR
+
+### 5.4.2 Bitwise OR
 
 **Operation**
 
@@ -472,12 +495,14 @@ A | B | A OR B
 1 | 1 |   1
 ```
 
+
 **ARM Instruction**
 
 ```assembly
 ORR Rd, Rn, Rm       ; Rd = Rn OR Rm (ORR in ARM)
 ORR Rd, Rn, #imm     ; Rd = Rn OR immediate
 ```
+
 
 **Common Uses**
 
@@ -491,6 +516,7 @@ ORR R1, R1, #0x08    ; Bit 3 mask: (1 << 3) = 0x08
 ORR R1, R1, #0x30    ; Mask: 0x30 = 0b00110000
 ```
 
+
 **Combining Values**
 
 ```assembly
@@ -500,7 +526,8 @@ AND R2, R2, #0xFFFFFF00  ; Keep only upper bytes
 ORR R0, R1, R2           ; Combine
 ```
 
-### 3.3 Bitwise XOR (Exclusive OR)
+
+### 5.4.3 Bitwise XOR (Exclusive OR)
 
 **Operation**
 
@@ -518,12 +545,14 @@ A | B | A XOR B
 1 | 1 |   0
 ```
 
+
 **ARM Instruction**
 
 ```assembly
 EOR Rd, Rn, Rm       ; Rd = Rn EOR Rm (EOR in ARM)
 EOR Rd, Rn, #imm     ; Rd = Rn EOR immediate
 ```
+
 
 **Common Uses**
 
@@ -535,11 +564,13 @@ EOR R1, R1, #0x04    ; Bit 2 mask: (1 << 2)
 ; If bit was 0, becomes 1; if was 1, becomes 0
 ```
 
+
 **Fast Zero**
 
 ```assembly
 EOR R0, R0, R0       ; R0 = 0 (XOR with itself)
 ```
+
 
 **Comparison**
 
@@ -549,6 +580,7 @@ EOR R3, R1, R2       ; R3 = R1 XOR R2
 CMP R3, #0           ; If R3 = 0, R1 == R2
 BEQ values_equal
 ```
+
 
 **Swapping Without Temporary**
 
@@ -560,7 +592,8 @@ EOR R0, R0, R1
 ; Now R0 and R1 are swapped
 ```
 
-### 3.4 Bitwise NOT
+
+### 5.4.4 Bitwise NOT
 
 **Operation**
 
@@ -574,6 +607,7 @@ MVN Rd, Rm           ; Rd = NOT Rm (Move Not)
 MVN Rd, #imm         ; Rd = NOT immediate
 ```
 
+
 **Common Uses**
 
 **Creating Bit Masks**
@@ -584,6 +618,7 @@ MOV R0, #0x08        ; 0x08 = 0b00001000
 MVN R1, R0           ; R1 = 0xFFFFFFF7 (all except bit 3)
 ```
 
+
 **Negation (with ADD)**
 
 ```assembly
@@ -593,7 +628,8 @@ ADD R1, R1, #1       ; Add 1
 ; Now R1 = -R1 (original)
 ```
 
-### 3.5 Shift Operations
+
+### 5.4.5 Shift Operations
 
 **Logical Shift Left (LSL)**
 
@@ -601,6 +637,7 @@ ADD R1, R1, #1       ; Add 1
 LSL Rd, Rn, #shift   ; Rd = Rn << shift
 MOV Rd, Rn, LSL #shift
 ```
+
 
 - Shifts bits left, fills right with zeros
 - Each shift left multiplies by 2
@@ -613,6 +650,7 @@ LSR Rd, Rn, #shift   ; Rd = Rn >> shift (unsigned)
 MOV Rd, Rn, LSR #shift
 ```
 
+
 - Shifts bits right, fills left with zeros
 - Each shift right divides by 2 (unsigned)
 - Example: 0b10100000 LSR 2 = 0b00101000
@@ -623,6 +661,7 @@ MOV Rd, Rn, LSR #shift
 ASR Rd, Rn, #shift   ; Rd = Rn >> shift (signed)
 ```
 
+
 - Shifts bits right, fills left with sign bit
 - Preserves sign for signed division
 - Example: 0b11110000 ASR 2 = 0b11111100 (sign preserved)
@@ -632,6 +671,7 @@ ASR Rd, Rn, #shift   ; Rd = Rn >> shift (signed)
 ```assembly
 ROR Rd, Rn, #shift   ; Rotate Rn right by shift
 ```
+
 
 - Bits shifted out right reappear at left
 - No information lost
@@ -647,6 +687,7 @@ LSR R0, R1, #2       ; R0 = R1 / 4 (unsigned)
 ASR R0, R1, #2       ; R0 = R1 / 4 (signed)
 ```
 
+
 **Bit Extraction**
 
 ```assembly
@@ -654,6 +695,7 @@ ASR R0, R1, #2       ; R0 = R1 / 4 (signed)
 LSR R0, R1, #8       ; Shift bits 8-11 to bits 0-3
 AND R0, R0, #0xF     ; Mask to keep only 4 bits
 ```
+
 
 **Bit Positioning**
 
@@ -663,9 +705,10 @@ LSL R0, R1, #7       ; Shift left 7 positions
 AND R0, R0, #0x80    ; Keep only bit 7
 ```
 
-## 4. Practical Bit Manipulation Examples
 
-### 4.1 Extracting Bit Fields
+## 5.5 Practical Bit Manipulation Examples
+
+### 5.5.1 Extracting Bit Fields
 
 **Extract bits 16-23**
 
@@ -681,7 +724,8 @@ LSR R0, R1, #4       ; Shift to position 0
 AND R0, R0, #0x3F    ; Mask to 6 bits (0b111111)
 ```
 
-### 4.2 Setting and Clearing Bits
+
+### 5.5.2 Setting and Clearing Bits
 
 **Set bits 8-15**
 
@@ -702,7 +746,8 @@ AND R1, R1, R0       ; Clear bits 16-23 of R1
 EOR R1, R1, #0xFF    ; Toggle lower byte
 ```
 
-### 4.3 Checking Flags
+
+### 5.5.3 Checking Flags
 
 **Check if any of bits 4-7 are set**
 
@@ -722,7 +767,8 @@ CMP R0, #0xA         ; Compare with 0b1010
 BEQ pattern_match
 ```
 
-### 4.4 Color Packing/Unpacking
+
+### 5.5.4 Color Packing/Unpacking
 
 **Pack RGB values (8 bits each)**
 
@@ -735,6 +781,7 @@ ORR R3, R3, R2       ; Combine with Blue
 ; R3 now contains 0x00BBGGRR
 ```
 
+
 **Unpack RGB values**
 
 ```assembly
@@ -745,6 +792,7 @@ AND R2, R2, #0xFF      ; Extract Green
 LSR R3, R0, #16
 AND R3, R3, #0xFF      ; Extract Blue
 ```
+
 
 ## Key Takeaways
 

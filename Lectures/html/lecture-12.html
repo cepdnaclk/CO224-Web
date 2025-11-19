@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 12: Pipelined Processors - CO224 Computer Architecture</title>
+    <title>Lecture 12: Pipelined Processors - Lectures on Computer Architecture</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -18,23 +18,50 @@
                 Back to All Lectures
             </a>
             <h1 class="lecture-title">Lecture 12: Pipelined Processors</h1>
-            <p class="lecture-meta">CO224 - Computer Architecture</p>
+            <p class="lecture-meta">Lectures on Computer Architecture</p>
         </div>
     </header>
 
     <main class="lecture-content-area container">
         <div class="content-body">
-            <h1>Lecture 12: Pipelining and Hazards in MIPS Processors</h1>
+            <!-- Video Section -->
+            <div class="video-container">
+                <div class="video-thumbnail">
+                    <a href="https://www.youtube.com/watch?v=l3GqbXXB2QA" target="_blank" class="video-play-overlay">
+                        <img src="https://img.youtube.com/vi/l3GqbXXB2QA/maxresdefault.jpg" 
+                             alt="Lecture 12 Video Thumbnail"
+                             onerror="this.src='https://img.youtube.com/vi/l3GqbXXB2QA/hqdefault.jpg'">
+                        <div class="play-button">
+                            <svg width="68" height="48" viewBox="0 0 68 48" fill="none">
+                                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
+                                <path d="M45 24L27 14v20" fill="white"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <p class="video-notice">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Click the thumbnail above to watch the video lecture on YouTube
+                    </p>
+                </div>
+            </div>
 
-<h2>Introduction</h2>
+            
+<em>By Dr. Isuru Nawinne</em>
+
+<h2>12.1 Introduction</h2>
 
 <p>This lecture introduces pipelining as the primary performance enhancement technique in modern processor design, transforming the inefficient single-cycle architecture into a high-throughput execution engine. We explore how pipelining applies assembly-line principles to instruction execution, dramatically improving processor throughput while maintaining individual instruction latency. The lecture examines the three fundamental types of hazards—structural, data, and control—that threaten pipeline efficiency, and discusses practical solutions including forwarding, stalling, and branch prediction that enable real-world pipelined processors to achieve near-ideal performance.</p>
 
-<p>---</p>
 
-<h2>1. Recap: Single-Cycle Performance Limitations</h2>
+<h2>12.2 Recap: Single-Cycle Performance Limitations</h2>
 
-<h3>1.1 Critical Path Problem</h3>
+<h3>12.2.1 Critical Path Problem</h3>
 
 <strong>Load Word as Bottleneck:</strong>
 
@@ -60,7 +87,7 @@
 <li>Majority of instructions underutilize available time</li>
 </ul>
 
-<h3>1.2 Multi-Cycle as First Improvement</h3>
+<h3>12.2.2 Multi-Cycle as First Improvement</h3>
 
 <strong>Basic Concept:</strong>
 
@@ -102,11 +129,10 @@
 <li>Room for further improvement</li>
 </ul>
 
-<p>---</p>
 
-<h2>2. Pipelining Concept: The Laundry Shop Analogy</h2>
+<h2>12.3 Pipelining Concept: The Laundry Shop Analogy</h2>
 
-<h3>2.1 Non-Pipelined Laundry Shop</h3>
+<h3>12.3.1 Non-Pipelined Laundry Shop</h3>
 
 <strong>Setup:</strong>
 
@@ -126,13 +152,8 @@
 
 <strong>Sequential Processing:</strong>
 
-``<code>
-<p>Time:  6pm    7pm    8pm    9pm    10pm   11pm   12am   1am    2am</p>
-<p>A:     [Wash] [Dry]  [Fold] [Pack]</p>
-<p>B:                            [Wash] [Dry]  [Fold] [Pack]</p>
-<p>C:                                                   [Wash] [Dry]  [Fold] [Pack]</p>
-<p>D:                                                                          [Wash] [Dry]  [Fold] [Pack]</p>
-</code>`<code>
+<img src="../img/Non-Pipelined.jpg" alt="Computer System Abstraction Layers" width="600">
+
 
 <p>| Metric            | Value                |</p>
 <p>| ----------------- | -------------------- |</p>
@@ -149,7 +170,7 @@
 <li>Tremendous resource underutilization</li>
 </ul>
 
-<h3>2.2 Pipelined Laundry Shop</h3>
+<h3>12.3.2 Pipelined Laundry Shop</h3>
 
 <strong>Key Idea:</strong>
 
@@ -161,14 +182,7 @@
 
 <strong>Pipelined Schedule:</strong>
 
-</code>`<code>
-<p>Time:  6:00   6:30   7:00   7:30   8:00   8:30   9:00   9:30</p>
-<p>A:     [Wash] [Dry]  [Fold] [Pack]</p>
-<p>B:            [Wash] [Dry]  [Fold] [Pack]</p>
-<p>C:                   [Wash] [Dry]  [Fold] [Pack]</p>
-<p>D:                          [Wash] [Dry]  [Fold] [Pack]</p>
-<p>E:                                 [Wash] [Dry]  [Fold] [Pack]</p>
-</code>`<code>
+<img src="../img/Pipelined.jpg" alt="Computer System Abstraction Layers" width="600">
 
 <strong>Timeline Analysis:</strong>
 
@@ -189,7 +203,7 @@
 <li>One customer finishes every 30 minutes</li>
 </ul>
 
-<h3>2.3 Performance Analysis</h3>
+<h3>12.3.3 Performance Analysis</h3>
 
 <strong>Time Comparison:</strong>
 
@@ -200,11 +214,11 @@
 
 <strong>Speedup Calculation:</strong>
 
-</code>`<code>
+
 <p>Speedup = Non-pipelined Time / Pipelined Time</p>
 <p>= 8 hours / 3.5 hours</p>
 <p>= 2.3×</p>
-</code>`<code>
+
 
 <strong>Includes Pipeline Fill Time:</strong>
 
@@ -215,12 +229,12 @@
 
 <strong>Steady State Analysis (ignoring fill time):</strong>
 
-</code>`<code>
+
 <p>Non-pipelined: 2n hours for n loads (2 hours per load)</p>
 <p>Pipelined: 0.5n hours for n loads (0.5 hours per load)</p>
 
 <p>Steady State Speedup = 2n / 0.5n = 4×</p>
-</code>`<code>
+
 
 <strong>Theoretical Maximum Speedup:</strong>
 
@@ -230,7 +244,7 @@
 <li>8 stages → 8× speedup maximum (if achievable)</li>
 </ul>
 
-<h3>2.4 Key Performance Terms</h3>
+<h3>12.3.4 Key Performance Terms</h3>
 
 <strong>Latency:</strong>
 
@@ -266,11 +280,10 @@
 <li>Overlapping execution = Instruction-level parallelism</li>
 </ul>
 
-<p>---</p>
 
-<h2>3. MIPS Five-Stage Pipeline</h2>
+<h2>12.4 MIPS Five-Stage Pipeline</h2>
 
-<h3>3.1 Pipeline Stage Definitions</h3>
+<h3>12.4.1 Pipeline Stage Definitions</h3>
 
 <h4>Stage 1: Instruction Fetch (IF)</h4>
 
@@ -328,7 +341,7 @@
 <li>Maximize hardware utilization</li>
 </ul>
 
-<h3>3.2 Stage Timing Example</h3>
+<h3>12.4.2 Stage Timing Example</h3>
 
 <strong>Assumed Component Delays:</strong>
 
@@ -352,7 +365,7 @@
 
 <strong>Load Word Critical Path:</strong> 800 ps determines clock period
 
-<h3>3.3 Pipeline Implementation Details</h3>
+<h3>12.4.3 Pipeline Implementation Details</h3>
 
 <strong>Clock Cycle Determination:</strong>
 
@@ -397,11 +410,11 @@
 <li>Second half: Available for next instruction's register read</li>
 </ul>
 
-<h3>3.4 Load Word Pipeline Example</h3>
+<h3>12.4.4 Load Word Pipeline Example</h3>
 
 <strong>Instruction Stream:</strong> All Load Word instructions
 
-</code>`<code>assembly
+<p>``<code>assembly</p>
 <p>LW $1, 0($10)</p>
 <p>LW $2, 4($10)</p>
 <p>LW $3, 8($10)</p>
@@ -419,6 +432,7 @@
 <p>LW $4:                               IF       ID        EX</p>
 </code>`<code>
 
+
 <strong>Single-Cycle Comparison:</strong>
 
 <ul>
@@ -435,6 +449,7 @@
 <p>Speedup = 800 / 200 = 4×</p>
 </code>`<code>
 
+
 <strong>Absolute Time per Instruction:</strong>
 
 <ul>
@@ -443,7 +458,7 @@
 <li>Throughput dramatically improved</li>
 </ul>
 
-<h3>3.5 Ideal vs Actual Speedup</h3>
+<h3>12.4.5 Ideal vs Actual Speedup</h3>
 
 <strong>Ideal Case (balanced stages):</strong>
 
@@ -452,6 +467,7 @@
 
 <p>Maximum Speedup = Number of Stages</p>
 </code>`<code>
+
 
 <strong>Actual Implementation:</strong>
 
@@ -469,11 +485,10 @@
 <p>3. Hazards (discussed later)</p>
 <p>4. Added synchronization logic</p>
 
-<p>---</p>
 
-<h2>4. MIPS ISA Design for Pipelining</h2>
+<h2>12.5 MIPS ISA Design for Pipelining</h2>
 
-<h3>4.1 Fixed Instruction Length</h3>
+<h3>12.5.1 Fixed Instruction Length</h3>
 
 <strong>MIPS Characteristic:</strong>
 
@@ -500,7 +515,7 @@
 <li>Added combinational logic delays</li>
 </ul>
 
-<h3>4.2 Fewer Regular Instruction Formats</h3>
+<h3>12.5.2 Fewer Regular Instruction Formats</h3>
 
 <strong>MIPS Formats:</strong>
 
@@ -535,7 +550,7 @@
 <li>Fast enough for single clock cycle</li>
 </ul>
 
-<h3>4.3 Separate ALU Operation Field</h3>
+<h3>12.5.3 Separate ALU Operation Field</h3>
 
 <strong>Function Field (funct):</strong>
 
@@ -572,7 +587,7 @@
 <li>Worse pipeline balance</li>
 </ul>
 
-<h3>4.4 Load/Store Addressing Mode</h3>
+<h3>12.5.4 Load/Store Addressing Mode</h3>
 
 <strong>MIPS Addressing:</strong>
 
@@ -607,11 +622,10 @@
 <li>RISC principles support pipelining</li>
 </ul>
 
-<p>---</p>
 
-<h2>5. Instruction-Level Parallelism (ILP)</h2>
+<h2>12.6 Instruction-Level Parallelism (ILP)</h2>
 
-<h3>5.1 Parallel Execution Concept</h3>
+<h3>12.6.1 Parallel Execution Concept</h3>
 
 <strong>Definition:</strong>
 
@@ -623,7 +637,7 @@
 
 <strong>Example at Steady State:</strong>
 
-</code>`<code>
+
 <p>Time Window: 800-1000 ps</p>
 
 <p>Instruction A: WB stage (writing result)</p>
@@ -633,7 +647,7 @@
 <p>Instruction E: IF stage (fetch)</p>
 
 <p>Five instructions active simultaneously!</p>
-</code>`<code>
+
 
 <strong>Instruction-Level Parallelism (ILP):</strong>
 
@@ -644,7 +658,7 @@
 <li>Hardware manages parallelism</li>
 </ul>
 
-<h3>5.2 Levels of Parallelism</h3>
+<h3>12.6.2 Levels of Parallelism</h3>
 
 <strong>Instruction-Level Parallelism:</strong>
 
@@ -691,11 +705,10 @@
 <li>Foundation for all higher levels</li>
 </ul>
 
-<p>---</p>
 
-<h2>6. Pipeline Hazards: Structural Hazards</h2>
+<h2>12.7 Pipeline Hazards: Structural Hazards</h2>
 
-<h3>6.1 Hazard Definition</h3>
+<h3>12.7.1 Hazard Definition</h3>
 
 <strong>General Concept:</strong>
 
@@ -712,7 +725,7 @@
 <p>2. <strong>Data Hazards:</strong> Need data from previous instruction</p>
 <p>3. <strong>Control Hazards:</strong> Decision depends on previous result</p>
 
-<h3>6.2 Structural Hazard: Single Memory</h3>
+<h3>12.7.2 Structural Hazard: Single Memory</h3>
 
 <strong>Scenario:</strong>
 
@@ -724,7 +737,7 @@
 
 <strong>Conflict Example:</strong>
 
-</code>`<code>
+
 <p>Time:    0-200   200-400  400-600  600-800</p>
 <p>LW $1:   IF      ID       EX       MEM</p>
 <p>LW $2:           IF       ID       EX</p>
@@ -738,7 +751,7 @@
 <li>Same physical memory device!</li>
 <li>Cannot access simultaneously</li>
 </ul>
-</code>`<code>
+
 
 <strong>Problem:</strong>
 
@@ -748,7 +761,7 @@
 <li>Hardware resource (memory) busy</li>
 </ul>
 
-<h3>6.3 Pipeline Stall (Bubble)</h3>
+<h3>12.7.3 Pipeline Stall (Bubble)</h3>
 
 <strong>Solution: Insert Bubble</strong>
 
@@ -759,6 +772,7 @@
 <p>LW $3:                    IF       ID       EX        [BUBBLE]</p>
 <p>LW $4:                             IF       [BUBBLE]  ID</p>
 </code>`<code>
+
 
 <strong>Bubble Characteristics:</strong>
 
@@ -788,7 +802,7 @@
 <li>Reduces effective flow rate</li>
 </ul>
 
-<h3>6.4 Solutions to Structural Hazards</h3>
+<h3>12.7.4 Solutions to Structural Hazards</h3>
 
 <strong>Solution 1: Separate Memories</strong>
 
@@ -818,11 +832,10 @@
 <li>Small area overhead for large performance gain</li>
 </ul>
 
-<p>---</p>
 
-<h2>7. Data Hazards</h2>
+<h2>12.8 Data Hazards</h2>
 
-<h3>7.1 Data Hazard Definition</h3>
+<h3>12.8.1 Data Hazard Definition</h3>
 
 <strong>Concept:</strong>
 
@@ -840,6 +853,7 @@
 <p>SUB $t2, $s0, $t3      # $t2 = $s0 - $t3 (uses $s0 from ADD)</p>
 </code>`<code>
 
+
 <strong>Problem:</strong>
 
 <ul>
@@ -848,7 +862,7 @@
 <li>Timing mismatch</li>
 </ul>
 
-<h3>7.2 Data Hazard Example Analysis</h3>
+<h3>12.8.2 Data Hazard Example Analysis</h3>
 
 <strong>Instruction Sequence:</strong>
 
@@ -869,6 +883,7 @@
 <p>ADD writes $s0 here ↓</p>
 </code>`<code>
 
+
 <strong>Problem Timeline:</strong>
 
 <ul>
@@ -880,7 +895,7 @@
 
 <p>SUB reads $s0 at 400-600, but correct value not available until 800-1000!</p>
 
-<h3>7.3 Solution 1: Pipeline Stalls</h3>
+<h3>12.8.3 Solution 1: Pipeline Stalls</h3>
 
 <strong>Insert Two Bubbles:</strong>
 
@@ -891,6 +906,7 @@
 <p>[BUBBLE]                           IF       [BUBBLE]</p>
 <p>SUB:                                         IF        ID</p>
 </code>`<code>
+
 
 <strong>Result:</strong>
 
@@ -917,7 +933,7 @@
 <li>Enables back-to-back reading of just-written value</li>
 </ul>
 
-<h3>7.4 Solution 2: Forwarding (Bypassing)</h3>
+<h3>12.8.4 Solution 2: Forwarding (Bypassing)</h3>
 
 <strong>Key Observation:</strong>
 
@@ -938,6 +954,7 @@
 <p>↑        ↑</p>
 <p>Read regs   Use forwarded value!</p>
 </code>`<code>
+
 
 <strong>Implementation:</strong>
 
@@ -981,7 +998,7 @@
 <li>Correct value forwarded</li>
 </ul>
 
-<h3>7.5 Load-Use Data Hazard</h3>
+<h3>12.8.5 Load-Use Data Hazard</h3>
 
 <strong>Special Case:</strong>
 
@@ -1008,6 +1025,7 @@
 <p>Need value   Value first available here!</p>
 </code>`<code>
 
+
 <p>LW result available at 600-800, but SUB's EX at 600-800 (simultaneous!)</p>
 
 <strong>Unavoidable Stall:</strong>
@@ -1019,6 +1037,7 @@
 <p>SUB:                                         IF        ID</p>
 </code>`<code>
 
+
 <strong>One stall bubble required:</strong>
 
 <ul>
@@ -1027,7 +1046,7 @@
 <li>But at least one stall unavoidable</li>
 </ul>
 
-<h3>7.6 Compiler Solution: Code Reordering</h3>
+<h3>12.8.6 Compiler Solution: Code Reordering</h3>
 
 <strong>C Code Example:</strong>
 
@@ -1035,6 +1054,7 @@
 <p>a = b + e;</p>
 <p>c = b + f;</p>
 </code>`<code>
+
 
 <strong>Naive Assembly (Load-Use Hazards):</strong>
 
@@ -1049,6 +1069,7 @@
 <p>SW   $t5, 16($t0)   # Store c</p>
 </code>`<code>
 
+
 <strong>Total:</strong> 7 instructions + 2 stalls = 9 clock cycles
 
 <strong>Optimized Assembly (Reordered):</strong>
@@ -1062,6 +1083,7 @@
 <p>ADD  $t5, $t1, $t4  # c = b + f ← No hazard! $t4 available</p>
 <p>SW   $t5, 16($t0)   # Store c</p>
 </code>`<code>
+
 
 <strong>Total:</strong> 7 instructions + 0 stalls = 7 clock cycles
 
@@ -1094,11 +1116,10 @@
 <li>Help compiler optimize</li>
 </ul>
 
-<p>---</p>
 
-<h2>8. Control Hazards</h2>
+<h2>12.9 Control Hazards</h2>
 
-<h3>8.1 Control Hazard Definition</h3>
+<h3>12.9.1 Control Hazard Definition</h3>
 
 <strong>Concept:</strong>
 
@@ -1118,6 +1139,7 @@
 <p>target: SUB $6, $7, $8 # Branch target</p>
 </code>`<code>
 
+
 <strong>Which instruction to fetch after BEQ?</strong>
 
 <ul>
@@ -1126,13 +1148,14 @@
 <li>Decision requires comparison: $1 vs $2</li>
 </ul>
 
-<h3>8.2 Branch Execution in Pipeline</h3>
+<h3>12.9.2 Branch Execution in Pipeline</h3>
 
 <strong>Branch Instruction:</strong>
 
 </code>`<code>assembly
 <p>BEQ $1, $2, 40         # Branch 40 instructions ahead if equal</p>
 </code>`<code>
+
 
 <strong>Pipeline Stages:</strong>
 
@@ -1159,7 +1182,7 @@
 
 <p>Two bubbles required if wait for outcome</p>
 
-<h3>8.3 Solution 1: Early Branch Resolution</h3>
+<h3>12.9.3 Solution 1: Early Branch Resolution</h3>
 
 <strong>Add Hardware in ID Stage:</strong>
 
@@ -1179,6 +1202,7 @@
 <p>Decision here!</p>
 <p>Next:            IF</p>
 </code>`<code>
+
 
 <strong>Benefit:</strong>
 
@@ -1203,7 +1227,7 @@
 <li>Can't know outcome in same cycle as fetch</li>
 </ul>
 
-<h3>8.4 Solution 2: Branch Prediction</h3>
+<h3>12.9.4 Solution 2: Branch Prediction</h3>
 
 <strong>Static Branch Prediction:</strong>
 
@@ -1241,6 +1265,7 @@
 <p>↑ Fetched based on prediction</p>
 </code>`<code>
 
+
 <p>At 400-600 (after BEQ's ID):</p>
 
 <ul>
@@ -1270,6 +1295,7 @@
 <p>SUB:                              IF</p>
 </code>`<code>
 
+
 <p>At 400-600 (after BEQ's ID):</p>
 
 <ul>
@@ -1289,7 +1315,7 @@
 <li>No additional penalty for wrong guess</li>
 </ul>
 
-<h3>8.5 Static Branch Prediction Strategies</h3>
+<h3>12.9.5 Static Branch Prediction Strategies</h3>
 
 <strong>Simple Static: Always Predict Not Taken</strong>
 
@@ -1320,6 +1346,7 @@
 <p>BEQ $t0, $zero, loop   # Backward branch</p>
 </code>`<code>
 
+
 <ul>
 <li>Loop iterations: Branch taken many times</li>
 <li>Loop exit: Branch not taken once</li>
@@ -1336,9 +1363,10 @@
 </code>`<code>assembly
 <p>BEQ $t0, $zero, skip</p>
 <p>...                      # True case</p>
+</code>`<code>
 <p>skip:</p>
 <p>...                      # After if</p>
-</code>`<code>
+
 
 <ul>
 <li>True case: Branch not taken</li>
@@ -1354,7 +1382,7 @@
 <li>Requires code analysis</li>
 </ul>
 
-<h3>8.6 Dynamic Branch Prediction</h3>
+<h3>12.9.6 Dynamic Branch Prediction</h3>
 
 <strong>Concept:</strong>
 
@@ -1392,6 +1420,7 @@
 <p>Loop exit: Not taken → Predict not taken next (wrong for next loop!)</p>
 </code>`<code>
 
+
 <p>Problem: Wrong twice per loop (entry and exit)</p>
 
 <strong>2-Bit Saturating Counter:</strong>
@@ -1427,11 +1456,10 @@
 <li>Worthwhile for performance gain</li>
 </ul>
 
-<p>---</p>
 
-<h2>9. Summary and Key Concepts</h2>
+<h2>12.10 Summary and Key Concepts</h2>
 
-<h3>9.1 Pipelining Benefits</h3>
+<h3>12.10.1 Pipelining Benefits</h3>
 
 <strong>Performance Improvement:</strong>
 
@@ -1450,7 +1478,7 @@
 <li>Maximum efficiency</li>
 </ul>
 
-<h3>9.2 Pipeline Challenges</h3>
+<h3>12.10.2 Pipeline Challenges</h3>
 
 <strong>Hazards:</strong>
 
@@ -1466,7 +1494,7 @@
 <li>Control: Early resolution, branch prediction</li>
 </ul>
 
-<h3>9.3 MIPS Design Philosophy</h3>
+<h3>12.10.3 MIPS Design Philosophy</h3>
 
 <strong>ISA Designed for Pipelining:</strong>
 
@@ -1486,7 +1514,7 @@
 <li>Hardware complexity for software simplicity</li>
 </ul>
 
-<h3>9.4 Key Takeaways</h3>
+<h3>12.10.4 Key Takeaways</h3>
 
 <p>1. Pipelining improves throughput, not latency</p>
 <p>2. Steady state determines peak performance</p>
@@ -1499,9 +1527,8 @@
 <p>9. ISA design significantly impacts pipeline efficiency</p>
 <p>10. ILP fundamental to modern processor performance</p>
 
-<p>---</p>
 
-<h2>10. Important Formulas and Metrics</h2>
+<h2>12.11 Important Formulas and Metrics</h2>
 
 <h3>Speedup Calculation</h3>
 
@@ -1513,6 +1540,7 @@
 <p>Actual Speedup = Number of Stages / (1 + Hazard Impact)</p>
 </code>`<code>
 
+
 <h3>Throughput</h3>
 
 </code>`<code>
@@ -1520,6 +1548,7 @@
 
 <p>Throughput Improvement = Clock Period (non-pipelined) / Clock Period (pipelined)</p>
 </code>`<code>
+
 
 <h3>Pipeline Performance</h3>
 
@@ -1531,6 +1560,7 @@
 <p>Effective CPI = 1 + (Structural Stalls + Data Stalls + Control Stalls)</p>
 </code>`<code>
 
+
 <h3>Branch Prediction Accuracy</h3>
 
 </code>`<code>
@@ -1539,7 +1569,7 @@
 <p>Stall Reduction = Accuracy × Cycles Saved per Correct Prediction</p>
 </code>``
 
-<p>---</p>
+
 
 <h2>Key Takeaways</h2>
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture 6: Branching - CO224 Computer Architecture</title>
+    <title>Lecture 6: Branching - Lectures on Computer Architecture</title>
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -18,23 +18,50 @@
                 Back to All Lectures
             </a>
             <h1 class="lecture-title">Lecture 6: Branching</h1>
-            <p class="lecture-meta">CO224 - Computer Architecture</p>
+            <p class="lecture-meta">Lectures on Computer Architecture</p>
         </div>
     </header>
 
     <main class="lecture-content-area container">
         <div class="content-body">
-            <h1>Lecture 6: Branching and Control Flow</h1>
+            <!-- Video Section -->
+            <div class="video-container">
+                <div class="video-thumbnail">
+                    <a href="https://www.youtube.com/watch?v=aFCmb1CNnV8" target="_blank" class="video-play-overlay">
+                        <img src="https://img.youtube.com/vi/aFCmb1CNnV8/maxresdefault.jpg" 
+                             alt="Lecture 6 Video Thumbnail"
+                             onerror="this.src='https://img.youtube.com/vi/aFCmb1CNnV8/hqdefault.jpg'">
+                        <div class="play-button">
+                            <svg width="68" height="48" viewBox="0 0 68 48" fill="none">
+                                <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
+                                <path d="M45 24L27 14v20" fill="white"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                <div class="video-info">
+                    <p class="video-notice">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Click the thumbnail above to watch the video lecture on YouTube
+                    </p>
+                </div>
+            </div>
 
-<h2>Introduction</h2>
+            
+<em>By Dr. Kisaru Liyanage</em>
+
+<h2>6.1 Introduction</h2>
 
 <p>Control flow is what distinguishes computers from simple calculators—the ability to make decisions and alter execution based on conditions. This lecture explores conditional operations and branching in ARM assembly, covering comparison instructions, conditional branches, loop implementation, and PC-relative addressing. Understanding these mechanisms is essential for translating high-level control structures (if statements, loops) into assembly code and for comprehending how processors implement dynamic program behavior.</p>
 
-<p>---</p>
 
-<h2>1. Fundamentals of Conditional Execution</h2>
+<h2>6.2 Fundamentals of Conditional Execution</h2>
 
-<h3>1.1 Decision-Making in Computers</h3>
+<h3>6.2.1 Decision-Making in Computers</h3>
 
 <strong>What Makes Computers Powerful</strong>
 
@@ -54,7 +81,7 @@
 <li><strong>Function calls</strong>: Branch with return address saving</li>
 </ul>
 
-<h3>1.2 Program Status Register (PSR)</h3>
+<h3>6.2.2 Program Status Register (PSR)</h3>
 
 <strong>Status Flags</strong>
 
@@ -91,9 +118,9 @@
 <li>V = 0 (no overflow)</li>
 </ul>
 
-<h2>2. Comparison Instructions</h2>
+<h2>6.3 Comparison Instructions</h2>
 
-<h3>2.1 Compare (CMP)</h3>
+<h3>6.3.1 Compare (CMP)</h3>
 
 <strong>Syntax</strong>
 
@@ -121,7 +148,7 @@
 <p>; Z = 0, N = 0</p>
 </code>`<code>
 
-<h3>2.2 Compare Negative (CMN)</h3>
+<h3>6.3.2 Compare Negative (CMN)</h3>
 
 <strong>Syntax</strong>
 
@@ -139,7 +166,7 @@
 <li>Useful for checking if sum equals zero</li>
 </ul>
 
-<h3>2.3 Test (TST)</h3>
+<h3>6.3.3 Test (TST)</h3>
 
 <strong>Syntax</strong>
 
@@ -164,7 +191,7 @@
 <p>BEQ bit_clear        ; Branch if bit was clear (Z=1)</p>
 </code>`<code>
 
-<h3>2.4 Test Equivalence (TEQ)</h3>
+<h3>6.3.4 Test Equivalence (TEQ)</h3>
 
 <strong>Syntax</strong>
 
@@ -182,9 +209,9 @@
 <li>Used to compare values without affecting C or V flags</li>
 </ul>
 
-<h2>3. Conditional Branch Instructions</h2>
+<h2>6.4 Conditional Branch Instructions</h2>
 
-<h3>3.1 Branch if Equal (BEQ)</h3>
+<h3>6.4.1 Branch if Equal (BEQ)</h3>
 
 <strong>Syntax</strong>
 
@@ -209,7 +236,7 @@
 <p>; Code if equal</p>
 </code>`<code>
 
-<h3>3.2 Branch if Not Equal (BNE)</h3>
+<h3>6.4.2 Branch if Not Equal (BNE)</h3>
 
 <strong>Syntax</strong>
 
@@ -234,7 +261,7 @@
 <p>; Code if R3 is non-zero</p>
 </code>`<code>
 
-<h3>3.3 Signed Comparison Branches</h3>
+<h3>6.4.3 Signed Comparison Branches</h3>
 
 <strong>Branch if Greater or Equal (BGE)</strong>
 
@@ -274,7 +301,7 @@
 <p>; Code if R1 >= R2</p>
 </code>`<code>
 
-<h3>3.4 Unsigned Comparison Branches</h3>
+<h3>6.4.4 Unsigned Comparison Branches</h3>
 
 <strong>Branch if Higher or Same (BHS)</strong> (also called BCS - Branch if Carry Set)
 
@@ -304,7 +331,7 @@
 <p>; Condition: C==0 OR Z==1</p>
 </code>`<code>
 
-<h3>3.5 Signed vs. Unsigned Example</h3>
+<h3>6.4.5 Signed vs. Unsigned Example</h3>
 
 <strong>Key Difference</strong>
 
@@ -327,7 +354,7 @@
 <li><strong>Unsigned</strong>: Comparing addresses, array indices, sizes, counts</li>
 </ul>
 
-<h3>3.6 Unconditional Branch</h3>
+<h3>6.4.6 Unconditional Branch</h3>
 
 <strong>Syntax</strong>
 
@@ -353,9 +380,9 @@
 <p>; Continue execution here</p>
 </code>`<code>
 
-<h2>4. Labels in Assembly</h2>
+<h2>6.5 Labels in Assembly</h2>
 
-<h3>4.1 Label Definition</h3>
+<h3>6.5.1 Label Definition</h3>
 
 <strong>Purpose</strong>
 
@@ -393,7 +420,7 @@
 <p>B start          ; Branch to start label</p>
 </code>`<code>
 
-<h3>4.2 Label Resolution</h3>
+<h3>6.5.2 Label Resolution</h3>
 
 <strong>Assembly Process</strong>
 
@@ -411,9 +438,9 @@
 <li>Physical addresses determined at load time</li>
 </ul>
 
-<h2>5. Implementing Control Structures</h2>
+<h2>6.6 Implementing Control Structures</h2>
 
-<h3>5.1 If Statement</h3>
+<h3>6.6.1 If Statement</h3>
 
 <strong>C Code</strong>
 
@@ -431,6 +458,7 @@
 <p>BNE else         ; Branch to else if not equal</p>
 <p>ADD R0, R1, R2   ; f = g + h (then clause)</p>
 <p>B exit           ; Skip else clause</p>
+
 <p>else:</p>
 <p>SUB R0, R1, R2   ; f = g - h (else clause)</p>
 <p>exit:</p>
@@ -445,7 +473,8 @@
 <p>SUBNE R0, R1, R2 ; f = g - h (executed only if not equal)</p>
 </code>`<code>
 
-<h3>5.2 If-Else Ladder</h3>
+
+<h3>6.6.2 If-Else Ladder</h3>
 
 <strong>C Code</strong>
 
@@ -467,6 +496,7 @@
 <p>; x > 0</p>
 <p>MOV R0, #1</p>
 <p>B done</p>
+
 <p>negative:</p>
 <p>MOV R0, #-1</p>
 <p>B done</p>
@@ -476,7 +506,7 @@
 <p>; Continue...</p>
 </code>`<code>
 
-<h3>5.3 While Loop</h3>
+<h3>6.6.3 While Loop</h3>
 
 <strong>C Code</strong>
 
@@ -500,7 +530,7 @@
 <p>; Continue...</p>
 </code>`<code>
 
-<h3>5.4 For Loop</h3>
+<h3>6.6.4 For Loop</h3>
 
 <strong>C Code</strong>
 
@@ -514,6 +544,7 @@
 
 </code>`<code>assembly
 <p>MOV R1, #0       ; i = 0 (initialization)</p>
+
 <p>for_loop:</p>
 <p>CMP R1, #10      ; Compare i with 10</p>
 <p>BGE end_for      ; Exit if i >= 10</p>
@@ -524,7 +555,7 @@
 <p>; Continue...</p>
 </code>`<code>
 
-<h3>5.5 Do-While Loop</h3>
+<h3>6.6.5 Do-While Loop</h3>
 
 <strong>C Code</strong>
 
@@ -553,9 +584,9 @@
 <li>Condition checked at end, not beginning</li>
 </ul>
 
-<h2>6. Array Access in Loops</h2>
+<h2>6.7 Array Access in Loops</h2>
 
-<h3>6.1 Static Array Indexing</h3>
+<h3>6.7.1 Static Array Indexing</h3>
 
 <strong>C Code</strong>
 
@@ -570,6 +601,7 @@
 <p>; R6 = base address of save array</p>
 <p>; R3 = i (index)</p>
 <p>; R5 = k (comparison value)</p>
+
 <p>loop:</p>
 <p>ADD R12, R6, R3, LSL #2  ; address = base + (i * 4)</p>
 <p>LDR R0, [R12, #0]        ; R0 = save[i]</p>
@@ -589,7 +621,7 @@
 <li>Efficient: shift is faster than multiplication</li>
 </ul>
 
-<h3>6.2 Array Traversal</h3>
+<h3>6.7.2 Array Traversal</h3>
 
 <strong>C Code</strong>
 
@@ -606,6 +638,7 @@
 <p>LDR R6, =arr     ; R6 = base address of array</p>
 <p>MOV R0, #0       ; sum = 0</p>
 <p>MOV R1, #0       ; i = 0</p>
+
 <p>loop:</p>
 <p>CMP R1, #10</p>
 <p>BGE done</p>
@@ -618,16 +651,16 @@
 <p>; R0 contains sum</p>
 </code>`<code>
 
-<h2>7. PC-Relative Addressing</h2>
+<h2>6.8 PC-Relative Addressing</h2>
 
-<h3>7.1 Branch Instruction Encoding</h3>
+<h3>6.8.1 Branch Instruction Encoding</h3>
 
 <strong>32-Bit Format</strong>
 
-</code>`<code>
+
 <p>[Cond][1010][Offset]</p>
 <p>4-bit 4-bit 24-bit</p>
-</code>`<code>
+
 
 <strong>Fields</strong>
 
@@ -637,7 +670,7 @@
 <li><strong>Offset</strong>: 24-bit signed offset</li>
 </ul>
 
-<h3>7.2 Address Calculation</h3>
+<h3>6.8.2 Address Calculation</h3>
 
 <strong>Problem with Absolute Addressing</strong>
 
@@ -658,9 +691,9 @@
 
 <strong>Offset Calculation</strong>
 
-</code>`<code>
+
 <p>Offset = (Target Address - PC) / 4</p>
-</code>`<code>
+
 
 <strong>Why Divide by 4?</strong>
 
@@ -673,16 +706,16 @@
 
 <strong>Example</strong>
 
-</code>`<code>
+
 <p>Current PC: 0x1000</p>
 <p>Target: 0x1020</p>
 <p>Offset = (0x1020 - 0x1000) / 4 = 0x20 / 4 = 8 instructions</p>
 
 <p>Encoded offset in branch instruction: 8</p>
 <p>At execution: PC = 0x1000 + (8 × 4) = 0x1020</p>
-</code>`<code>
 
-<h3>7.3 Advantages of PC-Relative</h3>
+
+<h3>6.8.3 Advantages of PC-Relative</h3>
 
 <strong>Position-Independent Code</strong>
 
@@ -707,9 +740,9 @@
 <li>Absolute addressing wastes bits for nearby targets</li>
 </ul>
 
-<h2>8. Conditional Execution (Alternative to Branching)</h2>
+<h2>6.9 Conditional Execution (Alternative to Branching)</h2>
 
-<h3>8.1 Conditional Instruction Suffixes</h3>
+<h3>6.9.1 Conditional Instruction Suffixes</h3>
 
 <strong>Concept</strong>
 
@@ -737,7 +770,7 @@
 <p>MOVGT R5, #10        ; Execute MOV only if R1 > R2</p>
 </code>`<code>
 
-<h3>8.2 Conditional Execution Example</h3>
+<h3>6.9.2 Conditional Execution Example</h3>
 
 <strong>C Code</strong>
 
@@ -755,6 +788,7 @@
 <p>BNE else</p>
 <p>MOV R0, R1       ; max = a</p>
 <p>B done</p>
+
 <p>else:</p>
 <p>MOV R0, R2       ; max = b</p>
 <p>done:</p>
@@ -768,7 +802,8 @@
 <p>MOVNE R0, R2     ; max = b (if not equal)</p>
 </code>`<code>
 
-<h3>8.3 Advantages and Limitations</h3>
+
+<h3>6.9.3 Advantages and Limitations</h3>
 
 <strong>Advantages</strong>
 
@@ -797,9 +832,9 @@
 <li>Performance-critical paths where branches hurt</li>
 </ul>
 
-<h2>9. Basic Blocks</h2>
+<h2>6.10 Basic Blocks</h2>
 
-<h3>9.1 Definition</h3>
+<h3>6.10.1 Definition</h3>
 
 <strong>Basic Block Characteristics</strong>
 
@@ -829,7 +864,7 @@
 <p>BLT block2       ; Exit point of block 2</p>
 </code>``
 
-<h3>9.2 Importance in Compilation</h3>
+<h3>6.10.2 Importance in Compilation</h3>
 
 <strong>Compiler Optimizations</strong>
 

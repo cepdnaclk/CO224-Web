@@ -1,14 +1,15 @@
 # Lecture 12: Pipelining and Hazards in MIPS Processors
 
-## Introduction
+*By Dr. Isuru Nawinne*
+
+## 12.1 Introduction
 
 This lecture introduces pipelining as the primary performance enhancement technique in modern processor design, transforming the inefficient single-cycle architecture into a high-throughput execution engine. We explore how pipelining applies assembly-line principles to instruction execution, dramatically improving processor throughput while maintaining individual instruction latency. The lecture examines the three fundamental types of hazards—structural, data, and control—that threaten pipeline efficiency, and discusses practical solutions including forwarding, stalling, and branch prediction that enable real-world pipelined processors to achieve near-ideal performance.
 
----
 
-## 1. Recap: Single-Cycle Performance Limitations
+## 12.2 Recap: Single-Cycle Performance Limitations
 
-### 1.1 Critical Path Problem
+### 12.2.1 Critical Path Problem
 
 **Load Word as Bottleneck:**
 
@@ -28,7 +29,7 @@ This lecture introduces pipelining as the primary performance enhancement techni
 - Common case (arithmetic) forced to run slowly
 - Majority of instructions underutilize available time
 
-### 1.2 Multi-Cycle as First Improvement
+### 12.2.2 Multi-Cycle as First Improvement
 
 **Basic Concept:**
 
@@ -62,11 +63,10 @@ This lecture introduces pipelining as the primary performance enhancement techni
 - Hardware still idle during many cycles
 - Room for further improvement
 
----
 
-## 2. Pipelining Concept: The Laundry Shop Analogy
+## 12.3 Pipelining Concept: The Laundry Shop Analogy
 
-### 2.1 Non-Pipelined Laundry Shop
+### 12.3.1 Non-Pipelined Laundry Shop
 
 **Setup:**
 
@@ -82,13 +82,8 @@ This lecture introduces pipelining as the primary performance enhancement techni
 
 **Sequential Processing:**
 
-```
-Time:  6pm    7pm    8pm    9pm    10pm   11pm   12am   1am    2am
-A:     [Wash] [Dry]  [Fold] [Pack]
-B:                            [Wash] [Dry]  [Fold] [Pack]
-C:                                                   [Wash] [Dry]  [Fold] [Pack]
-D:                                                                          [Wash] [Dry]  [Fold] [Pack]
-```
+<img src="../img/Non-Pipelined.jpg" alt="Computer System Abstraction Layers" width="600">
+
 
 | Metric            | Value                |
 | ----------------- | -------------------- |
@@ -103,7 +98,7 @@ D:                                                                          [Was
 - Dryer idle except during drying stage
 - Tremendous resource underutilization
 
-### 2.2 Pipelined Laundry Shop
+### 12.3.2 Pipelined Laundry Shop
 
 **Key Idea:**
 
@@ -113,14 +108,7 @@ D:                                                                          [Was
 
 **Pipelined Schedule:**
 
-```
-Time:  6:00   6:30   7:00   7:30   8:00   8:30   9:00   9:30
-A:     [Wash] [Dry]  [Fold] [Pack]
-B:            [Wash] [Dry]  [Fold] [Pack]
-C:                   [Wash] [Dry]  [Fold] [Pack]
-D:                          [Wash] [Dry]  [Fold] [Pack]
-E:                                 [Wash] [Dry]  [Fold] [Pack]
-```
+<img src="../img/Pipelined.jpg" alt="Computer System Abstraction Layers" width="600">
 
 **Timeline Analysis:**
 
@@ -137,7 +125,7 @@ E:                                 [Wash] [Dry]  [Fold] [Pack]
 - Maximum hardware utilization
 - One customer finishes every 30 minutes
 
-### 2.3 Performance Analysis
+### 12.3.3 Performance Analysis
 
 **Time Comparison:**
 
@@ -146,11 +134,11 @@ E:                                 [Wash] [Dry]  [Fold] [Pack]
 
 **Speedup Calculation:**
 
-```
+
 Speedup = Non-pipelined Time / Pipelined Time
         = 8 hours / 3.5 hours
         = 2.3×
-```
+
 
 **Includes Pipeline Fill Time:**
 
@@ -159,12 +147,12 @@ Speedup = Non-pipelined Time / Pipelined Time
 
 **Steady State Analysis (ignoring fill time):**
 
-```
+
 Non-pipelined: 2n hours for n loads (2 hours per load)
 Pipelined: 0.5n hours for n loads (0.5 hours per load)
 
 Steady State Speedup = 2n / 0.5n = 4×
-```
+
 
 **Theoretical Maximum Speedup:**
 
@@ -172,7 +160,7 @@ Steady State Speedup = 2n / 0.5n = 4×
 - 4 stages → 4× speedup maximum
 - 8 stages → 8× speedup maximum (if achievable)
 
-### 2.4 Key Performance Terms
+### 12.3.4 Key Performance Terms
 
 **Latency:**
 
@@ -200,11 +188,10 @@ Steady State Speedup = 2n / 0.5n = 4×
 - Time saved = Performance improvement
 - Overlapping execution = Instruction-level parallelism
 
----
 
-## 3. MIPS Five-Stage Pipeline
+## 12.4 MIPS Five-Stage Pipeline
 
-### 3.1 Pipeline Stage Definitions
+### 12.4.1 Pipeline Stage Definitions
 
 #### Stage 1: Instruction Fetch (IF)
 
@@ -250,7 +237,7 @@ Steady State Speedup = 2n / 0.5n = 4×
 - Minimize clock cycle time
 - Maximize hardware utilization
 
-### 3.2 Stage Timing Example
+### 12.4.2 Stage Timing Example
 
 **Assumed Component Delays:**
 
@@ -274,7 +261,7 @@ Steady State Speedup = 2n / 0.5n = 4×
 
 **Load Word Critical Path:** 800 ps determines clock period
 
-### 3.3 Pipeline Implementation Details
+### 12.4.3 Pipeline Implementation Details
 
 **Clock Cycle Determination:**
 
@@ -311,7 +298,7 @@ Steady State Speedup = 2n / 0.5n = 4×
 - Register write: 100 ps (first half)
 - Second half: Available for next instruction's register read
 
-### 3.4 Load Word Pipeline Example
+### 12.4.4 Load Word Pipeline Example
 
 **Instruction Stream:** All Load Word instructions
 
@@ -333,6 +320,7 @@ LW $3:                      IF       ID       EX        MEM
 LW $4:                               IF       ID        EX
 ```
 
+
 **Single-Cycle Comparison:**
 
 - Non-pipelined: 800 ps per instruction
@@ -347,13 +335,14 @@ Pipelined: 1 instruction every 200 ps
 Speedup = 800 / 200 = 4×
 ```
 
+
 **Absolute Time per Instruction:**
 
 - Still ~800 ps (slightly more with alignment overhead)
 - Latency unchanged or slightly worse
 - Throughput dramatically improved
 
-### 3.5 Ideal vs Actual Speedup
+### 12.4.5 Ideal vs Actual Speedup
 
 **Ideal Case (balanced stages):**
 
@@ -362,6 +351,7 @@ Time between instructions (pipelined) = Time per instruction (non-pipelined) / N
 
 Maximum Speedup = Number of Stages
 ```
+
 
 **Actual Implementation:**
 
@@ -377,11 +367,10 @@ Maximum Speedup = Number of Stages
 3. Hazards (discussed later)
 4. Added synchronization logic
 
----
 
-## 4. MIPS ISA Design for Pipelining
+## 12.5 MIPS ISA Design for Pipelining
 
-### 4.1 Fixed Instruction Length
+### 12.5.1 Fixed Instruction Length
 
 **MIPS Characteristic:**
 
@@ -402,7 +391,7 @@ Maximum Speedup = Number of Stages
 - May need multiple fetch cycles
 - Added combinational logic delays
 
-### 4.2 Fewer Regular Instruction Formats
+### 12.5.2 Fewer Regular Instruction Formats
 
 **MIPS Formats:**
 
@@ -429,7 +418,7 @@ Maximum Speedup = Number of Stages
 - Regular formats → minimal mux complexity
 - Fast enough for single clock cycle
 
-### 4.3 Separate ALU Operation Field
+### 12.5.3 Separate ALU Operation Field
 
 **Function Field (funct):**
 
@@ -458,7 +447,7 @@ Maximum Speedup = Number of Stages
 - Slower ID stage
 - Worse pipeline balance
 
-### 4.4 Load/Store Addressing Mode
+### 12.5.4 Load/Store Addressing Mode
 
 **MIPS Addressing:**
 
@@ -485,11 +474,10 @@ Maximum Speedup = Number of Stages
 - ARM: Similar philosophy to MIPS
 - RISC principles support pipelining
 
----
 
-## 5. Instruction-Level Parallelism (ILP)
+## 12.6 Instruction-Level Parallelism (ILP)
 
-### 5.1 Parallel Execution Concept
+### 12.6.1 Parallel Execution Concept
 
 **Definition:**
 
@@ -499,7 +487,7 @@ Maximum Speedup = Number of Stages
 
 **Example at Steady State:**
 
-```
+
 Time Window: 800-1000 ps
 
 Instruction A: WB stage (writing result)
@@ -509,7 +497,7 @@ Instruction D: ID stage (decode, register read)
 Instruction E: IF stage (fetch)
 
 Five instructions active simultaneously!
-```
+
 
 **Instruction-Level Parallelism (ILP):**
 
@@ -518,7 +506,7 @@ Five instructions active simultaneously!
 - Transparent to software
 - Hardware manages parallelism
 
-### 5.2 Levels of Parallelism
+### 12.6.2 Levels of Parallelism
 
 **Instruction-Level Parallelism:**
 
@@ -555,11 +543,10 @@ Five instructions active simultaneously!
 - Transparent to programmer (mostly)
 - Foundation for all higher levels
 
----
 
-## 6. Pipeline Hazards: Structural Hazards
+## 12.7 Pipeline Hazards: Structural Hazards
 
-### 6.1 Hazard Definition
+### 12.7.1 Hazard Definition
 
 **General Concept:**
 
@@ -574,7 +561,7 @@ Five instructions active simultaneously!
 2. **Data Hazards:** Need data from previous instruction
 3. **Control Hazards:** Decision depends on previous result
 
-### 6.2 Structural Hazard: Single Memory
+### 12.7.2 Structural Hazard: Single Memory
 
 **Scenario:**
 
@@ -584,7 +571,7 @@ Five instructions active simultaneously!
 
 **Conflict Example:**
 
-```
+
 Time:    0-200   200-400  400-600  600-800
 LW $1:   IF      ID       EX       MEM
 LW $2:           IF       ID       EX
@@ -596,7 +583,7 @@ At 600-800 ps:
 - LW $4 needs instruction memory (IF stage)
 - Same physical memory device!
 - Cannot access simultaneously
-```
+
 
 **Problem:**
 
@@ -604,7 +591,7 @@ At 600-800 ps:
 - Instruction fetch AND data access conflict
 - Hardware resource (memory) busy
 
-### 6.3 Pipeline Stall (Bubble)
+### 12.7.3 Pipeline Stall (Bubble)
 
 **Solution: Insert Bubble**
 
@@ -615,6 +602,7 @@ LW $2:           IF       ID       EX       [BUBBLE]  MEM
 LW $3:                    IF       ID       EX        [BUBBLE]
 LW $4:                             IF       [BUBBLE]  ID
 ```
+
 
 **Bubble Characteristics:**
 
@@ -638,7 +626,7 @@ LW $4:                             IF       [BUBBLE]  ID
 - Takes time to propagate through
 - Reduces effective flow rate
 
-### 6.4 Solutions to Structural Hazards
+### 12.7.4 Solutions to Structural Hazards
 
 **Solution 1: Separate Memories**
 
@@ -662,11 +650,10 @@ LW $4:                             IF       [BUBBLE]  ID
 - Necessary for high-performance pipelining
 - Small area overhead for large performance gain
 
----
 
-## 7. Data Hazards
+## 12.8 Data Hazards
 
-### 7.1 Data Hazard Definition
+### 12.8.1 Data Hazard Definition
 
 **Concept:**
 
@@ -682,13 +669,14 @@ ADD $s0, $t0, $t1      # $s0 = $t0 + $t1
 SUB $t2, $s0, $t3      # $t2 = $s0 - $t3 (uses $s0 from ADD)
 ```
 
+
 **Problem:**
 
 - ADD computes $s0 value in EX stage
 - SUB needs $s0 value in ID stage (register read)
 - Timing mismatch
 
-### 7.2 Data Hazard Example Analysis
+### 12.8.2 Data Hazard Example Analysis
 
 **Instruction Sequence:**
 
@@ -709,6 +697,7 @@ SUB:             IF       ID       EX       MEM
 ADD writes $s0 here ↓
 ```
 
+
 **Problem Timeline:**
 
 - 200-400: ADD reads $t0, $t1; SUB fetched
@@ -718,7 +707,7 @@ ADD writes $s0 here ↓
 
 SUB reads $s0 at 400-600, but correct value not available until 800-1000!
 
-### 7.3 Solution 1: Pipeline Stalls
+### 12.8.3 Solution 1: Pipeline Stalls
 
 **Insert Two Bubbles:**
 
@@ -729,6 +718,7 @@ ADD:     IF      ID       EX       MEM      WB
 [BUBBLE]                           IF       [BUBBLE]
 SUB:                                         IF        ID
 ```
+
 
 **Result:**
 
@@ -749,7 +739,7 @@ SUB:                                         IF        ID
 - Register read: Second half of ID cycle
 - Enables back-to-back reading of just-written value
 
-### 7.4 Solution 2: Forwarding (Bypassing)
+### 12.8.4 Solution 2: Forwarding (Bypassing)
 
 **Key Observation:**
 
@@ -768,6 +758,7 @@ SUB:             IF       ID       EX       MEM
                           ↑        ↑
                     Read regs   Use forwarded value!
 ```
+
 
 **Implementation:**
 
@@ -801,7 +792,7 @@ SUB:             IF       ID       EX       MEM
 - No stalls needed
 - Correct value forwarded
 
-### 7.5 Load-Use Data Hazard
+### 12.8.5 Load-Use Data Hazard
 
 **Special Case:**
 
@@ -826,6 +817,7 @@ SUB:             IF       ID       EX       MEM
                     Need value   Value first available here!
 ```
 
+
 LW result available at 600-800, but SUB's EX at 600-800 (simultaneous!)
 
 **Unavoidable Stall:**
@@ -837,13 +829,14 @@ LW:      IF      ID       EX       MEM      WB
 SUB:                                         IF        ID
 ```
 
+
 **One stall bubble required:**
 
 - Cannot be eliminated by forwarding
 - Can forward from MEM to EX (saves one stall vs two)
 - But at least one stall unavoidable
 
-### 7.6 Compiler Solution: Code Reordering
+### 12.8.6 Compiler Solution: Code Reordering
 
 **C Code Example:**
 
@@ -851,6 +844,7 @@ SUB:                                         IF        ID
 a = b + e;
 c = b + f;
 ```
+
 
 **Naive Assembly (Load-Use Hazards):**
 
@@ -865,6 +859,7 @@ ADD  $t5, $t1, $t4  # c = b + f ← HAZARD: uses $t4 immediately after LW
 SW   $t5, 16($t0)   # Store c
 ```
 
+
 **Total:** 7 instructions + 2 stalls = 9 clock cycles
 
 **Optimized Assembly (Reordered):**
@@ -878,6 +873,7 @@ SW   $t3, 8($t0)    # Store a ← Moved here!
 ADD  $t5, $t1, $t4  # c = b + f ← No hazard! $t4 available
 SW   $t5, 16($t0)   # Store c
 ```
+
 
 **Total:** 7 instructions + 0 stalls = 7 clock cycles
 
@@ -904,11 +900,10 @@ SW   $t5, 16($t0)   # Store c
 - Separate dependent instructions when possible
 - Help compiler optimize
 
----
 
-## 8. Control Hazards
+## 12.9 Control Hazards
 
-### 8.1 Control Hazard Definition
+### 12.9.1 Control Hazard Definition
 
 **Concept:**
 
@@ -926,19 +921,21 @@ ADD $3, $4, $5         # Next sequential instruction
 target: SUB $6, $7, $8 # Branch target
 ```
 
+
 **Which instruction to fetch after BEQ?**
 
 - ADD if branch NOT taken
 - SUB if branch IS taken
 - Decision requires comparison: $1 vs $2
 
-### 8.2 Branch Execution in Pipeline
+### 12.9.2 Branch Execution in Pipeline
 
 **Branch Instruction:**
 
 ```assembly
 BEQ $1, $2, 40         # Branch 40 instructions ahead if equal
 ```
+
 
 **Pipeline Stages:**
 
@@ -963,7 +960,7 @@ BEQ:     IF      ID       EX       MEM
 
 Two bubbles required if wait for outcome
 
-### 8.3 Solution 1: Early Branch Resolution
+### 12.9.3 Solution 1: Early Branch Resolution
 
 **Add Hardware in ID Stage:**
 
@@ -982,6 +979,7 @@ BEQ:     IF      ID       EX
 Next:            IF
 ```
 
+
 **Benefit:**
 
 - Decision after ID (one cycle earlier)
@@ -999,7 +997,7 @@ Next:            IF
 - Still one unavoidable stall
 - Can't know outcome in same cycle as fetch
 
-### 8.4 Solution 2: Branch Prediction
+### 12.9.4 Solution 2: Branch Prediction
 
 **Static Branch Prediction:**
 
@@ -1033,6 +1031,7 @@ LW:                      IF       ID
                          ↑ Fetched based on prediction
 ```
 
+
 At 400-600 (after BEQ's ID):
 
 - Determine branch NOT taken
@@ -1060,6 +1059,7 @@ LW:                      IF       [DISCARD]
 SUB:                              IF
 ```
 
+
 At 400-600 (after BEQ's ID):
 
 - Determine branch IS taken
@@ -1075,7 +1075,7 @@ At 400-600 (after BEQ's ID):
 - Net benefit if prediction often correct
 - No additional penalty for wrong guess
 
-### 8.5 Static Branch Prediction Strategies
+### 12.9.5 Static Branch Prediction Strategies
 
 **Simple Static: Always Predict Not Taken**
 
@@ -1100,6 +1100,7 @@ loop:
     BEQ $t0, $zero, loop   # Backward branch
 ```
 
+
 - Loop iterations: Branch taken many times
 - Loop exit: Branch not taken once
 - Prediction: Taken → Correct most of time
@@ -1112,9 +1113,10 @@ loop:
 ```assembly
     BEQ $t0, $zero, skip
     ...                      # True case
+```
 skip:
     ...                      # After if
-```
+
 
 - True case: Branch not taken
 - False case: Branch taken
@@ -1126,7 +1128,7 @@ skip:
 - Based on empirical program analysis
 - Requires code analysis
 
-### 8.6 Dynamic Branch Prediction
+### 12.9.6 Dynamic Branch Prediction
 
 **Concept:**
 
@@ -1158,6 +1160,7 @@ Loop iteration 100: Taken → Predict taken next
 Loop exit: Not taken → Predict not taken next (wrong for next loop!)
 ```
 
+
 Problem: Wrong twice per loop (entry and exit)
 
 **2-Bit Saturating Counter:**
@@ -1185,11 +1188,10 @@ Problem: Wrong twice per loop (entry and exit)
 - Update logic
 - Worthwhile for performance gain
 
----
 
-## 9. Summary and Key Concepts
+## 12.10 Summary and Key Concepts
 
-### 9.1 Pipelining Benefits
+### 12.10.1 Pipelining Benefits
 
 **Performance Improvement:**
 
@@ -1204,7 +1206,7 @@ Problem: Wrong twice per loop (entry and exit)
 - Parallel processing
 - Maximum efficiency
 
-### 9.2 Pipeline Challenges
+### 12.10.2 Pipeline Challenges
 
 **Hazards:**
 
@@ -1218,7 +1220,7 @@ Problem: Wrong twice per loop (entry and exit)
 - Data: Forwarding, stalls, code reordering
 - Control: Early resolution, branch prediction
 
-### 9.3 MIPS Design Philosophy
+### 12.10.3 MIPS Design Philosophy
 
 **ISA Designed for Pipelining:**
 
@@ -1234,7 +1236,7 @@ Problem: Wrong twice per loop (entry and exit)
 - Not optimized for single-cycle
 - Hardware complexity for software simplicity
 
-### 9.4 Key Takeaways
+### 12.10.4 Key Takeaways
 
 1. Pipelining improves throughput, not latency
 2. Steady state determines peak performance
@@ -1247,9 +1249,8 @@ Problem: Wrong twice per loop (entry and exit)
 9. ISA design significantly impacts pipeline efficiency
 10. ILP fundamental to modern processor performance
 
----
 
-## 10. Important Formulas and Metrics
+## 12.11 Important Formulas and Metrics
 
 ### Speedup Calculation
 
@@ -1261,6 +1262,7 @@ Ideal Speedup = Number of Pipeline Stages
 Actual Speedup = Number of Stages / (1 + Hazard Impact)
 ```
 
+
 ### Throughput
 
 ```
@@ -1268,6 +1270,7 @@ Throughput = 1 instruction / Clock Period
 
 Throughput Improvement = Clock Period (non-pipelined) / Clock Period (pipelined)
 ```
+
 
 ### Pipeline Performance
 
@@ -1279,6 +1282,7 @@ CPI (Cycles Per Instruction) = 1 + Stall Cycles per Instruction
 Effective CPI = 1 + (Structural Stalls + Data Stalls + Control Stalls)
 ```
 
+
 ### Branch Prediction Accuracy
 
 ```
@@ -1287,7 +1291,7 @@ Accuracy = Correct Predictions / Total Branches
 Stall Reduction = Accuracy × Cycles Saved per Correct Prediction
 ```
 
----
+
 
 ## Key Takeaways
 

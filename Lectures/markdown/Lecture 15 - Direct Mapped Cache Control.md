@@ -1,14 +1,15 @@
 # Lecture 15: Cache Memory Operations – Read/Write Access and Write Policies
 
-## Introduction
+*By Dr. Isuru Nawinne*
+
+## 15.1 Introduction
 
 This lecture provides a comprehensive, step‑by‑step examination of how a direct‑mapped cache services read and write requests, differentiates hits from misses, and preserves data correctness. We finish the full read path (including stall + block fetch sequence), analyze write hits and misses, and introduce the write‑through policy as the simplest consistency mechanism between cache and main memory. Performance consequences of constant memory writes, the need for high hit rates, and the motivation for more advanced write‑back policies (next lecture) are emphasized. By the end you will understand exactly what the cache controller must do (state transitions, signals, data/tag/valid updates) for every access type and why write policies are a central architectural tradeoff.
 
----
 
-## 1. Lecture Introduction and Recap
+## 15.2 Lecture Introduction and Recap
 
-### 1.1 Previous Lecture Review
+### 15.2.1 Previous Lecture Review
 
 #### Memory Systems Foundation
 
@@ -37,15 +38,15 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
 
 #### Address Breakdown (Recap)
 
-```
+
 [Tag][Index][Offset]
   ^      ^       ^
   |      |       └── Identifies word/byte within block
   |      └── Identifies cache entry (direct mapping)
   └── Remaining bits for block identification
-```
 
-### 1.2 Today's Focus
+
+### 15.2.2 Today's Focus
 
 - Complete discussion of read miss handling
 - Write access operations (hit and miss)
@@ -53,11 +54,10 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
 - Data consistency issues
 - Performance considerations
 
----
 
-## 2. Cache Read Access - Complete Process
+## 15.3 Cache Read Access - Complete Process
 
-### 2.1 Read Access Input Signals
+### 15.3.1 Read Access Input Signals
 
 **From CPU to Cache Controller:**
 
@@ -66,7 +66,7 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
    - Indicates this is a read operation (not write)
    - Part of memory control signals
 
-### 2.2 Cache Read Steps (Detailed)
+### 15.3.2 Cache Read Steps (Detailed)
 
 #### Step 1: Address Decomposition
 
@@ -120,7 +120,7 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
   - Offset MSB = 1 → Select second word
 - Multiplexer extracts correct word from block
 
-### 2.3 Timing Optimization
+### 15.3.3 Timing Optimization
 
 **Parallel Operations:**
 
@@ -129,7 +129,7 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
 - Total delay = max(tag comparison delay, data extraction delay)
 - Reduces overall hit latency
 
-### 2.4 Read Hit Outcome
+### 15.3.4 Read Hit Outcome
 
 - Selected word is correct data
 - Send word to CPU immediately
@@ -138,18 +138,17 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
 - Completes within one CPU clock cycle
 - Pipeline continues uninterrupted
 
-### 2.5 Pipeline Integration
+### 15.3.5 Pipeline Integration
 
 - In MIPS pipeline, MEM stage accesses memory
 - With cache hit: Memory access completes in 1 cycle
 - Pipeline maintains smooth operation
 - No bubbles inserted
 
----
 
-## 3. Cache Read Miss Handling
+## 15.4 Cache Read Miss Handling
 
-### 3.1 Read Miss Scenario
+### 15.4.1 Read Miss Scenario
 
 #### Miss Conditions
 
@@ -162,7 +161,7 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
 3. **Both conditions**
    - Tag mismatch AND invalid entry
 
-### 3.2 Read Miss Response Required Actions
+### 15.4.2 Read Miss Response Required Actions
 
 #### Action 1: STALL THE CPU
 
@@ -249,13 +248,13 @@ This lecture provides a comprehensive, step‑by‑step examination of how a dir
 - CPU resumes operation
 - Pipeline unfreezes and continues
 
-### 3.3 Total Read Miss Time
+### 15.4.3 Total Read Miss Time
 
 **Formula:**
 
-```
+
 Read Miss Time = Hit Latency + Miss Penalty
-```
+
 
 **Where:**
 
@@ -268,13 +267,13 @@ Read Miss Time = Hit Latency + Miss Penalty
 - Miss penalty: 50 ns (50 cycles at 1 GHz)
 - Total: 1 + 50 = 51 cycles
 
-### 3.4 Performance Impact
+### 15.4.4 Performance Impact
 
 - Single miss causes 50+ cycle stall
 - Catastrophic for pipeline performance
 - Emphasizes need for high hit rate (> 99.9%)
 
-### 3.5 Question: What About the Old Block?
+### 15.4.5 Question: What About the Old Block?
 
 **The Deferred Question:**
 
@@ -289,11 +288,10 @@ Read Miss Time = Hit Latency + Miss Penalty
 - Need to understand writes first
 - Question will be revisited
 
----
 
-## 4. Cache Write Access - Introduction
+## 15.5 Cache Write Access - Introduction
 
-### 4.1 Write Access Input Signals
+### 15.5.1 Write Access Input Signals
 
 **From CPU to Cache Controller:**
 
@@ -303,7 +301,7 @@ Read Miss Time = Hit Latency + Miss Penalty
 
 Three inputs vs. two for read (no data input needed for read).
 
-### 4.2 Write Access Process
+### 15.5.2 Write Access Process
 
 #### Step 1: Address Decomposition
 
@@ -342,7 +340,7 @@ Three inputs vs. two for read (no data input needed for read).
 - Must write data word to correct location in block
 - Use offset to determine which word in block
 
-### 4.3 Writing Mechanism
+### 15.5.3 Writing Mechanism
 
 **Input:**
 
@@ -370,7 +368,7 @@ Three inputs vs. two for read (no data input needed for read).
 - Only write if signal indicates write operation
 - Demultiplexer enabled by write signal
 
-### 4.4 Critical Question: Can Write and Tag Compare Happen in Parallel?
+### 15.5.4 Critical Question: Can Write and Tag Compare Happen in Parallel?
 
 #### For Read (Previous Discussion)
 
@@ -406,11 +404,10 @@ Three inputs vs. two for read (no data input needed for read).
 - Need mechanism to prevent corruption
 - Solution depends on write policy (discussed next)
 
----
 
-## 5. Write Policies - Introduction
+## 15.6 Write Policies - Introduction
 
-### 5.1 The Data Consistency Problem
+### 15.6.1 The Data Consistency Problem
 
 **Scenario:**
 
@@ -427,7 +424,7 @@ Three inputs vs. two for read (no data input needed for read).
 - Same address has different values in different levels
 - Data coherence problem
 
-### 5.2 Why This Matters
+### 15.6.2 Why This Matters
 
 - Future access to same address: Which value is correct?
 - If cache entry replaced: New value lost
@@ -435,16 +432,15 @@ Three inputs vs. two for read (no data input needed for read).
 - Multi-processor systems: Other CPUs access memory
 - Must maintain data consistency across hierarchy
 
-### 5.3 Two Fundamental Write Policies
+### 15.6.3 Two Fundamental Write Policies
 
 1. **Write-Through** (discussed this lecture)
 2. **Write-Back** (mentioned, detailed in next lecture)
 
----
 
-## 6. Write-Through Policy
+## 15.7 Write-Through Policy
 
-### 6.1 Write-Through Definition
+### 15.7.1 Write-Through Definition
 
 **Policy Statement:**
 
@@ -458,7 +454,7 @@ Three inputs vs. two for read (no data input needed for read).
 - Both levels updated together
 - Ensures cache and memory always consistent
 
-### 6.2 Write-Through Process
+### 15.7.2 Write-Through Process
 
 #### Write Hit with Write-Through
 
@@ -480,7 +476,7 @@ Three inputs vs. two for read (no data input needed for read).
 7. Clear stall signal
 8. Both levels updated
 
-### 6.3 Advantages of Write-Through
+### 15.7.3 Advantages of Write-Through
 
 #### Advantage 1: SIMPLICITY
 
@@ -549,7 +545,7 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 - With overlap: Total = max(T_comp, T_write)
 - Typically similar delays → Nearly 2× speedup
 
-### 6.4 Disadvantages of Write-Through
+### 15.7.4 Disadvantages of Write-Through
 
 #### Disadvantage 1: EXCESSIVE WRITE TRAFFIC
 
@@ -622,11 +618,10 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 - Write-through accelerates wear
 - Reduces memory lifespan
 
----
 
-## 7. Resolving the Old Block Question
+## 15.8 Resolving the Old Block Question
 
-### 7.1 The Question Revisited
+### 15.8.1 The Question Revisited
 
 **Original Question:**
 
@@ -640,7 +635,7 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 - Must replace old block with new block
 - Is it safe to discard old block?
 
-### 7.2 Answer with Write-Through Policy
+### 15.8.2 Answer with Write-Through Policy
 
 **YES, Safe to Discard**
 
@@ -659,7 +654,7 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 - Memory has correct, up-to-date data
 - No data loss
 
-### 7.3 Example Scenario
+### 15.8.3 Example Scenario
 
 1. Block A in cache at index 3
 2. Block A modified several times
@@ -672,12 +667,12 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 9. Block A's data safe in memory
 10. Later access to Block A: Miss, fetch from memory again
 
-### 7.4 Comparison with Invalid Entry
+### 15.8.4 Comparison with Invalid Entry
 
 - If miss due to invalid bit: Obviously safe to replace
 - If miss due to tag mismatch: Safe because of write-through
 
-### 7.5 Contrast with Future Policy (Teaser)
+### 15.8.5 Contrast with Future Policy (Teaser)
 
 - With other write policies (write-back), answer may differ
 - May NOT be safe to discard old block
@@ -690,11 +685,10 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 - Always safe to overwrite cache entry
 - Memory serves as reliable backup
 
----
 
-## 8. Parallelism in Write Access with Write-Through
+## 15.9 Parallelism in Write Access with Write-Through
 
-### 8.1 The Parallel Write Problem Solved
+### 15.9.1 The Parallel Write Problem Solved
 
 **Original Concern:**
 
@@ -702,7 +696,7 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 - Reduce hit latency
 - But risk corrupting data if tag mismatch
 
-### 8.2 With Write-Through Policy
+### 15.9.2 With Write-Through Policy
 
 #### Case 1: Write Hit
 
@@ -725,7 +719,7 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 - Also, write goes to memory (correct address in memory)
 - End result: Cache fixed, memory correct
 
-### 8.3 Key Insight
+### 15.9.3 Key Insight
 
 - Write-through to memory preserves correctness
 - Memory write goes to CORRECT address (from address bus)
@@ -733,17 +727,17 @@ Can now overlap write and tag comparison. Why? Two scenarios:
 - Cache entry will be fixed when correct block loaded
 - Memory never corrupted
 
-### 8.4 Timeline for Write Miss
+### 15.9.4 Timeline for Write Miss
 
-```
+
 Cycle 1: Write to cache (possibly wrong block) + Tag compare
 Cycle 1: Also initiate memory write (correct address)
 Cycle 2-50: Fetch correct block from memory
 Cycle 51: Overwrite cache entry with correct block
 Result: Cache correct, memory correct
-```
 
-### 8.5 Safety Guarantee
+
+### 15.9.5 Safety Guarantee
 
 - **Memory write:** Targets address from address bus (always correct)
 - **Cache write:** Targets index (might be for different block)
@@ -751,25 +745,24 @@ Result: Cache correct, memory correct
 - **If hit:** No mistake, everything correct
 - **In both cases:** End state correct
 
-### 8.6 Performance Benefit
+### 15.9.6 Performance Benefit
 
 - Saved cycles on write hit path
 - Write and tag compare: Parallel instead of sequential
 - Approximately 2× faster hit determination
 - Critical for frequent write hits
 
-### 8.7 Enabled by Write-Through
+### 15.9.7 Enabled by Write-Through
 
 - Only possible because memory updated on every write
 - Other policies may not allow this optimization
 - Write-through sacrifices write performance for simplicity
 - But enables some optimizations
 
----
 
-## 9. Summary of Cache Operations
+## 15.10 Summary of Cache Operations
 
-### 9.1 Complete Cache Operation Overview
+### 15.10.1 Complete Cache Operation Overview
 
 #### READ HIT
 
@@ -811,7 +804,7 @@ Result: Cache correct, memory correct
 - Time: Hit latency + Miss penalty + Memory write time
 - Even slower than read miss!
 
-### 9.2 Performance Characteristics
+### 15.10.2 Performance Characteristics
 
 | Case                                           | Time        | Comment                                                           |
 | ---------------------------------------------- | ----------- | ----------------------------------------------------------------- |
@@ -826,11 +819,10 @@ Result: Cache correct, memory correct
 - Minimize write impact (better policy needed)
 - Overall hit rate > 99.9%
 
----
 
-## 10. Write-Through Policy Evaluation
+## 15.11 Write-Through Policy Evaluation
 
-### 10.1 Summary of Write-Through
+### 15.11.1 Summary of Write-Through
 
 **Mechanism:**
 
@@ -844,7 +836,7 @@ Result: Cache correct, memory correct
 - No complex state tracking
 - Straightforward consistency maintenance
 
-### 10.2 Advantages
+### 15.11.2 Advantages
 
 | Advantage                    | Description                                                                                                               |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -853,7 +845,7 @@ Result: Cache correct, memory correct
 | **3. Data Safety**           | No data loss on block replacement, memory has all updates, crash recovery simpler, I/O devices see correct data           |
 | **4. Enables Optimizations** | Can overlap write and tag compare, reduces hit latency, safe due to memory backup                                         |
 
-### 10.3 Disadvantages
+### 15.11.3 Disadvantages
 
 | Disadvantage               | Description                                                                                                                                |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -862,7 +854,7 @@ Result: Cache correct, memory correct
 | **3. Power Consumption**   | Every write powers up memory, unnecessary power usage, battery drain in mobile devices, heat generation                                    |
 | **4. Memory Wear**         | Flash/SSD: Limited write cycles, accelerated wear-out, reduced memory lifespan, particularly bad for SSDs                                  |
 
-### 10.4 When Write-Through Used
+### 15.11.4 When Write-Through Used
 
 #### Suitable Applications
 
@@ -886,11 +878,10 @@ Result: Cache correct, memory correct
 - Alternative: Write-back policy (next lecture)
 - Trade complexity for performance
 
----
 
-## 11. The Need for Alternative Write Policies
+## 15.12 The Need for Alternative Write Policies
 
-### 11.1 The Performance Problem
+### 15.12.1 The Performance Problem
 
 #### Write-Heavy Programs
 
@@ -911,6 +902,7 @@ for (int i = 0; i < 1000; i++) {
 }
 ```
 
+
 #### With Write-Through
 
 - Loop iterations: 1000
@@ -921,14 +913,14 @@ for (int i = 0; i < 1000; i++) {
 - Versus computation cycles: Maybe 10,000
 - **Performance: 10× slower than necessary!**
 
-### 11.2 Pipeline Impact
+### 15.12.2 Pipeline Impact
 
 - Pipelining designed to execute 1 instruction/cycle (ideal)
 - Write-through: 50 cycles per store instruction
 - Pipeline utilization: ~2% (1/50)
 - Completely defeats pipelining benefits
 
-### 11.3 Comparison with Read Operations
+### 15.12.3 Comparison with Read Operations
 
 | Operation  | Time        | Frequency | Acceptability    |
 | ---------- | ----------- | --------- | ---------------- |
@@ -937,7 +929,7 @@ for (int i = 0; i < 1000; i++) {
 | Write hit  | 50 cycles   | Frequent  | **Unacceptable** |
 | Write miss | 100+ cycles | Rare      | Terrible         |
 
-### 11.4 The Contradiction
+### 15.12.4 The Contradiction
 
 - Spent lectures optimizing pipeline
 - Minimized hazards, used forwarding, prediction
@@ -945,7 +937,7 @@ for (int i = 0; i < 1000; i++) {
 - Now introducing 50+ cycle stalls on every write!
 - "Doesn't add up" - need better solution
 
-### 11.5 Question Raised
+### 15.12.5 Question Raised
 
 **"What can we do to avoid this situation?"**
 
@@ -957,7 +949,7 @@ for (int i = 0; i < 1000; i++) {
 
 > "Exactly! That becomes a different write policy."
 
-### 11.6 Teaser for Next Lecture
+### 15.12.6 Teaser for Next Lecture
 
 - Alternative policy: **Write-Back**
 - Write to cache only, not memory immediately
@@ -966,11 +958,10 @@ for (int i = 0; i < 1000; i++) {
 - Added complexity in return
 - Will discuss in detail next class
 
----
 
-## 12. Lecture Conclusion
+## 15.13 Lecture Conclusion
 
-### 12.1 Topics Covered
+### 15.13.1 Topics Covered
 
 #### 1. Complete Read Access Process
 
@@ -1028,7 +1019,7 @@ Six-step process:
 - Every write causes long stall
 - Need better policy
 
-### 12.2 Next Lecture Preview
+### 15.13.2 Next Lecture Preview
 
 **Topics to Cover:**
 
@@ -1064,7 +1055,6 @@ Six-step process:
 **Key Insight:**
 Write-through sacrifices performance for simplicity. In modern systems, performance is critical, so more complex policies are necessary despite added complexity.
 
----
 
 ## Key Takeaways
 

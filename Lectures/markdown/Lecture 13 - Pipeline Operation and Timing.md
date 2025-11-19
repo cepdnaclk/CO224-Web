@@ -1,14 +1,15 @@
 # Lecture 13: Detailed MIPS Pipeline Operation and Pipeline Registers
 
-## Introduction
+*By Dr. Isuru Nawinne*
+
+## 13.1 Introduction
 
 This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage pipeline operation, examining how instructions flow through pipeline stages with detailed attention to the pipeline registers that store intermediate results between stages. We explore the critical role of these registers in enabling independent stage operation, trace complete execution sequences for load and store instructions, analyze timing constraints and delay contributions, and work through practical exercises calculating clock frequencies and optimizing pipeline performance. This detailed examination reveals the hardware mechanisms that transform the conceptual pipeline model into functioning silicon.
 
----
 
-## 1. Lecture Introduction and Recap
+## 13.2 Lecture Introduction and Recap
 
-### 1.1 Previous Topics Review
+### 13.2.1 Previous Topics Review
 
 **Pipelining Concept:**
 
@@ -36,7 +37,7 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Data: Forwarding, code reordering
 - Control: Early branch resolution, prediction
 
-### 1.2 Today's Focus
+### 13.2.2 Today's Focus
 
 **Detailed Pipeline Analysis:**
 
@@ -47,11 +48,10 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Common implementation errors
 - Practical exercises
 
----
 
-## 2. Five-Stage MIPS Pipeline Review
+## 13.3 Five-Stage MIPS Pipeline Review
 
-### 2.1 Stage 1: Instruction Fetch (IF)
+### 13.3.1 Stage 1: Instruction Fetch (IF)
 
 **Operations:**
 
@@ -70,7 +70,7 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 
 - Both operations (memory read, PC+4 calculation) occur in parallel
 
-### 2.2 Stage 2: Instruction Decode / Register Read (ID)
+### 13.3.2 Stage 2: Instruction Decode / Register Read (ID)
 
 **Operations:**
 
@@ -101,7 +101,7 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Used by subsequent stages
 - Must be preserved through pipeline
 
-### 2.3 Stage 3: Execution (EX)
+### 13.3.3 Stage 3: Execution (EX)
 
 **Operations:**
 
@@ -122,7 +122,7 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Branch hardware operates in parallel
 - Multiple functions depending on instruction type
 
-### 2.4 Stage 4: Memory Access (MEM)
+### 13.3.4 Stage 4: Memory Access (MEM)
 
 **Operations:**
 
@@ -142,7 +142,7 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Dominates stage timing
 - Critical path component
 
-### 2.5 Stage 5: Write Back (WB)
+### 13.3.5 Stage 5: Write Back (WB)
 
 **Operations:**
 
@@ -162,11 +162,10 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Register file shared with ID stage
 - Shortest stage conceptually
 
----
 
-## 3. Pipeline Registers: Necessity and Function
+## 13.4 Pipeline Registers: Necessity and Function
 
-### 3.1 Problem Without Pipeline Registers
+### 13.4.1 Problem Without Pipeline Registers
 
 **Scenario:**
 
@@ -188,7 +187,7 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Structural hazards from resource contention
 - Pipeline cannot function correctly
 
-### 3.2 Pipeline Register Purpose
+### 13.4.2 Pipeline Register Purpose
 
 **Key Function:**
 
@@ -212,7 +211,7 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Register file contains storage
 - No additional register needed
 
-### 3.3 Pipeline Register Contents
+### 13.4.3 Pipeline Register Contents
 
 **IF/ID Pipeline Register:**
 
@@ -247,7 +246,7 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Control signals for WB stage
 - **Total:** ~75+ bits
 
-### 3.4 Timing: Writing and Reading Pipeline Registers
+### 13.4.4 Timing: Writing and Reading Pipeline Registers
 
 **At Rising Clock Edge:**
 
@@ -271,22 +270,21 @@ This lecture provides comprehensive, cycle-by-cycle analysis of MIPS five-stage 
 - Pipelining adds latency overhead
 - But throughput gain outweighs latency cost
 
----
 
-## 4. Load Word Instruction: Detailed Cycle-by-Cycle Analysis
+## 13.5 Load Word Instruction: Detailed Cycle-by-Cycle Analysis
 
-### 4.1 Load Word Instruction Format
+### 13.5.1 Load Word Instruction Format
 
 **Encoding:**
 
-```
+
 LW $rt, offset($rs)
 
 Opcode: 100011 (bits 26-31)
 RS:     Base register (bits 21-25)
 RT:     Destination register (bits 16-20)
 Offset: 16-bit immediate (bits 0-15)
-```
+
 
 **Operation:** $rt = Memory[$rs + offset]
 
@@ -296,7 +294,7 @@ Offset: 16-bit immediate (bits 0-15)
 - Add offset 32
 - Load from memory into $8
 
-### 4.2 Clock Cycle 1: Instruction Fetch (IF)
+### 13.5.2 Clock Cycle 1: Instruction Fetch (IF)
 
 **Start of Cycle:**
 
@@ -327,7 +325,7 @@ Offset: 16-bit immediate (bits 0-15)
 
 **Total Stage Time:** ~200+ ps (instruction memory dominant)
 
-### 4.3 Clock Cycle 2: Instruction Decode / Register Read (ID)
+### 13.5.3 Clock Cycle 2: Instruction Decode / Register Read (ID)
 
 **Start of Cycle (Rising Edge):**
 
@@ -367,7 +365,7 @@ Offset: 16-bit immediate (bits 0-15)
 
 **Total Stage Time:** ~60 + 90 = ~150 ps (register read dominant)
 
-### 4.4 Clock Cycle 3: Execution (EX)
+### 13.5.4 Clock Cycle 3: Execution (EX)
 
 **Start of Cycle:**
 
@@ -400,7 +398,7 @@ Offset: 16-bit immediate (bits 0-15)
 
 **Total Stage Time:** ~30 + 30 + 20 + 90 = ~170 ps (ALU dominant)
 
-### 4.5 Clock Cycle 4: Memory Access (MEM)
+### 13.5.5 Clock Cycle 4: Memory Access (MEM)
 
 **Start of Cycle:**
 
@@ -430,7 +428,7 @@ Offset: 16-bit immediate (bits 0-15)
 
 **Total Stage Time:** ~30 + 30 + 250 = ~310 ps (memory READ dominant!)
 
-### 4.6 Clock Cycle 5: Write Back (WB)
+### 13.5.6 Clock Cycle 5: Write Back (WB)
 
 **Start of Cycle:**
 
@@ -464,7 +462,7 @@ Offset: 16-bit immediate (bits 0-15)
 
 **Total Stage Time:** ~30 + 30 + 20 = ~80 ps (shortest stage!)
 
-### 4.7 Load Word Complete Pipeline Summary
+### 13.5.7 Load Word Complete Pipeline Summary
 
 | Cycle | Stage | Operations                    | Dominant Delay | Time                  |
 | ----- | ----- | ----------------------------- | -------------- | --------------------- |
@@ -490,22 +488,21 @@ Offset: 16-bit immediate (bits 0-15)
 - Pipelined latency: ~930 ps (with overhead)
 - But pipelined throughput: 5× better (ideally)
 
----
 
-## 5. Store Word Instruction: Key Differences
+## 13.6 Store Word Instruction: Key Differences
 
-### 5.1 Store Word Instruction Format
+### 13.6.1 Store Word Instruction Format
 
 **Encoding:**
 
-```
+
 SW $rt, offset($rs)
 
 Opcode: 101011 (bits 26-31)
 RS:     Base register (bits 21-25)
 RT:     Source data register (bits 16-20)
 Offset: 16-bit immediate (bits 0-15)
-```
+
 
 **Operation:** Memory[$rs + offset] = $rt
 
@@ -520,7 +517,7 @@ Offset: 16-bit immediate (bits 0-15)
 - RT is SOURCE (not destination)
 - RT value needed for memory write
 
-### 5.2 Stages IF, ID, EX: Same as Load Word
+### 13.6.2 Stages IF, ID, EX: Same as Load Word
 
 **Instruction Fetch:** Identical to LW
 
@@ -535,7 +532,7 @@ Offset: 16-bit immediate (bits 0-15)
 - Compute memory address: base + offset
 - ALU operation same
 
-### 5.3 Memory Access Stage: KEY DIFFERENCE
+### 13.6.3 Memory Access Stage: KEY DIFFERENCE
 
 **Start of Cycle:**
 
@@ -569,7 +566,7 @@ Offset: 16-bit immediate (bits 0-15)
 | MemWrite            | 0    | 1                 |
 | RegWrite (WB stage) | 1    | **0 ← CRITICAL!** |
 
-### 5.4 Write Back Stage: NO OPERATION
+### 13.6.4 Write Back Stage: NO OPERATION
 
 **Store Word WB Stage:**
 
@@ -609,11 +606,10 @@ Offset: 16-bit immediate (bits 0-15)
 | 4     | MEM   | Write RT to memory   | **WRITE** instead of read     |
 | 5     | WB    | Nothing (bubble)     | RegWrite=0, stage idle        |
 
----
 
-## 6. Common Pipeline Diagram Errors
+## 13.7 Common Pipeline Diagram Errors
 
-### 6.1 Error 1: Write Register Address Source
+### 13.7.1 Error 1: Write Register Address Source
 
 **Incorrect Diagram Shows:**
 
@@ -628,7 +624,7 @@ Offset: 16-bit immediate (bits 0-15)
 
 **Example:**
 
-```
+
 Cycle 1: LW $8, 0($10) fetched  (IF)
 Cycle 2: LW $9, 4($10) fetched  (IF), LW $8 in ID
 Cycle 3: LW $10, 8($10) fetched (IF), LW $8 in EX
@@ -640,7 +636,7 @@ At Cycle 5:
 - WB should write $8 (from LW)
 - If using IF/ID: Would write to $14 instead of $8!
 - WRONG REGISTER!
-```
+
 
 **Correct Implementation:**
 
@@ -656,7 +652,7 @@ At Cycle 5:
 - Increases pipeline register size
 - Essential for correctness
 
-### 6.2 Error 2: Incorrect Memory Access Indication
+### 13.7.2 Error 2: Incorrect Memory Access Indication
 
 **Diagram Error from Textbook:**
 
@@ -687,7 +683,7 @@ At Cycle 5:
 - MEM stage: Read from data memory
 - Memory data forwarded to WB
 
-### 6.3 Error 3: Store Word Memory Read
+### 13.7.3 Error 3: Store Word Memory Read
 
 **Another Common Error:**
 
@@ -706,11 +702,10 @@ At Cycle 5:
 - Memory input: Address and write data
 - Memory output: Ignored (invalid)
 
----
 
-## 7. Multi-Clock-Cycle Pipeline Diagrams
+## 13.8 Multi-Clock-Cycle Pipeline Diagrams
 
-### 7.1 Single-Clock vs Multi-Clock Diagrams
+### 13.8.1 Single-Clock vs Multi-Clock Diagrams
 
 **Single-Clock-Cycle Diagram:**
 
@@ -726,18 +721,18 @@ At Cycle 5:
 - Parallel execution visible
 - Good for understanding overall flow
 
-### 7.2 Traditional Multi-Cycle Diagram
+### 13.8.2 Traditional Multi-Cycle Diagram
 
 **Format:**
 
-```
+
           Cycle: 1    2    3    4    5    6    7    8    9
 Instr 1:         IF   ID   EX   MEM  WB
 Instr 2:              IF   ID   EX   MEM  WB
 Instr 3:                   IF   ID   EX   MEM  WB
 Instr 4:                        IF   ID   EX   MEM  WB
 Instr 5:                             IF   ID   EX   MEM  WB
-```
+
 
 **Shows:**
 
@@ -752,11 +747,11 @@ Instr 5:                             IF   ID   EX   MEM  WB
 - Hardware components used
 - Delays and timing
 
-### 7.3 Enhanced Multi-Cycle Diagram with Resources
+### 13.8.3 Enhanced Multi-Cycle Diagram with Resources
 
 **Format:**
 
-```
+
 Cycle 1:  Instr 1: [IM][RF][  ][  ][  ]
 Cycle 2:  Instr 1: [  ][IM][RF][  ][  ]   Instr 2: [IM][RF][  ][  ][  ]
 Cycle 3:  Instr 1: [  ][  ][IM][RF][  ]   Instr 2: [  ][IM][RF][  ][  ]   Instr 3: [IM][RF][  ][  ][  ]
@@ -768,7 +763,7 @@ RF: Register File
 ALU: ALU operation
 DM: Data Memory
 WB: Write Back
-```
+
 
 **Shows:**
 
@@ -790,11 +785,10 @@ WB: Write Back
 - LW instruction NOT marked with DM (wrong!)
 - Always verify diagrams carefully
 
----
 
-## 8. Timing and Clock Frequency Analysis
+## 13.9 Timing and Clock Frequency Analysis
 
-### 8.1 Component Delays (Typical Values)
+### 13.9.1 Component Delays (Typical Values)
 
 | Component               | Delay (picoseconds) |
 | ----------------------- | ------------------- |
@@ -818,33 +812,33 @@ WB: Write Back
 - Small combinational logic fast (10-20 ps)
 - Pipeline register overhead (60 ps per stage)
 
-### 8.2 Stage Timing Calculation
+### 13.9.2 Stage Timing Calculation
 
 **Stage 1: Instruction Fetch (IF)**
 
-```
+
 Pipeline Register Write:   N/A (PC register)
 Pipeline Register Read:    N/A
 Instruction Memory:        200 ps
 PC + 4 Adder:              70 ps (parallel)
 
 Total: 200 ps (memory dominant)
-```
+
 
 **Stage 2: Instruction Decode (ID)**
 
-```
+
 IF/ID Write + Read:        60 ps
 Register File Read:        90 ps (dominant)
 Control Unit Decode:       50 ps (parallel)
 Sign Extension:            10 ps (parallel)
 
 Total: 60 + 90 = 150 ps
-```
+
 
 **Stage 3: Execution (EX)**
 
-```
+
 ID/EX Write + Read:        60 ps
 Multiplexer:               20 ps
 ALU Operation:             90 ps
@@ -852,28 +846,28 @@ Branch Adder:              70 ps (parallel)
 Shift Left 2:              10 ps (parallel)
 
 Total: 60 + 20 + 90 = 170 ps
-```
+
 
 **Stage 4: Memory Access (MEM)**
 
-```
+
 EX/MEM Write + Read:       60 ps
 Data Memory Access:        250 ps (DOMINANT)
 
 Total: 60 + 250 = 310 ps ← CRITICAL PATH!
-```
+
 
 **Stage 5: Write Back (WB)**
 
-```
+
 MEM/WB Write + Read:       60 ps
 MemtoReg Multiplexer:      20 ps
 Register File Write:       30 ps (first half of cycle)
 
 Total: 60 + 20 + 30 = 110 ps
-```
 
-### 8.3 Clock Frequency Determination
+
+### 13.9.3 Clock Frequency Determination
 
 **Minimum Clock Period:**
 
@@ -883,13 +877,13 @@ Total: 60 + 20 + 30 = 110 ps
 
 **Maximum Clock Frequency:**
 
-```
+
 f_max = 1 / T_min
       = 1 / 310 ps
       = 1 / (310 × 10^-12 s)
       = 3.226 GHz
       ≈ 3.2 GHz
-```
+
 
 **Efficiency Analysis:**
 
@@ -904,7 +898,7 @@ f_max = 1 / T_min
 **Average utilization:** ~60%
 **Wasted time:** ~40% average
 
-### 8.4 Performance Improvement Strategies
+### 13.9.4 Performance Improvement Strategies
 
 **Strategy 1: Pipeline Balancing**
 
@@ -946,15 +940,14 @@ f_max = 1 / T_min
 - High frequency possible
 - But diminishing returns and hazard complexity
 
----
 
-## 9. Practical Exercises and Solutions
+## 13.10 Practical Exercises and Solutions
 
-### 9.1 Exercise: Maximum Clock Frequency Calculation
+### 13.10.1 Exercise: Maximum Clock Frequency Calculation
 
 **Given Component Delays:**
 
-```
+
 Instruction Memory:      200 ps
 Register File (read):    90 ps
 Register File (write):   90 ps
@@ -966,7 +959,7 @@ Multiplexer:             20 ps
 Adder:                   70 ps
 Shift Left 2:            10 ps
 Pipeline Register:       30 ps (write), 30 ps (read)
-```
+
 
 **Step 1: Calculate each stage timing**
 
@@ -982,12 +975,12 @@ Pipeline Register:       30 ps (write), 30 ps (read)
 
 **Step 3: Calculate maximum frequency**
 
-```
+
 f_max = 1 / 310 ps
       = 3.226 GHz
-```
 
-### 9.2 Exercise: Improving Clock Frequency
+
+### 13.10.2 Exercise: Improving Clock Frequency
 
 **Question:** Suggest mechanisms to increase clock frequency. Discuss negative impacts.
 
@@ -1045,7 +1038,7 @@ f_max = 1 / 310 ps
   - Clock skew issues
   - Less reliable
 
-### 9.3 Exercise: ALU Optimization Impact
+### 13.10.3 Exercise: ALU Optimization Impact
 
 **Question:** ALU time shortened by 25%. Does it affect speedup?
 
@@ -1083,7 +1076,7 @@ f_max = 1 / 310 ps
 - Non-critical optimizations: No throughput benefit
 - May reduce latency slightly (instruction-by-instruction)
 
-### 9.4 Exercise: Pipeline Speedup Calculation
+### 13.10.4 Exercise: Pipeline Speedup Calculation
 
 **Given:**
 
@@ -1093,27 +1086,27 @@ f_max = 1 / 310 ps
 
 **Part A: Non-pipelined execution time**
 
-```
+
 Time = Instructions × Time per instruction
      = 10^7 × 100 ps
      = 10^9 ps
      = 1 ms (0.001 seconds)
-```
+
 
 **Part B: Speedup from 20-stage perfect pipeline**
 
-```
+
 Ideal Speedup = Number of stages = 20×
-```
+
 
 **Part C: Time with perfect pipeline**
 
-```
+
 Time = (10^7 × 100 ps) / 20
      = 10^9 / 20 ps
      = 5 × 10^7 ps
      = 0.05 ms
-```
+
 
 **Part D: Real pipeline overhead impact**
 
@@ -1135,11 +1128,10 @@ Time = (10^7 × 100 ps) / 20
 - Perfect 20× becomes ~15-17× in reality
 - Critical path limits clock speed
 
----
 
-## 10. Summary and Key Takeaways
+## 13.11 Summary and Key Takeaways
 
-### 10.1 Pipeline Operation Fundamentals
+### 13.11.1 Pipeline Operation Fundamentals
 
 **Pipeline Registers Essential:**
 
@@ -1155,7 +1147,7 @@ Time = (10^7 × 100 ps) / 20
 - Critical path determines clock period
 - Throughput limited by slowest stage
 
-### 10.2 Design Principles
+### 13.11.2 Design Principles
 
 **Make Common Case Fast:**
 
@@ -1175,7 +1167,7 @@ Time = (10^7 × 100 ps) / 20
 - Propagate through pipeline
 - Essential for correctness
 
-### 10.3 Common Mistakes to Avoid
+### 13.11.3 Common Mistakes to Avoid
 
 **Write Register Address:**
 
@@ -1195,7 +1187,7 @@ Time = (10^7 × 100 ps) / 20
 - Textbooks contain errors
 - Understand shading conventions
 
-### 10.4 Performance Considerations
+### 13.11.4 Performance Considerations
 
 **Critical Path Analysis:**
 
@@ -1213,7 +1205,7 @@ Time = (10^7 × 100 ps) / 20
   - Hazards and stalls
   - Pipeline fill/drain time
 
-### 10.5 Looking Ahead
+### 13.11.5 Looking Ahead
 
 **Memory Hierarchy (Next Topics):**
 
@@ -1231,56 +1223,54 @@ Time = (10^7 × 100 ps) / 20
 - Speculative execution
 - Branch prediction sophistication
 
----
 
-## 11. Important Formulas
+## 13.12 Important Formulas
 
 ### Clock Period
 
-```
+
 T_clock = max(T_IF, T_ID, T_EX, T_MEM, T_WB)
 
 Where each T_stage includes:
 - Pipeline register write delay
 - Pipeline register read delay
 - Dominant component delay
-```
+
 
 ### Maximum Frequency
 
-```
+
 f_max = 1 / T_clock
-```
+
 
 ### Pipeline Speedup
 
-```
+
 Speedup = T_non-pipelined / T_pipelined_steady_state
         ≈ Number of stages (ideal)
         < Number of stages (actual)
-```
+
 
 ### Stage Timing General Formula
 
-```
+
 T_stage = T_pipe_write + T_pipe_read + T_dominant_component + T_other_parallel
 
 Where parallel components don't add (take maximum)
-```
+
 
 ### Throughput
 
-```
+
 Throughput = 1 instruction / T_clock (steady state)
-```
+
 
 ### Latency
 
-```
-Latency = (Number of stages) × T_clock + Pipeline overhead
-```
 
----
+Latency = (Number of stages) × T_clock + Pipeline overhead
+
+
 
 ## Key Takeaways
 

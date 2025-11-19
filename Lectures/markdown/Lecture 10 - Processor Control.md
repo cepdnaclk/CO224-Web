@@ -1,14 +1,15 @@
 # Lecture 10: Processor Control
 
-## Introduction
+*By Dr. Isuru Nawinne*
+
+## 10.1 Introduction
 
 This lecture completes the single-cycle MIPS processor design by exploring the control unit—the component that generates control signals based on instruction opcodes. We examine ALU control generation using a two-stage approach, design the main control unit, analyze control signal purposes, and create truth tables mapping instructions to control patterns. Understanding control unit design reveals how hardware interprets instructions and orchestrates datapath operations, completing our understanding of processor implementation.
 
----
 
-## 1. Control Unit Overview
+## 10.2 Control Unit Overview
 
-### 1.1 Recap of Datapath Components
+### 10.2.1 Recap of Datapath Components
 
 **Previously Covered**:
 
@@ -21,7 +22,7 @@ This lecture completes the single-cycle MIPS processor design by exploring the c
 - Sign Extender (16-bit to 32-bit)
 - Shifter (branch offset left 2)
 
-### 1.2 Control Unit Purpose
+### 10.2.2 Control Unit Purpose
 
 **Function**: Generate control signals based on instruction
 
@@ -38,7 +39,7 @@ This lecture completes the single-cycle MIPS processor design by exploring the c
 - ALU operation
 - Branch decision
 
-### 1.3 Instruction Subset for Study
+### 10.2.3 Instruction Subset for Study
 
 **Selected Instructions**:
 
@@ -53,9 +54,9 @@ This lecture completes the single-cycle MIPS processor design by exploring the c
 - Representative of most control signals
 - Excludes: Jump instructions, I-type arithmetic
 
-## 2. ALU Operations for Different Instructions
+## 10.3 ALU Operations for Different Instructions
 
-### 2.1 Load/Store Instructions
+### 10.3.1 Load/Store Instructions
 
 **Address Calculation**:
 
@@ -63,6 +64,7 @@ This lecture completes the single-cycle MIPS processor design by exploring the c
 Address = Base Register + Immediate Offset
         = RS + Sign_Extend(Immediate)
 ```
+
 
 **ALU Function**: ADDITION (always)
 
@@ -79,7 +81,8 @@ LW $t1, 8($t0)    # Address = $t0 + 8
 SW $t2, -4($sp)   # Address = $sp + (-4)
 ```
 
-### 2.2 Branch Instructions
+
+### 10.3.2 Branch Instructions
 
 **Comparison Operation**:
 
@@ -87,6 +90,7 @@ SW $t2, -4($sp)   # Address = $sp + (-4)
 Compare RS and RT for equality
 Method: Subtract RT from RS
 ```
+
 
 **ALU Function**: SUBTRACTION
 
@@ -104,7 +108,8 @@ Zero = 1: RS == RT, take branch
 Zero = 0: RS != RT, don't take branch
 ```
 
-### 2.3 R-Type Instructions
+
+### 10.3.3 R-Type Instructions
 
 **Variable Operations**: Determined by funct field
 
@@ -128,9 +133,10 @@ Funct    | Operation | ALU Control
 0x2A     | SLT       | 0111
 ```
 
-## 3. ALU Control Signal
 
-### 3.1 Signal Format
+## 10.4 ALU Control Signal
+
+### 10.4.1 Signal Format
 
 **4-Bit Signal**: Specifies ALU operation
 
@@ -145,13 +151,14 @@ Funct    | Operation | ALU Control
 1100: NOR
 ```
 
+
 **Usage**:
 
 - Not all 16 combinations used
 - Could use 3 bits for 8 operations
 - 4-bit standard allows expansion
 
-### 3.2 Control Signal Usage by Instruction
+### 10.4.2 Control Signal Usage by Instruction
 
 **Load/Store**:
 
@@ -171,9 +178,9 @@ Funct    | Operation | ALU Control
 - Must decode funct field
 - Different operations need different controls
 
-## 4. Two-Stage ALU Control Generation
+## 10.5 Two-Stage ALU Control Generation
 
-### 4.1 Design Rationale
+### 10.5.1 Design Rationale
 
 **Why Two Stages?**
 
@@ -195,7 +202,7 @@ Funct    | Operation | ALU Control
 - Stage 2: ALU control (operation-specific)
 - Cleaner design separation
 
-### 4.2 Stage 1: Generate ALUOp
+### 10.5.2 Stage 1: Generate ALUOp
 
 **Input**: Opcode (6 bits)
 
@@ -212,6 +219,7 @@ Branch Equal   | 000100   | 01
 R-type         | 000000   | 10
 ```
 
+
 **ALUOp Meaning**:
 
 - **00**: Perform ADD (address calculation)
@@ -220,7 +228,7 @@ R-type         | 000000   | 10
 
 **Logic**: Purely combinational based on opcode
 
-### 4.3 Stage 2: Generate ALU Control
+### 10.5.3 Stage 2: Generate ALU Control
 
 **Inputs**:
 
@@ -244,13 +252,14 @@ ALUOp | Funct   | ALU Control | Operation
 10    | 101010  | 0111        | SLT
 ```
 
+
 **"X" Notation**: Don't Care
 
 - For ALUOp = 00 or 01, funct irrelevant
 - Simplifies logic design
 - Reduces gate count
 
-### 4.4 Complete ALU Control Path
+### 10.5.4 Complete ALU Control Path
 
 **Flow Diagram**:
 
@@ -268,6 +277,7 @@ Instruction Opcode (6 bits)
                    [ALU]
 ```
 
+
 **Advantages**:
 
 - Modular design
@@ -275,9 +285,9 @@ Instruction Opcode (6 bits)
 - Localized R-type complexity
 - Easier to verify
 
-## 5. Main Control Signals
+## 10.6 Main Control Signals
 
-### 5.1 Complete Signal List
+### 10.6.1 Complete Signal List
 
 **Signals Generated**:
 
@@ -292,7 +302,7 @@ Instruction Opcode (6 bits)
 
 **Total**: 9 control bits from main control
 
-### 5.2 RegDst (Register Destination)
+### 10.6.2 RegDst (Register Destination)
 
 **Purpose**: Select which field specifies write destination
 
@@ -309,6 +319,7 @@ RegDst = 0: Write to RT (Load Word)
 RegDst = 1: Write to RD (R-type)
 ```
 
+
 **Rationale**:
 
 - Load Word: RT is destination (I-type format)
@@ -322,7 +333,8 @@ LW $t1, 8($t0)     # Write to $t1 (RT) → RegDst = 0
 ADD $t2, $t3, $t4  # Write to $t2 (RD) → RegDst = 1
 ```
 
-### 5.3 Branch
+
+### 10.6.3 Branch
 
 **Purpose**: Indicate if instruction is branch
 
@@ -334,6 +346,7 @@ ADD $t2, $t3, $t4  # Write to $t2 (RD) → RegDst = 1
 Branch = 0: Not a branch (LW, SW, R-type)
 Branch = 1: Branch instruction (BEQ, BNE)
 ```
+
 
 **PC Selection Logic**:
 
@@ -347,7 +360,8 @@ For BNE:
   (Take branch if instruction is branch AND comparison not equal)
 ```
 
-### 5.4 MemRead
+
+### 10.6.4 MemRead
 
 **Purpose**: Enable reading from data memory
 
@@ -358,13 +372,14 @@ MemRead = 0: No memory read (R-type, SW, BEQ)
 MemRead = 1: Read from memory (LW)
 ```
 
+
 **Function**:
 
 - Controls data memory read enable
 - When high: Memory outputs data
 - When low: Memory read inactive
 
-### 5.5 MemtoReg (Memory to Register)
+### 10.6.5 MemtoReg (Memory to Register)
 
 **Purpose**: Select source of register write data
 
@@ -381,6 +396,7 @@ MemtoReg = 0: Write ALU result (R-type)
 MemtoReg = 1: Write memory data (LW)
 ```
 
+
 **Examples**:
 
 ```
@@ -388,7 +404,8 @@ ADD $t1, $t2, $t3  # $t1 = ALU result → MemtoReg = 0
 LW $t1, 8($t0)     # $t1 = memory data → MemtoReg = 1
 ```
 
-### 5.6 MemWrite
+
+### 10.6.6 MemWrite
 
 **Purpose**: Enable writing to data memory
 
@@ -399,13 +416,14 @@ MemWrite = 0: No memory write (R-type, LW, BEQ)
 MemWrite = 1: Write to memory (SW)
 ```
 
+
 **Function**:
 
 - Controls data memory write enable
 - When high: Data written (on clock edge)
 - When low: Memory write disabled
 
-### 5.7 ALUSrc (ALU Source)
+### 10.6.7 ALUSrc (ALU Source)
 
 **Purpose**: Select second ALU operand source
 
@@ -422,6 +440,7 @@ ALUSrc = 0: Use register (R-type, BEQ)
 ALUSrc = 1: Use immediate (LW, SW)
 ```
 
+
 **Examples**:
 
 ```
@@ -429,7 +448,8 @@ ADD $t1, $t2, $t3  # Use $t3 → ALUSrc = 0
 LW $t1, 8($t0)     # Use imm 8 → ALUSrc = 1
 ```
 
-### 5.8 RegWrite
+
+### 10.6.8 RegWrite
 
 **Purpose**: Enable writing to register file
 
@@ -440,6 +460,7 @@ RegWrite = 0: No register write (SW, BEQ)
 RegWrite = 1: Write to register (R-type, LW)
 ```
 
+
 **Usage by Instruction**:
 
 ```
@@ -449,9 +470,10 @@ Store Word: RegWrite = 0 (no write)
 Branch:    RegWrite = 0 (no write)
 ```
 
-## 6. Control Signal Truth Table
 
-### 6.1 Complete Table
+## 10.7 Control Signal Truth Table
+
+### 10.7.1 Complete Table
 
 ```
 Instruction | RegDst | ALUSrc | MemtoReg | RegWrite | MemRead | MemWrite | Branch | ALUOp
@@ -462,13 +484,14 @@ Store Word  |   X    |   1    |    X     |    0     |    0    |    1     |   0  
 Branch Eq   |   X    |   0    |    X     |    0     |    0    |    0     |   1    |  01
 ```
 
+
 **Legend**:
 
 - **0**: Signal low/false/select input 0
 - **1**: Signal high/true/select input 1
 - **X**: Don't Care (not used, can be anything)
 
-### 6.2 R-Type Control
+### 10.7.2 R-Type Control
 
 **Settings**:
 
@@ -482,6 +505,7 @@ MemWrite = 0:   No memory write
 Branch = 0:     Not a branch
 ALUOp = 10:     Consult funct field
 ```
+
 
 **Active Elements**:
 
@@ -497,7 +521,7 @@ ALUOp = 10:     Consult funct field
 - Branch target (computed but not used)
 - Sign extender (operates but ignored)
 
-### 6.3 Load Word Control
+### 10.7.3 Load Word Control
 
 **Settings**:
 
@@ -511,6 +535,7 @@ MemWrite = 0:   No memory write
 Branch = 0:     Not a branch
 ALUOp = 00:     ALU performs ADD
 ```
+
 
 **Active Elements**:
 
@@ -526,7 +551,7 @@ ALUOp = 00:     ALU performs ADD
 
 - Fetch → Reg Read → Sign Extend → ALU → Memory → Reg Write
 
-### 6.4 Store Word Control
+### 10.7.4 Store Word Control
 
 **Settings**:
 
@@ -541,13 +566,14 @@ Branch = 0:     Not a branch
 ALUOp = 00:     ALU performs ADD
 ```
 
+
 **Key Difference from Load**:
 
 - Read TWO registers (RS for base, RT for data)
 - Memory write instead of read
 - No register write stage
 
-### 6.5 Branch if Equal Control
+### 10.7.5 Branch if Equal Control
 
 **Settings**:
 
@@ -561,6 +587,7 @@ MemWrite = 0:   No memory write
 Branch = 1:     This is a branch
 ALUOp = 01:     ALU performs SUBTRACT
 ```
+
 
 **Active Elements**:
 
@@ -582,9 +609,10 @@ Else:
   Next PC = PC + 4
 ```
 
-## 7. Control Unit Implementation
 
-### 7.1 Input to Control Unit
+## 10.8 Control Unit Implementation
+
+### 10.8.1 Input to Control Unit
 
 **Primary Input**: Opcode (bits 26-31, 6 bits)
 
@@ -596,7 +624,7 @@ Else:
 - Only for R-type (opcode = 000000)
 - Specifies ALU operation
 
-### 7.2 Combinational Logic Design
+### 10.8.2 Combinational Logic Design
 
 **Method**: Standard digital logic techniques
 
@@ -615,7 +643,8 @@ RegWrite = (R-type) OR (Load Word)
 RegWrite = (opcode == 000000) OR (opcode == 100011)
 ```
 
-### 7.3 Control Unit Structure
+
+### 10.8.3 Control Unit Structure
 
 **ROM-Based Implementation**:
 
@@ -641,7 +670,7 @@ RegWrite = (opcode == 000000) OR (opcode == 100011)
 - More flexible but slower
 - Used in CISC (e.g., x86)
 
-### 7.4 Timing Considerations
+### 10.8.4 Timing Considerations
 
 **Signal Generation Time**:
 
@@ -661,16 +690,16 @@ RegWrite = (opcode == 000000) OR (opcode == 100011)
 - Typically small vs. ALU/memory
 - Well-designed control has minimal impact
 
-## 8. Why Separate MemRead and MemWrite?
+## 10.9 Why Separate MemRead and MemWrite?
 
-### 8.1 Initial Observation
+### 10.9.1 Initial Observation
 
 **Question**: Seem mutually exclusive—why not one signal?
 
 - Could use: 0 = Read, 1 = Write
 - Appears redundant
 
-### 8.2 Answer: Yes, Separate Signals Needed
+### 10.9.2 Answer: Yes, Separate Signals Needed
 
 **Timing Control**:
 
@@ -693,7 +722,8 @@ MemRead=0, MemWrite=0: No access
 (MemRead=1, MemWrite=1: Invalid)
 ```
 
-### 8.3 Future: Pipelined Processors
+
+### 10.9.3 Future: Pipelined Processors
 
 **Concurrent Access**:
 
@@ -707,7 +737,7 @@ MemRead=0, MemWrite=0: No access
 - Enables simultaneous access
 - Separate signals control independent ports
 
-### 8.4 Design Philosophy
+### 10.9.4 Design Philosophy
 
 **Orthogonality**:
 
@@ -721,9 +751,9 @@ MemRead=0, MemWrite=0: No access
 - Allows memory optimization
 - Standard practice
 
-## 9. Complete Datapath with Control
+## 10.10 Complete Datapath with Control
 
-### 9.1 Integrated System
+### 10.10.1 Integrated System
 
 **Components Connected**:
 
@@ -744,7 +774,7 @@ MemRead=0, MemWrite=0: No access
 - Inputs: ALUOp, Funct
 - Output: ALU Control (4 bits)
 
-### 9.2 Example: Load Word Execution
+### 10.10.2 Example: Load Word Execution
 
 **Instruction**: `LW $t1, 8($t0)`
 
@@ -762,44 +792,45 @@ RegDst=0, ALUSrc=1, MemtoReg=1, RegWrite=1,
 MemRead=1, MemWrite=0, Branch=0, ALUOp=00
 ```
 
+
 **Step 3: Register Read**
 
-```
+
 RS field ($t0) → Register file
 Read Data 1 = $t0 value
-```
+
 
 **Step 4: ALU**
 
-```
+
 Immediate = 8
 Sign-extended to 32 bits
 ALUSrc=1: Selects immediate
 ALU performs ADD: $t0 + 8 = address
-```
+
 
 **Step 5: Memory**
 
-```
+
 MemRead=1: Memory reads at address
 Data output from memory
-```
+
 
 **Step 6: Write-Back**
 
-```
+
 MemtoReg=1: Selects memory data
 RegDst=0: Selects RT ($t1)
 RegWrite=1: Enables write
 At clock edge: Memory data → $t1
-```
+
 
 **Step 7: PC Update**
 
-```
+
 Branch=0: PCSrc=0
 PC updated to PC + 4
-```
+
 
 ## Key Takeaways
 
