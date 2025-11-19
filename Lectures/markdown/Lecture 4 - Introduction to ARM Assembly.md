@@ -83,7 +83,7 @@ R14 (LR): Link Register
 R15 (PC): Program Counter
          - Always points to next instruction
          - Modifying PC changes execution flow
-
+-->
 
 **Why So Many Registers?**
 
