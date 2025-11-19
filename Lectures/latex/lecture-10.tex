@@ -1,59 +1,900 @@
-% Lecture 10: Processor Control
-% CO224 - Computer Architecture
+\section{Lecture 10: Processor Control}
 
-\chapter{Processor Control}
+\emph{By Dr. Isuru Nawinne}
 
-\section{Introduction}
+\subsection{Introduction}
 
-% TODO: Add content from markdown
+This lecture completes the single-cycle MIPS processor design by exploring the control unit—the component that generates control signals based on instruction opcodes. We examine ALU control generation using a two-stage approach, design the main control unit, analyze control signal purposes, and create truth tables mapping instructions to control patterns. Understanding control unit design reveals how hardware interprets instructions and orchestrates datapath operations, completing our understanding of processor implementation.
 
-\section{1. Control Unit Overview}
+\subsection{Control Unit Overview}
 
-% TODO: Add content from markdown
+\subsubsection{Recap of Datapath Components}
 
-\section{2. ALU Operations for Different Instructions}
+\textbf{Previously Covered}:
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Register File (32 registers, 3 ports)
+\item ALU (arithmetic/logic operations)
+\item Instruction Memory (stores program)
+\item Data Memory (stores data)
+\item Adders (PC+4, branch target)
+\item Multiplexers (data source selection)
+\item Sign Extender (16-bit to 32-bit)
+\item Shifter (branch offset left 2)
 
-\section{3. ALU Control Signal}
+\subsubsection{Control Unit Purpose}
 
-% TODO: Add content from markdown
+\textbf{Function}: Generate control signals based on instruction
 
-\section{4. Two-Stage ALU Control Generation}
+\textbf{Inputs}:
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Opcode (bits 26-31, 6 bits)
+\item Funct field (bits 0-5, 6 bits) for R-type
 
-\section{5. Main Control Signals}
+\textbf{Outputs}: Control signals for datapath
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Multiplexer selections
+\item Register write enable
+\item Memory read/write
+\item ALU operation
+\item Branch decision
 
-\section{6. Control Signal Truth Table}
+\subsubsection{Instruction Subset for Study}
 
-% TODO: Add content from markdown
+\textbf{Selected Instructions}:
 
-\section{7. Control Unit Implementation}
+\begin{itemize}
+\item \textbf{Load Word (LW)}: Memory read
+\item \textbf{Store Word (SW)}: Memory write
+\item \textbf{Branch if Equal (BEQ)}: Conditional branch
+\item \textbf{R-type}: Arithmetic, logic, shift
 
-% TODO: Add content from markdown
+\textbf{Coverage}:
 
-\section{8. Why Separate MemRead and MemWrite?}
+\begin{itemize}
+\item Uses almost all datapath hardware
+\item Representative of most control signals
+\item Excludes: Jump instructions, I-type arithmetic
 
-% TODO: Add content from markdown
+\subsection{ALU Operations for Different Instructions}
 
-\section{9. Complete Datapath with Control}
+\subsubsection{Load/Store Instructions}
 
-% TODO: Add content from markdown
+\textbf{Address Calculation}:
 
-\section{Key Takeaways}
+\begin{verbatim}
+Address = Base Register + Immediate Offset
+        = RS + Sign_Extend(Immediate)
+\end{verbatim}
 
-% TODO: Add content from markdown
+\textbf{ALU Function}: ADDITION (always)
 
-\section{Summary}
+\begin{itemize}
+\item Input A: RS register value
+\item Input B: Sign-extended immediate
+\item Operation: ADD
+\item ALU Control: 0010 (binary)
+\item Result: Memory address
 
-% TODO: Add content from markdown
+\textbf{Example}:
 
-% Note: Convert markdown content manually for best results
-% Remember to:
-% - Replace markdown images with \includegraphics
-% - Convert code blocks to \begin{lstlisting}
-% - Convert lists to \begin{itemize} or \begin{enumerate}
-% - Convert bold/italic with \textbf{} and \textit{}
+\begin{verbatim}
+LW $t1, 8($t0)    # Address = $t0 + 8
+SW $t2, -4($sp)   # Address = $sp + (-4)
+\end{verbatim}
+
+\subsubsection{Branch Instructions}
+
+\textbf{Comparison Operation}:
+
+\begin{verbatim}
+Compare RS and RT for equality
+Method: Subtract RT from RS
+\end{verbatim}
+
+\textbf{ALU Function}: SUBTRACTION
+
+\begin{itemize}
+\item Input A: RS register value
+\item Input B: RT register value
+\item Operation: SUB
+\item ALU Control: 0110 (binary)
+\item Result: RS - RT
+\item Zero Flag: Indicates if result is zero (equal)
+
+\textbf{Branch Decision}:
+
+\begin{verbatim}
+Zero = 1: RS == RT, take branch
+Zero = 0: RS != RT, don't take branch
+\end{verbatim}
+
+\subsubsection{R-Type Instructions}
+
+\textbf{Variable Operations}: Determined by funct field
+
+\textbf{ALU Function}: DEPENDS ON FUNCT
+
+\begin{itemize}
+\item Input A: RS register value
+\item Input B: RT register value
+\item Operation: From funct field
+\item ALU Control: Varies
+\item Result: Written to RD register
+
+\textbf{Funct Field Mapping}:
+
+\begin{verbatim}
+Funct    | Operation | ALU Control
+---------|-----------|-------------
+0x20     | ADD       | 0010
+0x22     | SUB       | 0110
+0x24     | AND       | 0000
+0x25     | OR        | 0001
+0x2A     | SLT       | 0111
+\end{verbatim}
+
+\subsection{ALU Control Signal}
+
+\subsubsection{Signal Format}
+
+\textbf{4-Bit Signal}: Specifies ALU operation
+
+\textbf{Possible Operations} (2⁴ = 16):
+
+\begin{verbatim}
+0000: AND
+0001: OR
+0010: ADD
+0110: SUBTRACT
+0111: Set on Less Than (SLT)
+1100: NOR
+\end{verbatim}
+
+\textbf{Usage}:
+
+\begin{itemize}
+\item Not all 16 combinations used
+\item Could use 3 bits for 8 operations
+\item 4-bit standard allows expansion
+
+\subsubsection{Control Signal Usage by Instruction}
+
+\textbf{Load/Store}:
+
+\begin{itemize}
+\item ALU Control = 0010 (ADD)
+\item Fixed operation
+\item Independent of instruction specifics
+
+\textbf{Branch}:
+
+\begin{itemize}
+\item ALU Control = 0110 (SUBTRACT)
+\item Fixed operation
+\item Zero flag is critical output
+
+\textbf{R-Type}:
+
+\begin{itemize}
+\item ALU Control = Varies
+\item Must decode funct field
+\item Different operations need different controls
+
+\subsection{Two-Stage ALU Control Generation}
+
+\subsubsection{Design Rationale}
+
+\textbf{Why Two Stages?}
+
+\textbf{Efficiency}:
+
+\begin{itemize}
+\item Some instructions don't need funct field
+\item Separates opcode-level from operation-level
+\item Faster for non-R-type instructions
+
+\textbf{Timing Optimization}:
+
+\begin{itemize}
+\item Other control signals needed faster
+\item Examples: Register addressing, immediate routing
+\item ALU control can afford slight delay
+
+\textbf{Modularity}:
+
+\begin{itemize}
+\item Stage 1: Main control (opcode-based)
+\item Stage 2: ALU control (operation-specific)
+\item Cleaner design separation
+
+\subsubsection{Stage 1: Generate ALUOp}
+
+\textbf{Input}: Opcode (6 bits)
+
+\textbf{Output}: ALUOp (2 bits)
+
+\textbf{Encoding}:
+
+\begin{verbatim}
+Instruction    | Opcode   | ALUOp
+---------------|----------|-------
+Load Word      | 100011   | 00
+Store Word     | 101011   | 00
+Branch Equal   | 000100   | 01
+R-type         | 000000   | 10
+\end{verbatim}
+
+\textbf{ALUOp Meaning}:
+
+\begin{itemize}
+\item \textbf{00}: Perform ADD (address calculation)
+\item \textbf{01}: Perform SUBTRACT (comparison)
+\item \textbf{10}: Operation from funct field
+
+\textbf{Logic}: Purely combinational based on opcode
+
+\subsubsection{Stage 2: Generate ALU Control}
+
+\textbf{Inputs}:
+
+\begin{itemize}
+\item ALUOp (2 bits from Stage 1)
+\item Funct field (6 bits from instruction)
+\item Total: 8 input bits
+
+\textbf{Output}: ALU Control (4 bits)
+
+\textbf{Truth Table}:
+
+\begin{verbatim}
+ALUOp | Funct   | ALU Control | Operation
+------|---------|-------------|----------
+00    | XXXXXX  | 0010        | ADD (LW/SW)
+01    | XXXXXX  | 0110        | SUB (BEQ)
+10    | 100000  | 0010        | ADD (R-type)
+10    | 100010  | 0110        | SUB (R-type)
+10    | 100100  | 0000        | AND
+10    | 100101  | 0001        | OR
+10    | 101010  | 0111        | SLT
+\end{verbatim}
+
+\textbf{"X" Notation}: Don't Care
+
+\begin{itemize}
+\item For ALUOp = 00 or 01, funct irrelevant
+\item Simplifies logic design
+\item Reduces gate count
+
+\subsubsection{Complete ALU Control Path}
+
+\textbf{Flow Diagram}:
+
+\begin{verbatim}
+Instruction Opcode (6 bits)
+         $\downarrow$
+   [Main Control Unit]
+         $\downarrow$
+    ALUOp (2 bits)  +  Funct Field (6 bits)
+         $\downarrow$                    $\downarrow$
+              [ALU Control Unit]
+                     $\downarrow$
+            ALU Control (4 bits)
+                     $\downarrow$
+                   [ALU]
+\end{verbatim}
+
+\textbf{Advantages}:
+
+\begin{itemize}
+\item Modular design
+\item Simplified main control
+\item Localized R-type complexity
+\item Easier to verify
+
+\subsection{Main Control Signals}
+
+\subsubsection{Complete Signal List}
+
+\textbf{Signals Generated}:
+
+\begin{enumerate}
+\item \textbf{RegDst} (1 bit): Register destination select
+\item \textbf{Branch} (1 bit): Branch instruction indicator
+\item \textbf{MemRead} (1 bit): Memory read enable
+\item \textbf{MemtoReg} (1 bit): Memory to register select
+\item \textbf{MemWrite} (1 bit): Memory write enable
+\item \textbf{ALUSrc} (1 bit): ALU source select
+\item \textbf{RegWrite} (1 bit): Register write enable
+\item \textbf{ALUOp} (2 bits): To ALU control unit
+
+\textbf{Total}: 9 control bits from main control
+
+\subsubsection{RegDst (Register Destination)}
+
+\textbf{Purpose}: Select which field specifies write destination
+
+\textbf{Multiplexer Control}:
+
+\begin{itemize}
+\item Input 0: RT field (bits 16-20)
+\item Input 1: RD field (bits 11-15)
+\item Output: Register write address (5 bits)
+
+\textbf{Settings}:
+
+\begin{verbatim}
+RegDst = 0: Write to RT (Load Word)
+RegDst = 1: Write to RD (R-type)
+\end{verbatim}
+
+\textbf{Rationale}:
+
+\begin{itemize}
+\item Load Word: RT is destination (I-type format)
+\item R-type: RD is destination (R-type format)
+\item Store/Branch: Don't care (no write)
+
+\textbf{Examples}:
+
+\begin{verbatim}
+LW $t1, 8($t0)     # Write to $t1 (RT) $\rightarrow$ RegDst = 0
+ADD $t2, $t3, $t4  # Write to $t2 (RD) $\rightarrow$ RegDst = 1
+\end{verbatim}
+
+\subsubsection{Branch}
+
+\textbf{Purpose}: Indicate if instruction is branch
+
+\textbf{Usage}: Combined with Zero flag for PC selection
+
+\textbf{Settings}:
+
+\begin{verbatim}
+Branch = 0: Not a branch (LW, SW, R-type)
+Branch = 1: Branch instruction (BEQ, BNE)
+\end{verbatim}
+
+\textbf{PC Selection Logic}:
+
+\begin{verbatim}
+For BEQ:
+  PCSrc = Branch AND Zero
+  (Take branch if instruction is branch AND comparison equal)
+
+For BNE:
+  PCSrc = Branch AND NOT(Zero)
+  (Take branch if instruction is branch AND comparison not equal)
+\end{verbatim}
+
+\subsubsection{MemRead}
+
+\textbf{Purpose}: Enable reading from data memory
+
+\textbf{Settings}:
+
+\begin{verbatim}
+MemRead = 0: No memory read (R-type, SW, BEQ)
+MemRead = 1: Read from memory (LW)
+\end{verbatim}
+
+\textbf{Function}:
+
+\begin{itemize}
+\item Controls data memory read enable
+\item When high: Memory outputs data
+\item When low: Memory read inactive
+
+\subsubsection{MemtoReg (Memory to Register)}
+
+\textbf{Purpose}: Select source of register write data
+
+\textbf{Multiplexer Control}:
+
+\begin{itemize}
+\item Input 0: ALU result
+\item Input 1: Data memory read data
+\item Output: Register write data (32 bits)
+
+\textbf{Settings}:
+
+\begin{verbatim}
+MemtoReg = 0: Write ALU result (R-type)
+MemtoReg = 1: Write memory data (LW)
+\end{verbatim}
+
+\textbf{Examples}:
+
+\begin{verbatim}
+ADD $t1, $t2, $t3  # $t1 = ALU result $\rightarrow$ MemtoReg = 0
+LW $t1, 8($t0)     # $t1 = memory data $\rightarrow$ MemtoReg = 1
+\end{verbatim}
+
+\subsubsection{MemWrite}
+
+\textbf{Purpose}: Enable writing to data memory
+
+\textbf{Settings}:
+
+\begin{verbatim}
+MemWrite = 0: No memory write (R-type, LW, BEQ)
+MemWrite = 1: Write to memory (SW)
+\end{verbatim}
+
+\textbf{Function}:
+
+\begin{itemize}
+\item Controls data memory write enable
+\item When high: Data written (on clock edge)
+\item When low: Memory write disabled
+
+\subsubsection{ALUSrc (ALU Source)}
+
+\textbf{Purpose}: Select second ALU operand source
+
+\textbf{Multiplexer Control}:
+
+\begin{itemize}
+\item Input 0: Register file Read Data 2 (RT value)
+\item Input 1: Sign-extended immediate
+\item Output: ALU Input B (32 bits)
+
+\textbf{Settings}:
+
+\begin{verbatim}
+ALUSrc = 0: Use register (R-type, BEQ)
+ALUSrc = 1: Use immediate (LW, SW)
+\end{verbatim}
+
+\textbf{Examples}:
+
+\begin{verbatim}
+ADD $t1, $t2, $t3  # Use $t3 $\rightarrow$ ALUSrc = 0
+LW $t1, 8($t0)     # Use imm 8 $\rightarrow$ ALUSrc = 1
+\end{verbatim}
+
+\subsubsection{RegWrite}
+
+\textbf{Purpose}: Enable writing to register file
+
+\textbf{Settings}:
+
+\begin{verbatim}
+RegWrite = 0: No register write (SW, BEQ)
+RegWrite = 1: Write to register (R-type, LW)
+\end{verbatim}
+
+\textbf{Usage by Instruction}:
+
+\begin{verbatim}
+R-type:    RegWrite = 1 (write ALU result)
+Load Word: RegWrite = 1 (write memory data)
+Store Word: RegWrite = 0 (no write)
+Branch:    RegWrite = 0 (no write)
+\end{verbatim}
+
+\subsection{Control Signal Truth Table}
+
+\subsubsection{Complete Table}
+
+\begin{verbatim}
+Instruction | RegDst | ALUSrc | MemtoReg | RegWrite | MemRead | MemWrite | Branch | ALUOp
+------------|--------|--------|----------|----------|---------|----------|--------|-------
+R-type      |   1    |   0    |    0     |    1     |    0    |    0     |   0    |  10
+Load Word   |   0    |   1    |    1     |    1     |    1    |    0     |   0    |  00
+Store Word  |   X    |   1    |    X     |    0     |    0    |    1     |   0    |  00
+Branch Eq   |   X    |   0    |    X     |    0     |    0    |    0     |   1    |  01
+\end{verbatim}
+
+\textbf{Legend}:
+
+\begin{itemize}
+\item \textbf{0}: Signal low/false/select input 0
+\item \textbf{1}: Signal high/true/select input 1
+\item \textbf{X}: Don't Care (not used, can be anything)
+
+\subsubsection{R-Type Control}
+
+\textbf{Settings}:
+
+\begin{verbatim}
+RegDst = 1:     Write to RD field
+ALUSrc = 0:     Second operand from register (RT)
+MemtoReg = 0:   Write ALU result
+RegWrite = 1:   Enable register write
+MemRead = 0:    No memory read
+MemWrite = 0:   No memory write
+Branch = 0:     Not a branch
+ALUOp = 10:     Consult funct field
+\end{verbatim}
+
+\textbf{Active Elements}:
+
+\begin{itemize}
+\item Instruction fetch
+\item Register file (read RS, RT; write RD)
+\item ALU (operation from funct)
+\item Register write from ALU
+\item PC updated to PC + 4
+
+\textbf{Inactive Elements}:
+
+\begin{itemize}
+\item Data memory (not accessed)
+\item Branch target (computed but not used)
+\item Sign extender (operates but ignored)
+
+\subsubsection{Load Word Control}
+
+\textbf{Settings}:
+
+\begin{verbatim}
+RegDst = 0:     Write to RT field
+ALUSrc = 1:     Second operand from immediate
+MemtoReg = 1:   Write memory data
+RegWrite = 1:   Enable register write
+MemRead = 1:    Enable memory read
+MemWrite = 0:   No memory write
+Branch = 0:     Not a branch
+ALUOp = 00:     ALU performs ADD
+\end{verbatim}
+
+\textbf{Active Elements}:
+
+\begin{itemize}
+\item Instruction fetch
+\item Register file (read RS; write RT)
+\item Sign extender
+\item ALU (ADD for address)
+\item Data memory (read)
+\item Register write from memory
+\item PC updated to PC + 4
+
+\textbf{Critical Path}: Longest delay
+
+\begin{itemize}
+\item Fetch $\rightarrow$ Reg Read $\rightarrow$ Sign Extend $\rightarrow$ ALU $\rightarrow$ Memory $\rightarrow$ Reg Write
+
+\subsubsection{Store Word Control}
+
+\textbf{Settings}:
+
+\begin{verbatim}
+RegDst = X:     Don't care (no register write)
+ALUSrc = 1:     Second operand from immediate
+MemtoReg = X:   Don't care (no register write)
+RegWrite = 0:   No register write
+MemRead = 0:    No memory read
+MemWrite = 1:   Enable memory write
+Branch = 0:     Not a branch
+ALUOp = 00:     ALU performs ADD
+\end{verbatim}
+
+\textbf{Key Difference from Load}:
+
+\begin{itemize}
+\item Read TWO registers (RS for base, RT for data)
+\item Memory write instead of read
+\item No register write stage
+
+\subsubsection{Branch if Equal Control}
+
+\textbf{Settings}:
+
+\begin{verbatim}
+RegDst = X:     Don't care (no register write)
+ALUSrc = 0:     Second operand from register (RT)
+MemtoReg = X:   Don't care (no register write)
+RegWrite = 0:   No register write
+MemRead = 0:    No memory read
+MemWrite = 0:   No memory write
+Branch = 1:     This is a branch
+ALUOp = 01:     ALU performs SUBTRACT
+\end{verbatim}
+
+\textbf{Active Elements}:
+
+\begin{itemize}
+\item Instruction fetch
+\item Register file (read RS, RT)
+\item ALU (SUBTRACT for comparison, Zero flag)
+\item Sign extender + shift (branch target)
+\item Branch target adder (PC + 4 + offset)
+\item PC multiplexer (select based on Branch AND Zero)
+
+\textbf{Branch Decision Logic}:
+
+\begin{verbatim}
+Zero = (RS - RT == 0)
+PCSrc = Branch AND Zero
+If PCSrc:
+  Next PC = PC + 4 + (SignExtend(Imm) << 2)
+Else:
+  Next PC = PC + 4
+\end{verbatim}
+
+\subsection{Control Unit Implementation}
+
+\subsubsection{Input to Control Unit}
+
+\textbf{Primary Input}: Opcode (bits 26-31, 6 bits)
+
+\begin{itemize}
+\item Identifies instruction type
+\item Determines all control signal values
+
+\textbf{Secondary Input}: Funct field (bits 0-5, 6 bits)
+
+\begin{itemize}
+\item Only for R-type (opcode = 000000)
+\item Specifies ALU operation
+
+\subsubsection{Combinational Logic Design}
+
+\textbf{Method}: Standard digital logic techniques
+
+\textbf{Steps}:
+
+\begin{enumerate}
+\item Create truth table (opcode $\rightarrow$ control signals)
+\item List all control signals as outputs
+\item Fill in values for each instruction
+\item Use Karnaugh maps or Boolean algebra to minimize
+\item Implement with logic gates
+
+\textbf{Example for RegWrite}:
+
+\begin{verbatim}
+RegWrite = (R-type) OR (Load Word)
+RegWrite = (opcode == 000000) OR (opcode == 100011)
+\end{verbatim}
+
+\subsubsection{Control Unit Structure}
+
+\textbf{ROM-Based Implementation}:
+
+\begin{itemize}
+\item Opcode as ROM address
+\item ROM location stores control pattern
+\item Simple but inflexible
+
+\textbf{PLA (Programmable Logic Array)}:
+
+\begin{itemize}
+\item Implements minimized logic equations
+\item More efficient than ROM
+\item Standard for simple processors
+
+\textbf{Hardwired Logic}:
+
+\begin{itemize}
+\item Custom logic gates
+\item Fastest implementation
+\item Most common for high-performance
+
+\textbf{Microcode} (not typical for RISC):
+
+\begin{itemize}
+\item Control signals stored in memory
+\item More flexible but slower
+\item Used in CISC (e.g., x86)
+
+\subsubsection{Timing Considerations}
+
+\textbf{Signal Generation Time}:
+
+\begin{itemize}
+\item Must complete early in clock cycle
+\item Before datapath elements need signals
+\item Critical for clock frequency
+
+\textbf{Signal Stability}:
+
+\begin{itemize}
+\item Must remain stable throughout cycle
+\item Changes only between instructions
+\item Combinational logic ensures this
+
+\textbf{Clock Period Impact}:
+
+\begin{itemize}
+\item Control logic adds delay
+\item Typically small vs. ALU/memory
+\item Well-designed control has minimal impact
+
+\subsection{Why Separate MemRead and MemWrite?}
+
+\subsubsection{Initial Observation}
+
+\textbf{Question}: Seem mutually exclusive—why not one signal?
+
+\begin{itemize}
+\item Could use: 0 = Read, 1 = Write
+\item Appears redundant
+
+\subsubsection{Answer: Yes, Separate Signals Needed}
+
+\textbf{Timing Control}:
+
+\begin{itemize}
+\item Write Enable: Specifies WHEN to write
+\item Read Enable: Specifies WHEN valid data available
+\item Different timing requirements
+
+\textbf{No Operation State}:
+
+\begin{itemize}
+\item Both = 0: No memory access
+\item Common for R-type and branch
+\item Single signal couldn't represent this
+
+\textbf{Three States Required}:
+
+\begin{verbatim}
+MemRead=1, MemWrite=0: Read
+MemRead=0, MemWrite=1: Write
+MemRead=0, MemWrite=0: No access
+(MemRead=1, MemWrite=1: Invalid)
+\end{verbatim}
+
+\subsubsection{Future: Pipelined Processors}
+
+\textbf{Concurrent Access}:
+
+\begin{itemize}
+\item Different pipeline stages access memory
+\item One stage reading, another writing
+\item Separate signals essential
+
+\textbf{Memory Banking}:
+
+\begin{itemize}
+\item Separate read/write ports
+\item Enables simultaneous access
+\item Separate signals control independent ports
+
+\subsubsection{Design Philosophy}
+
+\textbf{Orthogonality}:
+
+\begin{itemize}
+\item Each signal controls independent function
+\item Easier to understand and verify
+\item Reduces design errors
+
+\textbf{Flexibility}:
+
+\begin{itemize}
+\item Supports future enhancements
+\item Allows memory optimization
+\item Standard practice
+
+\subsection{Complete Datapath with Control}
+
+\subsubsection{Integrated System}
+
+\textbf{Components Connected}:
+
+\begin{itemize}
+\item Control Unit (generates signals)
+\item Datapath (executes operations)
+\item Blue lines: Control signals
+\item Black lines: Data paths
+
+\textbf{Control Unit Connections}:
+
+\begin{itemize}
+\item Input: Instruction opcode
+\item Outputs: All control signals
+\item Fan out to datapath elements
+
+\textbf{ALU Control Unit}:
+
+\begin{itemize}
+\item Separate box near ALU
+\item Inputs: ALUOp, Funct
+\item Output: ALU Control (4 bits)
+
+\subsubsection{Example: Load Word Execution}
+
+\textbf{Instruction}: \texttt{LW $t1, 8($t0)}
+
+\textbf{Step 1: Fetch}
+
+\begin{verbatim}
+PC $\rightarrow$ Instruction Memory
+Opcode = 100011 (LW)
+\end{verbatim}
+
+\textbf{Step 2: Control Signals}
+
+\begin{verbatim}
+RegDst=0, ALUSrc=1, MemtoReg=1, RegWrite=1,
+MemRead=1, MemWrite=0, Branch=0, ALUOp=00
+\end{verbatim}
+
+\textbf{Step 3: Register Read}
+
+RS field ($t0) $\rightarrow$ Register file
+Read Data 1 = $t0 value
+
+\textbf{Step 4: ALU}
+
+Immediate = 8
+Sign-extended to 32 bits
+ALUSrc=1: Selects immediate
+ALU performs ADD: $t0 + 8 = address
+
+\textbf{Step 5: Memory}
+
+MemRead=1: Memory reads at address
+Data output from memory
+
+\textbf{Step 6: Write-Back}
+
+MemtoReg=1: Selects memory data
+RegDst=0: Selects RT ($t1)
+RegWrite=1: Enables write
+At clock edge: Memory data $\rightarrow$ $t1
+
+\textbf{Step 7: PC Update}
+
+Branch=0: PCSrc=0
+PC updated to PC + 4
+
+\subsection{Key Takeaways}
+
+\begin{enumerate}
+\item \textbf{Control unit generates signals based on instruction opcode}, orchestrating datapath operations.
+
+\begin{enumerate}
+\item \textbf{ALU control uses two-stage generation}: Opcode $\rightarrow$ ALUOp (2 bits) $\rightarrow$ ALU Control (4 bits).
+
+\begin{enumerate}
+\item \textbf{Stage 1 (Main Control)}: Opcode to ALUOp - identifies operation category.
+
+\begin{enumerate}
+\item \textbf{Stage 2 (ALU Control)}: ALUOp + Funct to ALU Control - specifies exact operation.
+
+\begin{enumerate}
+\item \textbf{Two-stage design optimizes timing and modularity}, separating concerns.
+
+\begin{enumerate}
+\item \textbf{Main control signals}: RegDst, Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite, ALUOp.
+
+\begin{enumerate}
+\item \textbf{Load/Store always use ADD} for address calculation, regardless of other details.
+
+\begin{enumerate}
+\item \textbf{Branch uses SUBTRACT} for comparison, with Zero flag indicating equality.
+
+\begin{enumerate}
+\item \textbf{R-type ALU operation from funct field}, providing operation flexibility.
+
+10. \textbf{Instruction format regularity simplifies control}, with consistent field positions.
+
+11. \textbf{Register roles vary by instruction type}, especially RT (destination vs. source).
+
+12. \textbf{Control signals mutually exclusive} for proper operation - only valid combinations used.
+
+13. \textbf{Separate MemRead/MemWrite needed} for no-op state and future pipelining.
+
+14. \textbf{Control logic is combinational} (no state), generating signals each cycle.
+
+15. \textbf{Truth tables map opcode to control patterns}, enabling systematic design.
+
+16. \textbf{"Don't care" values simplify logic minimization}, reducing gate count.
+
+17. \textbf{Control unit design uses standard digital logic techniques}, including K-maps and Boolean algebra.
+
+18. \textbf{Datapath elements may operate but outputs ignored} if not selected by control signals.
+
+19. \textbf{Complete processor integrates datapath and control}, with control signals orchestrating all operations.
+
+20. \textbf{Single-cycle design simple but inefficient} - foundation for advanced multi-cycle and pipelined designs.
+
+\subsection{Summary}
+
+The control unit completes the single-cycle MIPS processor, generating control signals that orchestrate datapath operations based on instruction opcodes. The two-stage ALU control generation (opcode $\rightarrow$ ALUOp $\rightarrow$ ALU Control) elegantly separates concerns, with the main control handling instruction-level decisions and the ALU control handling operation-specific details. Each control signal serves a specific purpose, from selecting multiplexer inputs (RegDst, ALUSrc, MemtoReg) to enabling register and memory operations (RegWrite, MemRead, MemWrite) to handling branches (Branch). Truth tables systematically map instructions to control patterns, with "don't care" values simplifying logic design. While the single-cycle processor provides conceptual clarity and simplicity, its inefficiency (all instructions taking the same time as the slowest) motivates more sophisticated designs. Understanding this foundation prepares us for multi-cycle processors (which break execution into variable-length stages) and pipelined processors (which overlap instruction execution for higher throughput), both building on the control principles established here.

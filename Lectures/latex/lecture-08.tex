@@ -1,51 +1,867 @@
-% Lecture 08: Memory Access
-% Lectures on Computer Architecture
+\section{Lecture 8: Memory Access and String Operations}
 
-\chapter{Memory Access}
+\emph{By Dr. Kisaru Liyanage}
 
-\section{Introduction}
+\subsection{Introduction}
 
-% TODO: Add content from markdown
+This lecture explores character data handling, string operations, and the compilation/linking/loading process. We examine byte and half-word memory operations, implement string manipulation functions, use library functions like scanf and printf, and understand how programs transform from source code to executable binaries. These topics bridge high-level programming concepts and low-level assembly implementation, essential for systems programming and understanding program execution.
 
-\section{1. Character Data and Encoding}
+\subsection{Character Data and Encoding}
 
-% TODO: Add content from markdown
+\subsubsection{ASCII Encoding}
 
-\section{2. Byte Load/Store Operations}
+\textbf{Basic 7-Bit Standard}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Represents 128 characters using 7 bits (2⁷ = 128)
+\item 95 graphic symbols (printable): A-Z, a-z, 0-9, punctuation
+\item 33 control symbols: newline ('\\n'), tab ('\\t'), null ('\\0')
+\item Most basic and widely used encoding
 
-\section{3. Half-Word Load/Store Operations}
+\textbf{ASCII Examples}
 
-% TODO: Add content from markdown
+\begin{verbatim}
+'A' = 65 (0x41)
+'a' = 97 (0x61)
+'0' = 48 (0x30)
+'\n' = 10 (0x0A)
+'\0' = 0 (0x00) - null terminator
+\end{verbatim}
 
-\section{4. String Copy Example (strcpy)}
+\subsubsection{Latin-1 Encoding}
 
-% TODO: Add content from markdown
+\textbf{Extended 8-Bit Standard}
 
-\section{5. Library Functions: scanf and printf}
+\begin{itemize}
+\item Supports 256 characters using 8 bits (2⁸ = 256)
+\item Includes all ASCII characters (first 128)
+\item Adds 96 additional graphic characters
+\item European language support (accented characters)
 
-% TODO: Add content from markdown
+\subsubsection{Unicode Encoding}
 
-\section{6. Compilation, Linking, and Loading}
+\textbf{Modern Universal Standard}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Uses 32-bit character set (2³² possible characters)
+\item Can represent most world alphabets and symbols
+\item Used in modern languages (Java, C++, Python 3)
+\item Variable-length encodings: UTF-8, UTF-16
+\item UTF-8: 1-4 bytes per character (backward compatible with ASCII)
 
-\section{7. Lab Exercise Topics}
+\textbf{Why Unicode?}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Global language support
+\item Emoji and special symbols
+\item Mathematical and technical symbols
+\item Historical scripts and languages
 
-\section{Key Takeaways}
+\subsection{Byte Load/Store Operations}
 
-% TODO: Add content from markdown
+\subsubsection{Load Register Byte (LDRB)}
 
-\section{Summary}
+\textbf{Syntax}
 
-% TODO: Add content from markdown
+\begin{lstlisting}[language=assembly]
+LDRB Rd, [Rn, #offset]   ; Load byte from memory
+\end{verbatim}
 
-% Note: Convert markdown content manually for best results
-% Remember to:
-% - Replace markdown images with \includegraphics
-% - Convert code blocks to \begin{lstlisting}
-% - Convert lists to \begin{itemize} or \begin{enumerate}
-% - Convert bold/italic with \textbf{} and \textit{}
+\textbf{Operation}
+
+\begin{itemize}
+\item Reads 8 bits (1 byte) from memory
+\item Fills upper 24 bits of register with zeros (zero-extension)
+\item Lower 8 bits contain the loaded byte
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+; Memory[0x1000] = 0x42 ('B')
+LDR R1, =0x1000
+LDRB R0, [R1]
+; R0 = 0x00000042
+\end{verbatim}
+
+\textbf{Use Cases}
+
+\begin{itemize}
+\item Loading single characters
+\item Reading byte arrays
+\item Accessing packed data structures
+\item I/O port access
+
+\subsubsection{Store Register Byte (STRB)}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+STRB Rd, [Rn, #offset]   ; Store byte to memory
+\end{verbatim}
+
+\textbf{Operation}
+
+\begin{itemize}
+\item Writes lower 8 bits of register to memory
+\item Upper 24 bits of register ignored
+\item Only affects 1 byte in memory
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+MOV R0, #0x41        ; 'A'
+LDR R1, =0x2000
+STRB R0, [R1]        ; Memory[0x2000] = 0x41
+\end{verbatim}
+
+\subsubsection{Load Register Signed Byte (LDRSB)}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+LDRSB Rd, [Rn, #offset]  ; Load signed byte
+\end{verbatim}
+
+\textbf{Operation}
+
+\begin{itemize}
+\item Loads 8 bits from memory
+\item Replicates sign bit (bit 7) to fill upper 24 bits
+\item Sign-extension preserves signed value
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+; Memory[0x1000] = 0xFE (-2 in signed byte)
+LDR R1, =0x1000
+LDRSB R0, [R1]
+; R0 = 0xFFFFFFFE (-2 in 32-bit signed)
+
+; Memory[0x1001] = 0x7F (+127)
+LDRSB R0, [R1, #1]
+; R0 = 0x0000007F (+127)
+\end{verbatim}
+
+\textbf{When to Use}
+
+\begin{itemize}
+\item Loading signed characters (int8_t)
+\item Temperature values
+\item Signed offsets or deltas
+
+\subsubsection{Memory Alignment}
+
+\textbf{LDRB Advantages}
+
+\begin{itemize}
+\item Can access ANY byte address
+\item No alignment requirement
+\item Example: addresses 0, 1, 2, 3, 4, 5...
+
+\textbf{LDR Requirement}
+
+\begin{itemize}
+\item Must use word-aligned addresses (multiples of 4)
+\item Valid addresses: 0, 4, 8, 12, 16...
+\item Invalid: 1, 2, 3, 5, 6, 7, 9...
+\item Unaligned access causes errors or performance penalties
+
+\subsection{Half-Word Load/Store Operations}
+
+\subsubsection{Load Register Half-word (LDRH)}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+LDRH Rd, [Rn, #offset]   ; Load 16 bits
+\end{verbatim}
+
+\textbf{Operation}
+
+\begin{itemize}
+\item Loads 16 bits (2 bytes) from memory
+\item Fills upper 16 bits with zeros (zero-extension)
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+; Memory[0x1000-0x1001] = 0xABCD
+LDR R1, =0x1000
+LDRH R0, [R1]
+; R0 = 0x0000ABCD
+\end{verbatim}
+
+\textbf{Use Cases}
+
+\begin{itemize}
+\item Loading 16-bit integers (short)
+\item Unicode characters (UTF-16)
+\item 16-bit data types
+
+\subsubsection{Store Register Half-word (STRH)}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+STRH Rd, [Rn, #offset]   ; Store 16 bits
+\end{verbatim}
+
+\textbf{Operation}
+
+\begin{itemize}
+\item Writes lower 16 bits of register to memory
+\item Upper 16 bits ignored
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+MOV R0, #0x1234
+LDR R1, =0x2000
+STRH R0, [R1]
+; Memory[0x2000-0x2001] = 0x1234
+\end{verbatim}
+
+\subsubsection{Load Register Signed Half-word (LDRSH)}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+LDRSH Rd, [Rn, #offset]  ; Load signed 16-bit
+\end{verbatim}
+
+\textbf{Operation}
+
+\begin{itemize}
+\item Loads 16 bits from memory
+\item Replicates sign bit (bit 15) to upper 16 bits
+\item Sign-extension
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+; Memory = 0x8000 (-32768 as signed 16-bit)
+LDRSH R0, [R1]
+; R0 = 0xFFFF8000 (-32768 as signed 32-bit)
+\end{verbatim}
+
+\subsection{String Copy Example (strcpy)}
+
+\subsubsection{C Implementation}
+
+\textbf{Code}
+
+\begin{lstlisting}[language=c]
+void strcpy(char x[], char y[]) {
+    int i = 0;
+    while ((x[i] = y[i]) != '\\0') {
+        i++;
+    }
+}
+\end{verbatim}
+
+\textbf{Algorithm}
+
+\begin{enumerate}
+\item Copy characters from y to x one at a time
+\item Stop when null terminator ('\\0') encountered
+\item Null terminator also copied
+
+\subsubsection{ARM Assembly Implementation}
+
+\textbf{Register Allocation}
+
+\begin{verbatim}
+R0: Base address of x (destination)
+R1: Base address of y (source)
+R4: Loop counter i
+R2: Address of y[i]
+R3: Value of y[i]
+R12: Address of x[i]
+\end{verbatim}
+
+\textbf{Complete Assembly}
+
+\begin{lstlisting}[language=assembly]
+strcpy:
+    ; Prologue: Save R4 (must preserve)
+    SUB SP, SP, #4
+    STR R4, [SP, #0]
+
+    ; Initialize counter
+    MOV R4, #0           ; i = 0
+
+loop:
+    ; Calculate address of y[i]
+    ADD R2, R4, R1       ; R2 = y + i
+
+    ; Load y[i]
+    LDRB R3, [R2, #0]    ; R3 = y[i]
+
+    ; Calculate address of x[i]
+    ADD R12, R4, R0      ; R12 = x + i
+
+    ; Store to x[i]
+    STRB R3, [R12, #0]   ; x[i] = y[i]
+
+    ; Check for null terminator
+    CMP R3, #0           ; Is y[i] == '\\0'?
+    BEQ done             ; If yes, exit loop
+
+    ; Increment counter
+    ADD R4, R4, #1       ; i++
+    B loop               ; Continue loop
+
+done:
+    ; Epilogue: Restore R4
+    LDR R4, [SP, #0]
+    ADD SP, SP, #4
+    MOV PC, LR           ; Return
+\end{verbatim}
+
+\subsubsection{Key Points}
+
+\textbf{Why LDRB/STRB?}
+
+\begin{itemize}
+\item Strings are char arrays (8-bit elements)
+\item Must use byte operations
+
+\textbf{Register Preservation}
+
+\begin{itemize}
+\item R4 must be saved/restored (callee-saved)
+\item R12 doesn't need preservation (scratch register)
+
+\textbf{Offsets Are Immediate}
+
+\begin{itemize}
+\item \texttt{[R2, #0]} uses immediate offset (hash symbol)
+\item Cannot use \texttt{[R2, R3]} directly without proper syntax
+
+\subsection{Library Functions: scanf and printf}
+
+\subsubsection{scanf Function}
+
+\textbf{Purpose}
+
+\begin{itemize}
+\item Read input from standard input (keyboard)
+\item Parse formatted input
+
+\textbf{C Signature}
+
+\begin{lstlisting}[language=c]
+int scanf(const char *format, ...);
+\end{verbatim}
+
+\textbf{Arguments}
+
+\begin{itemize}
+\item R0: Address of format string ("%d", "%c", "%s", etc.)
+\item R1: Address where to store input (NOT the value!)
+\item R2, R3: Additional addresses for more inputs
+
+\textbf{Example: Read Integer}
+
+\textbf{C Code}
+
+\begin{lstlisting}[language=c]
+int x;
+scanf("%d", &x);  // Note: &x (address of x)
+\end{verbatim}
+
+\textbf{ARM Assembly}
+
+\begin{lstlisting}[language=assembly]
+.data
+formatS: .asciz "%d"
+
+.text
+    ; Allocate space for variable
+    SUB SP, SP, #4       ; Space for x
+
+    ; Load format string address
+    LDR R0, =formatS     ; R0 = address of "%d"
+
+    ; Load stack address
+    MOV R1, SP           ; R1 = address where to store
+
+    ; Call scanf
+    BL scanf
+
+    ; Value now stored at [SP]
+    LDR R2, [SP, #0]     ; R2 = x
+\end{verbatim}
+
+\subsubsection{printf Function}
+
+\textbf{Purpose}
+
+\begin{itemize}
+\item Print output to standard output (screen)
+\item Format and display data
+
+\textbf{C Signature}
+
+\begin{lstlisting}[language=c]
+int printf(const char *format, ...);
+\end{verbatim}
+
+\textbf{Arguments}
+
+\begin{itemize}
+\item R0: Address of format string
+\item R1, R2, R3: VALUES to print (not addresses!)
+
+\textbf{Example: Print Integer}
+
+\textbf{C Code}
+
+\begin{lstlisting}[language=c]
+printf("Result: %d\\n", result);
+\end{verbatim}
+
+\textbf{ARM Assembly}
+
+\begin{lstlisting}[language=assembly]
+.data
+formatP: .asciz "Result: %d\\n"
+
+.text
+    ; Load value to print
+    LDR R1, [SP, #0]     ; R1 = result (value, not address)
+
+    ; Release stack space (before printf)
+    ADD SP, SP, #4
+
+    ; Load format string
+    LDR R0, =formatP
+
+    ; Call printf
+    BL printf
+\end{verbatim}
+
+\subsubsection{Data Section and Format Strings}
+
+\textbf{Data Section}
+
+\begin{lstlisting}[language=assembly]
+.data
+formatS: .asciz "%d"      ; Input format
+formatP: .asciz "Result: %d\\n"  ; Output format
+array: .word 1, 2, 3, 4   ; Array
+message: .asciz "Hello"   ; String
+\end{verbatim}
+
+\textbf{.asciz Directive}
+
+\begin{itemize}
+\item Defines null-terminated string
+\item Automatically adds '\\0' at end
+\item Stored in data section (separate from code)
+
+\textbf{Pseudo-Operation: LDR Rd, =label}
+
+\begin{lstlisting}[language=assembly]
+LDR R0, =formatS     ; Loads ADDRESS of formatS into R0
+\end{verbatim}
+
+\begin{itemize}
+\item Not actual LDR instruction
+\item Assembler converts to appropriate instruction(s)
+\item Loads memory address (pointer), not content
+
+\subsubsection{scanf vs printf Argument Differences}
+
+\textbf{scanf: Needs Addresses}
+
+\begin{lstlisting}[language=assembly]
+SUB SP, SP, #4
+MOV R1, SP           ; R1 = address (where to store)
+BL scanf
+\end{verbatim}
+
+\textbf{printf: Needs Values}
+
+\begin{lstlisting}[language=assembly]
+LDR R1, [SP]         ; R1 = value (what to print)
+BL printf
+\end{verbatim}
+
+\textbf{Why This Difference?}
+
+\begin{itemize}
+\item scanf modifies variables (needs addresses to write to)
+\item printf only reads values (copies values)
+
+\subsubsection{Calling Convention Rules}
+
+\textbf{Follow Exact Order}
+
+\begin{itemize}
+\item R0 first, R1 second, R2 third, R3 fourth
+\item Library functions expect specific argument positions
+\item Assembly won't check violations
+\item Mistakes cause wrong behavior or crashes
+
+\textbf{Know Function Signatures}
+
+\begin{itemize}
+\item Read documentation
+\item Understand parameter types and order
+\item Match assembly to C function prototype
+
+\subsection{Compilation, Linking, and Loading}
+
+\subsubsection{Translation Overview}
+
+\textbf{Complete Process}
+
+C Program (.c)
+    $\downarrow$ [Compiler]
+\begin{lstlisting}[language=assembly]
+    $\downarrow$ [Assembler]
+\end{verbatim}
+Object Module (.o)
+    $\downarrow$ [Linker]
+Executable (a.out)
+    $\downarrow$ [Loader]
+Memory (running program)
+
+\subsubsection{Compiler}
+
+\textbf{Function}
+
+\begin{itemize}
+\item Converts high-level C code to assembly language
+\item Complex task requiring sophisticated algorithms
+\item Performs optimizations
+
+\textbf{Optimizations}
+
+\begin{itemize}
+\item Register allocation
+\item Instruction selection
+\item Loop unrolling
+\item Dead code elimination
+\item Function inlining
+
+\textbf{Example}
+
+\begin{lstlisting}[language=c]
+int add(int a, int b) {
+    return a + b;
+}
+\end{verbatim}
+
+$\downarrow$ Compiler
+
+\begin{lstlisting}[language=assembly]
+add:
+    ADD R0, R0, R1
+    MOV PC, LR
+\end{verbatim}
+
+\subsubsection{Assembler}
+
+\textbf{Function}
+
+\begin{itemize}
+\item Converts assembly language to machine code (binary)
+\item Simpler than compilation (mostly 1-to-1 mapping)
+\item Produces object modules
+
+\textbf{Tasks}
+
+\begin{enumerate}
+\item Translate instructions to binary opcodes
+\item Resolve local labels to addresses
+\item Generate symbol table
+\item Create relocation information
+
+\textbf{Object Module Structure}
+
+\textbf{Header}
+
+\begin{itemize}
+\item Describes contents and sizes
+
+\textbf{Text Segment}
+
+\begin{itemize}
+\item Machine instructions (binary code)
+
+\textbf{Static Data Segment}
+
+\begin{itemize}
+\item Initialized global variables
+\item String constants (format strings)
+
+\textbf{Relocation Info}
+
+\begin{itemize}
+\item Instructions/data depending on absolute addresses
+\item Needed when program loaded at different address
+
+\textbf{Symbol Table}
+
+\begin{itemize}
+\item Global definitions: functions, variables defined here
+\item External references: functions/variables from other modules
+\item Enables linking
+
+\textbf{Debug Info}
+
+\begin{itemize}
+\item Maps machine code to source code lines
+\item Used by debuggers (gdb)
+
+\subsubsection{Linker}
+
+\textbf{Function}
+
+\begin{itemize}
+\item Combines multiple object modules into executable
+\item Links program code with library code
+
+\textbf{Tasks}
+
+\textbf{1. Merge Segments}
+
+\begin{verbatim}
+program.o:      lib.o:          Result:
+[Text1]         [Text2]     $\rightarrow$   [Text1+Text2]
+[Data1]         [Data2]     $\rightarrow$   [Data1+Data2]
+\end{verbatim}
+
+\textbf{2. Resolve Labels}
+
+\begin{itemize}
+\item Convert symbolic names to actual addresses
+\item Example: "printf" $\rightarrow$ 0x80481234
+\item Processor only understands addresses
+
+\textbf{3. Patch References}
+
+\begin{itemize}
+\item Update function calls to correct addresses
+\item Fix relocatable addresses
+\item May leave some for loader
+
+\subsubsection{Static vs Dynamic Linking}
+
+\textbf{Static Linking}
+
+\begin{itemize}
+\item Library code copied into executable at compile time
+\item Larger executable files
+\item Self-contained (no external dependencies)
+\item All code in one file
+
+\textbf{Advantages}
+
+\begin{itemize}
+\item No runtime dependencies
+\item Faster load time
+\item Predictable behavior
+
+\textbf{Disadvantages}
+
+\begin{itemize}
+\item Large file sizes
+\item No benefit from library updates
+\item Memory duplication across programs
+
+\textbf{Dynamic Linking}
+
+\begin{itemize}
+\item Library code loaded at runtime when called
+\item Smaller executables
+\item Shared libraries on system
+
+\textbf{Advantages}
+
+\begin{itemize}
+\item Smaller executables
+\item Shared libraries (less memory usage)
+\item Automatic library updates
+\item Less disk space
+
+\textbf{Disadvantages}
+
+\begin{itemize}
+\item Requires libraries installed on system
+\item "DLL not found" errors
+\item Slightly slower initial load
+
+\textbf{DLL (Dynamic Link Library) - Windows}
+
+\begin{itemize}
+\item File extension: .dll
+\item Shared by multiple programs
+\item Must be present on system
+\item Example: msvcrt.dll (C runtime library)
+
+\subsubsection{Loader}
+
+\textbf{Function}
+
+\begin{itemize}
+\item Loads executable from disk into memory
+\item Prepares program for execution
+\item Initializes execution environment
+
+\textbf{Loading Steps}
+
+\textbf{1. Read Header}
+
+\begin{itemize}
+\item Determine segment sizes
+\item Text segment size
+\item Data segment size
+\item Other metadata
+
+\textbf{2. Create Virtual Address Space}
+
+\begin{itemize}
+\item Allocate memory for program
+\item Set up page tables (virtual memory)
+\item Map segments to physical memory
+
+\textbf{3. Copy Segments to Memory}
+
+\begin{itemize}
+\item Text segment (instructions)
+\item Initialized data
+\item Set up page table entries
+\item Mark text as read-only, data as read-write
+
+\textbf{4. Set Up Arguments on Stack}
+
+\begin{itemize}
+\item Command-line arguments: argc, argv
+\item Environment variables
+\item Initial stack frame
+
+\textbf{Example}
+
+\begin{lstlisting}[language=bash]
+./program arg1 arg2
+\end{verbatim}
+
+\begin{itemize}
+\item argc = 3
+\item argv[0] = "./program"
+\item argv[1] = "arg1"
+\item argv[2] = "arg2"
+
+\textbf{5. Initialize Registers}
+
+\begin{itemize}
+\item Set up register file
+\item PC points to entry point (\_start)
+\item SP points to top of stack
+\item Other registers to initial values
+
+\textbf{6. Jump to Startup Routine}
+
+\begin{itemize}
+\item Calls C runtime initialization
+\item Sets up standard library
+\item Calls main() function
+\item When main returns, calls exit()
+
+\subsection{Exercises}
+
+\subsubsection{Common String Operations}
+
+\textbf{String Length}
+
+\begin{lstlisting}[language=c]
+int strlen(char *s) {
+    int len = 0;
+    while (s[len] != '\\0')
+        len++;
+    return len;
+}
+\end{verbatim}
+
+\textbf{String Reverse}
+
+\begin{lstlisting}[language=c]
+void strrev(char *s) {
+    int len = strlen(s);
+    for (int i = 0; i < len/2; i++) {
+        char temp = s[i];
+        s[i] = s[len-1-i];
+        s[len-1-i] = temp;
+    }
+}
+\end{verbatim}
+
+\subsubsection{Integer I/O}
+
+\textbf{Read Two Integers, Print Sum}
+
+\begin{lstlisting}[language=assembly]
+; Read x and y
+; Print x + y
+\end{verbatim}
+
+\textbf{Read n, Print 1 to n}
+
+\begin{lstlisting}[language=assembly]
+; Read n
+; Loop from 1 to n, print each
+\end{verbatim}
+
+\subsubsection{Skills Required}
+
+\begin{itemize}
+\item Character data handling (LDRB/STRB)
+\item String manipulation
+\item scanf for input
+\item printf for output
+\item Stack management
+\item Function calling conventions
+\item Loop implementation
+\item Array indexing
+
+\subsection{Key Takeaways}
+
+\begin{enumerate}
+\item \textbf{ASCII (7-bit), Latin-1 (8-bit), Unicode (32-bit)} represent character data with increasing capacity.
+
+\begin{enumerate}
+\item \textbf{LDRB/STRB for byte operations}, LDRH/STRH for half-words - smaller than word operations.
+
+\begin{enumerate}
+\item \textbf{Byte operations don't require alignment} unlike word operations (LDR/STR).
+
+\begin{enumerate}
+\item \textbf{Sign extension (LDRSB/LDRSH)} replicates sign bit to preserve signed values.
+
+\begin{enumerate}
+\item \textbf{Strings in C are char arrays} terminated with null character ('\\0' = 0).
+
+\begin{enumerate}
+\item \textbf{scanf and printf are library functions} called via BL instruction.
+
+\begin{enumerate}
+\item \textbf{scanf needs addresses (where to store)}, printf needs values (what to print).
+
+\begin{enumerate}
+\item \textbf{Format strings stored in .data section} using .asciz directive.
+
+\begin{enumerate}
+\item \textbf{Arguments passed in R0-R3} following ARM calling convention.
+
+10. \textbf{Compilation chain: Compile $\rightarrow$ Assemble $\rightarrow$ Link $\rightarrow$ Load $\rightarrow$ Execute}.
+
+11. \textbf{Static linking includes libraries in executable}, dynamic linking loads at runtime.
+
+12. \textbf{Loader sets up virtual memory, copies segments, initializes stack} with arguments.
+
+\subsection{Summary}
+
+Character data handling and library function usage bridge high-level programming concepts and assembly implementation. Understanding byte/half-word operations enables efficient string manipulation and compact data storage. The scanf/printf functions demonstrate how assembly code interfaces with system libraries, requiring careful attention to calling conventions and argument types. The compilation, linking, and loading process reveals how source code transforms into running programs, involving multiple stages with distinct responsibilities. Static and dynamic linking represent different trade-offs between self-containment and flexibility. These concepts are essential for systems programming, understanding program structure, and debugging low-level issues. This knowledge prepares us for advanced topics including operating systems, compilers, and system-level optimization.

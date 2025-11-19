@@ -1,253 +1,162 @@
-# CO224 LaTeX Lecture Notes
+# CO224 Lecture Notes - LaTeX Format
 
-This folder contains the LaTeX source files for generating the complete CO224 lecture notes PDF.
+This directory contains all 20 CO224 lecture notes converted from Markdown to LaTeX format.
 
-## 📁 Folder Structure
+## Files Generated
 
+### Individual Lecture Files (lecture-01.tex to lecture-20.tex)
 
-Lectures/
-├── markdown/          # Original markdown lecture files
-├── html/              # HTML versions for website
-├── latex/             # LaTeX source files (YOU EDIT THESE)
-│   ├── main.tex      # Main document (includes all lectures)
-│   ├── lecture-01.tex # Individual lecture files
-│   ├── lecture-02.tex
-│   ├── ...
-│   └── lecture-20.tex
-└── img/               # Images used in all formats
+- `lecture-01.tex` - Lecture 1: Computer Abstractions and Technology
+- `lecture-02.tex` - Lecture 2: Technology Trends, Moore's Law, and Computer System Organization
+- `lecture-03.tex` - Lecture 3: Understanding Performance
+- `lecture-04.tex` - Lecture 4: Introduction to ARM Assembly
+- `lecture-05.tex` - Lecture 5: Number Representation and Data Processing
+- `lecture-06.tex` - Lecture 6: Branching
+- `lecture-07.tex` - Lecture 7: Function Call and Return
+- `lecture-08.tex` - Lecture 8: Memory Access
+- `lecture-09.tex` - Lecture 9: Microarchitecture and Datapath
+- `lecture-10.tex` - Lecture 10: Processor Control
+- `lecture-11.tex` - Lecture 11: Single-Cycle Execution
+- `lecture-12.tex` - Lecture 12: Pipelined Processors
+- `lecture-13.tex` - Lecture 13: Pipeline Operation and Timing
+- `lecture-14.tex` - Lecture 14: Memory Hierarchy and Caching
+- `lecture-15.tex` - Lecture 15: Direct Mapped Cache Control
+- `lecture-16.tex` - Lecture 16: Associative Cache Control
+- `lecture-17.tex` - Lecture 17: Multi-Level Caching
+- `lecture-18.tex` - Lecture 18: Virtual Memory
+- `lecture-19.tex` - Lecture 19: Multiprocessors
+- `lecture-20.tex` - Lecture 20: Storage and Interfacing
 
+### Main Document
 
-## 🚀 Quick Start
+- `main.tex` - Sample main document that includes all lectures organized into chapters
 
-### Step 1: Create LaTeX Skeleton Files
+## How to Use
 
-Run this to create basic LaTeX files from markdown:
+### Option 1: Compile the Complete Document
 
-bash
-cd Lectures/latex
-python create_skeletons.py
-
-
-This creates `lecture-01.tex` through `lecture-20.tex` with basic structure.
-
-### Step 2: Edit LaTeX Files
-
-Edit each `lecture-XX.tex` file to convert markdown content to LaTeX:
-
-- Replace markdown images: `![](img/file.jpg)` → `\includegraphics{../img/file.jpg}`
-- Convert code blocks → `\begin{lstlisting}...\end{lstlisting}`
-- Convert lists → `\begin{itemize}` or `\begin{enumerate}`
-- Convert **bold** → `\textbf{bold}`
-- Convert _italic_ → `\textit{italic}`
-
-### Step 3: Compile PDF
-
-bash
-cd Lectures/latex
+```bash
 pdflatex main.tex
-pdflatex main.tex    # Run twice for TOC and references
+pdflatex main.tex  # Run twice for table of contents
+```
 
+### Option 2: Include Individual Lectures in Your Own Document
 
-Or use the provided script:
+Create your own main.tex file and include specific lectures:
 
-bash
-.\compile.ps1
+```latex
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
 
+\begin{document}
 
-## 📝 File Descriptions
+% Include specific lecture
+\input{lecture-01}
 
-### `main.tex`
+% Or include multiple lectures
+\input{lecture-02}
+\input{lecture-03}
 
-The main LaTeX document that:
+\end{document}
+```
 
-- Sets up the document class and packages
-- Defines styling and formatting
-- Includes the title page
-- Includes all lecture files
-- Organizes lectures into 5 parts
+### Option 3: Create Custom Subsets
 
-### `lecture-XX.tex`
+You can create custom documents with only the lectures you need:
 
-Individual lecture files. Each should contain:
+```latex
+\documentclass{report}
+% ... packages ...
 
-- Chapter title
-- Sections and subsections
-- Content, images, code blocks
-- Examples and exercises
+\begin{document}
 
-### `lecture-template.tex`
+\chapter{ARM Assembly}
+\input{lecture-04}
+\input{lecture-05}
+\input{lecture-06}
 
-A template for creating new lecture files.
+\chapter{Processor Design}
+\input{lecture-09}
+\input{lecture-10}
 
-### `create_skeletons.py`
+\end{document}
+```
 
-Python script to generate basic LaTeX files from markdown.
+## Important Notes
 
-## 🔧 Compilation Options
+### Content Preservation
 
-### Method 1: Command Line (Recommended)
+✅ **All content from markdown files has been preserved exactly as written**
+- No content has been added
+- No content has been removed
+- No content has been modified
+- Only formatting conversion from Markdown to LaTeX syntax
 
-bash
-cd Lectures/latex
-pdflatex main.tex
-pdflatex main.tex
+### File Structure
 
+Each lecture file (`lecture-XX.tex`) is structured as follows:
+- Uses `\section{}` for the main lecture title
+- Uses `\subsection{}` for major sections
+- Uses `\subsubsection{}` for subsections
+- Uses `\paragraph{}` for sub-subsections
+- No document preamble or `\begin{document}` - ready for inclusion via `\input{}`
 
-### Method 2: PowerShell Script
+### Required Packages
 
-powershell
-cd Lectures/latex
-.\compile.ps1
+To compile these files, your LaTeX document should include:
 
+```latex
+\usepackage{graphicx}     % For images
+\usepackage{amsmath}      % For math equations
+\usepackage{amssymb}      % For math symbols
+\usepackage{listings}     % For code blocks
+\usepackage{xcolor}       % For colors
+```
 
-### Method 3: LaTeX Editor
+### Images
 
-Open `main.tex` in:
+The image paths in the LaTeX files reference:
+```
+../img/Chapter X ....jpg
+```
 
-- TeXstudio
-- Overleaf
-- TeXworks
-- VS Code with LaTeX Workshop extension
+Make sure your LaTeX compiler can find these images relative to the `.tex` files, or adjust the paths accordingly in your main document using:
 
-## 📦 Output Files
+```latex
+\graphicspath{{../img/}}
+```
 
-After compilation:
+## Conversion Details
 
-- **main.pdf** - Your complete lecture notes
-- main.aux, main.log, main.toc - Temporary files (ignored by git)
+The conversion from Markdown to LaTeX handles:
 
-## 🎨 Customization
+- ✅ Headings (# → \section{}, ## → \subsection{}, etc.)
+- ✅ Bold text (**text** → \textbf{text})
+- ✅ Italic text (*text* → \emph{text})
+- ✅ Inline code (`code` → \texttt{code})
+- ✅ Code blocks (``` → \begin{verbatim})
+- ✅ Lists (- → \begin{itemize})
+- ✅ Images (<img> → \begin{figure})
+- ✅ Special characters (escaped for LaTeX)
+- ✅ Math symbols (→, ×, ≤, etc.)
 
-### Colors
+## Regenerating Files
 
-Edit `main.tex` around line 35:
+If you need to regenerate the LaTeX files from updated markdown:
 
-latex
-\definecolor{primaryblue}{RGB}{37,99,235}
-\definecolor{darkblue}{RGB}{30,64,175}
+```bash
+python md_to_latex_converter.py
+```
 
+This will re-convert all 20 markdown lectures to LaTeX format.
 
-### Page Layout
+## Author
 
-Edit `main.tex` around line 25:
-
-latex
-\geometry{
-    left=3cm,
-    right=2.5cm,
-    top=2.5cm,
-    bottom=2.5cm
-}
-
-
-### Chapter/Section Formatting
-
-Edit `main.tex` around line 100-120.
-
-## 📚 LaTeX Tips
-
-### Including Images
-
-latex
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{../img/your-image.jpg}
-    \caption{Your caption}
-    \label{fig:your-label}
-\end{figure}
-
-
-### Code Blocks
-
-latex
-\begin{lstlisting}[language=C, caption={Example}]
-// Your code here
-int main() {
-    return 0;
-}
-\end{lstlisting}
-
-
-### Lists
-
-latex
-\begin{itemize}
-    \item First item
-    \item Second item
-\end{itemize}
-
-\begin{enumerate}
-    \item Numbered item
-    \item Another item
-\end{enumerate}
-
-
-### Tables
-
-latex
-\begin{table}[H]
-\centering
-\begin{tabular}{|l|c|r|}
-\hline
-\textbf{Column 1} & \textbf{Column 2} & \textbf{Column 3} \\
-\hline
-Data 1 & Data 2 & Data 3 \\
-\hline
-\end{tabular}
-\caption{Your table caption}
-\end{table}
-
-
-### Cross-References
-
-latex
-See Figure~\ref{fig:your-label} on page~\pageref{fig:your-label}.
-See Section~\ref{sec:your-section}.
-
-
-## 🔄 Workflow
-
-1. **Create skeletons**: `python create_skeletons.py`
-2. **Edit lecture files**: Convert markdown to LaTeX
-3. **Compile**: `pdflatex main.tex` (twice)
-4. **Check output**: Open `main.pdf`
-5. **Iterate**: Edit and recompile as needed
-6. **Deploy**: Copy `main.pdf` to `../../materials/CO224-Complete-Notes.pdf`
-
-## 📖 Resources
-
-- [LaTeX Documentation](https://www.latex-project.org/help/documentation/)
-- [Overleaf Learn LaTeX](https://www.overleaf.com/learn)
-- [LaTeX Wikibook](https://en.wikibooks.org/wiki/LaTeX)
-- [CTAN Package Documentation](https://ctan.org/)
-
-## ⚠️ Common Issues
-
-### Missing packages
-
-Run: `tlmgr install <package-name>` or let MiKTeX auto-install
-
-### Images not found
-
-Check paths: Use `../img/` relative to latex/ folder
-
-### Compilation errors
-
-- Check for special characters (%, $, &, #, \_)
-- Escape them with backslash: `\%, \$, \&, \#, \_`
-
-### TOC not updating
-
-Run pdflatex twice
-
-## 💡 Pro Tips
-
-1. **Compile often** - Don't wait until the end
-2. **One section at a time** - Comment out other \include statements
-3. **Use labels** - For cross-references
-4. **Backup** - Git commit regularly
-5. **Preview** - Check PDF after each lecture
+**Dr. Isuru Nawinne**  
+Department of Computer Engineering  
+University of Peradeniya
 
 ---
 
-**Need help?** Check the LaTeX template and existing examples!
+Generated on: 2025-11-19

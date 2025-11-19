@@ -1,0 +1,58 @@
+\contentsline {chapter}{\numberline {1}Fundamentals}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Lecture 1: Computer Abstractions and Technology}{5}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Introduction}{5}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}The Big Picture of Computer Systems}{5}{subsection.1.1.2}%
+\contentsline {subsubsection}{Cross-Section of a Computer System (Top to Bottom)}{5}{subsubsection*.1}%
+\contentsline {subsubsection}{Human-Related Level (Gray)}{6}{subsubsection*.2}%
+\contentsline {subsubsection}{System Level (Blue)}{6}{subsubsection*.3}%
+\contentsline {subsubsection}{RTL (Register Transfer Level) - Red/Orange}{6}{subsubsection*.4}%
+\contentsline {subsubsection}{Logic Level (Green)}{6}{subsubsection*.5}%
+\contentsline {subsubsection}{Circuit Level (Light Gray)}{6}{subsubsection*.6}%
+\contentsline {subsubsection}{Substrate Level (Black)}{6}{subsubsection*.7}%
+\contentsline {subsubsection}{Purpose of Computer Systems}{6}{subsubsection*.8}%
+\contentsline {subsection}{\numberline {1.1.3}Instruction Set Architecture (ISA) - The Key Interface}{6}{subsection.1.1.3}%
+\contentsline {subsubsection}{What is an ISA?}{6}{subsubsection*.9}%
+\contentsline {subsubsection}{Example Instructions in an ISA}{7}{subsubsection*.10}%
+\contentsline {subsubsection}{Importance of ISA}{7}{subsubsection*.11}%
+\contentsline {subsection}{\numberline {1.1.4}From Problem to Execution - The Translation Chain}{7}{subsection.1.1.4}%
+\contentsline {subsubsection}{High-Level Process}{7}{subsubsection*.12}%
+\contentsline {subsubsection}{Tool Chain Components}{7}{subsubsection*.13}%
+\contentsline {paragraph}{Compiler}{7}{paragraph*.14}%
+\contentsline {paragraph}{Assembler}{7}{paragraph*.15}%
+\contentsline {paragraph}{Linker}{7}{paragraph*.16}%
+\contentsline {subsubsection}{Architecture-Specific Compilation}{8}{subsubsection*.17}%
+\contentsline {subsection}{\numberline {1.1.5}Writing Programs at Different Levels}{8}{subsection.1.1.5}%
+\contentsline {subsubsection}{Machine Code (Binary)}{8}{subsubsection*.18}%
+\contentsline {subsubsection}{Assembly Language}{8}{subsubsection*.19}%
+\contentsline {subsubsection}{High-Level Languages (C, Python, etc.)}{8}{subsubsection*.20}%
+\contentsline {subsection}{\numberline {1.1.6}Microarchitecture Details}{8}{subsection.1.1.6}%
+\contentsline {subsubsection}{What is Microarchitecture?}{8}{subsubsection*.21}%
+\contentsline {subsubsection}{Hierarchy of Microarchitecture Components}{8}{subsubsection*.22}%
+\contentsline {paragraph}{Microarchitecture Level}{8}{paragraph*.23}%
+\contentsline {paragraph}{Functional Units Level}{9}{paragraph*.24}%
+\contentsline {paragraph}{Logic Gate Level}{9}{paragraph*.25}%
+\contentsline {paragraph}{Transistor Level}{9}{paragraph*.26}%
+\contentsline {paragraph}{Semiconductor Level}{9}{paragraph*.27}%
+\contentsline {subsection}{\numberline {1.1.7}Abstraction Concept}{9}{subsection.1.1.7}%
+\contentsline {subsubsection}{What is an Abstraction?}{9}{subsubsection*.28}%
+\contentsline {subsubsection}{Hardware Abstraction Hierarchy (Bottom to Top)}{9}{subsubsection*.29}%
+\contentsline {paragraph}{1. Substrate (Silicon, Germanium)}{9}{paragraph*.30}%
+\contentsline {paragraph}{2. Transistors}{9}{paragraph*.31}%
+\contentsline {paragraph}{3. Logic Gates}{10}{paragraph*.32}%
+\contentsline {paragraph}{4. Functional Units}{10}{paragraph*.33}%
+\contentsline {paragraph}{5. Microarchitecture}{10}{paragraph*.34}%
+\contentsline {subsubsection}{Software Abstraction Hierarchy (Bottom to Top)}{10}{subsubsection*.35}%
+\contentsline {paragraph}{1. Machine Instructions (Binary)}{10}{paragraph*.36}%
+\contentsline {paragraph}{2. Assembly Instructions}{10}{paragraph*.37}%
+\contentsline {paragraph}{3. Programs / Source Code}{10}{paragraph*.38}%
+\contentsline {paragraph}{4. Algorithms and Data Structures}{10}{paragraph*.39}%
+\contentsline {subsubsection}{Relationships Between Hardware and Software Abstractions}{10}{subsubsection*.40}%
+\contentsline {paragraph}{Voltage Levels $\leftrightarrow $ Logic Levels}{10}{paragraph*.41}%
+\contentsline {paragraph}{Logic Levels $\leftrightarrow $ Numbers}{11}{paragraph*.42}%
+\contentsline {paragraph}{Numbers $\leftrightarrow $ Instructions}{11}{paragraph*.43}%
+\contentsline {paragraph}{Summary of Relationships}{11}{paragraph*.44}%
+\contentsline {subsubsection}{Complete System}{11}{subsubsection*.45}%
+\contentsline {subsection}{\numberline {1.1.8}Performance Theme}{11}{subsection.1.1.8}%
+\contentsline {subsubsection}{Throughout the Lecture Series}{11}{subsubsection*.46}%
+\contentsline {subsection}{\numberline {1.1.9}Key Takeaways}{11}{subsection.1.1.9}%
+\contentsline {subsection}{\numberline {1.1.10}Summary}{12}{subsection.1.1.10}%

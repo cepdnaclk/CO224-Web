@@ -1,59 +1,831 @@
-% Lecture 06: Branching
-% Lectures on Computer Architecture
+\section{Lecture 6: Branching and Control Flow}
 
-\chapter{Branching}
+\emph{By Dr. Kisaru Liyanage}
 
-\section{Introduction}
+\subsection{Introduction}
 
-% TODO: Add content from markdown
+Control flow is what distinguishes computers from simple calculators—the ability to make decisions and alter execution based on conditions. This lecture explores conditional operations and branching in ARM assembly, covering comparison instructions, conditional branches, loop implementation, and PC-relative addressing. Understanding these mechanisms is essential for translating high-level control structures (if statements, loops) into assembly code and for comprehending how processors implement dynamic program behavior.
 
-\section{1. Fundamentals of Conditional Execution}
+\subsection{Fundamentals of Conditional Execution}
 
-% TODO: Add content from markdown
+\subsubsection{Decision-Making in Computers}
 
-\section{2. Comparison Instructions}
+\textbf{What Makes Computers Powerful}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Ability to make decisions based on data
+\item Execute different instructions depending on conditions
+\item Implement if statements, loops, and function calls
+\item Respond dynamically to input and computed values
 
-\section{3. Conditional Branch Instructions}
+\textbf{Control Flow Concepts}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item \textbf{Sequential execution}: Default behavior (PC += 4)
+\item \textbf{Conditional branching}: Jump if condition is true
+\item \textbf{Unconditional branching}: Always jump
+\item \textbf{Function calls}: Branch with return address saving
 
-\section{4. Labels in Assembly}
+\subsubsection{Program Status Register (PSR)}
 
-% TODO: Add content from markdown
+\textbf{Status Flags}
 
-\section{5. Implementing Control Structures}
+\begin{itemize}
+\item \textbf{N (Negative)}: Set if result is negative (bit 31 = 1)
+\item \textbf{Z (Zero)}: Set if result is zero
+\item \textbf{C (Carry)}: Set if unsigned overflow occurred
+\item \textbf{V (oVerflow)}: Set if signed overflow occurred
 
-% TODO: Add content from markdown
+\textbf{How Flags Are Set}
 
-\section{6. Array Access in Loops}
+\begin{itemize}
+\item Comparison instructions (CMP, CMN, TST, TEQ)
+\item Arithmetic/logic instructions with S suffix (ADDS, SUBS)
+\item Flags reflect the result of the operation
+\item Used by subsequent conditional branches
 
-% TODO: Add content from markdown
+\textbf{Example}
 
-\section{7. PC-Relative Addressing}
+\begin{lstlisting}[language=assembly]
+CMP R1, R2           ; Compare R1 and R2 (computes R1 - R2)
+                      ; Sets flags based on result
+\end{verbatim}
 
-% TODO: Add content from markdown
+If R1 = 5, R2 = 3:
 
-\section{8. Conditional Execution (Alternative to Branching)}
+\begin{itemize}
+\item Result of R1 - R2 = 2 (positive, non-zero)
+\item N = 0 (not negative)
+\item Z = 0 (not zero)
+\item C = 1 (no borrow needed)
+\item V = 0 (no overflow)
 
-% TODO: Add content from markdown
+\subsection{Comparison Instructions}
 
-\section{9. Basic Blocks}
+\subsubsection{Compare (CMP)}
 
-% TODO: Add content from markdown
+\textbf{Syntax}
 
-\section{Key Takeaways}
+\begin{lstlisting}[language=assembly]
+CMP Rn, Rm           ; Compare Rn with Rm
+CMP Rn, #imm         ; Compare Rn with immediate
+\end{verbatim}
 
-% TODO: Add content from markdown
+\textbf{Operation}
 
-\section{Summary}
+\begin{itemize}
+\item Performs Rn - Rm (subtraction)
+\item Updates PSR flags based on result
+\item Does NOT store the result
+\item Does NOT modify any register
 
-% TODO: Add content from markdown
+\textbf{Example Usage}
 
-% Note: Convert markdown content manually for best results
-% Remember to:
-% - Replace markdown images with \includegraphics
-% - Convert code blocks to \begin{lstlisting}
-% - Convert lists to \begin{itemize} or \begin{enumerate}
-% - Convert bold/italic with \textbf{} and \textit{}
+\begin{lstlisting}[language=assembly]
+MOV R1, #10
+MOV R2, #5
+CMP R1, R2           ; Compares 10 with 5
+                      ; Result: 10 - 5 = 5 (positive, non-zero)
+                      ; Z = 0, N = 0
+\end{verbatim}
+
+\subsubsection{Compare Negative (CMN)}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+CMN Rn, Rm           ; Compare Negative
+CMN Rn, #imm
+\end{verbatim}
+
+\textbf{Operation}
+
+\begin{itemize}
+\item Performs Rn + Rm (addition)
+\item Updates PSR flags
+\item Equivalent to CMP Rn, -Rm
+\item Useful for checking if sum equals zero
+
+\subsubsection{Test (TST)}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+TST Rn, Rm           ; Test bits
+TST Rn, #imm
+\end{verbatim}
+
+\textbf{Operation}
+
+\begin{itemize}
+\item Performs Rn AND Rm (bitwise AND)
+\item Updates PSR flags
+\item Result not stored
+\item Used to test if specific bits are set
+
+\textbf{Example: Check if bit 5 is set}
+
+\begin{lstlisting}[language=assembly]
+TST R1, #0x20        ; Test bit 5
+BEQ bit_clear        ; Branch if bit was clear (Z=1)
+\end{verbatim}
+
+\subsubsection{Test Equivalence (TEQ)}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+TEQ Rn, Rm           ; Test Equivalence
+TEQ Rn, #imm
+\end{verbatim}
+
+\textbf{Operation}
+
+\begin{itemize}
+\item Performs Rn XOR Rm (exclusive OR)
+\item Updates PSR flags
+\item Z=1 if values are equal
+\item Used to compare values without affecting C or V flags
+
+\subsection{Conditional Branch Instructions}
+
+\subsubsection{Branch if Equal (BEQ)}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+BEQ label            ; Branch if equal (Z=1)
+\end{verbatim}
+
+\textbf{Condition}
+
+\begin{itemize}
+\item Branches if Zero flag is set (Z = 1)
+\item Typically used after CMP to check equality
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+CMP R1, R2           ; Compare R1 and R2
+BEQ equal_label      ; Jump to equal_label if R1 == R2
+; Code if not equal
+equal_label:
+; Code if equal
+\end{verbatim}
+
+\subsubsection{Branch if Not Equal (BNE)}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+BNE label            ; Branch if not equal (Z=0)
+\end{verbatim}
+
+\textbf{Condition}
+
+\begin{itemize}
+\item Branches if Zero flag is clear (Z = 0)
+\item Opposite of BEQ
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+CMP R3, #0
+BNE not_zero         ; Jump if R3 != 0
+; Code if R3 is zero
+not_zero:
+; Code if R3 is non-zero
+\end{verbatim}
+
+\subsubsection{Signed Comparison Branches}
+
+\textbf{Branch if Greater or Equal (BGE)}
+
+\begin{lstlisting}[language=assembly]
+BGE label            ; Branch if Rn >= Rm (signed)
+                      ; Condition: N == V
+\end{verbatim}
+
+\textbf{Branch if Less Than (BLT)}
+
+\begin{lstlisting}[language=assembly]
+BLT label            ; Branch if Rn < Rm (signed)
+                      ; Condition: N != V
+\end{verbatim}
+
+\textbf{Branch if Greater Than (BGT)}
+
+\begin{lstlisting}[language=assembly]
+BGT label            ; Branch if Rn > Rm (signed)
+                      ; Condition: Z==0 AND N==V
+\end{verbatim}
+
+\textbf{Branch if Less or Equal (BLE)}
+
+\begin{lstlisting}[language=assembly]
+BLE label            ; Branch if Rn <= Rm (signed)
+                      ; Condition: Z==1 OR N!=V
+\end{verbatim}
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+CMP R1, R2
+BGE greater_equal    ; Branch if R1 >= R2 (signed)
+; Code if R1 < R2
+greater_equal:
+; Code if R1 >= R2
+\end{verbatim}
+
+\subsubsection{Unsigned Comparison Branches}
+
+\textbf{Branch if Higher or Same (BHS)} (also called BCS - Branch if Carry Set)
+
+\begin{lstlisting}[language=assembly]
+BHS label            ; Branch if Rn >= Rm (unsigned)
+                      ; Condition: C == 1
+\end{verbatim}
+
+\textbf{Branch if Lower (BLO)} (also called BCC - Branch if Carry Clear)
+
+\begin{lstlisting}[language=assembly]
+BLO label            ; Branch if Rn < Rm (unsigned)
+                      ; Condition: C == 0
+\end{verbatim}
+
+\textbf{Branch if Higher (BHI)}
+
+\begin{lstlisting}[language=assembly]
+BHI label            ; Branch if Rn > Rm (unsigned)
+                      ; Condition: C==1 AND Z==0
+\end{verbatim}
+
+\textbf{Branch if Lower or Same (BLS)}
+
+\begin{lstlisting}[language=assembly]
+BLS label            ; Branch if Rn <= Rm (unsigned)
+                      ; Condition: C==0 OR Z==1
+\end{verbatim}
+
+\subsubsection{Signed vs. Unsigned Example}
+
+\textbf{Key Difference}
+
+\begin{lstlisting}[language=assembly]
+MOV R0, #0xFFFFFFFF  ; R0 = -1 (signed) or 4,294,967,295 (unsigned)
+MOV R1, #1           ; R1 = 1
+CMP R0, R1
+
+BLO lower_unsigned   ; BRANCH NOT TAKEN
+                      ; Unsigned: 4,294,967,295 > 1
+
+BLT less_signed      ; BRANCH TAKEN
+                      ; Signed: -1 < 1
+\end{verbatim}
+
+\textbf{When to Use Each}
+
+\begin{itemize}
+\item \textbf{Signed}: Comparing integers that can be negative (temperatures, offsets, differences)
+\item \textbf{Unsigned}: Comparing addresses, array indices, sizes, counts
+
+\subsubsection{Unconditional Branch}
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+B label              ; Branch always
+\end{verbatim}
+
+\textbf{Purpose}
+
+\begin{itemize}
+\item Jump without checking any condition
+\item Skip code sections
+\item Implement infinite loops
+\item Return to loop start
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+B end                ; Skip this section
+; Code to skip
+end:
+; Continue execution here
+\end{verbatim}
+
+\subsection{Labels in Assembly}
+
+\subsubsection{Label Definition}
+
+\textbf{Purpose}
+
+\begin{itemize}
+\item Mark specific instruction locations
+\item Provide symbolic names for addresses
+\item Enable branches and data references
+
+\textbf{Syntax}
+
+\begin{lstlisting}[language=assembly]
+label:               ; Label definition (note colon)
+    MOV R0, #1      ; Instruction at this label
+\end{verbatim}
+
+\textbf{Naming Rules}
+
+\begin{itemize}
+\item Can be almost any identifier
+\item Common conventions: loop, exit, done, L1, L2
+\item Cannot conflict with instruction mnemonics
+\item Case-sensitive
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+start:
+    MOV R0, #0
+loop:
+    ADD R0, R0, #1
+    CMP R0, #10
+    BLT loop         ; Branch to loop label
+    B start          ; Branch to start label
+\end{verbatim}
+
+\subsubsection{Label Resolution}
+
+\textbf{Assembly Process}
+
+\begin{enumerate}
+\item First pass: Record label addresses
+\item Second pass: Replace labels with addresses
+\item Calculate offsets for PC-relative branches
+
+\textbf{Virtual Addresses}
+
+\begin{itemize}
+\item Assembler assigns virtual addresses from 0
+\item First instruction: address 0
+\item Second instruction: address 4
+\item Third instruction: address 8
+\item Physical addresses determined at load time
+
+\subsection{Implementing Control Structures}
+
+\subsubsection{If Statement}
+
+\textbf{C Code}
+
+\begin{lstlisting}[language=c]
+if (i == j)
+    f = g + h;
+else
+    f = g - h;
+\end{verbatim}
+
+\textbf{ARM Assembly (Method 1: Branch on False)}
+
+\begin{lstlisting}[language=assembly]
+    CMP R3, R4       ; Compare i (R3) and j (R4)
+    BNE else         ; Branch to else if not equal
+    ADD R0, R1, R2   ; f = g + h (then clause)
+    B exit           ; Skip else clause
+
+else:
+    SUB R0, R1, R2   ; f = g - h (else clause)
+exit:
+    ; Continue...
+\end{verbatim}
+
+\textbf{ARM Assembly (Method 2: Conditional Execution)}
+
+\begin{lstlisting}[language=assembly]
+    CMP R3, R4       ; Compare i and j
+    ADDEQ R0, R1, R2 ; f = g + h (executed only if equal)
+    SUBNE R0, R1, R2 ; f = g - h (executed only if not equal)
+\end{verbatim}
+
+\subsubsection{If-Else Ladder}
+
+\textbf{C Code}
+
+\begin{lstlisting}[language=c]
+if (x < 0)
+    result = -1;
+else if (x == 0)
+    result = 0;
+else
+    result = 1;
+\end{verbatim}
+
+\textbf{ARM Assembly}
+
+\begin{lstlisting}[language=assembly]
+    CMP R1, #0       ; Compare x with 0
+    BLT negative     ; Branch if x < 0
+    BEQ zero         ; Branch if x == 0
+    ; x > 0
+    MOV R0, #1
+    B done
+
+negative:
+    MOV R0, #-1
+    B done
+zero:
+    MOV R0, #0
+done:
+    ; Continue...
+\end{verbatim}
+
+\subsubsection{While Loop}
+
+\textbf{C Code}
+
+\begin{lstlisting}[language=c]
+while (i < n) {
+    sum += i;
+    i++;
+}
+\end{verbatim}
+
+\textbf{ARM Assembly}
+
+\begin{lstlisting}[language=assembly]
+loop:
+    CMP R1, R2       ; Compare i (R1) with n (R2)
+    BGE end_loop     ; Exit if i >= n
+    ADD R0, R0, R1   ; sum = sum + i
+    ADD R1, R1, #1   ; i++
+    B loop           ; Branch back to loop start
+end_loop:
+    ; Continue...
+\end{verbatim}
+
+\subsubsection{For Loop}
+
+\textbf{C Code}
+
+\begin{lstlisting}[language=c]
+for (i = 0; i < 10; i++) {
+    sum += i;
+}
+\end{verbatim}
+
+\textbf{ARM Assembly}
+
+\begin{lstlisting}[language=assembly]
+    MOV R1, #0       ; i = 0 (initialization)
+
+for_loop:
+    CMP R1, #10      ; Compare i with 10
+    BGE end_for      ; Exit if i >= 10
+    ADD R0, R0, R1   ; sum = sum + i (loop body)
+    ADD R1, R1, #1   ; i++ (increment)
+    B for_loop       ; Branch back to loop start
+end_for:
+    ; Continue...
+\end{verbatim}
+
+\subsubsection{Do-While Loop}
+
+\textbf{C Code}
+
+\begin{lstlisting}[language=c]
+do {
+    sum += i;
+    i++;
+} while (i < n);
+\end{verbatim}
+
+\textbf{ARM Assembly}
+
+\begin{lstlisting}[language=assembly]
+do_loop:
+    ADD R0, R0, R1   ; sum = sum + i (loop body first)
+    ADD R1, R1, #1   ; i++
+    CMP R1, R2       ; Compare i with n
+    BLT do_loop      ; Branch back if i < n
+    ; Continue...
+\end{verbatim}
+
+\textbf{Key Difference from While}
+
+\begin{itemize}
+\item Body executes at least once
+\item Condition checked at end, not beginning
+
+\subsection{Array Access in Loops}
+
+\subsubsection{Static Array Indexing}
+
+\textbf{C Code}
+
+\begin{lstlisting}[language=c]
+while (save[i] == k)
+    i++;
+\end{verbatim}
+
+\textbf{ARM Assembly}
+
+\begin{lstlisting}[language=assembly]
+    ; R6 = base address of save array
+    ; R3 = i (index)
+    ; R5 = k (comparison value)
+
+loop:
+    ADD R12, R6, R3, LSL #2  ; address = base + (i * 4)
+    LDR R0, [R12, #0]        ; R0 = save[i]
+    CMP R0, R5               ; Compare save[i] with k
+    BNE exit                 ; Exit if not equal
+    ADD R3, R3, #1           ; i++
+    B loop                   ; Continue loop
+exit:
+    ; Continue...
+\end{verbatim}
+
+\textbf{Dynamic Offset Calculation}
+
+\begin{itemize}
+\item \texttt{R3, LSL #2} means R3 $\times$ 4 (shift left 2 = multiply by 4)
+\item Words are 4 bytes, so array element i is at base + (i $\times$ 4)
+\item Efficient: shift is faster than multiplication
+
+\subsubsection{Array Traversal}
+
+\textbf{C Code}
+
+\begin{lstlisting}[language=c]
+int sum = 0;
+for (int i = 0; i < 10; i++) {
+    sum += arr[i];
+}
+\end{verbatim}
+
+\textbf{ARM Assembly}
+
+\begin{lstlisting}[language=assembly]
+    LDR R6, =arr     ; R6 = base address of array
+    MOV R0, #0       ; sum = 0
+    MOV R1, #0       ; i = 0
+
+loop:
+    CMP R1, #10
+    BGE done
+    ADD R12, R6, R1, LSL #2  ; address = base + i*4
+    LDR R2, [R12]            ; R2 = arr[i]
+    ADD R0, R0, R2           ; sum += arr[i]
+    ADD R1, R1, #1           ; i++
+    B loop
+done:
+    ; R0 contains sum
+\end{verbatim}
+
+\subsection{PC-Relative Addressing}
+
+\subsubsection{Branch Instruction Encoding}
+
+\textbf{32-Bit Format}
+
+[Cond][1010][Offset]
+ 4-bit 4-bit 24-bit
+
+\textbf{Fields}
+
+\begin{itemize}
+\item \textbf{Cond}: Condition code (EQ, NE, LT, etc.)
+\item \textbf{1010}: Fixed format field for branch
+\item \textbf{Offset}: 24-bit signed offset
+
+\subsubsection{Address Calculation}
+
+\textbf{Problem with Absolute Addressing}
+
+\begin{itemize}
+\item 24 bits can address 2²⁴ = 16 MB
+\item Limits program size to 16 MB
+\item Fixed addresses complicate relocation
+
+\textbf{PC-Relative Solution}
+
+\begin{itemize}
+\item Store offset from current PC, not absolute address
+\item Target = PC + offset
+\item Can branch ±16 MB from current instruction
+\item Total program can exceed 16 MB
+
+\textbf{Offset Calculation}
+
+Offset = (Target Address - PC) / 4
+
+\textbf{Why Divide by 4?}
+
+\begin{itemize}
+\item All instructions are 4-byte aligned
+\item Least significant 2 bits always 00
+\item Omit these bits in encoding
+\item Effective range: ±64 MB (24-bit offset $\times$ 4)
+
+\textbf{Example}
+
+Current PC: 0x1000
+Target: 0x1020
+Offset = (0x1020 - 0x1000) / 4 = 0x20 / 4 = 8 instructions
+
+Encoded offset in branch instruction: 8
+At execution: PC = 0x1000 + (8 $\times$ 4) = 0x1020
+
+\subsubsection{Advantages of PC-Relative}
+
+\textbf{Position-Independent Code}
+
+\begin{itemize}
+\item Code can load at any address
+\item Branches remain correct regardless of location
+\item Essential for libraries and shared code
+
+\textbf{Simplified Linking}
+
+\begin{itemize}
+\item Linker doesn't need to patch all branches
+\item Only external function calls need adjustment
+
+\textbf{Branch Locality}
+
+\begin{itemize}
+\item Most branches are to nearby instructions
+\item PC-relative naturally handles this case
+\item Absolute addressing wastes bits for nearby targets
+
+\subsection{Conditional Execution (Alternative to Branching)}
+
+\subsubsection{Conditional Instruction Suffixes}
+
+\textbf{Concept}
+
+\begin{itemize}
+\item Add condition code to instruction mnemonic
+\item Instruction executes only if condition is true
+\item Otherwise, instruction is skipped (NOP)
+
+\textbf{Available Suffixes}
+
+\begin{itemize}
+\item EQ (equal), NE (not equal)
+\item GT, LT, GE, LE (signed comparisons)
+\item HI, LO, HS, LS (unsigned comparisons)
+\item Many others (see ARM documentation)
+
+\textbf{Examples}
+
+\begin{lstlisting}[language=assembly]
+CMP R1, R2
+ADDEQ R0, R3, R4     ; Execute ADD only if R1 == R2
+SUBNE R0, R3, R4     ; Execute SUB only if R1 != R2
+MOVGT R5, #10        ; Execute MOV only if R1 > R2
+\end{verbatim}
+
+\subsubsection{Conditional Execution Example}
+
+\textbf{C Code}
+
+\begin{lstlisting}[language=c]
+if (a == b)
+    max = a;
+else
+    max = b;
+\end{verbatim}
+
+\textbf{Method 1: Branching}
+
+\begin{lstlisting}[language=assembly]
+    CMP R1, R2       ; Compare a and b
+    BNE else
+    MOV R0, R1       ; max = a
+    B done
+
+else:
+    MOV R0, R2       ; max = b
+done:
+\end{verbatim}
+
+\textbf{Method 2: Conditional Execution}
+
+\begin{lstlisting}[language=assembly]
+    CMP R1, R2       ; Compare a and b
+    MOVEQ R0, R1     ; max = a (if equal)
+    MOVNE R0, R2     ; max = b (if not equal)
+\end{verbatim}
+
+\subsubsection{Advantages and Limitations}
+
+\textbf{Advantages}
+
+\begin{itemize}
+\item More compact code (fewer instructions)
+\item No branch misprediction penalty
+\item Faster for simple conditions
+\item Clearer intent in some cases
+
+\textbf{Limitations}
+
+\begin{itemize}
+\item Only works for simple, short sequences
+\item Cannot conditionally execute blocks of code
+\item All conditional instructions must fit in pipeline
+\item May execute both paths (but discard one result)
+
+\textbf{When to Use}
+
+\begin{itemize}
+\item Simple assignments
+\item Min/max operations
+\item Short computations with single result
+\item Performance-critical paths where branches hurt
+
+\subsection{Basic Blocks}
+
+\subsubsection{Definition}
+
+\textbf{Basic Block Characteristics}
+
+\begin{itemize}
+\item Sequence of instructions with:
+\item No embedded branches (except possibly at end)
+\item No branch targets (except possibly at beginning)
+\item Executed atomically: all or nothing
+\item Single entry point, single exit point
+
+\textbf{Example}
+
+\begin{lstlisting}[language=assembly]
+; Basic Block 1 (entry point)
+    MOV R0, #0
+    MOV R1, #10
+    CMP R1, #10
+    BNE block2       ; Exit point of block 1
+
+; Basic Block 2 (entry and exit point)
+block2:
+    ADD R0, R0, #1
+    CMP R0, R1
+    BLT block2       ; Exit point of block 2
+\end{verbatim}
+
+\subsubsection{Importance in Compilation}
+
+\textbf{Compiler Optimizations}
+
+\begin{itemize}
+\item Identify basic blocks for analysis
+\item Optimize within blocks (register allocation, scheduling)
+\item Build control flow graph from blocks
+\item Apply inter-block optimizations
+
+\textbf{Processor Optimizations}
+
+\begin{itemize}
+\item Predict block execution
+\item Prefetch instructions in block
+\item Schedule instructions more aggressively
+\item Reduce branch overhead
+
+\subsection{Key Takeaways}
+
+\begin{enumerate}
+\item \textbf{Conditional execution} distinguishes computers from calculators, enabling decision-making and dynamic behavior.
+
+\begin{enumerate}
+\item \textbf{CMP instruction} sets PSR flags by performing subtraction without storing the result.
+
+\begin{enumerate}
+\item \textbf{Conditional branches} (BEQ, BNE, BGE, BLT, etc.) check PSR flags to decide whether to jump.
+
+\begin{enumerate}
+\item \textbf{Signed vs. unsigned branches} interpret the same bit patterns differently based on context.
+
+\begin{enumerate}
+\item \textbf{Labels} provide symbolic names for addresses, enabling readable branch targets.
+
+\begin{enumerate}
+\item \textbf{If statements} translate to compare + conditional branch + unconditional branch to skip alternate path.
+
+\begin{enumerate}
+\item \textbf{Loops} use compare + conditional branch (to exit) + unconditional branch (to continue).
+
+\begin{enumerate}
+\item \textbf{Array access} in loops uses dynamic offset calculation with shifts (LSL #2 for word arrays).
+
+\begin{enumerate}
+\item \textbf{PC-relative addressing} stores branch offset from current PC, enabling position-independent code and large programs.
+
+10. \textbf{Word-based offsets} effectively quadruple branch range by encoding instruction count instead of byte offset.
+
+11. \textbf{Conditional execution} provides alternative to branching for simple cases, improving performance and code density.
+
+12. \textbf{Basic blocks} are atomic instruction sequences used by compilers and processors for optimization.
+
+13. \textbf{Branch locality} means most branches target nearby instructions, making PC-relative addressing natural and efficient.
+
+\subsection{Summary}
+
+Branching and conditional execution form the foundation of program control flow, translating high-level constructs like if statements and loops into machine instructions. The ARM architecture provides a rich set of conditional branches for both signed and unsigned comparisons, enabling efficient implementation of diverse control structures. Understanding the distinction between comparison (which sets flags) and branching (which checks flags) is essential for correct assembly programming. PC-relative addressing solves program size limitations while enabling position-independent code, and conditional execution offers a performant alternative to branching for simple cases. Mastering these concepts is crucial for translating algorithms into assembly code, optimizing performance-critical sections, and understanding how processors implement dynamic program behavior. These fundamentals prepare us for more advanced topics including function calls, stack management, and processor pipelining.

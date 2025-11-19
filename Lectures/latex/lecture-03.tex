@@ -1,47 +1,558 @@
-% Lecture 03: Understanding Performance
-% Lectures on Computer Architecture
+\section{Lecture 3: Understanding Performance}
 
-\chapter{Understanding Performance}
+\emph{By Dr. Isuru Nawinne}
 
-\section{Introduction}
+\subsection{Introduction}
 
-% TODO: Add content from markdown
+Understanding computer performance is fundamental to computer architecture and system design. This lecture explores how performance is measured, the factors that influence it, and the principles that guide performance optimization. We examine the metrics used to evaluate systems, the mathematical relationships between performance factors, and Amdahl's Law—a critical principle for understanding the limits of performance improvements.
 
-\section{1. Defining and Measuring Performance}
+\subsection{Defining and Measuring Performance}
 
-% TODO: Add content from markdown
+\subsubsection{Response Time vs. Throughput}
 
-\section{2. CPU Time and Performance Factors}
+\textbf{Response Time (Execution Time)}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Time to complete a single task
+\item Includes all overhead and waiting time
+\item User-perceived performance metric
+\item Example: Time for a program to run from start to finish
+\end{itemize}
 
-\section{3. Understanding CPI in Detail}
+\textbf{Throughput (Bandwidth)}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Number of tasks completed per unit time
+\item Measures system capacity
+\item Important for servers and data centers
+\item Example: Number of transactions processed per second
+\end{itemize}
 
-\section{4. Performance Optimization Principles}
+\textbf{Relationship Between Metrics}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Improving response time often improves throughput
+\item Improving throughput doesn't always improve response time
+\item Different optimization strategies for each metric
+\item System design must balance both considerations
+\end{itemize}
 
-\section{5. Complete Performance Analysis}
+\subsubsection{Performance Definition}
 
-% TODO: Add content from markdown
+\textbf{Mathematical Definition}
 
-\section{6. Practical Performance Considerations}
+Performance = 1 / Execution Time
 
-% TODO: Add content from markdown
+\textbf{Performance Comparison}
 
-\section{Key Takeaways}
+\begin{itemize}
+\item If System A is faster than System B:
+\item Execution Time\_A < Execution Time\_B
+\item Performance\_A > Performance\_B
+\end{itemize}
 
-% TODO: Add content from markdown
+\textbf{Relative Performance}
 
-\section{Summary}
+Performance\_A / Performance\_B = Execution Time\_B / Execution Time\_A
 
-% TODO: Add content from markdown
+Example: If System A is 2$\times$ faster than System B:
 
-% Note: Convert markdown content manually for best results
-% Remember to:
-% - Replace markdown images with \includegraphics
-% - Convert code blocks to \begin{lstlisting}
-% - Convert lists to \begin{itemize} or \begin{enumerate}
-% - Convert bold/italic with \textbf{} and \textit{}
+\begin{itemize}
+\item Performance\_A / Performance\_B = 2
+\item Execution Time\_B / Execution Time\_A = 2
+\item System A takes half the time of System B
+\end{itemize}
+
+\subsection{CPU Time and Performance Factors}
+
+\subsubsection{Components of Execution Time}
+
+\textbf{Total Execution Time}
+
+\begin{itemize}
+\item CPU time: Time CPU spends computing the task
+\item I/O time: Time waiting for input/output operations
+\item Other system activities: OS overhead, other programs
+\end{itemize}
+
+\textbf{CPU Time Focus}
+
+\begin{itemize}
+\item Primary metric for processor performance
+\item Excludes I/O and system effects
+\item Directly reflects processor and memory system performance
+\item Most relevant for comparing processor architectures
+\end{itemize}
+
+\subsubsection{The CPU Time Equation}
+
+\textbf{Basic Formula}
+
+CPU Time = Clock Cycles $\times$ Clock Period
+
+Or equivalently:
+
+CPU Time = Clock Cycles / Clock Rate
+
+\textbf{Key Relationships}
+
+\begin{itemize}
+\item Clock Period = 1 / Clock Rate
+\item Clock Rate measured in Hz (cycles/second)
+\item Clock Cycles = total cycles to execute program
+\item Higher clock rate $\rightarrow$ shorter clock period $\rightarrow$ faster execution
+\end{itemize}
+
+\textbf{Example Calculation}
+
+Program requires 10 billion cycles
+Processor runs at 4 GHz (4 $\times$ 10^9 Hz)
+
+CPU Time = 10 $\times$ 10^9 cycles / (4 $\times$ 10^9 cycles/sec)
+         = 2.5 seconds
+
+\subsubsection{Instruction Count and CPI}
+
+\textbf{Cycles Per Instruction (CPI)}
+
+\begin{itemize}
+\item Average number of clock cycles per instruction
+\item Varies by instruction type and implementation
+\item Key microarchitecture metric
+\end{itemize}
+
+\textbf{Extended CPU Time Equation}
+
+CPU Time = Instruction Count $\times$ CPI $\times$ Clock Period
+
+Or:
+
+CPU Time = (Instruction Count $\times$ CPI) / Clock Rate
+
+\textbf{Three Performance Factors}
+
+\begin{enumerate}
+\item \textbf{Instruction Count}: Number of instructions executed
+\item \textbf{CPI}: Average cycles per instruction
+\item \textbf{Clock Rate}: Speed of the processor clock
+\end{enumerate}
+
+\textbf{Factor Dependencies}
+
+\begin{itemize}
+\item Instruction Count: Determined by algorithm, compiler, ISA
+\item CPI: Determined by processor implementation (microarchitecture)
+\item Clock Rate: Determined by hardware technology and organization
+\end{itemize}
+
+\subsection{Understanding CPI in Detail}
+
+\subsubsection{CPI Variability}
+
+\textbf{Different Instructions, Different CPIs}
+
+\begin{itemize}
+\item Simple operations: May complete in 1 cycle (ADD, AND)
+\item Memory operations: May take multiple cycles (LOAD, STORE)
+\item Branch instructions: Variable cycles (depends on prediction)
+\item Multiply/Divide: Often take many cycles
+\end{itemize}
+
+\textbf{Calculating Average CPI}
+
+Average CPI = Σ (CPI\_i $\times$ Instruction Count\_i) / Total Instruction Count
+
+Where:
+
+\begin{itemize}
+\item CPI\_i = cycles per instruction for instruction type i
+\item Instruction Count\_i = number of times instruction i executed
+\end{itemize}
+
+\subsubsection{CPI Example Calculation}
+
+\textbf{Given:}
+
+\begin{itemize}
+\item Program executes 100,000 instructions
+\item 50,000 ALU operations (CPI = 1)
+\item 30,000 load instructions (CPI = 3)
+\item 20,000 branch instructions (CPI = 2)
+\end{itemize}
+
+\textbf{Calculation:}
+
+Total Cycles = (50,000 $\times$ 1) + (30,000 $\times$ 3) + (20,000 $\times$ 2)
+             = 50,000 + 90,000 + 40,000
+             = 180,000 cycles
+
+Average CPI = 180,000 / 100,000 = 1.8
+
+\subsubsection{Instruction Classes}
+
+\textbf{Common Instruction Categories}
+
+\begin{enumerate}
+\item \textbf{Integer arithmetic}: ADD, SUB, AND, OR
+\item \textbf{Data transfer}: LOAD, STORE
+\item \textbf{Control flow}: BRANCH, JUMP, CALL
+\item \textbf{Floating-point}: FADD, FMUL, FDIV
+\end{enumerate}
+
+\textbf{CPI Characteristics by Class}
+
+\begin{itemize}
+\item Integer arithmetic: Usually 1 cycle
+\item Data transfer: 1-3 cycles (cache hit) or more (cache miss)
+\item Control flow: 1-2 cycles (correct prediction) or more (misprediction)
+\item Floating-point: 2-20+ cycles depending on operation
+\end{itemize}
+
+\subsection{Performance Optimization Principles}
+
+\subsubsection{Make the Common Case Fast}
+
+\textbf{Core Principle}
+
+\begin{itemize}
+\item Optimize frequent operations rather than rare ones
+\item Greater impact on overall performance
+\item Focus resources where they matter most
+\end{itemize}
+
+\textbf{Examples}
+
+\begin{itemize}
+\item Optimize ALU operations (common) over division (rare)
+\item Fast cache for recent data (commonly accessed)
+\item Branch prediction for likely paths
+\item Simple instructions execute quickly
+\end{itemize}
+
+\textbf{Application in Design}
+
+\begin{itemize}
+\item Identify common operations through profiling
+\item Allocate hardware resources accordingly
+\item Accept slower performance for rare cases
+\item Trade-offs guided by usage patterns
+\end{itemize}
+
+\subsubsection{Amdahl's Law}
+
+\textbf{The Fundamental Principle}
+The speedup that can be achieved by improving a particular part of a system is limited by the fraction of time that part is used.
+
+\textbf{Mathematical Formula}
+
+Speedup\_overall = 1 / [(1 - P) + (P / S)]
+
+Where:
+
+\begin{itemize}
+\item P = Proportion of execution time that can be improved
+\item S = Speedup of the improved portion
+\item (1 - P) = Proportion that cannot be improved
+\end{itemize}
+
+\textbf{Alternative Formulation}
+
+Execution Time\_new = Execution Time\_old $\times$ [(1 - P) + (P / S)]
+
+\subsubsection{Amdahl's Law Examples}
+
+\textbf{Example 1: Multiply Operation Speedup}
+
+Given:
+
+\begin{itemize}
+\item Multiply operations take 80\% of execution time
+\item New hardware makes multiplies 10$\times$ faster
+\end{itemize}
+
+Calculation:
+
+P = 0.80 (80\% can be improved)
+S = 10 (10$\times$ speedup)
+
+Speedup\_overall = 1 / [(1 - 0.80) + (0.80 / 10)]
+                = 1 / [0.20 + 0.08]
+                = 1 / 0.28
+                = 3.57$\times$
+
+\textbf{Key Insight:} Despite 10$\times$ improvement in multiplies, overall speedup is only 3.57$\times$ because 20\% of time is unaffected.
+
+\textbf{Example 2: Limited Improvement Fraction}
+
+Given:
+
+\begin{itemize}
+\item Only 30\% of execution can be improved
+\item Improvement is 100$\times$ faster
+\end{itemize}
+
+Calculation:
+
+P = 0.30
+S = 100
+
+Speedup\_overall = 1 / [(1 - 0.30) + (0.30 / 100)]
+                = 1 / [0.70 + 0.003]
+                = 1 / 0.703
+                = 1.42$\times$
+
+\textbf{Key Insight:} Even with 100$\times$ improvement, overall speedup is only 1.42$\times$ because only 30\% of execution benefits.
+
+\subsubsection{Implications of Amdahl's Law}
+
+\textbf{Limitations of Parallelization}
+
+\begin{itemize}
+\item Serial portions limit parallel speedup
+\item As parallelism increases, serial portion dominates
+\item Cannot achieve infinite speedup regardless of cores
+\end{itemize}
+
+\textbf{Optimization Strategy}
+
+\begin{itemize}
+\item Focus on largest contributors to execution time
+\item Consider what fraction can realistically be improved
+\item Multiple small improvements may beat one large improvement
+\item Balance improvements across components
+\end{itemize}
+
+\textbf{Example: Multicore Scaling}
+
+If 90\% of program parallelizes perfectly:
+2 cores:  Speedup = 1.82$\times$
+4 cores:  Speedup = 3.08$\times$
+8 cores:  Speedup = 4.71$\times$
+16 cores: Speedup = 6.40$\times$
+∞ cores:  Speedup = 10.00$\times$ (maximum possible)
+
+The 10\% serial portion ultimately limits speedup to 10$\times$.
+
+\subsection{Complete Performance Analysis}
+
+\subsubsection{The Complete Performance Equation}
+
+\textbf{Bringing It All Together}
+
+CPU Time = (Instruction Count $\times$ CPI $\times$ Clock Period)
+
+Expanded:
+
+CPU Time = (Instructions) $\times$ (Cycles/Instruction) $\times$ (Seconds/Cycle)
+
+\textbf{What Affects Each Factor}
+
+\textbf{Instruction Count:}
+
+\begin{itemize}
+\item Algorithm: Efficient algorithms execute fewer instructions
+\item Programming language: High-level vs low-level
+\item Compiler: Optimization quality
+\item ISA: Instruction complexity and capabilities
+\end{itemize}
+
+\textbf{CPI:}
+
+\begin{itemize}
+\item ISA: Instruction complexity
+\item Microarchitecture: Pipeline depth, branch prediction
+\item Cache performance: Hit rates affect memory access CPI
+\item Instruction mix: Distribution of instruction types
+\end{itemize}
+
+\textbf{Clock Period (or Clock Rate):}
+
+\begin{itemize}
+\item Technology: Transistor speed (nm process)
+\item Organization: Pipeline depth, critical path length
+\item Power constraints: Higher frequency requires more power
+\item Cooling limitations: Heat dissipation capacity
+\end{itemize}
+
+\subsubsection{Performance Comparison Example}
+
+\textbf{Scenario:}
+Compare two implementations of the same ISA
+
+\begin{itemize}
+\item System A: Clock Rate = 2 GHz, CPI = 2.0
+\item System B: Clock Rate = 3 GHz, CPI = 3.0
+\item Same program with 1 million instructions
+\end{itemize}
+
+\textbf{System A:}
+
+CPU Time\_A = (1 $\times$ 10^6 instructions) $\times$ (2.0 cycles/instruction) / (2 $\times$ 10^9 cycles/sec)
+           = 2 $\times$ 10^6 cycles / (2 $\times$ 10^9 cycles/sec)
+           = 0.001 seconds = 1 millisecond
+
+\textbf{System B:}
+
+CPU Time\_B = (1 $\times$ 10^6 instructions) $\times$ (3.0 cycles/instruction) / (3 $\times$ 10^9 cycles/sec)
+           = 3 $\times$ 10^6 cycles / (3 $\times$ 10^9 cycles/sec)
+           = 0.001 seconds = 1 millisecond
+
+\textbf{Result:} Both systems have identical performance despite different clock rates and CPIs.
+
+\subsubsection{Trade-offs in Design}
+
+\textbf{Clock Rate vs. CPI Trade-off}
+
+\begin{itemize}
+\item Higher clock rate may require deeper pipeline
+\item Deeper pipeline often increases CPI (more stalls)
+\item Must balance frequency gains against CPI losses
+\end{itemize}
+
+\textbf{Instruction Count vs. CPI Trade-off}
+
+\begin{itemize}
+\item Complex instructions reduce instruction count
+\item But complex instructions may increase CPI
+\item CISC vs RISC architecture debate
+\end{itemize}
+
+\textbf{Power vs. Performance}
+
+\begin{itemize}
+\item Higher clock rate increases power consumption
+\item Power = Capacitance $\times$ Voltage² $\times$ Frequency
+\item Mobile systems prioritize power over peak performance
+\end{itemize}
+
+\subsection{Practical Performance Considerations}
+
+\subsubsection{Benchmarking}
+
+\textbf{Purpose of Benchmarks}
+
+\begin{itemize}
+\item Measure real-world performance
+\item Compare different systems objectively
+\item Standard workloads for reproducibility
+\end{itemize}
+
+\textbf{Types of Benchmarks}
+
+\begin{itemize}
+\item Synthetic: Artificial programs (e.g., Dhrystone, Whetstone)
+\item Application: Real programs (e.g., SPEC CPU, databases)
+\item Workload: Representative task mixes
+\end{itemize}
+
+\textbf{Benchmark Pitfalls}
+
+\begin{itemize}
+\item May not represent your workload
+\item Can be optimized for unfairly
+\item Need multiple benchmarks for complete picture
+\end{itemize}
+
+\subsubsection{Performance Metrics in Practice}
+
+\textbf{MIPS (Million Instructions Per Second)}
+
+MIPS = Instruction Count / (Execution Time $\times$ 10^6)
+     = Clock Rate / (CPI $\times$ 10^6)
+
+\textbf{Limitations of MIPS:}
+
+\begin{itemize}
+\item Doesn't account for instruction complexity
+\item Different ISAs have different instruction capabilities
+\item Higher MIPS doesn't guarantee better performance
+\item "Meaningless Indication of Processor Speed"
+\end{itemize}
+
+\textbf{Better Metrics:}
+
+\begin{itemize}
+\item Execution time for specific workloads
+\item Throughput for server applications
+\item Energy efficiency (performance per watt)
+\item Performance per dollar
+\end{itemize}
+
+\subsubsection{Power and Energy Considerations}
+
+\textbf{Power Wall}
+
+\begin{itemize}
+\item Cannot increase clock rate indefinitely
+\item Power consumption limits frequency scaling
+\item Led to multi-core era
+\end{itemize}
+
+\textbf{Dynamic Power Equation}
+
+Power = Capacitance $\times$ Voltage² $\times$ Frequency
+
+\textbf{Energy Equation}
+
+Energy = Power $\times$ Time
+
+\textbf{Implications:}
+
+\begin{itemize}
+\item Lowering voltage reduces power dramatically (squared effect)
+\item Higher frequency increases power linearly
+\item Faster execution may save energy overall (less time)
+\item Energy efficiency increasingly important metric
+\end{itemize}
+
+\subsection{Key Takeaways}
+
+\begin{enumerate}
+\item \textbf{Performance is the inverse of execution time} - faster systems have shorter execution times and higher performance values.
+\end{enumerate}
+
+\begin{enumerate}
+\item \textbf{Three key factors determine CPU performance:}
+\end{enumerate}
+
+\begin{itemize}
+\item Instruction Count (algorithm, compiler, ISA)
+\item CPI (microarchitecture, instruction mix)
+\item Clock Rate (technology, organization)
+\end{itemize}
+
+\begin{enumerate}
+\item \textbf{Amdahl's Law limits speedup} - the potential speedup from improving any part of a system is limited by how much time that part is used.
+\end{enumerate}
+
+\begin{enumerate}
+\item \textbf{"Make the common case fast"} - optimize frequently executed operations for maximum impact on overall performance.
+\end{enumerate}
+
+\begin{enumerate}
+\item \textbf{CPI varies by instruction type} - average CPI depends on the mix of instructions and their individual costs.
+\end{enumerate}
+
+\begin{enumerate}
+\item \textbf{Trade-offs are fundamental} - improvements in one area (e.g., clock rate) may harm another (e.g., CPI or power consumption).
+\end{enumerate}
+
+\begin{enumerate}
+\item \textbf{Benchmarking is essential} - real workloads provide the most meaningful performance measurements.
+\end{enumerate}
+
+\begin{enumerate}
+\item \textbf{Power is a critical constraint} - modern performance optimization must consider power and energy efficiency, not just speed.
+\end{enumerate}
+
+\begin{enumerate}
+\item \textbf{Multiple factors must be optimized together} - focusing on only one aspect (like clock rate) can be counterproductive.
+\end{enumerate}
+
+\begin{enumerate}
+\item \textbf{Understanding performance equations} enables rational design decisions and accurate performance predictions.
+\end{enumerate}
+
+\subsection{Summary}
+
+Performance analysis is central to computer architecture, providing the foundation for making informed design decisions. By understanding the relationship between instruction count, CPI, and clock rate, architects can identify optimization opportunities and predict the impact of changes. Amdahl's Law reminds us that the benefit of any improvement is constrained by what fraction of execution time it affects, emphasizing the importance of focusing on the common case. As we design systems, we must balance competing factors—clock rate, CPI, power consumption, and cost—to achieve the best overall performance for target applications. The principles covered in this lecture provide the analytical framework for evaluating processor designs and optimization strategies throughout the study of computer architecture.

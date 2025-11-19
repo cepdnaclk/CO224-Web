@@ -83,6 +83,8 @@ Multiprocessor systems address performance limitations encountered with single p
 
 ## 19.5 Shared Memory Multiprocessors (SMM)
 
+![Shared Memory Multiprocessors](../img/Multiprocessors_SSM.jpg)
+
 ### 19.5.1 Most Common Approach
 
 **Architecture**:
@@ -135,6 +137,8 @@ Multiprocessor systems address performance limitations encountered with single p
 
 
 ## 19.7 Uniform Memory Access (UMA)
+
+![Uniform Memory Access (UMA)](../img/Multiprocessors_NVM.jpg)
 
 ### 19.7.1 Definition
 
@@ -229,6 +233,8 @@ Multiprocessor systems address performance limitations encountered with single p
 ## 19.10 Bus Snooping
 
 Common technique for cache coherence in SMP systems.
+
+![Bus Snooping](../img/Multiprocessors_bus.jpg)
 
 ### 19.10.1 What is Bus Snooping?
 
@@ -400,6 +406,8 @@ Common technique for cache coherence in SMP systems.
 ## 19.14 MESI Protocol Details
 
 Named after four states: **Modified, Exclusive, Shared, Invalid**
+
+![MESI](../img/Multiprocessors_mesi.jpg)
 
 Most popular cache coherency protocol, used in Intel Pentium and IBM PowerPC processors.
 
@@ -606,6 +614,8 @@ Most popular cache coherency protocol, used in Intel Pentium and IBM PowerPC pro
 
 ### 19.18.1 1. NC-NUMA (Non-Cached NUMA)
 
+![Bus Snooping](../img/Multiprocessors_mmu.jpg)
+
 **Characteristics**:
 
 - No caches shown in architecture
@@ -613,6 +623,8 @@ Most popular cache coherency protocol, used in Intel Pentium and IBM PowerPC pro
 - Simpler but slower
 
 ### 19.18.2 2. CC-NUMA (Cache-Coherent NUMA)
+
+![Bus Snooping](../img/Multiprocessors_cmmu.jpg)
 
 **Characteristics**:
 

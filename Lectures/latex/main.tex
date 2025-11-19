@@ -1,246 +1,238 @@
-\documentclass[12pt,a4paper,oneside]{book}
+% Lectures on Computer Architecture
+% Compile with pdfLaTeX
+\documentclass[11pt, a4paper]{book}
 
-% ============================================
-% PACKAGES
-% ============================================
+% ---------- FONTS & ENCODING ----------
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[english]{babel}
-\usepackage{geometry}
+\usepackage{lmodern}  % Latin Modern fonts - better than CM
+
+% ---------- LAYOUT ----------
+\usepackage[paper=a4paper, margin=2.5cm, top=3.5cm, bottom=3.5cm, headheight=14pt]{geometry}
+\usepackage{ragged2e}
+\usepackage{setspace}
+\setstretch{1.1}  % Slightly increased line spacing for readability
+
+% ---------- ESSENTIAL PACKAGES ----------
 \usepackage{graphicx}
-\usepackage{amsmath,amssymb,amsthm}
-\usepackage{hyperref}
-\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{listings}
-\usepackage{fancyhdr}
-\usepackage{titlesec}
-\usepackage{tocloft}
 \usepackage{enumitem}
-\usepackage{booktabs}
-\usepackage{float}
-\usepackage{caption}
-\usepackage{subcaption}
 
-% ============================================
-% PAGE SETUP
-% ============================================
-\geometry{
-    a4paper,
-    left=3cm,
-    right=2.5cm,
-    top=2.5cm,
-    bottom=2.5cm,
-    headheight=15pt
-}
+% Configure list formatting for consistent alignment
+\setlist[itemize]{leftmargin=*, topsep=8pt, itemsep=4pt, parsep=0pt, partopsep=0pt}
+\setlist[enumerate]{leftmargin=*, topsep=8pt, itemsep=4pt, parsep=0pt, partopsep=0pt}
 
-% ============================================
-% COLORS
-% ============================================
-\definecolor{primaryblue}{RGB}{37,99,235}
-\definecolor{darkblue}{RGB}{30,64,175}
-\definecolor{codegreen}{RGB}{0,128,0}
-\definecolor{codegray}{RGB}{128,128,128}
-\definecolor{codepurple}{RGB}{88,0,130}
-\definecolor{backcolour}{RGB}{245,245,245}
+% ---------- COLORS ----------
+\usepackage{xcolor}
+\definecolor{accentblue}{HTML}{1E9EEB} % tweak hex to taste (bright cyan-blue)
+\definecolor{accentdark}{HTML}{0E6A8A} % darker blue/teal if needed
+\definecolor{accentgray}{gray}{0.45}
 
-% ============================================
-% HYPERLINKS
-% ============================================
-\hypersetup{
-    colorlinks=true,
-    linkcolor=primaryblue,
-    filecolor=darkblue,
-    urlcolor=primaryblue,
-    citecolor=primaryblue,
-    pdftitle={Lectures on Computer Architecture - Complete Lecture Notes},
-    pdfauthor={Dr. Isuru Nawinne},
-    pdfsubject={Computer Architecture},
-    pdfkeywords={Computer Architecture, ARM, Processors, Memory, Cache},
-    bookmarksnumbered=true,
-    bookmarksopen=true
-}
+% ---------- HEADER / FOOTER & BACKGROUNDS ----------
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage{eso-pic} % add to background
 
-% ============================================
-% CODE LISTINGS
-% ============================================
-\lstdefinestyle{codestyle}{
-    backgroundcolor=\color{backcolour},   
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{primaryblue}\bfseries,
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\small,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=8pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=4,
-    frame=single,
-    rulecolor=\color{codegray}
-}
-\lstset{style=codestyle}
-
-% ============================================
-% HEADERS AND FOOTERS
-% ============================================
 \pagestyle{fancy}
-\fancyhf{}
-\fancyhead[L]{\nouppercase{\leftmark}}
-\fancyhead[R]{\thepage}
-\fancyfoot[C]{\small Lectures on Computer Architecture}
-\renewcommand{\headrulewidth}{0.5pt}
-\renewcommand{\footrulewidth}{0.5pt}
+\fancyhf{} % clear header/footer
+% page number at top-right (small)
+\fancyhead[R]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
 
-% Plain style for chapter pages
-\fancypagestyle{plain}{
-    \fancyhf{}
-    \fancyfoot[C]{\small Lectures on Computer Architecture}
-    \fancyfoot[R]{\thepage}
-    \renewcommand{\headrulewidth}{0pt}
-    \renewcommand{\footrulewidth}{0.5pt}
+% Decorative bars drawn on every page (top & bottom)
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    % Top thin white margin stripe above blue bar (matches sample)
+    \fill [white] (current page.north west) rectangle ([yshift=-1.1cm]current page.north east);
+    % Top blue bar (thin)
+    \fill [accentblue] ([yshift=-1.1cm]current page.north west) rectangle ([yshift=-1.45cm]current page.north east);
+    % thin dark stripe below top blue
+    \fill [black] ([yshift=-1.45cm]current page.north west) rectangle ([yshift=-1.50cm]current page.north east);
+    % Bottom thick blue bar
+    \fill [accentblue] ([yshift=1.8cm]current page.south west) rectangle ([yshift=1.2cm]current page.south east);
+    % white gap line
+    \fill [white] ([yshift=1.2cm]current page.south west) rectangle ([yshift=1.15cm]current page.south east);
+    % thin dark stripe under bottom blue
+    \fill [black] ([yshift=1.15cm]current page.south west) rectangle ([yshift=1.1cm]current page.south east);
+  \end{tikzpicture}%
 }
 
-% ============================================
-% CHAPTER FORMATTING
-% ============================================
+% To avoid the decorative bars covering content, push text away from top/bottom:
+\setlength{\headsep}{28pt}
+\setlength{\footskip}{48pt}
+
+% ---------- TITLE / COVER STYLING ----------
+\usepackage{titling}
+\pretitle{\vspace*{4cm}\raggedright} % push title down similar to sample
+\posttitle{\par\vspace{0.5em}}
+\preauthor{\vspace{2em}\raggedright\small}
+\postauthor{\par\vspace{0.5em}}
+\predate{}\postdate{}
+
+% ---------- SECTION / HEADING STYLES ----------
+\usepackage{titlesec}
 \titleformat{\chapter}[display]
-{\normalfont\huge\bfseries\color{primaryblue}}
-{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+  {\normalfont\Huge\bfseries\sffamily\color{accentblue}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{0pt}{30pt}
 
-\titlespacing*{\chapter}{0pt}{0pt}{40pt}
-
-% ============================================
-% SECTION FORMATTING
-% ============================================
 \titleformat{\section}
-{\normalfont\Large\bfseries\color{darkblue}}
-{\thesection}{1em}{}
+  {\Large\bfseries\sffamily\color{accentblue}}
+  {\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 
 \titleformat{\subsection}
-{\normalfont\large\bfseries\color{darkblue}}
-{\thesubsection}{1em}{}
+  {\large\bfseries\sffamily\color{accentdark}}
+  {\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
-% ============================================
-% TABLE OF CONTENTS
-% ============================================
-\setcounter{tocdepth}{2}
-\setcounter{secnumdepth}{3}
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\sffamily\color{accentdark}}
+  {\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
-% ============================================
-% CUSTOM COMMANDS
-% ============================================
-\newcommand{\lectureauthor}{Dr. Isuru Nawinne}
-\newcommand{\institution}{University of Peradeniya}
-\newcommand{\department}{Department of Computer Engineering}
+\titleformat{\paragraph}[runin]
+  {\normalsize\bfseries\color{black}}
+  {}{0em}{}
+\titlespacing*{\paragraph}{0pt}{2ex plus 1ex minus .2ex}{1em}
 
-% ============================================
-% DOCUMENT START
-% ============================================
+% ---------- TABLE OF CONTENTS STYLING ----------
+\usepackage{tocloft}
+\renewcommand{\cftsecfont}{\sffamily\small\color{accentblue}}
+\renewcommand{\cftsecpagefont}{\sffamily\small\color{accentblue}}
+\renewcommand{\cftbeforesecskip}{4pt}
+\renewcommand{\contentsname}{\color{accentblue}\Large\bfseries Content}
+
+% ---------- CODE LISTINGS ----------
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    tabsize=4,
+    backgroundcolor=\color{gray!10},
+    commentstyle=\color{green!60!black},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red!70!black}
+}
+
+% ---------- HYPERREF ----------
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=accentdark,
+  urlcolor=accentblue,
+  citecolor=accentblue,
+  pdftitle={Lectures on Computer Architecture},
+  pdfauthor={Dr. Isuru Nawinne},
+  bookmarksnumbered=true,
+  bookmarksopen=true
+}
+
+% ---------- DOCUMENT ----------
 \begin{document}
 
-% ============================================
-% TITLE PAGE
-% ============================================
+% ----------------- COVER PAGE -----------------
 \begin{titlepage}
-    \centering
-    \vspace*{3cm}
-    
-    {\Huge\bfseries\color{primaryblue} Lectures on\par}
-    \vspace{0.5cm}
-    {\huge\bfseries Computer Architecture\par}
-    \vspace{1cm}
-    {\Large Complete Lecture Notes\par}
-    
-    \vspace{3cm}
-    
-    {\Large\itshape \lectureauthor\par}
-    \vspace{0.3cm}
-    {\large Senior Lecturer\par}
-    \vspace{0.5cm}
-    {\large \department\par}
-    {\large \institution\par}
-    
-    \vfill
-    
-    {\large Sri Lanka\par}
-    \vspace{0.5cm}
-    {\large \today\par}
+  \thispagestyle{empty}
+  \vspace*{2cm}
+  % "Lectures on" small blue text
+  {\Large\bfseries\color{accentblue} Lectures on\par}
+  \vspace{1.0em}
+  % Big serif title - mimic large left-aligned serif
+  {\Huge\bfseries\scshape Computer\par}
+  {\Huge\bfseries\scshape Architecture\par}
+  \vspace{2.5cm}
+  % small ornamental short blue rule
+  {\noindent\color{accentblue}\rule{1.6cm}{3pt}\par}
+  \vfill
+  % Author line
+  {\small\textbf{Isuru Nawinne}\par}
+  {\small Faculty of Engineering - University of Peradeniya\par}
+  \vspace{2.5cm}
+  % bottom bars are already drawn by shipout picture
 \end{titlepage}
 
-% ============================================
-% ABOUT THE COURSE
-% ============================================
-\chapter*{About This Course}
-\addcontentsline{toc}{chapter}{About This Course}
+\cleardoublepage
+\pagestyle{fancy}
 
-This lecture series provides a comprehensive guide to computer architecture, covering topics from fundamental abstractions to advanced concepts in processor design, memory systems, and multiprocessing. Each lecture includes detailed notes, diagrams, and examples to support your learning journey.
-
-\section*{About the Instructor}
-
-Dr. Isuru Nawinne received his B.Sc. degree in Engineering from the University of Peradeniya, Sri Lanka (2011), and his Ph.D. in Computer Science and Engineering from the University of New South Wales, Sydney, Australia (2016). He teaches one of the best computer architecture foundational courses in the world, with materials and delivery methods that consistently produce impressive outcomes. His students often pursue PhD research at world renowned universities, and are regularly recruited by world-leading computer architecture companies including ARM and SiFive.
-
-\section*{Contact Information}
-
-\begin{itemize}[leftmargin=*]
-    \item \textbf{Email:} \href{mailto:isurunawinne@eng.pdn.ac.lk}{isurunawinne@eng.pdn.ac.lk}
-    \item \textbf{Phone:} +94 81 239 3470
-    \item \textbf{Website:} \href{https://people.ce.pdn.ac.lk/staff/academic/isuru-nawinne/}{Academic Profile}
-    \item \textbf{YouTube:} \href{https://www.youtube.com/@IsuruNawinne-UoP}{@IsuruNawinne-UoP}
-\end{itemize}
-
-\clearpage
-
-% ============================================
-% TABLE OF CONTENTS
-% ============================================
+% ----------------- FRONT MATTER -----------------
 \tableofcontents
 \clearpage
 
-% ============================================
-% MAIN CONTENT - INCLUDE LECTURE FILES
-% ============================================
+% ----------------- MAIN CONTENT -----------------
+\chapter{Fundamentals}
 
-\part{Foundations}
+% Lecture 1: Computer Abstractions and Technology
+\input{lecture-01}
 
-\include{latex/lecture-01}  % Computer Abstractions
-\include{latex/lecture-02}  % Technology Trends
-\include{latex/lecture-03}  % Understanding Performance
-\include{latex/lecture-04}  % Introduction to ARM Assembly
-\include{latex/lecture-05}  % Number Representation and Data Processing
+% % Lecture 2: Technology Trends
+% \input{lecture-02}
 
-\part{Programming Concepts}
+% % Lecture 3: Understanding Performance
+% \input{lecture-03}
 
-\include{latex/lecture-06}  % Branching
-\include{latex/lecture-07}  % Function Call and Return
-\include{latex/lecture-08}  % Memory Access
-\include{latex/lecture-09}  % Microarchitecture and Datapath
+% \chapter{ARM Assembly Programming}
 
-\part{Processor Design}
+% % Lecture 4: Introduction to ARM Assembly
+% \input{lecture-04}
 
-\include{latex/lecture-10}  % Processor Control
-\include{latex/lecture-11}  % Single-Cycle Execution
-\include{latex/lecture-12}  % Pipelined Processors
-\include{latex/lecture-13}  % Pipeline Operation and Timing
+% % Lecture 5: Number Representation and Data Processing
+% \input{lecture-05}
 
-\part{Memory Systems}
+% % Lecture 6: Branching
+% \input{lecture-06}
 
-\include{latex/lecture-14}  % Memory Hierarchy and Caching
-\include{latex/lecture-15}  % Direct Mapped Cache Control
-\include{latex/lecture-16}  % Associative Cache Control
-\include{latex/lecture-17}  % Multi-Level Caching
-\include{latex/lecture-18}  % Virtual Memory
+% % Lecture 7: Function Call and Return
+% \input{lecture-07}
 
-\part{Advanced Topics}
+% % Lecture 8: Memory Access
+% \input{lecture-08}
 
-\include{latex/lecture-19}  % Multiprocessors
-\include{latex/lecture-20}  % Storage and Interfacing
+% \chapter{Processor Architecture}
 
-% ============================================
-% END DOCUMENT
-% ============================================
+% % Lecture 9: Microarchitecture and Datapath
+% \input{lecture-09}
+
+% % Lecture 10: Processor Control
+% \input{lecture-10}
+
+% % Lecture 11: Single-Cycle Execution
+% \input{lecture-11}
+
+% % Lecture 12: Pipelined Processors
+% \input{lecture-12}
+
+% % Lecture 13: Pipeline Operation and Timing
+% \input{lecture-13}
+
+% \chapter{Memory Systems}
+
+% % Lecture 14: Memory Hierarchy and Caching
+% \input{lecture-14}
+
+% % Lecture 15: Direct Mapped Cache Control
+% \input{lecture-15}
+
+% % Lecture 16: Associative Cache Control
+% \input{lecture-16}
+
+% % Lecture 17: Multi-Level Caching
+% \input{lecture-17}
+
+% % Lecture 18: Virtual Memory
+% \input{lecture-18}
+
+% \chapter{Advanced Topics}
+
+% % Lecture 19: Multiprocessors
+% \input{lecture-19}
+
+% % Lecture 20: Storage and Interfacing
+% \input{lecture-20}
+
 \end{document}

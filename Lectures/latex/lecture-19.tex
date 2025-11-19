@@ -1,95 +1,761 @@
-% Lecture 19: Multiprocessors
-% CO224 - Computer Architecture
+\section{Lecture 19: Multiprocessors}
 
-\chapter{Multiprocessors}
+\emph{By Dr. Isuru Nawinne}
 
-\section{Introduction}
+\subsection{Introduction}
 
-% TODO: Add content from markdown
+Multiprocessor systems represent a fundamental paradigm shift in computer architecture, using multiple processors on the same chip to execute multiple programs or threads simultaneously when traditional performance improvement techniques—clock frequency scaling and instruction-level parallelism—reached physical and practical limits. This lecture explores the evolution toward multiprocessor architectures driven by power walls and parallelism walls, examines the critical challenge of cache coherence that arises when multiple processors maintain private caches of shared memory, and analyzes solutions including bus snooping protocols like MESI and scalable directory-based coherence schemes. We compare architectural organizations from uniform memory access (UMA) to non-uniform memory access (NUMA), understanding how different designs balance simplicity, performance, and scalability for systems ranging from dual-core smartphones to thousand-processor supercomputers.
 
-\section{1. Introduction to Multiprocessors}
+\subsection{Introduction to Multiprocessors}
 
-% TODO: Add content from markdown
+Multiprocessor systems address performance limitations encountered with single processor systems by employing multiple processors on the same chip to execute multiple programs or threads simultaneously.
 
-\section{2. Performance Evolution Background}
+\subsection{Performance Evolution Background}
 
-% TODO: Add content from markdown
+\subsubsection{Historical Performance Improvementsvements}
 
-\section{3. Multiprocessor Approach}
+\paragraph{Early Methods: Clock Frequency Scaling}
 
-% TODO: Add content from markdown
+\textbf{Approach}:
 
-\section{4. Shared Memory Multiprocessors (SMM)}
+\begin{itemize}
+\item Increasing clock frequency (reducing clock cycle time)
+\item Goal: Spend less time per instruction
 
-% TODO: Add content from markdown
+\textbf{Limitations Encountered}:
 
-\section{5. Memory Contention Problem}
+\begin{itemize}
+\item Hit barrier at ~4 GHz: Power wall problem
+\item Excessive power dissipation caused overheating
+\item Cooling became inadequate
+\item Could not sustainably increase frequency further
 
-% TODO: Add content from markdown
+\paragraph{Instruction Level Parallelism (ILP)}
 
-\section{6. Uniform Memory Access (UMA)}
+\textbf{Techniques}:
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item \textbf{Pipelining}: Process multiple instructions simultaneously
+\item Utilize different hardware components at same time
+\item Example: Execute one instruction while fetching another
+\item \textbf{Advanced techniques}: Multiple issue, out-of-order execution
+\item Exploit parallelism inherent in programs
 
-\section{7. Solution to Contention: Caches}
+\textbf{Limitations Encountered}:
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Programs contain limited inherent parallelism
+\item Dependencies prevent unlimited parallel execution
+\item Hit "parallelism wall"
+\item Can't exploit more parallelism beyond program's inherent limits
 
-\section{8. Cache Coherence Problem}
+\subsubsection{Moore's Law Context}
 
-% TODO: Add content from markdown
+\textbf{Observation}:
 
-\section{9. Bus Snooping}
+\begin{itemize}
+\item Number of transistors doubles every 2 years
+\item Technology improves, more transistors available
 
-% TODO: Add content from markdown
+\textbf{Question}: How to use abundant transistors?
 
-\section{10. Write Invalidate Protocol}
+\textbf{Solution}: Multiple processors on same chip
 
-% TODO: Add content from markdown
+\subsection{Multiprocessor Approach}
 
-\section{11. Write Update Protocol}
+\subsubsection{Key Characteristics}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Multiple processor cores on same chip
+\item Execute multiple instruction streams simultaneously
+\item Run multiple programs/threads in real time (true parallelism)
+\item Different from single processor illusion of parallelism
 
-\section{12. Real Protocol Implementations}
+\subsubsection{Terminology}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item \textbf{Processing Elements (PE)}: Common term for individual processors
+\item Each PE is a complete CPU with fetch, decode, execute units
 
-\section{13. MESI Protocol Details}
+\subsubsection{Key Problem: Communication Between Processors}
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item Multiple processors executing simultaneously
+\item Programs often need to communicate/share data
+\item Splitting programs into threads requires coordination
+\item Communication is central design challenge
 
-\section{14. MESI Protocol State Transitions}
+\subsection{Shared Memory Multiprocessors (SMM)}
 
-% TODO: Add content from markdown
+![Shared Memory Multiprocessors](../img/Multiprocessors_SSM.jpg)
 
-\section{15. Scalability of UMA Systems}
+\subsubsection{Most Common Approach}
 
-% TODO: Add content from markdown
+\textbf{Architecture}:
 
-\section{16. Non-Uniform Memory Access (NUMA)}
+\begin{itemize}
+\item Communication through shared memory
+\item All processors access same physical address space
+\item Memory device connected via common bus/interconnect
 
-% TODO: Add content from markdown
+\subsubsection{Operating System Role}
 
-\section{17. Two Types of NUMA}
+\textbf{Responsibilities}:
 
-% TODO: Add content from markdown
+\begin{itemize}
+\item OS code stored in shared memory
+\item OS shared between all processors
+\item Manages memory access arbitration
+\item Performs workload balancing
+\item Ensures processors access only authorized memory portions
 
-\section{18. Directory-Based Cache Coherence}
+\subsubsection{Workload Balancing}
 
-% TODO: Add content from markdown
+\textbf{Purpose}:
 
-\section{Key Takeaways}
+\begin{itemize}
+\item OS distributes tasks among processors
+\item Goal: All processors working in parallel
+\item Avoid idle processors
+\item Maximize overall system utilization
 
-% TODO: Add content from markdown
+\subsection{Memory Contention Problem}
 
-\section{Summary}
+\subsubsection{Inherent Issue}
 
-% TODO: Add content from markdown
+\textbf{Challenge}:
 
-% Note: Convert markdown content manually for best results
-% Remember to:
-% - Replace markdown images with \includegraphics
-% - Convert code blocks to \begin{lstlisting}
-% - Convert lists to \begin{itemize} or \begin{enumerate}
-% - Convert bold/italic with \textbf{} and \textit{}
+\begin{itemize}
+\item Multiple processors accessing same memory device
+\item Competition for memory access
+\item Processors must wait for memory availability
+\item Synchronization overhead
+\item Access time increases with contention
+
+\subsubsection{Effect on Performance}
+
+\textbf{Bottleneck}:
+
+\begin{itemize}
+\item Memory becomes bottleneck
+\item Bus connects all processors to memory
+\item If one processor using memory, others must wait
+\item Can take hundreds of cycles
+\item Limits scalability
+
+\subsection{Uniform Memory Access (UMA)}
+
+![Uniform Memory Access (UMA)](../img/Multiprocessors_NVM.jpg)
+
+\subsubsection{Definition}
+
+\textbf{Characteristics}:
+
+\begin{itemize}
+\item Each processor sees memory in exact same way
+\item Same average memory access time for all processors
+\item Access time independent of which processor is accessing
+\item By design, no difference in access time (ignoring contention)
+
+\subsubsection{Also Known As}
+
+\begin{itemize}
+\item \textbf{Symmetric Multiprocessors (SMP)}
+\item Both terms used interchangeably
+
+\subsubsection{Key Properties}
+
+\begin{itemize}
+\item Shared address space
+\item Uniform view of memory by all processors
+\item All processors experience same average latency
+
+\subsection{Solution to Contention: Caches}
+
+\subsubsection{Using Local Caches}
+
+\textbf{Approach}:
+
+\begin{itemize}
+\item Each processor has private cache
+\item Based on locality principles (temporal and spatial)
+\item Most memory accesses served at cache level
+\item Only small percentage (misses) go to main memory
+\item Reduces bus/memory contention significantly
+
+\subsubsection{Benefits}
+
+\begin{itemize}
+\item Exploits locality in programs
+\item Minimizes memory accesses
+\item Reduces bottleneck effect
+\item Allows better scalability
+
+\subsubsection{New Problem: Cache Coherence}
+
+\begin{itemize}
+\item Shared data blocks can be in multiple caches
+\item Updates in one cache not automatically reflected in others
+\item Need mechanism to maintain consistency
+
+\subsection{Cache Coherence Problem}
+
+\subsubsection{The Issue}
+
+\textbf{Scenario}:
+
+\begin{itemize}
+\item Multiple caches have copies of same data block
+\item One processor writes to that block
+\item Other caches have stale (old) data
+\item Processors see different values for same address
+\item Data becomes incoherent
+
+\subsubsection{Example Sequence}
+
+\begin{enumerate}
+\item \textbf{PE1 reads X (value = 1)} $\rightarrow$ Cached in PE1
+\item \textbf{PE2 reads X (value = 1)} $\rightarrow$ Cached in PE2
+\item \textbf{PE1 writes X = 0} $\rightarrow$ PE1 cache updated
+\item Memory may or may not be updated (depends on write policy)
+\item PE2 still sees X = 1 (stale data)
+\item \textbf{Inconsistency}: Same address, different values
+
+\subsubsection{With Write-Through Policy}
+
+\begin{itemize}
+\item PE1 writes X = 0 $\rightarrow$ Cache and memory updated
+\item Memory has correct value
+\item But PE2 cache still has old value (X = 1)
+\item Coherence still lost
+
+\subsubsection{With Write-Back Policy}
+
+\begin{itemize}
+\item PE1 writes X = 0 $\rightarrow$ Only cache updated
+\item Memory still has old value (X = 1)
+\item PE2 cache still has old value (X = 1)
+\item Both memory and PE2 incoherent with PE1
+
+\subsubsection{Requirement}
+
+\begin{itemize}
+\item Cache coherence MUST be maintained
+\item Otherwise parallel programs execute incorrectly
+\item Get wrong results
+\item Latest updates must be visible to all processors
+
+\subsection{Bus Snooping}
+
+Common technique for cache coherence in SMP systems.
+
+![Bus Snooping](../img/Multiprocessors_bus.jpg)
+
+\subsubsection{What is Bus Snooping?}
+
+\textbf{Mechanism}:
+
+\begin{itemize}
+\item Dedicated bus for coherency control: \textbf{Snoop bus}
+\item Sole purpose: Control coherency of cache data
+\item Separate from memory bus
+\item Cache controllers communicate through snoop bus
+
+\subsubsection{How It Works}
+
+\begin{enumerate}
+\item Cache controller performs write to address
+\item Broadcasts address information on snoop bus
+\item All cache controllers listen to snoop bus
+\item Controllers check if they have same address cached
+\item If yes, take action based on protocol
+
+\subsubsection{Key Feature}
+
+\begin{itemize}
+\item All caches monitor (snoop on) the bus
+\item Detect writes by other processors
+\item Take appropriate action to maintain coherence
+
+\subsection{Write Invalidate Protocol}
+
+\subsubsection{Approach}
+
+\begin{itemize}
+\item When write detected, invalidate own copy
+\item Group of protocols using this approach
+\item Most common and easiest to implement
+
+\subsubsection{Mechanism}
+
+\paragraph{On Write by Processor}
+
+\begin{enumerate}
+\item Update own cache
+\item Broadcast write address on snoop bus
+
+\paragraph{On Receiving Write Broadcast}
+
+\begin{enumerate}
+\item Check if same address in own cache
+\item If yes: Mark block as INVALID (clear valid bit)
+\item Next access will be miss
+
+\subsubsection{With Write-Through Policy}
+
+\begin{itemize}
+\item Memory always has up-to-date value
+\item On miss after invalidation: Fetch from memory
+\item Straightforward implementation
+
+\subsubsection{With Write-Back Policy}
+
+\textbf{Challenge}:
+
+\begin{itemize}
+\item Only writing cache has up-to-date value
+\item Memory has stale value
+\item On miss after invalidation: Cannot fetch from memory
+
+\textbf{Solution: Snoop Read}:
+
+\begin{itemize}
+\item Cache with invalid block places snoop read request on bus
+\item Cache controllers listen to snoop read
+\item Controller with valid up-to-date copy responds
+\item Supplies data through snoop bus
+\item More efficient than going to memory
+\item Avoids slow memory access
+
+\subsubsection{Complexity}
+
+\textbf{Trade-offs}:
+
+\begin{itemize}
+\item More complex cache controller
+\item Snoop bus needs to carry data and addresses
+\item More hardware required
+\item Higher power consumption
+\item But better performance (less memory traffic)
+
+\subsection{Write Update Protocol}
+
+\subsubsection{Alternative Approach}
+
+\textbf{Concept}:
+
+\begin{itemize}
+\item Update own copy instead of invalidating
+\item Also called Write Broadcast
+\item Different action when write detected
+
+\subsubsection{Mechanism}
+
+\paragraph{On Write by Processor}
+
+\begin{enumerate}
+\item Update own cache
+\item Broadcast BOTH address AND data on snoop bus
+
+\paragraph{On Receiving Write Broadcast}
+
+\begin{enumerate}
+\item Check if same address in own cache
+\item If yes: Update own copy with new data
+\item Keep block VALID
+
+\subsubsection{Benefits}
+
+\begin{itemize}
+\item No miss on next access to same address
+\item Data already updated in all caches
+\item Don't need extra read operation
+\item Simpler cache controller (no snoop read needed)
+
+\subsubsection{Costs}
+
+\begin{itemize}
+\item Snoop bus must carry data (wider bus)
+\item More hardware on snoop bus
+\item Higher power consumption
+\item More bus traffic
+
+\subsubsection{Comparison}
+
+\begin{itemize}
+\item Simpler than write invalidate with write-back
+\item Fewer cache misses
+\item Higher bus bandwidth requirement
+
+\subsection{Real Protocol Implementations}
+
+\subsubsection{Historical Protocols}
+
+\paragraph{Write Once Protocol}
+
+\begin{itemize}
+\item \textbf{Type}: Write invalidate
+\item \textbf{Write policy}: Write-through on first write, write-back after
+\item One of first bus snooping protocols
+
+\paragraph{Synapse N+1 Protocol}
+
+\begin{itemize}
+\item \textbf{Type}: Write invalidate
+\item \textbf{Write policy}: Write-back
+\item Early implementation
+
+\paragraph{Berkeley Protocol}
+
+\begin{itemize}
+\item \textbf{Type}: Write invalidate
+\item \textbf{Write policy}: Write-back
+\item Used in Berkeley SPUR processor
+
+\paragraph{Illinois Protocol (MESI)}
+
+\begin{itemize}
+\item \textbf{Type}: Write invalidate
+\item \textbf{Write policy}: Write-back
+\item Used in SGI Power and Challenge systems
+\item Very popular, widely adopted
+
+\paragraph{Firefly Protocol}
+
+\begin{itemize}
+\item \textbf{Type}: Write update
+\item \textbf{Write policy}: Mixed (write-back for private data, write-through for shared data)
+\item Used in DEC Firefly and Sun SPARC systems
+
+\subsubsection{Most Common Combination}
+
+\begin{itemize}
+\item Write invalidate protocols
+\item Write-back policy
+\item Reduces memory accesses (expensive in terms of time)
+\item Easier to implement than write update
+\item Good balance of performance and complexity
+
+\subsection{MESI Protocol Details}
+
+Named after four states: \textbf{Modified, Exclusive, Shared, Invalid}
+
+![MESI](../img/Multiprocessors_mesi.jpg)
+
+Most popular cache coherency protocol, used in Intel Pentium and IBM PowerPC processors.
+
+\subsubsection{Four Block States (Requires 2 Bits)}
+
+\paragraph{1. INVALID (I)}
+
+\begin{itemize}
+\item Data not valid
+\item Block cannot be used
+\item Must fetch from elsewhere
+
+\paragraph{2. SHARED (S)}
+
+\begin{itemize}
+\item Multiple caches have copies of this block
+\item All copies have same value
+\item Value consistent with memory
+\item Memory has up-to-date value
+
+\paragraph{3. EXCLUSIVE (E)}
+
+\begin{itemize}
+\item Only cached copy in entire system
+\item No other cache has this block
+\item Value consistent with memory
+\item Memory has up-to-date value
+
+\paragraph{4. MODIFIED (M)}
+
+\begin{itemize}
+\item Only cached copy in system
+\item Value INCONSISTENT with memory
+\item This cache has most recent value
+\item Memory has stale value
+\item Block is "dirty"
+
+\subsection{MESI Protocol State Transitions}
+
+\subsubsection{Example with PE1, PE2, PE3}
+
+\textbf{Initial State}: Variable X = 1 in memory, all cache entries invalid
+
+\paragraph{Step 1: PE1 Reads X}
+
+\textbf{Actions}:
+
+\begin{itemize}
+\item Check other caches (snoop read request)
+\item No other cache has X
+\item Fetch from memory
+\item \textbf{State transition}: Invalid $\rightarrow$ Exclusive
+
+\textbf{Result}:
+
+\begin{itemize}
+\item PE1: X = 1 (Exclusive)
+
+\paragraph{Step 2: PE3 Reads X}
+
+\textbf{Actions}:
+
+\begin{itemize}
+\item Check other caches (snoop read request)
+\item PE1 responds (has Exclusive copy)
+\item PE1 supplies data to PE3
+
+\textbf{State transitions}:
+
+\begin{itemize}
+\item PE1: Exclusive $\rightarrow$ Shared
+\item PE3: Invalid $\rightarrow$ Shared
+
+\textbf{Result}:
+
+\begin{itemize}
+\item Both PE1 and PE3: X = 1 (Shared)
+\item Consistent with memory
+
+\paragraph{Step 3: PE3 Writes X = 0}
+
+\textbf{Actions}:
+
+\begin{itemize}
+\item Block in PE3 was Shared
+\item Update local cache
+\item Broadcast invalidate on snoop bus
+\item \textbf{State transition}: Shared $\rightarrow$ Modified
+
+\textbf{Result}:
+
+\begin{itemize}
+\item PE3: X = 0 (Modified)
+\item PE1 receives invalidate:
+\item State transition: Shared $\rightarrow$ Invalid
+\item PE1: X = ? (Invalid)
+\item Memory still has X = 1 (stale)
+
+\paragraph{Step 4: PE1 Reads X}
+
+\textbf{Actions}:
+
+\begin{itemize}
+\item Block in PE1 is Invalid (tag matches but invalid)
+\item Place snoop read request on bus
+\item PE3 has Modified copy (most up-to-date)
+\item PE3 responds to snoop read:
+\item Supplies data to PE1 through snoop bus
+\item Writes back to memory
+\item State transition: Modified $\rightarrow$ Shared
+\item PE1 receives data:
+\item State transition: Invalid $\rightarrow$ Shared
+
+\textbf{Result}:
+
+\begin{itemize}
+\item PE1: X = 0 (Shared)
+\item PE3: X = 0 (Shared)
+\item Memory: X = 0 (updated)
+\item All consistent
+
+\subsubsection{Key Points}
+
+\begin{itemize}
+\item Coherency maintained throughout
+\item Invalidations prevent stale data reads
+\item Modified state identifies most recent value
+\item Snoop reads fetch from other caches efficiently
+\item Write-backs occur when transitioning from Modified to Shared
+
+\subsection{Scalability of UMA Systems}
+
+\subsubsection{Limitation}
+
+\textbf{Challenges}:
+
+\begin{itemize}
+\item Bus snooping doesn't scale well
+\item Bus contention increases with more processors
+\item Snoop bus becomes bottleneck
+\item Memory bus also becomes bottleneck
+
+\subsubsection{Practical Limit}
+
+\begin{itemize}
+\item Up to ~32 processing elements with bus-based design
+\item Not a hard threshold but approximate practical limit
+\item Beyond this, contention significantly degrades performance
+
+\subsubsection{Alternative Interconnectsconnects}
+
+\paragraph{Crossbar Switches}
+
+\begin{itemize}
+\item Alternative to bus-based architecture
+\item Allows multiple simultaneous connections
+\item Better than simple bus
+
+\paragraph{Multi-Stage Crossbar Switch Network}
+
+\begin{itemize}
+\item Multiple crossbar switches in network topology
+\item Increased parallelism in interconnect
+\item Can connect multiple memory banks simultaneously
+\item Increases scalability
+
+\subsubsection{Improved Scalability}
+
+\begin{itemize}
+\item With crossbar networks: Up to ~256 processing elements
+\item Still limited but much better than bus-based
+\item Trade-off: More complex hardware
+
+\subsection{Non-Uniform Memory Access (NUMA)}
+
+\subsubsection{Designed for Even Higher Scalability}
+
+\textbf{Goals}:
+
+\begin{itemize}
+\item Target: Thousands of processing elements
+\item Beyond limits of UMA systems
+\item Still uses shared memory model
+\item Communication through shared address space
+
+\subsubsection{Key Difference from UMA}
+
+\textbf{Non-Uniform Access Times}:
+
+\begin{itemize}
+\item Memory access time DEPENDS on which processor is accessing
+\item Different processors experience different latencies
+\item Memory perspective is non-uniform
+
+\subsubsection{Architecture}
+
+\textbf{Structure}:
+
+\begin{itemize}
+\item Each processor has local memory
+\item Faster to access local memory
+\item Slower to access remote memory (other processors' local memory)
+\item But all memory accessible by all processors (shared address space)
+
+\subsubsection{Access Time Difference}
+
+\begin{itemize}
+\item Remote memory access: 4-5 times more cycles than local
+\item Significant performance impact
+\item Programming must consider locality
+
+\subsubsection{Operating System Role}
+
+\textbf{Optimization Responsibilities}:
+
+\begin{itemize}
+\item Must use special algorithms for memory optimization
+\item Workload distribution affects performance
+\item Should relocate memory blocks for optimization
+\item Goal: Maximize local accesses, minimize remote accesses
+\item Global optimization problem
+
+\subsection{Two Types of NUMA}
+
+\subsubsection{1. NC-NUMA (Non-Cached NUMA)}
+
+![Bus Snooping](../img/Multiprocessors_mmu.jpg)
+
+\textbf{Characteristics}:
+
+\begin{itemize}
+\item No caches shown in architecture
+\item Processors directly access memory
+\item Simpler but slower
+
+\subsubsection{2. CC-NUMA (Cache-Coherent NUMA)}
+
+![Bus Snooping](../img/Multiprocessors_cmmu.jpg)
+
+\textbf{Characteristics}:
+
+\begin{itemize}
+\item Includes caches at each node
+\item Must maintain cache coherence
+\item More complex but better performance
+\item Cannot use bus snooping (not scalable enough)
+\item Solution: Directory-based coherence
+
+\subsection{Directory-Based Cache Coherence}
+
+Used in CC-NUMA systems for scalable cache coherence.
+
+\subsubsection{What is Directory?}
+
+\textbf{Definition}:
+
+\begin{itemize}
+\item Data structure tracking cache contents
+\item Distributed across system
+\item Stores information about which blocks are cached where
+\item Can be in memory or separate hardware
+
+\subsubsection{Purpose}
+
+\textbf{Functionality}:
+
+\begin{itemize}
+\item Cache controllers check directory to find block locations
+\item Determines if other caches have copies of block
+\item Enables coherence without bus snooping
+\item Scalable to thousands of processors
+
+\subsubsection{Organization}
+
+\textbf{Distributed Structure}:
+
+\begin{itemize}
+\item Directory can be distributed
+\item Each node has local directory
+\item Local directory tracks blocks from local memory address range
+\item Information about which caches have those blocks
+\item Blocks from other address ranges tracked in other directories
+
+\subsubsection{Operation}
+
+\textbf{Access Process}:
+
+\begin{itemize}
+\item Cache controller accesses appropriate directory
+\item Local directory if accessing local address range
+\item Remote directory if accessing remote address range
+\item Directory provides information about block locations
+\item Can then send invalidations or updates as needed
+
+\subsubsection{Write Policy}
+
+\begin{itemize}
+\item Typically use write-through policy
+
+\subsection{Key Takeaways}
+
+\begin{enumerate}
+\item Multiprocessors overcome single-processor performance limitations
+\item Shared memory provides communication mechanism between processors
+\item Cache coherence is essential for correct parallel program execution
+\item Bus snooping works well for small-scale systems (up to ~32 processors)
+\item MESI protocol is widely adopted for cache coherence
+\item UMA systems provide uniform access but limited scalability
+\item NUMA systems enable thousands of processors with non-uniform access
+\item Directory-based coherence enables scalable cache coherence
+\item Operating system plays crucial role in workload balancing and optimization
+\end{enumerate}
+
+10. Trade-offs exist between simplicity, performance, and scalability
+
+\subsection{Summary}
+
+Multiprocessor systems have become the standard in modern computing, from smartphones to supercomputers, enabling the parallel processing power required for contemporary applications while managing the complex interactions between multiple processors sharing memory resources.

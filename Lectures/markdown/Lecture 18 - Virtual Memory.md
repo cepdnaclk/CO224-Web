@@ -117,6 +117,7 @@ Understanding the latency differences is crucial for virtual memory design:
   - Influences design decisions significantly
   - Page faults handled in software by OS due to large penalty
 
+![Access Latencies](../img/Virtual_mem_cycles.jpg)
 
 ## 18.8 Virtual and Physical Address Structure
 
@@ -201,6 +202,8 @@ The page table is a data structure stored in memory that contains address transl
 
 
 ## 18.11 Address Translation Process
+
+![Address Translation Process](../img/Virtual_Mem_Translation.jpg)
 
 Steps to access memory:
 
@@ -336,6 +339,8 @@ Steps to access memory:
 
 
 ## 18.16 Translation Lookaside Buffer (TLB)
+
+![TLB](../img/Virtual_mem_TLB.jpg)
 
 ### 18.16.1 Purpose
 
