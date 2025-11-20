@@ -1,0 +1,1561 @@
+\section{Lecture 11: Complete Single-Cycle MIPS Processor and Performance Analysis}
+
+\emph{By Dr. Isuru Nawinne}
+
+\subsection{Introduction}
+
+This lecture completes the single-cycle MIPS processor design by providing comprehensive analysis of control signals for all instruction types (R-type, Branch, Load, Store, Jump), introducing detailed timing analysis with concrete delay values, and demonstrating the fundamental performance limitations that motivate the evolution toward multi-cycle and pipelined implementations. We build upon previous datapath and control unit knowledge to create a functioning processor while understanding why single-cycle design, though conceptually simple, proves inefficient in practice.
+
+\subsection{Lecture Overview and Context}
+
+\subsubsection{Recap from Previous Lectures}
+
+The foundational work completed in previous lectures includes:
+
+\textbf{Completed Topics:}
+
+\begin{itemize}
+\item Datapath components: Register file, ALU, memories, adders, multiplexers
+\item Sign extension and shifting for immediate operands
+\item Control unit concept and ALU control generation
+\item Control signal purposes and functions
+\end{itemize}
+
+\textbf{Current Focus:}
+
+\begin{itemize}
+\item Complete control signal analysis for all instructions
+\item Detailed walkthrough of instruction execution
+\item Jump instruction integration
+\item Timing analysis with concrete delay values
+\item Performance limitations of single-cycle design
+\end{itemize}
+
+\subsubsection{Instruction Subset Review}
+
+\textbf{Selected Instructions for Study:}
+
+\begin{itemize}
+\item \textbf{R-type}: ADD, SUB, AND, OR (arithmetic/logic operations)
+\item \textbf{Load Word (LW)}: Memory read
+\item \textbf{Store Word (SW)}: Memory write
+\item \textbf{Branch if Equal (BEQ)}: Conditional branch
+\item \textbf{Jump (J)}: Unconditional jump
+\end{itemize}
+
+\textbf{Coverage:}
+
+\begin{itemize}
+\item Represents 95\% of MIPS microarchitecture hardware
+\item Comprehensive enough for understanding design principles
+\item Omits some I-type arithmetic (covered conceptually)
+\item Foundation for complete processor understanding
+\end{itemize}
+
+\subsection{Control Unit Inputs and Outputs}
+
+\subsubsection{Control Unit Inputs}
+
+\textbf{Total Input Bits:} 12 bits
+
+\paragraph{Primary Input - Opcode (6 bits):}
+
+\begin{itemize}
+\item Bits 26-31 of instruction
+\item Identifies instruction type
+\item Used for almost all control signal generation
+\item Most significant determinant of control behavior
+\end{itemize}
+
+\paragraph{Secondary Input - Funct Field (6 bits):}
+
+\begin{itemize}
+\item Bits 0-5 of instruction
+\item Only relevant for R-type instructions (opcode = 000000)
+\item Specifies ALU operation for R-type
+\item Ignored for I-type and J-type instructions
+\end{itemize}
+
+\textbf{Usage Pattern:}
+
+\begin{itemize}
+\item Opcode always examined
+\item Funct field examined only when opcode = 0 (R-type)
+\item Combined with ALUOp for final ALU control signal
+\end{itemize}
+
+\subsubsection{Control Unit Outputs}
+
+\textbf{Total Output Bits:} 9 bits (8 signals, one is 2-bit)
+
+\textbf{Control Signals Generated:}
+
+\begin{enumerate}
+\item \textbf{RegDst} (1 bit): Select register write address
+\item \textbf{Branch} (1 bit): Instruction is branch type
+\item \textbf{MemRead} (1 bit): Enable memory read
+\item \textbf{MemtoReg} (1 bit): Select register write data source
+\item \textbf{MemWrite} (1 bit): Enable memory write
+\item \textbf{ALUSrc} (1 bit): Select ALU second operand source
+\item \textbf{RegWrite} (1 bit): Enable register file write
+\item \textbf{ALUOp} (2 bits): ALU operation category
+\end{enumerate}
+
+\textbf{Additional Signal for Jump:}
+
+\begin{enumerate}
+\item \textbf{Jump} (1 bit): Select jump target for PC
+\end{enumerate}
+
+\textbf{Implementation:}
+
+\begin{itemize}
+\item Combinational logic circuit
+\item Inputs: Opcode and Funct field
+\item Outputs: Control signals
+\item Design method: Truth tables, Karnaugh maps, Boolean minimization
+\item To be implemented in Lab 5
+\end{itemize}
+
+\subsection{R-Type Instruction Detailed Analysis}
+
+\subsubsection{Instruction Format}
+
+\textbf{Encoding Structure (32 bits):}
+
+\begin{itemize}
+\item \textbf{Bits 26-31}: Opcode = 000000 (0) - ALL R-type instructions
+\item \textbf{Bits 21-25}: RS (5 bits) - First source register
+\item \textbf{Bits 16-20}: RT (5 bits) - Second source register
+\item \textbf{Bits 11-15}: RD (5 bits) - Destination register
+\item \textbf{Bits 6-10}: SHAMT (5 bits) - Shift amount
+\item \textbf{Bits 0-5}: Funct (6 bits) - Function code (specifies operation)
+
+\textbf{Example: ADD \$1, \$2, \$3}
+
+Encoding: 000000 00010 00011 00001 00000 100000
+         |Opcode| RS  | RT  | RD  |SHAMT| Funct |
+         |  0   |  2  |  3  |  1  |  0  |  32   |
+
+\textbf{Operation:} \texttt{$1 = $2 + $3}
+
+\subsubsection{Datapath Elements Used}
+
+\textbf{Active Elements (shown in black):}
+
+\begin{itemize}
+\item Instruction Memory: Fetch instruction
+\item Program Counter: Current instruction address
+\item PC + 4 Adder: Calculate next sequential address
+\item Register File: Read RS, RT; Write RD
+\item Multiplexer (RegDst): Select RD as write address
+\item Multiplexer (ALUSrc): Select RT value (not immediate)
+\item ALU: Perform operation specified by funct
+\item Multiplexer (MemtoReg): Select ALU result (not memory)
+\item Multiplexer (PC source): Select PC+4 (not branch)
+
+\textbf{Inactive Elements (grayed out):}
+
+\begin{itemize}
+\item Data Memory: Not accessed
+\item Sign Extender: Not used (no immediate value)
+\item Branch Target Adder: Calculated but not used
+\item Shift Left 2: Not used
+
+\subsubsection{Control Signal Values for R-Type}
+
+\textbf{Exercise Example: ADD \$1, \$2, \$3}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Signal} & \textbf{Value} & \textbf{Reason} \\
+\hline
+RegDst & 1 & Write to RD (bits 11-15), not RT \\
+Branch & 0 & Not a branch instruction \\
+MemRead & 0 & Not reading from memory \\
+MemtoReg & 0 & Write ALU result (not memory data) \\
+ALUOp & 10 & R-type: Consult funct field \\
+MemWrite & 0 & Not writing to memory \\
+ALUSrc & 0 & Second operand from register RT (not immediate) \\
+RegWrite & 1 & Write result to destination register \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Detailed Explanations:}
+
+\textbf{RegDst = 1:}
+
+\begin{itemize}
+\item Multiplexer selects input 1
+\item Input 1: Bits 11-15 (RD field)
+\item Input 0: Bits 16-20 (RT field)
+\item R-type destination always in RD
+
+\textbf{Branch = 0:}
+
+\begin{itemize}
+\item Not a branch instruction
+\item Branch control AND Zero $\rightarrow$ 0 AND X = 0
+\item PC source multiplexer selects PC+4
+
+\textbf{MemRead = 0, MemWrite = 0:}
+
+\begin{itemize}
+\item R-type doesn't access data memory
+\item Memory control signals disabled
+\item Data memory outputs ignored (don't care)
+
+\textbf{MemtoReg = 0:}
+
+\begin{itemize}
+\item Multiplexer selects ALU result
+\item Not memory data (memory not accessed)
+\item ALU result goes to register write data
+
+\textbf{ALUOp = 10 (binary):}
+
+\begin{itemize}
+\item Indicates R-type instruction
+\item ALU Control Unit examines funct field
+\item For ADD: funct = 100000 $\rightarrow$ ALU Control = 0010 (ADD)
+
+\textbf{ALUSrc = 0:}
+
+\begin{itemize}
+\item Multiplexer selects register value
+\item Register file Read Data 2 (RT value)
+\item Not sign-extended immediate
+
+\textbf{RegWrite = 1:}
+
+\begin{itemize}
+\item Enable register file write
+\item Result written to RD at clock edge
+\item Essential for saving computation result
+
+\subsubsection{Execution Steps for R-Type}
+
+\textbf{Step 1: Instruction Fetch}
+
+\begin{itemize}
+\item PC value $\rightarrow$ Instruction Memory address
+\end{itemize}
+\item Instruction word retrieved
+\item Opcode (000000) sent to Control Unit
+
+\textbf{Step 2: Control Signal Generation}
+
+\begin{itemize}
+\item Control Unit decodes opcode = 0
+\item Identifies R-type instruction
+\item Generates all control signals
+\item Sends funct field to ALU Control
+
+\textbf{Step 3: Register Read}
+
+\begin{itemize}
+\item RS field (00010 = 2) $\rightarrow$ Read Address 1
+\item RT field (00011 = 3) $\rightarrow$ Read Address 2
+\item Read Data 1 = $2 value
+\item Read Data 2 = $3 value
+
+\textbf{Step 4: ALU Operation}
+
+\begin{itemize}
+\item ALUSrc = 0: Select RT value for Input B
+\item Input A = $2 value, Input B = $3 value
+\item ALU Control = 0010 (ADD operation)
+\item ALU Result = $2 + $3
+
+\textbf{Step 5: Register Write Preparation}
+
+\begin{itemize}
+\item MemtoReg = 0: Select ALU result
+\item RegDst = 1: Select RD (00001 = 1)
+\item Write Data = ALU result
+\item Write Address = $1
+
+\textbf{Step 6: Clock Edge Actions}
+
+\begin{itemize}
+\item RegWrite = 1 enabled
+\item ALU result written to $1
+\item PC updated to PC + 4
+\item Next instruction fetch begins
+
+\subsection{Branch If Equal Instruction Detailed Analysis}
+
+\subsubsection{Instruction Format}
+
+\textbf{Encoding Structure (32 bits):}
+
+\begin{itemize}
+\item \textbf{Bits 26-31}: Opcode = 000100 (4) - BEQ
+\item \textbf{Bits 21-25}: RS (5 bits) - First comparison register
+\item \textbf{Bits 16-20}: RT (5 bits) - Second comparison register
+\item \textbf{Bits 0-15}: Immediate (16 bits) - Branch offset (in instructions)
+
+\textbf{Example: BEQ \$1, \$2, 100}
+
+Encoding: 000100 00001 00010 0000000001100100
+         |Opcode|  RS |  RT |    Immediate      |
+         |  4   |  1  |  2  |       100         |
+
+\textbf{Operation:} \texttt{If ($1 == $2) then PC = PC + 4 + (100 $\times$ 4)}
+
+\subsubsection{Datapath Elements Used}
+
+\textbf{Active Elements:}
+
+\begin{itemize}
+\item Instruction Memory: Fetch instruction
+\item Program Counter & PC+4 Adder
+\item Register File: Read RS, RT (no write)
+\item ALU: Subtract RT from RS
+\item Zero Flag: Compare result to zero
+\item Sign Extender: Extend 16-bit offset to 32-bit
+\item Shift Left 2: Convert word offset to byte offset
+\item Branch Target Adder: Calculate PC + 4 + (offset $\times$ 4)
+\item AND Gate: Combine Branch signal and Zero flag
+\item PC Source Multiplexer: Select next PC value
+
+\textbf{Inactive Elements:}
+
+\begin{itemize}
+\item Data Memory: Not accessed
+\item Register Write: Not writing to registers
+\item ALU Result (except Zero flag): Not used
+
+\subsubsection{Control Signal Values for BEQ}
+
+\textbf{Exercise Example: BEQ \$1, \$2, 100}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Signal} & \textbf{Value} & \textbf{Reason} \\
+\hline
+RegDst & X & Don't care (not writing to register) \\
+Branch & 1 & This IS a branch instruction \\
+MemRead & 0 & Not reading from memory \\
+MemtoReg & X & Don't care (not writing to register) \\
+ALUOp & 01 & Perform SUBTRACT for comparison \\
+MemWrite & 0 & Not writing to memory \\
+ALUSrc & 0 & Compare two register values (not immediate) \\
+RegWrite & 0 & Not writing to register file \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Detailed Explanations:}
+
+\textbf{RegDst = X (Don't Care):}
+
+\begin{itemize}
+\item RegWrite = 0, so write address irrelevant
+\item No register write operation
+\item Multiplexer output ignored
+\item Using X simplifies Boolean logic
+
+\textbf{Branch = 1:}
+
+\begin{itemize}
+\item Identifies instruction as branch type
+\item Feeds into AND gate with Zero flag
+\item PCSrc = Branch AND Zero
+\item If Zero = 1 (values equal): Take branch
+\item If Zero = 0 (values differ): Don't take branch
+
+\textbf{MemRead = 0, MemWrite = 0:}
+
+\begin{itemize}
+\item Branch doesn't access memory
+\item Memory control signals disabled
+
+\textbf{MemtoReg = X (Don't Care):}
+
+\begin{itemize}
+\item RegWrite = 0, so write data source irrelevant
+\item Multiplexer output ignored
+
+\textbf{ALUOp = 01:}
+
+\begin{itemize}
+\item Specifies SUBTRACT operation
+\item ALU Control receives 01
+\item Generates ALU Control = 0110 (SUB)
+\item Independent of funct field
+
+\textbf{ALUSrc = 0:}
+
+\begin{itemize}
+\item Need RT value from register (not immediate)
+\item Immediate used for branch target (not ALU input)
+\item ALU compares RS and RT register values
+
+\textbf{RegWrite = 0:}
+
+\begin{itemize}
+\item Branch doesn't modify registers
+\item Essential to prevent accidental writes
+\item If =1, would corrupt register file
+
+\subsubsection{Branch Target Calculation}
+
+\textbf{Word Offset to Byte Offset:}
+
+\begin{itemize}
+\item Immediate field: 100 (in instructions/words)
+\item Sign extend to 32 bits: 0x00000064
+\item Shift left by 2: 0x00000190 (multiply by 4)
+\item Result: 400 bytes (100 instructions $\times$ 4 bytes/instruction)
+\end{itemize}
+
+\textbf{Branch Target Address:}
+
+\begin{itemize}
+\item Current PC + 4: Address of next sequential instruction
+\item Offset: 400 bytes
+\item Branch Target = (PC + 4) + 400
+
+\textbf{Example:}
+
+\begin{itemize}
+\item Current instruction at address 1000
+\item PC + 4 = 1004
+\item Branch Target = 1004 + 400 = 1404
+\item If branch taken: Next instruction at 1404
+\item If branch not taken: Next instruction at 1004
+
+\textbf{PCSrc Selection:}
+
+PCSrc = Branch AND Zero
+      = 1 AND (RS == RT ? 1 : 0)
+
+If PCSrc = 1: PC $\leftarrow$ Branch Target (1404)
+If PCSrc = 0: PC $\leftarrow$ PC + 4 (1004)
+
+\subsection{Load Word Instruction Detailed Analysis}
+
+\subsubsection{Instruction Format}
+
+\textbf{Encoding Structure (32 bits):}
+
+\begin{itemize}
+\item \textbf{Bits 26-31}: Opcode = 100011 (35) - LW
+\item \textbf{Bits 21-25}: RS (5 bits) - Base address register
+\item \textbf{Bits 16-20}: RT (5 bits) - Destination register
+\item \textbf{Bits 0-15}: Immediate (16 bits) - Address offset
+
+\textbf{Example: LW \$8, 32(\$9)}
+
+Encoding: 100011 01001 01000 0000000000100000
+         |Opcode|  RS |  RT |    Immediate      |
+         | 35   |  9  |  8  |        32         |
+
+\textbf{Operation:} \texttt{$8 = Memory[$9 + 32]}
+
+\subsubsection{Datapath Elements Used}
+
+\textbf{Active Elements:}
+
+\begin{itemize}
+\item Instruction Memory: Fetch instruction
+\item Program Counter & PC+4 Adder
+\item Register File: Read RS (base); Write RT (destination)
+\item Sign Extender: Extend offset to 32 bits
+\item Multiplexer (ALUSrc): Select immediate
+\item ALU: Add base + offset
+\item Data Memory: Read at calculated address
+\item Multiplexer (MemtoReg): Select memory data
+\item Multiplexer (RegDst): Select RT for write
+
+\textbf{Inactive Elements:}
+
+\begin{itemize}
+\item Second register read (RT as source): Not used
+\item Branch circuitry: Not used
+
+\subsubsection{Control Signal Values for LW}
+
+\textbf{Exercise Example: LW \$8, 32(\$9)}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Signal} & \textbf{Value} & \textbf{Reason} \\
+\hline
+RegDst & 0 & Write to RT (bits 16-20), not RD \\
+Branch & 0 & Not a branch instruction \\
+MemRead & 1 & Reading from data memory \\
+MemtoReg & 1 & Write memory data (not ALU result) \\
+ALUOp & 00 & Perform ADD for address calculation \\
+MemWrite & 0 & Not writing to memory (reading only) \\
+ALUSrc & 1 & Add immediate offset (not register) \\
+RegWrite & 1 & Write loaded data to destination register \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Detailed Explanations:}
+
+\textbf{RegDst = 0:}
+
+\begin{itemize}
+\item I-type format: Destination in RT field
+\item Multiplexer selects bits 16-20
+\item RT = 01000 (register 8)
+\item Different from R-type (RD field)
+
+\textbf{Branch = 0:}
+
+\begin{itemize}
+\item Sequential execution
+\item PC updated to PC + 4
+
+\textbf{MemRead = 1:}
+
+\begin{itemize}
+\item Enable data memory read
+\item Essential for memory timing
+\item Memory outputs data at calculated address
+\item If 0: Memory output undefined (ignored anyway)
+
+\textbf{MemtoReg = 1:}
+
+\begin{itemize}
+\item Multiplexer selects memory data
+\item Input 1: Data memory read output
+\item Input 0: ALU result (address, not data!)
+\item Must select memory data for load
+
+\textbf{ALUOp = 00:}
+
+\begin{itemize}
+\item Address calculation requires ADD
+\item Base address + offset
+\item ALU Control = 0010 (ADD)
+
+\textbf{MemWrite = 0:}
+
+\begin{itemize}
+\item Reading, not writing
+\item Critical: Prevents memory corruption
+\item If 1: Would write garbage to memory
+
+\textbf{ALUSrc = 1:}
+
+\begin{itemize}
+\item Need immediate offset for address calculation
+\item Multiplexer selects sign-extended immediate
+\item Input 1: Sign-extended offset
+\item Input 0: RT value (not used for address calc)
+
+\textbf{RegWrite = 1:}
+
+\begin{itemize}
+\item Must write loaded data to RT
+\item Data from memory $\rightarrow$ Register $8
+\item If 0: Data lost, load ineffective
+
+\subsubsection{Critical Path for Load Word}
+
+\textbf{Longest Delay in Single-Cycle:}
+
+\begin{enumerate}
+\item Instruction Memory read
+\item Register File read (base address)
+\item Sign Extension
+\item ALU address calculation
+\item Data Memory read
+\item Register write setup
+
+\textbf{Load Word is the slowest instruction!}
+
+\begin{itemize}
+\item Determines minimum clock period
+\item All other instructions must wait for this worst case
+\item Major performance bottleneck
+
+\subsection{Store Word Instruction Detailed Analysis}
+
+\subsubsection{Instruction Format}
+
+\textbf{Encoding Structure (32 bits):}
+
+\begin{itemize}
+\item \textbf{Bits 26-31}: Opcode = 101011 (43) - SW
+\item \textbf{Bits 21-25}: RS (5 bits) - Base address register
+\item \textbf{Bits 16-20}: RT (5 bits) - Source data register
+\item \textbf{Bits 0-15}: Immediate (16 bits) - Address offset
+
+\textbf{Example: SW \$8, 32(\$9)}
+
+Encoding: 101011 01001 01000 0000000000100000
+         |Opcode|  RS |  RT |    Immediate      |
+         | 43   |  9  |  8  |        32         |
+
+\textbf{Operation:} \texttt{Memory[$9 + 32] = $8}
+
+_Note: Fixed error in lecture (was "$32", should be "32")_
+
+\subsubsection{Datapath Elements Used}
+
+\textbf{Active Elements:}
+
+\begin{itemize}
+\item Instruction Memory
+\item Program Counter & PC+4 Adder
+\item Register File: Read RS (base) AND RT (data source)
+\item Sign Extender
+\item Multiplexer (ALUSrc): Select immediate
+\item ALU: Add base + offset
+\item Data Memory: Write RT data at calculated address
+
+\textbf{Inactive Elements:}
+
+\begin{itemize}
+\item Register Write: No register write
+\item Memory Read: Writing, not reading
+\item MemtoReg multiplexer: Output not used
+
+\textbf{Key Difference from Load:}
+
+\begin{itemize}
+\item TWO register reads: RS for base, RT for data
+\item Memory write instead of read
+\item NO register write operation
+
+\subsubsection{Control Signal Values for SW}
+
+\textbf{Exercise Example: SW \$8, 32(\$9)}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Signal} & \textbf{Value} & \textbf{Reason} \\
+\hline
+RegDst & X & Don't care (not writing to register) \\
+Branch & 0 & Not a branch instruction \\
+MemRead & 0 & Not reading from memory (writing) \\
+MemtoReg & X & Don't care (not writing to register) \\
+ALUOp & 00 & Perform ADD for address calculation \\
+MemWrite & 1 & Writing to data memory \\
+ALUSrc & 1 & Add immediate offset \\
+RegWrite & 0 & Not writing to register file \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Detailed Explanations:}
+
+\textbf{RegDst = X (Don't Care):}
+
+\begin{itemize}
+\item RegWrite = 0: No register write
+\item Write address irrelevant
+\item Could be 0 or 1, doesn't matter
+\item Using X simplifies logic design
+
+\textbf{CRITICAL: RegWrite = 0:}
+
+\begin{itemize}
+\item Must prevent register file write
+\item \textbf{If RegWrite = 1:} Disaster!
+\item Some register address fed to write port
+\item Either ALU result (address) or memory data (garbage, MemRead=0)
+\item Would corrupt random register
+\item Data integrity violated
+
+\textbf{Why It Matters:}
+
+\begin{itemize}
+\item Hardware operates in parallel
+\item Multiplexers produce outputs even if not used
+\item Without RegWrite = 0:
+\item RegDst mux outputs some address
+\item MemtoReg mux outputs some data
+\item If RegWrite = 1: This garbage written to register!
+\item Control signal correctness essential
+
+\textbf{MemRead = 0, MemWrite = 1:}
+
+\begin{itemize}
+\item Writing to memory, not reading
+\item MemRead = 0: Memory read output undefined
+\item MemWrite = 1: Memory accepts write data
+\item Opposite of Load Word
+
+\textbf{MemtoReg = X (Don't Care):}
+
+\begin{itemize}
+\item RegWrite = 0: Write data source irrelevant
+\item Output not used
+\item Even if wrong data selected, RegWrite prevents write
+
+\textbf{ALUOp = 00:}
+
+\begin{itemize}
+\item Same as Load Word
+\item Address calculation: ADD operation
+
+\textbf{ALUSrc = 1:}
+
+\begin{itemize}
+\item Need immediate offset
+\item Same as Load Word
+
+\subsubsection{Important Lesson: Don't Care vs Zero}
+
+\textbf{Student Confusion:}
+_"RegDst = 0 is not wrong, but best answer is X"_
+
+\textbf{Clarification:}
+
+\begin{itemize}
+\item \textbf{Functionally:} 0 works (doesn't cause error)
+\item \textbf{Logically:} X is correct (truly doesn't matter)
+\item \textbf{Design perspective:} X simplifies Boolean expressions
+\item \textbf{Karnaugh map minimization:} X allows more groupings
+
+\textbf{However:}
+
+\begin{itemize}
+\item RegWrite MUST be 0 (not X!)
+\item MemWrite MUST be correct (not X!)
+\item Read/Write enables are critical for data integrity
+
+\subsection{Jump Instruction Integration}
+
+\subsubsection{Instruction Format}
+
+\textbf{Encoding Structure (32 bits):}
+
+\begin{itemize}
+\item \textbf{Bits 26-31}: Opcode = 000010 (2) - J
+\item \textbf{Bits 0-25}: Address (26 bits) - Jump target (word address)
+
+\textbf{Alternative: JAL (Jump and Link)}
+
+\begin{itemize}
+\item Opcode = 000011 (3)
+\item Used for function calls
+\item Saves return address in register $31
+
+\textbf{Example: J 100}
+
+Encoding: 000010 00000000000000000001100100
+         |Opcode|        Target Address        |
+         |  2   |            100               |
+
+\textbf{Operation:} \texttt{PC = {PC+4[31:28], Address, 2'b00}}
+
+\subsubsection{Jump Target Address Calculation}
+
+\textbf{Word Address to Byte Address:}
+
+\begin{itemize}
+\item Target field: 26 bits (word address)
+\item Shift left by 2: Append 2 zero bits
+\item Result: 28-bit byte address
+
+\textbf{Upper 4 Bits:}
+
+\begin{itemize}
+\item Take from PC+4 current value
+\item Bits 31:28 of next sequential instruction
+\item Preserves region (256 MB regions)
+\item Jump within same region as current PC
+
+\textbf{Concatenation:}
+
+\begin{verbatim}
+PC+4:         [31:28] [27:2] [1:0]
+                |       (ignored)
+Jump Target:  [31:28] [Target×4] [00]
+                |       |          |
+              From    From       Append
+              PC+4    instruction zeros
+\end{verbatim}
+
+\textbf{Example:}
+
+\begin{itemize}
+\item PC = 0x10000000
+\item PC+4 = 0x10000004
+\item Target = 100 = 0x000064
+\item Shift left 2: 0x000190
+\item Upper 4 bits: 0x1
+\item Jump Address: 0x10000190
+
+\textbf{Limitation:}
+
+\begin{itemize}
+\item Can only jump within 28-bit range (256 MB)
+\item Upper 4 bits fixed by current PC region
+\item For larger jumps: Use jump register (JR) instruction
+
+\subsubsection{Additional Datapath Hardware}
+
+\textbf{New Components:}
+
+\textbf{Shift Left 2 (for jump):}
+
+\begin{itemize}
+\item Input: 26-bit target field
+\item Output: 28-bit byte offset
+\item Implementation: Wire routing (no actual shifter!)
+
+\textbf{Concatenation Logic:}
+
+\begin{itemize}
+\item Input 1: PC+4 bits [31:28] (4 bits)
+\item Input 2: Shifted target (28 bits)
+\item Output: 32-bit jump address
+\item Implementation: Wire concatenation
+
+\textbf{New Multiplexer:}
+
+\begin{itemize}
+\item \textbf{Input 0}: Output from branch/sequential mux
+\item Could be PC+4 or branch target
+\item \textbf{Input 1}: Jump target address (32 bits)
+\item \textbf{Select}: Jump control signal
+\item \textbf{Output}: Next PC value
+
+\textbf{Original PC Source Mux:}
+
+\begin{itemize}
+\item Input 0: PC + 4
+\item Input 1: Branch target
+\item Select: PCSrc (Branch AND Zero)
+
+\textbf{New Jump Mux (outer):}
+
+\begin{itemize}
+\item Input 0: Original mux output (PC+4 or branch target)
+\item Input 1: Jump target
+\item Select: Jump signal
+\item Output: Final next PC value
+
+\subsubsection{Jump Control Signal}
+
+\textbf{Jump Signal:}
+
+\begin{itemize}
+\item 10th control output bit
+\item Generated by Control Unit
+\item Based on opcode = 2 (J) or 3 (JAL)
+
+\textbf{Values:}
+
+\begin{itemize}
+\item Jump = 1: Select jump target
+\item Jump = 0: Select sequential/branch
+
+\textbf{Other Control Signals for Jump:}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Signal} & \textbf{Value} & \textbf{Reason} \\
+\hline
+RegDst & X & Don't care \\
+Branch & 0 & Not a branch (different mechanism) \\
+MemRead & 0 & Not accessing memory \\
+MemtoReg & X & Don't care \\
+ALUOp & XX & Don't care (ALU not used) \\
+MemWrite & 0 & Not writing memory \\
+ALUSrc & X & Don't care \\
+RegWrite & 0 & Not writing register (J instruction) \\
+Jump & 1 & This IS a jump instruction \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Note: JAL (Jump and Link) different:}
+
+\begin{itemize}
+\item RegWrite = 1 (saves return address)
+\item RegDst = ? (special: write to $31)
+\item Additional logic needed for return address
+
+\subsubsection{Complete Datapath with Jump}
+
+\textbf{All Instruction Types Supported:}
+
+\begin{itemize}
+\item \textbf{R-type}: Arithmetic, logic, shift
+\item \textbf{I-type}: Load, Store, Branch, Immediate arithmetic
+\item \textbf{J-type}: Jump, Jump and Link
+
+\textbf{Coverage:}
+
+\begin{itemize}
+\item 95%+ of MIPS ISA hardware
+\item Complete single-cycle implementation
+\item Additional variants (BNE, shifts, etc.) need minor additions
+
+\textbf{Datapath Completeness:}
+
+\begin{itemize}
+\item Two memories: Instruction and Data
+\item One ALU for computation
+\item Multiple adders: PC+4, Branch target
+\item Many multiplexers for data routing
+\item Sign extender
+\item Shift left 2 circuits (wire routing)
+\item Control unit with 10 control signal bits
+
+\subsection{Timing Analysis with Concrete Delays}
+
+\subsubsection{Assumed Component Delays}
+
+\textbf{Delay Values (in nanoseconds):}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Component} & \textbf{Delay} & \textbf{Notes} \\
+\hline
+Instruction Memory & 2 ns & Read instruction at PC address \\
+Register File (Read) & 1 ns & Output data after address change \\
+Register File (Write) & 1 ns & At clock edge (next cycle) \\
+Sign Extender & $\sim$0 ns & Negligible (wire replication) \\
+Multiplexers & $\sim$0 ns & Negligible compared to other delays \\
+ALU Operation & 2 ns & Arithmetic/logic/comparison \\
+Data Memory (Read) & 2 ns & Output data after address provided \\
+Data Memory (Write) & 2 ns & At clock edge (next cycle) \\
+PC+4 Adder & 2 ns & Simple addition \\
+Branch Target Adder & 2 ns & Addition with offset \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Assumptions:}
+
+\begin{itemize}
+\item Simplified for analysis
+\item Real delays depend on technology, circuit design
+\item Memory accesses typically slowest
+\item Combinational logic relatively fast
+
+\subsubsection{Critical Path Analysis}
+
+\textbf{Definition:}
+
+\begin{itemize}
+\item Longest delay path from clock edge to clock edge
+\item Determines minimum clock period
+\item All combinational logic between sequential elements
+
+\textbf{Single-Cycle Constraint:}
+
+\begin{itemize}
+\item Entire instruction must complete in one clock cycle
+\item Clock period $\geq$ Critical path delay
+\item All instructions take same time (worst case)
+
+\subsubsection{Load Word Instruction Timing}
+
+\textbf{Step-by-Step Delay Calculation:}
+
+\textbf{Step 1: Instruction Fetch (2 ns)}
+
+\begin{itemize}
+\item Clock edge: PC updated
+\item PC $\rightarrow$ Instruction Memory
+\item Instruction Memory reads and outputs instruction
+\item Delay: 2 ns
+\item Running total: 2 ns
+
+\textbf{Step 2: Register Read (1 ns)}
+
+\begin{itemize}
+\item Instruction decoded
+\item RS field extracted
+\item RS $\rightarrow$ Register File Read Address 1
+\item Register File outputs base address
+\item Delay: 1 ns
+\item Running total: 2 + 1 = 3 ns
+
+\textbf{Step 3: Sign Extension (\textasciitilde{}0 ns)}
+
+\begin{itemize}
+\item Immediate field extracted
+\item Sign extended to 32 bits
+\item Delay: Negligible
+\item Running total: ~3 ns
+
+\textbf{Step 4: ALU Address Calculation (2 ns)}
+
+\begin{itemize}
+\item Base address + offset
+\item ALU performs addition
+\item Output: Memory address
+\item Delay: 2 ns
+\item Running total: 3 + 2 = 5 ns
+
+\textbf{Step 5: Memory Read (2 ns)}
+
+\begin{itemize}
+\item ALU result $\rightarrow$ Data Memory address
+\item MemRead = 1 asserted
+\item Data Memory reads and outputs data
+\item Delay: 2 ns
+\item Running total: 5 + 2 = 7 ns
+
+\textbf{Step 6: Register Write Setup (\textasciitilde{}0 ns)}
+
+\begin{itemize}
+\item Memory data $\rightarrow$ Register Write Data input
+\item RT $\rightarrow$ Register Write Address
+\item Ready for clock edge
+\item Delay: Setup time negligible
+\item Running total: ~7 ns
+
+\textbf{Clock Edge: Register Write (next cycle)}
+
+\begin{itemize}
+\item At next positive clock edge
+\item Data written to register
+\item Takes 1 ns but in next cycle
+
+\textbf{Minimum Clock Period:} 7 nanoseconds  
+\textbf{Maximum Clock Frequency:} 1/7 ns ≈ 143 MHz
+
+\textbf{Load Word is Critical Path!}
+
+\begin{itemize}
+\item Longest instruction in single-cycle design
+\item Determines clock period for ALL instructions
+
+\subsubsection{Store Word Instruction Timing}
+
+\textbf{Step-by-Step Delay:}
+
+\begin{enumerate}
+\item \textbf{Instruction Fetch:} 2 ns (total: 2 ns)
+\item \textbf{Register Read:} 1 ns (total: 3 ns)
+\item Read RS (base) AND RT (data)
+\item \textbf{Sign Extension:} ~0 ns (total: 3 ns)
+\item \textbf{ALU Address Calculation:} 2 ns (total: 5 ns)
+\item \textbf{Memory Write Setup:} ~0 ns (total: 5 ns)
+\item Address and data ready at memory inputs
+
+\textbf{Clock Edge: Memory Write (end of cycle)}
+
+\begin{itemize}
+\item Data written to memory at clock edge
+\item Takes 2 ns but next instruction fetch also 2 ns
+\item Next instruction register read starts after 3 ns total
+\item Memory write completes before register read needs data
+\item No conflict
+
+\textbf{Minimum Time Required:} 5 nanoseconds
+
+\textbf{Note:}
+
+\begin{itemize}
+\item Faster than Load Word (no memory read delay)
+\item But must use 7 ns clock period anyway (single-cycle)
+\item Wastes 2 ns per Store instruction
+
+\subsubsection{Arithmetic Instruction Timing (ADD, SUB, AND, OR)}
+
+\textbf{Step-by-Step Delay:}
+
+\begin{enumerate}
+\item \textbf{Instruction Fetch:} 2 ns (total: 2 ns)
+\item \textbf{Register Read:} 1 ns (total: 3 ns)
+\item Read RS and RT
+\item \textbf{ALU Operation:} 2 ns (total: 5 ns)
+\item Perform arithmetic/logic operation
+\item \textbf{Register Write Setup:} ~0 ns (total: 5 ns)
+\item ALU result ready at register write data input
+
+\textbf{Clock Edge: Register Write}
+
+\begin{itemize}
+\item Result written to RD
+
+\textbf{Minimum Time Required:} 5 nanoseconds
+
+\textbf{Efficiency Loss:}
+
+\begin{itemize}
+\item Could run at 5 ns clock period
+\item Forced to wait 7 ns (Load Word limitation)
+\item Wastes 2 ns = 28.6% time wasted per R-type instruction
+
+\subsubsection{Branch Instruction Timing}
+
+\textbf{Step-by-Step Delay:}
+
+\begin{enumerate}
+\item \textbf{Instruction Fetch:} 2 ns (total: 2 ns)
+\item \textbf{Register Read:} 1 ns (total: 3 ns)
+\item Read RS and RT for comparison
+\item \textbf{ALU Comparison:} 2 ns (total: 5 ns)
+\item Subtract RS - RT
+\item Generate Zero flag
+\item \textbf{Branch Target Calculation:} 2 ns (parallel with ALU)
+\item Sign extend offset: ~0 ns
+\item Shift left 2: ~0 ns (wire routing)
+\item Add to PC+4: 2 ns
+\item Can happen in parallel with ALU operation!
+\item \textbf{PC Update Setup:} ~0 ns (total: 5 ns)
+\item Zero flag + Branch $\rightarrow$ PCSrc
+\item Multiplexer selects next PC
+\item Ready for clock edge
+
+\textbf{Minimum Time Required:} 5 nanoseconds
+
+\textbf{Key Insight:}
+
+\begin{itemize}
+\item Branch target calculation parallel to ALU
+\item PC+4 already available from fetch stage
+\item No memory access needed
+\item Fast like R-type
+
+\subsubsection{Jump Instruction Timing}
+
+\textbf{Step-by-Step Delay:}
+
+\begin{enumerate}
+\item \textbf{Instruction Fetch:} 2 ns (total: 2 ns)
+\item Also calculates PC+4 in parallel
+\item \textbf{Jump Target Calculation:} ~0 ns
+\item Extract 26-bit target
+\item Shift left 2: Wire routing, ~0 ns
+\item Concatenate with PC+4[31:28]: Wire connection, ~0 ns
+\item No ALU, no memory, no registers!
+\item \textbf{PC Update Setup:} ~0 ns (total: 2 ns)
+
+\textbf{Minimum Time Required:} 2 nanoseconds
+
+\textbf{Fastest Instruction:}
+
+\begin{itemize}
+\item Only instruction fetch needed
+\item Jump target calculation: Wire operations only
+\item No sequential dependencies
+\item Wastes 5 ns waiting for clock period!
+
+\subsubsection{Timing Summary Table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Instruction Type} & \textbf{Time Required} & \textbf{Wasted Time} & \textbf{Efficiency} \\
+\hline
+Load Word (LW) & 7 ns & 0 ns & 100\% \\
+Store Word (SW) & 5 ns & 2 ns & 71.4\% \\
+R-type (ADD, etc.) & 5 ns & 2 ns & 71.4\% \\
+Branch (BEQ) & 5 ns & 2 ns & 71.4\% \\
+Jump (J) & 2 ns & 5 ns & 28.6\% \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Clock Period (Single-Cycle):} 7 ns (determined by LW)  
+\textbf{Clock Frequency:} ~143 MHz
+
+\textbf{Performance Impact:}
+
+\begin{itemize}
+\item Most instructions waste time
+\item Only Load Word fully utilizes clock cycle
+\item Tremendous inefficiency
+
+\subsection{Performance Analysis}
+
+\subsubsection{Program Composition Example}
+
+\textbf{Typical MIPS Program Profile:}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Instruction Type} & \textbf{Percentage} & \textbf{Time if Variable} & \textbf{Time (Fixed 7ns)} \\
+\hline
+Arithmetic & 48\% & 5 ns & 7 ns \\
+Load Word & 22\% & 7 ns & 7 ns \\
+Store Word & 11\% & 5 ns & 7 ns \\
+Branch & 19\% & 5 ns & 7 ns \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Average Time Calculation}
+
+\textbf{Variable Time (Ideal):}
+
+Average = (0.48 $\times$ 5) + (0.22 $\times$ 7) + (0.11 $\times$ 5) + (0.19 $\times$ 5)
+        = 2.40 + 1.54 + 0.55 + 0.95
+        = 5.44 ns per instruction
+
+\textbf{Single-Cycle (Actual):}
+
+Average = 7 ns per instruction (all instructions)
+
+\textbf{Performance Loss:}
+
+Overhead = 7 - 5.44 = 1.56 ns per instruction
+Efficiency = 5.44 / 7 = 77.7\%
+Waste = 22.3\% of time
+
+\subsubsection{Critical Path Problem}
+
+\textbf{Critical Path Determination:}
+
+\begin{itemize}
+\item Load Word uses most datapath elements
+\item Sequential dependencies:
+\end{itemize}
+\begin{enumerate}
+\item Instruction Memory
+\item Register File
+\item ALU
+\item Data Memory
+\item (Register Write in next cycle)
+
+\textbf{Design Principle Violation:}
+
+\begin{itemize}
+\item \textbf{"Make the common case fast"}
+\item Common case: Arithmetic instructions (48%)
+\item Slow case (Load Word) determines speed
+\item Common case forced to slow down
+\item Design is inefficient
+
+\subsubsection{Clock Period Inflexibility}
+
+\textbf{Single-Cycle Constraint:}
+
+\begin{itemize}
+\item Clock period MUST be constant
+\item Cannot vary by instruction
+\item Must accommodate worst case (slowest instruction)
+\item All faster instructions penalized
+
+\textbf{Implications:}
+
+\begin{itemize}
+\item Arithmetic: Could run at 143 MHz, forced to 143 MHz ✓
+\item Load: Needs 143 MHz, gets 143 MHz ✓
+\item Jump: Could run at 500 MHz, forced to 143 MHz ✗
+
+\textbf{Efficiency by Instruction:}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Instruction} & \textbf{Efficiency} & \textbf{Waste} \\
+\hline
+Jump & 28.6\% & 71.4\% \\
+Arithmetic & 71.4\% & 28.6\% \\
+Store & 71.4\% & 28.6\% \\
+Branch & 71.4\% & 28.6\% \\
+Load & 100.0\% & 0\% \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Path to Better Performance: Multi-Cycle Design}
+
+\subsubsection{Multi-Cycle Concept}
+
+\textbf{Basic Idea:}
+
+\begin{itemize}
+\item Break instruction execution into multiple stages
+\item Each stage completes in one (shorter) clock cycle
+\item Different instructions use different number of cycles
+\item Only use stages actually needed
+
+\textbf{Advantages:}
+
+\begin{itemize}
+\item Shorter clock period (faster clock)
+\item Instructions take only time they need
+\item Better average performance
+\item More efficient resource utilization
+
+\subsubsection{Stage Division}
+
+\textbf{Typical Stages:}
+
+\textbf{Stage 1: Instruction Fetch (IF)}
+
+\begin{itemize}
+\item Read from instruction memory
+\item Update PC to PC+4
+\item Store instruction in register
+
+\textbf{Stage 2: Instruction Decode (ID)}
+
+\begin{itemize}
+\item Decode opcode
+\item Read registers
+\item Generate control signals
+\item Sign extend immediate
+
+\textbf{Stage 3: Execute (EX)}
+
+\begin{itemize}
+\item ALU operation
+\item Or address calculation
+\item Or branch comparison
+
+\textbf{Stage 4: Memory Access (MEM)}
+
+\begin{itemize}
+\item Read from data memory (if load)
+\item Write to data memory (if store)
+\item Or skip this stage
+
+\textbf{Stage 5: Write-Back (WB)}
+
+\begin{itemize}
+\item Write result to register file
+\item Or skip if no write needed
+
+\textbf{Not All Instructions Use All Stages:}
+
+\begin{itemize}
+\item \textbf{R-type}: IF, ID, EX, WB (skip MEM) = 4 cycles
+\item \textbf{Load}: IF, ID, EX, MEM, WB (all stages) = 5 cycles
+\item \textbf{Store}: IF, ID, EX, MEM (skip WB) = 4 cycles
+\item \textbf{Branch}: IF, ID, EX (skip MEM, WB) = 3 cycles
+\item \textbf{Jump}: IF, ID (skip EX, MEM, WB) = 2 cycles
+
+\subsubsection{Clock Period in Multi-Cycle}
+
+\textbf{Determining Clock Period:}
+
+\begin{itemize}
+\item Clock period = Longest stage delay
+\item NOT longest instruction delay
+\item Much shorter than single-cycle
+
+\textbf{Example Stage Delays:}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Stage} & \textbf{Delay} \\
+\hline
+IF (Instr Memory) & 2 ns \\
+ID (Register Read) & 1 ns \\
+EX (ALU) & 2 ns \\
+MEM (Data Memory) & 2 ns \\
+WB (Register Write) & 1 ns \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Longest Stage:} 2 ns  
+\textbf{Clock Period:} 2 ns (vs 7 ns single-cycle)  
+\textbf{Clock Frequency:} 500 MHz (vs 143 MHz single-cycle)
+
+\subsubsection{Performance Comparison}
+
+\textbf{Single-Cycle:}
+
+All instructions: 1 cycle $\times$ 7 ns = 7 ns
+
+\textbf{Multi-Cycle (with 2 ns clock):}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Instruction} & \textbf{Cycles} & \textbf{Time} \\
+\hline
+Arithmetic & 4 & 8 ns \\
+Load & 5 & 10 ns \\
+Store & 4 & 8 ns \\
+Branch & 3 & 6 ns \\
+Jump & 2 & 4 ns \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Weighted Average (same program profile):}
+
+Average = (0.48 $\times$ 8) + (0.22 $\times$ 10) + (0.11 $\times$ 8) + (0.19 $\times$ 6)
+        = 3.84 + 2.20 + 0.88 + 1.14
+        = 8.06 ns per instruction
+
+\textbf{Wait, That's Worse!}
+
+\begin{itemize}
+\item Multi-cycle: 8.06 ns average
+\item Single-cycle: 7 ns always
+\item Multi-cycle slower?!
+
+\textbf{Resolution:}
+
+\begin{itemize}
+\item Example delays assumed equal stage times
+\item In reality, stages have different delays
+\item Need to balance stage delays
+\item Goal: Make all stages approximately equal
+\item Then multi-cycle becomes efficient
+
+\textbf{Ideal Multi-Cycle (balanced 1.4 ns stages):}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Instruction} & \textbf{Cycles} & \textbf{Time} \\
+\hline
+Arithmetic & 4 & 5.6 ns \\
+Load & 5 & 7.0 ns \\
+Store & 4 & 5.6 ns \\
+Branch & 3 & 4.2 ns \\
+\hline
+\end{tabular}
+\end{table}
+
+Average = (0.48 $\times$ 5.6) + (0.22 $\times$ 7.0) + (0.11 $\times$ 5.6) + (0.19 $\times$ 4.2)
+        = 2.69 + 1.54 + 0.62 + 0.80
+        = 5.65 ns per instruction
+
+Speedup = 7 / 5.65 = 1.24$\times$ faster
+
+\subsubsection{Design Challenge}
+
+\textbf{Stage Balancing:}
+
+\begin{itemize}
+\item Goal: Roughly equal delay per stage
+\item Challenge: Memory slower than ALU
+\item Memory stage limits clock period
+\item Need techniques:
+\item Faster memory
+\item Cache memory (next topic)
+\item Pipeline (next lecture)
+
+\textbf{Resource Reuse:}
+
+\begin{itemize}
+\item Single ALU used across multiple cycles
+\item Single memory port can be reused
+\item Fewer hardware resources needed
+\item More control complexity (FSM needed)
+
+\subsection{Preview: Pipelining}
+
+\subsubsection{Next Step Beyond Multi-Cycle}
+
+\textbf{Pipelining Concept:}
+
+\begin{itemize}
+\item Multiple instructions in flight simultaneously
+\item Each instruction at different stage
+\item Like assembly line
+\item \textbf{Stage 1:} Fetch instruction A
+\item \textbf{Stage 2:} Decode A, Fetch B
+\item \textbf{Stage 3:} Execute A, Decode B, Fetch C
+\item \textbf{Stage 4:} Memory A, Execute B, Decode C, Fetch D
+\item \textbf{Stage 5:} Write A, Memory B, Execute C, Decode D, Fetch E
+
+\textbf{Benefits:}
+
+\begin{itemize}
+\item One instruction completes per cycle (like single-cycle)
+\item But clock period short (like multi-cycle)
+\item Best of both worlds
+\item Dramatic performance improvement
+
+\textbf{Challenges (Covered Next Lecture):}
+
+\begin{itemize}
+\item Hazards: Data dependencies between instructions
+\item Control hazards: Branches affect pipeline
+\item Structural hazards: Resource conflicts
+\item Need forwarding and stall logic
+\item More complex control
+
+\subsubsection{Coming Next}
+
+\textbf{Topics:}
+
+\begin{itemize}
+\item Pipelined datapath design
+\item Hazard detection and resolution
+\item Forwarding (bypassing)
+\item Branch prediction
+\item Performance analysis
+\item MIPS pipeline implementation
+
+\subsection{Key Takeaways}
+
+\begin{enumerate}
+\item \textbf{Single-cycle design executes each instruction in one clock cycle}, with clock period determined by the slowest instruction (Load Word at 7 ns).
+
+\begin{enumerate}
+\item \textbf{Control unit generates signals based on opcode}, orchestrating datapath operations for R-type, Load, Store, Branch, and Jump instructions.
+
+\begin{enumerate}
+\item \textbf{Load Word is the critical path} (Instruction Fetch $\rightarrow$ Register Read $\rightarrow$ ALU $\rightarrow$ Memory Read $\rightarrow$ Register Write), determining minimum clock period.
+
+\begin{enumerate}
+\item \textbf{Jump instruction uses PC[31:28]} concatenated with shifted immediate to form 32-bit target address, enabling 256 MB jump range.
+
+\begin{enumerate}
+\item \textbf{Control signals must prevent data corruption}, with RegWrite=0 for Store and Branch to avoid unintended register modifications.
+
+\begin{enumerate}
+\item \textbf{"Don't care" values (X) simplify control logic}, allowing optimization when signals don't affect instruction outcome.
+
+\begin{enumerate}
+\item \textbf{Hardware operates concurrently}, not sequentially—multiple operations happen simultaneously within each clock cycle.
+
+\begin{enumerate}
+\item \textbf{Performance inefficiency drives design evolution}, as most instructions finish early but must wait for full clock period.
+
+\begin{enumerate}
+\item \textbf{Resource utilization varies dramatically}, with arithmetic instructions using ~43% of clock period while Load uses 100%.
+
+10. \textbf{Timing analysis reveals optimization opportunities}, showing that memory access dominates critical path (4 ns of 7 ns total).
+
+11. \textbf{Write operations occur at clock edge}, ensuring data stability and preventing race conditions in sequential logic.
+
+12. \textbf{Branch target calculation happens in parallel} with ALU comparison, optimizing branch instruction timing.
+
+13. \textbf{Sign extension is effectively instantaneous} (combinational logic), adding negligible delay to critical path.
+
+14. \textbf{Clock period sets maximum frequency} (~143 MHz for 7 ns period), directly impacting overall processor performance.
+
+15. \textbf{Common case (arithmetic) runs slowly}, violating fundamental design principle of making common case fast.
+
+16. \textbf{Stage division concept emerges from timing analysis}, suggesting multi-cycle implementation could improve efficiency.
+
+17. \textbf{Control signal truth tables systematically define behavior}, mapping each instruction to specific control patterns.
+
+18. \textbf{PC update mechanisms vary by instruction type}, using PC+4, branch target, or jump target based on control signals.
+
+19. \textbf{Data memory access only for Load/Store}, with MemRead and MemWrite controlling when memory participates in execution.
+
+20. \textbf{Performance analysis quantifies inefficiency}, providing concrete motivation for pipelined processor designs in subsequent lectures.
+
+\subsection{Summary}
+
+The single-cycle MIPS processor represents a complete, functioning implementation where each instruction executes in exactly one clock cycle. While conceptually straightforward and easy to understand, the design reveals fundamental performance limitations that drive modern processor architecture evolution. The critical path analysis shows Load Word requiring 7 nanoseconds while simpler instructions like arithmetic operations complete in just 3 nanoseconds, forcing all instructions to wait for the slowest operation. This inefficiency—with most instructions utilizing less than half the available clock period—violates the crucial design principle of "making the common case fast." The systematic control signal analysis demonstrates how the control unit orchestrates datapath operations for different instruction types (R-type, Load, Store, Branch, Jump), with careful attention to preventing data corruption through proper RegWrite and MemWrite signals. The jump instruction introduces pseudo-direct addressing, concatenating PC upper bits with shifted immediate for 256 MB addressability. While the single-cycle design provides essential conceptual foundation for understanding processor operation, the detailed timing analysis and resource utilization metrics clearly motivate the need for more sophisticated approaches—multi-cycle processors that divide execution into variable-length stages, and pipelined processors that overlap instruction execution for dramatically improved throughput. These performance limitations aren't flaws but rather inevitable consequences of the single-cycle constraint, establishing why modern processors universally adopt pipelining despite the additional complexity it introduces.
