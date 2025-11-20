@@ -76,7 +76,7 @@ You can create custom documents with only the lectures you need:
 \input{lecture-05}
 \input{lecture-06}
 
-\chapter{Processor Design}
+\chapter{Processor Architecture}
 \input{lecture-09}
 \input{lecture-10}
 

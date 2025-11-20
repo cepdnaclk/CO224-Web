@@ -8,7 +8,7 @@ Hands-on practical series to complement the lecture series, providing practical 
 
 - **Professional Design**: Clean, modern interface with responsive design
 - **20 Lecture Pages**: Individual HTML pages for each lecture with converted markdown content
-- **Easy Navigation**: Organized by categories (Foundations, Programming Concepts, Processor Design, Memory Systems, Advanced Topics)
+- **Easy Navigation**: Organized by categories (Foundations, Programming Concepts, Processor Architecture, Memory Systems, Advanced Topics)
 - **Download Materials**: Direct links to complete PDF notes and supplementary materials
 - **Mobile Responsive**: Works seamlessly on desktop, tablet, and mobile devices
 - **Previous/Next Navigation**: Easy navigation between lectures

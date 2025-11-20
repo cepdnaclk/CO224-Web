@@ -111,6 +111,11 @@
 
 <h2>13.3 Five-Stage MIPS Pipeline Review</h2>
 
+<div align="center">
+<img src="../img/Pipeline Stages.jpeg" width=600>
+<p><em>Figure 1: Five-Stage MIPS Pipeline Architecture</em></p>
+</div>
+
 <h3>13.3.1 Stage 1: Instruction Fetch (IF)</h3>
 
 <strong>Operations:</strong>
@@ -264,7 +269,7 @@
 <ul>
 <li>Multiple instructions in different stages</li>
 <li>All sharing same hardware components</li>
-<li>Data from different instructions 混淆</li>
+<li>Data from different instructions</li>
 </ul>
 
 <strong>Example Issues:</strong>
@@ -284,6 +289,11 @@
 </ul>
 
 <h3>13.4.2 Pipeline Register Purpose</h3>
+
+<div align="center">
+<img src="../img/Pipeline Registers.jpg" width=600>
+<p><em>Figure 2: Pipeline Registers Between Pipeline Stages</em></p>
+</div>
 
 <strong>Key Function:</strong>
 
@@ -806,7 +816,7 @@
 
 <strong>Example:</strong>
 
-
+``<code>
 <p>Cycle 1: LW $8, 0($10) fetched  (IF)</p>
 <p>Cycle 2: LW $9, 4($10) fetched  (IF), LW $8 in ID</p>
 <p>Cycle 3: LW $10, 8($10) fetched (IF), LW $8 in EX</p>
@@ -820,7 +830,7 @@
 <li>If using IF/ID: Would write to $14 instead of $8!</li>
 <li>WRONG REGISTER!</li>
 </ul>
-
+</code>`<code>
 
 <strong>Correct Implementation:</strong>
 
@@ -931,14 +941,14 @@
 
 <strong>Format:</strong>
 
-
+</code>`<code>
 <p>Cycle: 1    2    3    4    5    6    7    8    9</p>
 <p>Instr 1:         IF   ID   EX   MEM  WB</p>
 <p>Instr 2:              IF   ID   EX   MEM  WB</p>
 <p>Instr 3:                   IF   ID   EX   MEM  WB</p>
 <p>Instr 4:                        IF   ID   EX   MEM  WB</p>
 <p>Instr 5:                             IF   ID   EX   MEM  WB</p>
-
+</code>``
 
 <strong>Shows:</strong>
 
@@ -961,18 +971,21 @@
 
 <strong>Format:</strong>
 
-
-<p>Cycle 1:  Instr 1: [IM][RF][  ][  ][  ]</p>
-<p>Cycle 2:  Instr 1: [  ][IM][RF][  ][  ]   Instr 2: [IM][RF][  ][  ][  ]</p>
-<p>Cycle 3:  Instr 1: [  ][  ][IM][RF][  ]   Instr 2: [  ][IM][RF][  ][  ]   Instr 3: [IM][RF][  ][  ][  ]</p>
-<p>...</p>
+<p>Cycle | Instr 1                          | Instr 2                          | Instr 3</p>
+<p>-----:|:---------------------------------:|:---------------------------------:|:---------------------------------:</p>
+<p>1     | [IM][RF][  ][  ][  ]             | —                                 | —</p>
+<p>2     | [  ][IM][RF][  ][  ]             | [IM][RF][  ][  ][  ]             | —</p>
+<p>3     | [  ][  ][IM][RF][  ]             | [  ][IM][RF][  ][  ]             | [IM][RF][  ][  ][  ]</p>
 
 <p>Legend:</p>
-<p>IM: Instruction Memory</p>
-<p>RF: Register File</p>
-<p>ALU: ALU operation</p>
-<p>DM: Data Memory</p>
-<p>WB: Write Back</p>
+
+<ul>
+<li>IM: Instruction Memory (IF)</li>
+<li>RF: Register File (ID)</li>
+<li>ALU: ALU operation (EX)</li>
+<li>DM: Data Memory (MEM)</li>
+<li>WB: Write Back (WB)</li>
+</ul>
 
 
 <strong>Shows:</strong>

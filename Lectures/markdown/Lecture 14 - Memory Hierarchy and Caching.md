@@ -1040,33 +1040,33 @@ Cache Index = (Block Address) mod (Cache Size in Blocks)
 
 **Address 1:**
 
-
+```
 Binary: ...00000001[011]
          └─ Block address = 0
          └─ Offset = 3 bytes
 Cache index = 0 mod 8 = 0
 Maps to cache index 0
-
+```
 
 **Address 2 (block address in focus):**
 
-
+```
 Binary: ...00000101[000]
          └─ Block address = 5
          └─ Offset = 0
 Cache index = 5 mod 8 = 5
 Maps to cache index 5
-
+```
 
 ### 14.13.4 Address Structure for Direct-Mapped Cache
 
-
+```
 [Tag][Index][Offset]
   ^     ^       ^
   |     |       └── Identifies byte/word within block
   |     └── Identifies cache location (index)
   └── Remaining bits to differentiate blocks mapping to same index
-
+```
 
 #### Bit Allocation (for 8-block cache, 8-byte blocks, 32-bit address)
 
@@ -1097,17 +1097,17 @@ Maps to cache index 5
 
 **Address A:**
 
-
+```
 Block address: ...00000101
 Index bits (last 3): 101 → Index 5
-
+```
 
 **Address B:**
 
-
+```
 Block address: ...00001101
 Index bits (last 3): 101 → Index 5
-
+```
 
 Both map to index 5, but different blocks!
 
@@ -1328,11 +1328,11 @@ XNOR:         1 1 0 1  → AND = 0 (NO MATCH)
 
 **Logic Circuit:**
 
-
+```
 Tag Match Output ─┐
                   AND ─→ Hit/Miss Signal
 Valid Bit ────────┘
-
+```
 
 **Output:**
 

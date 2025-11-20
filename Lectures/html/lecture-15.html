@@ -98,13 +98,13 @@
 
 <h4>Address Breakdown (Recap)</h4>
 
-
+``<code>
 <p>[Tag][Index][Offset]</p>
 <p>^      ^       ^</p>
 <p>|      |       └── Identifies word/byte within block</p>
 <p>|      └── Identifies cache entry (direct mapping)</p>
 <p>└── Remaining bits for block identification</p>
-
+</code>`<code>
 
 <h3>15.2.2 Today's Focus</h3>
 
@@ -1137,7 +1137,7 @@
 
 <strong>Example Code:</strong>
 
-<p>``<code>c</p>
+</code>`<code>c
 <p>for (int i = 0; i < 1000; i++) {</p>
 <p>array[i] = compute(i);  // Store in every iteration</p>
 <p>sum += array[i];         // Read, accumulate, store</p>

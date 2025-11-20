@@ -344,6 +344,11 @@
 
 <h3>14.5.2 Memory Hierarchy Structure</h3>
 
+<div align="center">
+<img src="../img/Memory Hierarchy.jpg" width=400>
+<p><em>Figure 1: Memory Hierarchy with SRAM Cache, DRAM Main Memory, and Disk Storage</em></p>
+</div>
+
 
 <p>Level 1 (Top): SRAM (Cache)</p>
 <ul>
@@ -511,9 +516,9 @@
 
 <strong>Formula:</strong>
 
-
+``<code>
 <p>Hit Rate = (Number of Hits) / (Total Accesses)</p>
-
+</code>`<code>
 
 <strong>Example:</strong> 100 accesses, 90 hits → Hit Rate = 90% or 0.9
 
@@ -700,7 +705,7 @@
 
 <strong>a) Loop Index Variables:</strong>
 
-<p>``<code>c</p>
+</code>`<code>c
 <p>for (int i = 0; i < 100; i++) {</p>
 <p>// i is accessed every iteration</p>
 <p>// Same memory location for 'i' accessed repeatedly</p>
@@ -1074,7 +1079,7 @@
 <ul>
 <li>Used to identify WORD within block (when block has 2 words)</li>
 <li></code>0XX<code> → First word (bytes 0-3)</li>
-<li></code>1XX` → Second word (bytes 4-7)</li>
+<li></code>1XX<code> → Second word (bytes 4-7)</li>
 <li>Only need 1 bit to select between 2 words</li>
 </ul>
 
@@ -1281,33 +1286,33 @@
 
 <strong>Address 1:</strong>
 
-
+</code>`<code>
 <p>Binary: ...00000001[011]</p>
 <p>└─ Block address = 0</p>
 <p>└─ Offset = 3 bytes</p>
 <p>Cache index = 0 mod 8 = 0</p>
 <p>Maps to cache index 0</p>
-
+</code>`<code>
 
 <strong>Address 2 (block address in focus):</strong>
 
-
+</code>`<code>
 <p>Binary: ...00000101[000]</p>
 <p>└─ Block address = 5</p>
 <p>└─ Offset = 0</p>
 <p>Cache index = 5 mod 8 = 5</p>
 <p>Maps to cache index 5</p>
-
+</code>`<code>
 
 <h3>14.13.4 Address Structure for Direct-Mapped Cache</h3>
 
-
+</code>`<code>
 <p>[Tag][Index][Offset]</p>
 <p>^     ^       ^</p>
 <p>|     |       └── Identifies byte/word within block</p>
 <p>|     └── Identifies cache location (index)</p>
 <p>└── Remaining bits to differentiate blocks mapping to same index</p>
-
+</code>`<code>
 
 <h4>Bit Allocation (for 8-block cache, 8-byte blocks, 32-bit address)</h4>
 
@@ -1344,17 +1349,17 @@
 
 <strong>Address A:</strong>
 
-
+</code>`<code>
 <p>Block address: ...00000101</p>
 <p>Index bits (last 3): 101 → Index 5</p>
-
+</code>`<code>
 
 <strong>Address B:</strong>
 
-
+</code>`<code>
 <p>Block address: ...00001101</p>
 <p>Index bits (last 3): 101 → Index 5</p>
-
+</code>`<code>
 
 <p>Both map to index 5, but different blocks!</p>
 
@@ -1380,29 +1385,44 @@
 <p>Tag = Block Address (excluding index bits)</p>
 
 
+
 <h4>Example Address Breakdown</h4>
 
 <strong>Full Address:</strong>
 
-
+</code>`<code>
 <p>[26-bit Tag][3-bit Index][3-bit Offset]</p>
+</code>`<code>
 
+<h3>Address A</h3>
 
-<strong>Address A:</strong>
+<p>Binary representation:</p>
 
+</code>`<code>
+<p>00000000000000000000000000 101 000</p>
+</code>`<code>
 
-<p>[00000000000000000000000000][101][000]</p>
-<p>└── Tag = 0                └─ Index=5 └─ Offset</p>
+<p>Field     | Bits (binary)                       | Decimal</p>
+<p>:---------|:------------------------------------:|:-------:</p>
+<p>Tag       | 00000000000000000000000000 (26 bits) | 0</p>
+<p>Index     | 101                                  | 5</p>
+<p>Offset    | 000                                  | 0</p>
 
+<h3>Address B</h3>
 
-<strong>Address B:</strong>
+<p>Binary representation:</p>
 
+</code>`<code>
+<p>00000000000000000000000001 101 000</p>
+</code>`<code>
 
-<p>[00000000000000000000000001][101][000]</p>
-<p>└── Tag = 1                └─ Index=5 └─ Offset</p>
+<p>Field     | Bits (binary)                       | Decimal</p>
+<p>:---------|:------------------------------------:|:-------:</p>
+<p>Tag       | 00000000000000000000000001 (26 bits) | 1</p>
+<p>Index     | 101                                  | 5</p>
+<p>Offset    | 000                                  | 0</p>
 
-
-<p>Both have index 5, but DIFFERENT tags!</p>
+<p>Both addresses map to cache index 5 but have different tag values (0 vs 1), so they refer to different memory blocks that conflict at the same cache index.</p>
 
 <h3>14.14.4 Cache Structure with Tags</h3>
 
@@ -1428,12 +1448,12 @@
 
 <strong>Storage Overhead:</strong>
 
-
+</code>`<code>
 <p>Overhead = (Tag + Valid) / Total</p>
 <p>= (26 + 1) / (26 + 1 + 64)</p>
 <p>= 27 / 91</p>
 <p>≈ 30% overhead in this small example</p>
-
+</code>`<code>
 
 <h4>Note on Overhead</h4>
 
@@ -1487,6 +1507,11 @@
 </ul>
 
 <h2>14.15 Cache Read Access Operation</h2>
+
+<div align="center">
+<img src="../img/Direct Mapped Read.jpg" width=600>
+<p><em>Figure 2: Direct-Mapped Cache Read Access Process</em></p>
+</div>
 
 <h3>14.15.1 Read Access Process</h3>
 
@@ -1552,7 +1577,7 @@
 
 <strong>Example (4-bit tags):</strong>
 
-
+</code>`<code>
 <p>Stored tag:   1 0 1 1</p>
 <p>Address tag:  1 0 1 1</p>
 <p>XNOR:         1 1 1 1  → AND = 1 (MATCH!)</p>
@@ -1560,7 +1585,7 @@
 <p>Stored tag:   1 0 1 1</p>
 <p>Address tag:  1 0 0 1</p>
 <p>XNOR:         1 1 0 1  → AND = 0 (NO MATCH)</p>
-
+</code>`<code>
 
 <strong>For N-bit tag:</strong>
 
@@ -1589,11 +1614,11 @@
 
 <strong>Logic Circuit:</strong>
 
-
+</code>`<code>
 <p>Tag Match Output ─┐</p>
 <p>AND ─→ Hit/Miss Signal</p>
 <p>Valid Bit ────────┘</p>
-
+</code>``
 
 <strong>Output:</strong>
 

@@ -110,8 +110,13 @@
 </ul>
 
 <strong>Register Usage Conventions</strong>
-<img src="../img/Chapter%202%20ARM%20Conventions.jpg" alt="Computer System Abstraction Layers" width="600">
 
+<div align="center">
+<img src="../img/Chapter%202%20ARM%20Conventions.jpg" alt="ARM Register Usage Conventions" width="600">
+<p><em>Figure 1: ARM Register Usage Conventions</em></p>
+</div>
+
+<!-- ``<code>
 <p>R0-R3:   Argument/result registers</p>
 <p>- Pass parameters to functions</p>
 <p>- Return values from functions</p>
@@ -136,7 +141,7 @@
 <p>R15 (PC): Program Counter</p>
 <p>- Always points to next instruction</p>
 <p>- Modifying PC changes execution flow</p>
-
+-->
 
 <strong>Why So Many Registers?</strong>
 
@@ -156,7 +161,7 @@
 <li>Example: 0x12345678 stored as:</li>
 </ul>
 
-``<code>
+</code>`<code>
 <p>Address:  [base+0] [base+1] [base+2] [base+3]</p>
 <p>Content:     78       56       34       12</p>
 </code>`<code>

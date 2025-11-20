@@ -301,6 +301,13 @@
 <li>Updates on clock edge: D (input) → Q (output state)</li>
 </ul>
 
+<strong>Timing Example</strong>
+
+<div align="center">
+<img src="../img/Chapter 9 Register.jpeg" width=600>
+<p><em>Figure 1: Register Timing Diagram</em></p>
+</div>
+
 <strong>Register with Write Control</strong>
 
 <ul>
@@ -311,15 +318,19 @@
 
 <strong>Timing Example</strong>
 
-</code>`<code>
+<div align="center">
+<img src="../img/Chapter 9 Write EN Register.jpeg" width=600>
+<p><em>Figure 2: Register with Write Enable Timing Diagram</em></p>
+</div>
+
+<!-- </code>`<code>
 Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 <p>Write:  ‾‾‾‾|<em></em>_|‾‾‾‾‾</p>
 <p>Data:   [A][B][C][D][E]</p>
 <p>State:  [A][A][A][D][D]</p>
-</code>`<code>
+</code>`<code> -->
 
-
-<h3>9.3.6 Critical Path and Clock Period</h3>
+<h3>2.6 Critical Path and Clock Period</h3>
 
 <strong>Combinational Logic Delay</strong>
 
@@ -359,7 +370,12 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 <li>All instructions take same time (inefficient!)</li>
 </ul>
 
-<h2>9.4 CPU Execution Stages</h2>
+<h2>3. CPU Execution Stages</h2>
+
+<div align="center">
+<img src="../img/Chapter 9 CPU Overview.jpeg" width=600>
+<p><em>Figure 3: CPU Execution Stages Overview</em></p>
+</div>
 
 <h3>9.4.1 Instruction Fetch (IF)</h3>
 
@@ -842,7 +858,12 @@ Clock: <em></em>|‾|<em></em>|‾|<em></em>|‾|<em></em>
 <li>NO actual shifter hardware!</li>
 </ul>
 
-<h2>9.9 Complete Single-Cycle Datapath</h2>
+<h2>8. Complete Single-Cycle Datapath</h2>
+
+<div align="center">
+<img src="../img/Chapter 9 CPU Control and Datapath.jpeg" width=600>
+<p><em>Figure 4: Complete Single-Cycle CPU Control and Datapath</em></p>
+</div>
 
 <h3>9.9.1 Integrated Components</h3>
 
