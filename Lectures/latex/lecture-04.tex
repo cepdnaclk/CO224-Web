@@ -20,6 +20,8 @@ This lecture introduces ARM assembly language programming, providing the foundat
 \item Few addressing modes
 \item Hardware simplicity for higher clock rates
 
+\end{itemize}
+
 \textbf{Contrasted with CISC (Complex Instruction Set Computer)}
 
 | Feature | RISC | CISC |
@@ -40,6 +42,8 @@ This lecture introduces ARM assembly language programming, providing the foundat
 \item Large register file reduces memory traffic
 \item Consistent design across instruction types
 
+\end{itemize}
+
 \subsubsection{ARM Registers}
 
 \textbf{General-Purpose Registers}
@@ -51,6 +55,8 @@ This lecture introduces ARM assembly language programming, providing the foundat
 \item \textbf{R13 (SP)}: Stack Pointer - points to top of stack
 \item \textbf{R14 (LR)}: Link Register - stores return address
 \item \textbf{R15 (PC)}: Program Counter - address of next instruction
+
+\end{itemize}
 
 \textbf{Register Usage Conventions}
 \begin{figure}[h]
@@ -118,19 +124,25 @@ Address:  [base+0] [base+1] [base+2] [base+3]
 Content:     78       56       34       12
 \end{verbatim}
 
-\textbf{Word Alignment}
+\end{itemize}
+
+	textbf{Word Alignment}
 
 \begin{itemize}
 \item Words are 32 bits (4 bytes)
 \item Word addresses should be multiples of 4
 \item Accessing unaligned words may cause errors or slowdown
 
-\textbf{Address Space}
+\end{itemize}
+
+	textbf{Address Space}
 
 \begin{itemize}
-\item 32-bit addresses can access 2³² bytes = 4 GB
+\item 32-bit addresses can access $2^{32}$ bytes = 4 GB
 \item Byte-addressable memory
 \item Instructions and data in same address space (Von Neumann architecture)
+
+\end{itemize}
 
 \subsection{ARM Instruction Format}
 
@@ -143,6 +155,8 @@ Content:     78       56       34       12
 \item Simplifies instruction fetch and decode
 \item Enables predictable pipeline operation
 
+\end{itemize}
+
 \textbf{Typical Instruction Fields}
 
 \begin{verbatim}
@@ -152,9 +166,9 @@ Content:     78       56       34       12
 
 \textbf{Example: ADD Instruction}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ADD R1, R2, R3    ; R1 = R2 + R3
-\\end{lstlisting}
+\end{lstlisting}
 
 Encoding includes:
 \begin{itemize}
@@ -163,6 +177,7 @@ Encoding includes:
 \item Destination register (R1)
 \item Source register 1 (R2)
 \item Source register 2 (R3)
+\end{itemize}
 
 \subsubsection{Instruction Types}
 
@@ -174,35 +189,38 @@ Encoding includes:
 \item Comparison: CMP, CMN, TST, TEQ
 \item Move: MOV, MVN (move negated)
 \item Shift/Rotate: LSL, LSR, ASR, ROR
+\end{itemize}
 
-\textbf{Data Transfer Instructions}
+	textbf{Data Transfer Instructions}
 
 \begin{itemize}
 \item Load: LDR (word), LDRB (byte), LDRH (halfword)
 \item Store: STR (word), STRB (byte), STRH (halfword)
 \item Multiple: LDM, STM (load/store multiple registers)
+\end{itemize}
 
-\textbf{Control Flow Instructions}
+	textbf{Control Flow Instructions}
 
 \begin{itemize}
 \item Branch: B (unconditional), BEQ, BNE, BGE, BLT, etc.
 \item Function call: BL (branch and link)
 \item Return: MOV PC, LR
+\end{itemize}
 
 \subsubsection{Operand Types}
 
 \textbf{Register Operands}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ADD R0, R1, R2    ; R0 = R1 + R2 (all registers)
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Immediate Operands}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ADD R0, R1, #5    ; R0 = R1 + 5 (# indicates immediate)
 MOV R2, #100      ; R2 = 100
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Immediate Value Constraints}
 
@@ -210,13 +228,14 @@ MOV R2, #100      ; R2 = 100
 \item Limited to certain patterns due to 32-bit instruction encoding
 \item 8-bit immediate + 4-bit rotation
 \item Assembler warns if immediate cannot be encoded
+\end{itemize}
 
 \textbf{Shifted Register Operands}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ADD R0, R1, R2, LSL #2    ; R0 = R1 + (R2 << 2)
 SUB R3, R4, R5, LSR #1    ; R3 = R4 - (R5 >> 1)
-\\end{lstlisting}
+\end{lstlisting}
 
 \subsection{Basic ARM Instructions}
 
@@ -224,152 +243,152 @@ SUB R3, R4, R5, LSR #1    ; R3 = R4 - (R5 >> 1)
 
 \textbf{Addition}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ADD Rd, Rn, Rm       ; Rd = Rn + Rm
 ADD Rd, Rn, #imm     ; Rd = Rn + immediate
-\\end{lstlisting}
+\end{lstlisting}
 
 Examples:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ADD R0, R1, R2       ; R0 = R1 + R2
 ADD R3, R3, #1       ; R3 = R3 + 1 (increment)
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Subtraction}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 SUB Rd, Rn, Rm       ; Rd = Rn - Rm
 SUB Rd, Rn, #imm     ; Rd = Rn - immediate
 RSB Rd, Rn, #imm     ; Rd = immediate - Rn (reverse subtract)
-\\end{lstlisting}
+\end{lstlisting}
 
 Examples:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 SUB R0, R1, R2       ; R0 = R1 - R2
 SUB R4, R4, #10      ; R4 = R4 - 10 (decrement)
 RSB R5, R6, #0       ; R5 = 0 - R6 (negate)
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Multiplication} (covered in later tutorials)
 
-\begin{lstlisting}[language=assembly]
-MUL Rd, Rn, Rm       ; Rd = Rn × Rm (lower 32 bits)
-\\end{lstlisting}
+\begin{lstlisting}language=Assembler
+MUL Rd, Rn, Rm       ; Rd = Rn x Rm (lower 32 bits)
+\end{lstlisting}
 
 \subsubsection{Logical Instructions}
 
 \textbf{AND Operation}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 AND Rd, Rn, Rm       ; Rd = Rn AND Rm
 AND Rd, Rn, #imm     ; Rd = Rn AND immediate
-\\end{lstlisting}
+\end{lstlisting}
 
 Usage: Bit masking, clearing specific bits
 
 Example:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 AND R0, R0, #0xFF    ; Keep only lower 8 bits
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{OR Operation}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ORR Rd, Rn, Rm       ; Rd = Rn OR Rm (ORR in ARM)
 ORR Rd, Rn, #imm     ; Rd = Rn OR immediate
-\\end{lstlisting}
+\end{lstlisting}
 
 Usage: Setting specific bits
 
 Example:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ORR R1, R1, #0x80    ; Set bit 7
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Exclusive OR}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 EOR Rd, Rn, Rm       ; Rd = Rn XOR Rm
 EOR Rd, Rn, #imm     ; Rd = Rn XOR immediate
-\\end{lstlisting}
+\end{lstlisting}
 
 Usage: Toggling bits, fast comparison
 
 Example:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 EOR R2, R2, R2       ; R2 = 0 (XOR with itself)
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Move and Move Not}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 MOV Rd, Rm           ; Rd = Rm
 MOV Rd, #imm         ; Rd = immediate
 MVN Rd, Rm           ; Rd = NOT Rm (bitwise complement)
-\\end{lstlisting}
+\end{lstlisting}
 
 Examples:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 MOV R0, R1           ; Copy R1 to R0
 MOV R2, #0           ; Clear R2
 MVN R3, R4           ; R3 = ~R4 (invert all bits)
-\\end{lstlisting}
+\end{lstlisting}
 
 \subsubsection{Shift Operations}
 
 \textbf{Logical Shift Left (LSL)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LSL Rd, Rn, #shift   ; Rd = Rn << shift
 MOV Rd, Rn, LSL #shift
-\\end{lstlisting}
+\end{lstlisting}
 
-Effect: Multiplies by 2^shift
+Effect: Multiplies by $2^{\text{shift}}$
 
 Example:
-\begin{lstlisting}[language=assembly]
-LSL R0, R1, #2       ; R0 = R1 × 4
-\\end{lstlisting}
+\begin{lstlisting}language=Assembler
+LSL R0, R1, #2       ; R0 = R1 x 4
+\end{lstlisting}
 
 \textbf{Logical Shift Right (LSR)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LSR Rd, Rn, #shift   ; Rd = Rn >> shift (unsigned)
 MOV Rd, Rn, LSR #shift
-\\end{lstlisting}
+\end{lstlisting}
 
-Effect: Divides by 2^shift (unsigned)
+Effect: Divides by $2^{\text{shift}}$ (unsigned)
 
 Example:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LSR R0, R1, #3       ; R0 = R1 / 8
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Arithmetic Shift Right (ASR)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ASR Rd, Rn, #shift   ; Rd = Rn >> shift (signed)
-\\end{lstlisting}
+\end{lstlisting}
 
-Effect: Divides by 2^shift, preserves sign
+Effect: Divides by $2^{\text{shift}}$, preserves sign
 
 Example:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ASR R0, R1, #2       ; R0 = R1 / 4 (signed)
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Rotate Right (ROR)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ROR Rd, Rn, #shift   ; Rotate Rn right by shift
-\\end{lstlisting}
+\end{lstlisting}
 
 Effect: Bits rotated off right end reappear at left
 
 Example:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 ROR R0, R1, #8       ; Rotate R1 right by 8 bits
-\\end{lstlisting}
+\end{lstlisting}
 
 \subsection{Memory Access Instructions}
 
@@ -377,117 +396,117 @@ ROR R0, R1, #8       ; Rotate R1 right by 8 bits
 
 \textbf{Load Word (LDR)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDR Rd, [Rn]         ; Rd = Memory[Rn]
 LDR Rd, [Rn, #offset]; Rd = Memory[Rn + offset]
-\\end{lstlisting}
+\end{lstlisting}
 
 Examples:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDR R0, [R1]         ; Load word from address in R1
 LDR R2, [R3, #4]     ; Load from address R3+4
 LDR R4, [R5, #-8]    ; Load from address R5-8
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Load Byte (LDRB)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDRB Rd, [Rn, #offset]; Load one byte, zero-extend to 32 bits
-\\end{lstlisting}
+\end{lstlisting}
 
 Example:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDRB R0, [R1]        ; R0 = (byte at R1), upper 24 bits = 0
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Load Halfword (LDRH)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDRH Rd, [Rn, #offset]; Load 16 bits, zero-extend to 32 bits
-\\end{lstlisting}
+\end{lstlisting}
 
 Example:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDRH R0, [R1, #2]    ; R0 = (halfword at R1+2), upper 16 bits = 0
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Pseudo-Instruction for Loading Addresses}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDR Rd, =label       ; Load address of label into Rd
 LDR Rd, =value       ; Load 32-bit constant into Rd
-\\end{lstlisting}
+\end{lstlisting}
 
 Examples:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDR R0, =array       ; R0 = address of array
 LDR R1, =0x12345678  ; R1 = 0x12345678 (large immediate)
-\\end{lstlisting}
+\end{lstlisting}
 
 \subsubsection{Store Instructions}
 
 \textbf{Store Word (STR)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 STR Rd, [Rn]         ; Memory[Rn] = Rd
 STR Rd, [Rn, #offset]; Memory[Rn + offset] = Rd
-\\end{lstlisting}
+\end{lstlisting}
 
 Examples:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 STR R0, [R1]         ; Store R0 to address in R1
 STR R2, [R3, #8]     ; Store R2 to address R3+8
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Store Byte (STRB)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 STRB Rd, [Rn, #offset]; Store lower 8 bits of Rd
-\\end{lstlisting}
+\end{lstlisting}
 
 Example:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 STRB R0, [R1]        ; Store lower byte of R0 to address R1
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Store Halfword (STRH)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 STRH Rd, [Rn, #offset]; Store lower 16 bits of Rd
-\\end{lstlisting}
+\end{lstlisting}
 
 Example:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 STRH R0, [R1, #4]    ; Store lower halfword of R0 to R1+4
-\\end{lstlisting}
+\end{lstlisting}
 
 \subsubsection{Addressing Modes}
 
-\textbf{Offset Addressing}
+	textbf{Offset Addressing}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDR R0, [R1, #4]     ; R0 = Memory[R1 + 4], R1 unchanged
-\\end{lstlisting}
+\end{lstlisting}
 
-\textbf{Pre-indexed Addressing}
+	textbf{Pre-indexed Addressing}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDR R0, [R1, #4]!    ; R1 = R1 + 4, then R0 = Memory[R1]
                       ; ! indicates update base register
-\\end{lstlisting}
+\end{lstlisting}
 
-\textbf{Post-indexed Addressing}
+	textbf{Post-indexed Addressing}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDR R0, [R1], #4     ; R0 = Memory[R1], then R1 = R1 + 4
-\\end{lstlisting}
+\end{lstlisting}
 
-\textbf{Register Offset}
+	textbf{Register Offset}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LDR R0, [R1, R2]     ; R0 = Memory[R1 + R2]
 LDR R0, [R1, R2, LSL #2] ; R0 = Memory[R1 + (R2 << 2)]
-\\end{lstlisting}
+\end{lstlisting}
 
 \subsection{Assembly Program Structure}
 
@@ -495,27 +514,27 @@ LDR R0, [R1, R2, LSL #2] ; R0 = Memory[R1 + (R2 << 2)]
 
 \textbf{Section Directives}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language=bash]
 .text                ; Code section (instructions)
 .data                ; Data section (initialized variables)
 .bss                 ; Uninitialized data section
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Global and External}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language=bash]
 .global main         ; Make symbol visible to linker
 .extern printf       ; Declare external symbol
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Data Definition}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language=bash]
 .word value          ; Define 32-bit word
 .byte value          ; Define byte
 .asciz "string"      ; Define null-terminated string
 .space n             ; Reserve n bytes of space
-\\end{lstlisting}
+\end{lstlisting}
 
 \subsubsection{Labels}
 
@@ -526,20 +545,22 @@ LDR R0, [R1, R2, LSL #2] ; R0 = Memory[R1 + (R2 << 2)]
 \item Provide symbolic names for addresses
 \item Enable jumps and references
 
-\textbf{Syntax}
+\end{itemize}
 
-\begin{lstlisting}[language=assembly]
+	textbf{Syntax}
+
+\begin{lstlisting}language=Assembler
 label:               ; Label for instruction
     MOV R0, #1
     ADD R1, R0, R2
 
 array:               ; Label for data
     .word 1, 2, 3, 4
-\\end{lstlisting}
+\end{lstlisting}
 
 \subsubsection{Simple Program Example}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
     .text
     .global main
 
@@ -553,7 +574,7 @@ main:
     .data
 message:
     .asciz "Hello, ARM!"
-\\end{lstlisting}
+\end{lstlisting}
 
 \subsection{ARM Development Tools}
 
@@ -566,24 +587,32 @@ message:
 \item Runs on x86 PC, produces ARM binaries
 \item Necessary because development machine $\neq$ target machine
 
-\textbf{Assembler}
+\end{itemize}
+
+	textbf{Assembler}
 
 \begin{itemize}
 \item \texttt{arm-linux-gnueabi-as}: Assembles ARM assembly to object code
 \item Part of binutils package
 
-\textbf{Linker}
+\end{itemize}
+
+	textbf{Linker}
 
 \begin{itemize}
 \item \texttt{arm-linux-gnueabi-ld}: Links object files to executable
 \item Resolves symbols, combines code sections
 
-\textbf{Emulator}
+\end{itemize}
+
+	textbf{Emulator}
 
 \begin{itemize}
 \item \texttt{qemu-arm}: Emulates ARM processor on x86
 \item Allows running ARM binaries on PC
 \item Useful for testing without ARM hardware
+
+\end{itemize}
 
 \subsubsection{Compilation Process}
 
@@ -703,28 +732,28 @@ EOR R0, R0, R0       ; Method 2 (XOR with itself)
 
 \textbf{Negating a Value}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 RSB R0, R0, #0       ; R0 = 0 - R0
 MVN R0, R0           ; R0 = ~R0 (bitwise, not arithmetic)
 ADD R0, R0, #1       ; Then add 1 (two's complement)
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Multiplying by Powers of 2}
 
-\begin{lstlisting}[language=assembly]
-LSL R0, R1, #3       ; R0 = R1 × 8 (faster than MUL)
-\\end{lstlisting}
+\begin{lstlisting}language=Assembler
+LSL R0, R1, #3       ; R0 = R1 x 8 (faster than MUL)
+\end{lstlisting}
 
 \textbf{Dividing by Powers of 2}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 LSR R0, R1, #2       ; R0 = R1 / 4 (unsigned)
 ASR R0, R1, #2       ; R0 = R1 / 4 (signed)
-\\end{lstlisting}
+\end{lstlisting}
 
 \textbf{Swapping Two Registers}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}language=Assembler
 EOR R0, R0, R1       ; XOR-based swap (no temporary)
 EOR R1, R0, R1
 EOR R0, R0, R1

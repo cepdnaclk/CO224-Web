@@ -21,6 +21,7 @@ Function calling is a fundamental mechanism that enables modular programming and
 \item \textbf{Place result} in return register (R0)
 \item \textbf{Restore backed-up registers} from stack
 \item \textbf{Return to caller} using MOV PC, LR
+\end{enumerate}
 
 \textbf{Why This Complexity?}
 
@@ -29,6 +30,7 @@ Function calling is a fundamental mechanism that enables modular programming and
 \item Protects caller's data in registers
 \item Provides local storage for function variables
 \item Supports arbitrary call depth
+\end{itemize}
 
 \subsubsection{Why Use Functions?}
 
@@ -39,10 +41,11 @@ Function calling is a fundamental mechanism that enables modular programming and
 \item \textbf{Modularity}: Break complex problems into manageable pieces
 \item \textbf{Abstraction}: Hide implementation details
 \item \textbf{Maintainability}: Easier to debug and modify
+\end{itemize}
 
 \textbf{Example}
 
-\begin{lstlisting}[language=c]
+\begin{verbatim}
 int add(int a, int b) {
     return a + b;
 }
@@ -96,6 +99,7 @@ R15 (PC): Program Counter
 \item ALL functions share the SAME 16 registers
 \item No separate register sets per function
 \item Registers are a shared resource requiring careful management
+\end{itemize}
 
 \textbf{Implications}
 
@@ -104,10 +108,11 @@ R15 (PC): Program Counter
 \item Conventions prevent conflicts
 \item Callee must preserve certain registers (R4-R11)
 \item Caller can assume R4-R11 unchanged after call
+\end{itemize}
 
 \textbf{Example Scenario}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 main:
     MOV R4, #10      ; main uses R4
     MOV R0, #5       ; Pass argument
@@ -128,7 +133,7 @@ function:
 
 \textbf{Syntax}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 BL function_label    ; Branch and Link
 \end{verbatim}
 
@@ -136,14 +141,16 @@ BL function_label    ; Branch and Link
 
 \begin{enumerate}
 \item \textbf{Save return address}: LR = address of next instruction
-\item \textbf{Jump to function}: PC = function_label address
+\item \textbf{Jump to function}: PC = function\_label address
+\end{enumerate}
 
 \textbf{Example}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
     MOV R0, #10      ; Address: 0x1000
     BL fun           ; Address: 0x1004
     ADD R1, R0, #5   ; Address: 0x1008 (return point)
+
 
 fun:
     ; LR contains 0x1008 (address after BL)
@@ -157,12 +164,13 @@ fun:
 \item Creates a "link" back to caller
 \item LR provides the connection
 \item Enables function to return
+\end{itemize}
 
 \subsubsection{Return from Function}
 
 \textbf{Basic Return}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 MOV PC, LR           ; Copy LR to PC
 \end{verbatim}
 
@@ -172,10 +180,11 @@ MOV PC, LR           ; Copy LR to PC
 \item PC = LR (jump to return address)
 \item Execution continues at instruction after BL
 \item Simple and fast
+\end{itemize}
 
 \textbf{Alternative (older ARM)}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 BX LR                ; Branch and Exchange
 \end{verbatim}
 
@@ -189,10 +198,11 @@ BX LR                ; Branch and Exchange
 \item First 4 arguments in R0-R3
 \item Arguments loaded before BL instruction
 \item Callee reads R0-R3 to get parameters
+\end{itemize}
 
 \textbf{Example: Two Parameters}
 
-\begin{lstlisting}[language=c]
+\begin{verbatim}
 int multiply(int a, int b) {
     return a * b;
 }
@@ -202,14 +212,15 @@ int result = multiply(6, 7);
 
 \textbf{ARM Assembly}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
     MOV R0, #6       ; First argument (a)
     MOV R1, #7       ; Second argument (b)
     BL multiply      ; Call function
     ; R0 now contains result (42)
 
+
 multiply:
-    MUL R0, R0, R1   ; R0 = R0 × R1
+    MUL R0, R0, R1   ; R0 = R0 * R1
     MOV PC, LR       ; Return
 \end{verbatim}
 
@@ -221,10 +232,11 @@ multiply:
 \item Arguments 1-4 in R0-R3
 \item Additional arguments pushed to stack
 \item Callee reads from stack
+\end{itemize}
 
 \textbf{Example: 6 Arguments}
 
-\begin{lstlisting}[language=c]
+\begin{verbatim}
 int sum6(int a, int b, int c, int d, int e, int f) {
     return a + b + c + d + e + f;
 }
@@ -232,7 +244,7 @@ int sum6(int a, int b, int c, int d, int e, int f) {
 
 \textbf{ARM Assembly}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
     MOV R0, #1       ; arg1
     MOV R1, #2       ; arg2
     MOV R2, #3       ; arg3
@@ -244,6 +256,7 @@ int sum6(int a, int b, int c, int d, int e, int f) {
     STR R5, [SP, #4] ; arg6 on stack
     BL sum6
     ADD SP, SP, #8   ; Clean up stack
+
 
 sum6:
     ; R0-R3 have first 4 args
@@ -268,10 +281,11 @@ sum6:
 \item Result placed in R0
 \item Caller reads R0 after function returns
 \item Works for 32-bit values
+\end{itemize}
 
 \textbf{Example}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 add:
     ADD R0, R0, R1   ; R0 = R0 + R1
     MOV PC, LR       ; Return with result in R0
@@ -291,10 +305,11 @@ main:
 \item Lower 32 bits in R0
 \item Upper 32 bits in R1
 \item Example: 64-bit integer or two 32-bit values
+\end{itemize}
 
 \textbf{Example}
 
-\begin{lstlisting}[language=c]
+\begin{verbatim}
 long long multiply64(int a, int b) {
     return (long long)a * b;
 }
@@ -302,7 +317,7 @@ long long multiply64(int a, int b) {
 
 \textbf{ARM Assembly}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 multiply64:
     SMULL R0, R1, R0, R1  ; Signed multiply long
     ; R0 = lower 32 bits
@@ -320,6 +335,7 @@ multiply64:
 \item Last In, First Out (LIFO) data structure
 \item Part of main memory
 \item Used for temporary storage
+\end{itemize}
 
 \textbf{Characteristics}
 
@@ -328,23 +344,24 @@ multiply64:
 \item \textbf{Grows downward}: Toward lower addresses
 \item \textbf{Stack Pointer (SP/R13)}: Points to top of stack
 \item \textbf{Dynamic size}: Grows and shrinks as needed
+\end{itemize}
 
 \textbf{Memory Layout}
 
 \begin{verbatim}
 High Address
-  ┌─────────┐
-  │  Stack  │ ← SP points here
-  │   $\downarrow$     │   (grows downward)
-  │         │
-  ├─────────┤
-  │  Heap   │
-  │   ↑     │   (grows upward)
-  ├─────────┤
-  │  Data   │   (static variables)
-  ├─────────┤
-  │  Text   │   (instructions)
-  └─────────┘
+    +---------+
+    |  Stack  |  SP points here
+    |         |  (grows downward)
+    |         |
+    +---------+
+    |  Heap   |
+    |         |  (grows upward)
+    +---------+
+    |  Data   |  (static variables)
+    +---------+
+    |  Text   |  (instructions)
+    +---------+
 Low Address
 \end{verbatim}
 
@@ -358,6 +375,7 @@ Low Address
 \item \textbf{Preserving return addresses} (nested calls)
 \item \textbf{Extra function arguments} (beyond R0-R3)
 \item \textbf{Storing local arrays} that don't fit in registers
+\end{enumerate}
 
 \subsection{Stack Operations}
 
@@ -365,7 +383,7 @@ Low Address
 
 \textbf{Decrement Stack Pointer}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 SUB SP, SP, #4       ; Allocate 4 bytes (1 register)
 SUB SP, SP, #12      ; Allocate 12 bytes (3 registers)
 \end{verbatim}
@@ -376,19 +394,20 @@ SUB SP, SP, #12      ; Allocate 12 bytes (3 registers)
 \item Stack grows toward lower addresses
 \item Allocating space moves SP downward
 \item Each 32-bit register needs 4 bytes
+\end{itemize}
 
 \subsubsection{Storing Values to Stack}
 
 \textbf{Single Register}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 SUB SP, SP, #4       ; Allocate space
 STR R4, [SP, #0]     ; Store R4 at top of stack
 \end{verbatim}
 
 \textbf{Multiple Registers}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 SUB SP, SP, #12      ; Space for 3 registers
 STR R4, [SP, #0]     ; Store R4
 STR R5, [SP, #4]     ; Store R5
@@ -397,7 +416,7 @@ STR R6, [SP, #8]     ; Store R6
 
 \textbf{Push Multiple (Convenient)}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 PUSH {R4-R6}         ; Allocate and store in one instruction
 \end{verbatim}
 
@@ -405,14 +424,14 @@ PUSH {R4-R6}         ; Allocate and store in one instruction
 
 \textbf{Single Register}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 LDR R4, [SP, #0]     ; Load R4 from stack
 ADD SP, SP, #4       ; Release space
 \end{verbatim}
 
 \textbf{Multiple Registers}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 LDR R4, [SP, #0]     ; Restore R4
 LDR R5, [SP, #4]     ; Restore R5
 LDR R6, [SP, #8]     ; Restore R6
@@ -421,7 +440,7 @@ ADD SP, SP, #12      ; Release space
 
 \textbf{Pop Multiple}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 POP {R4-R6}          ; Restore and release in one instruction
 \end{verbatim}
 
@@ -430,9 +449,10 @@ POP {R4-R6}          ; Restore and release in one instruction
 \textbf{Pattern}
 
 \begin{enumerate}
-\item \textbf{Allocate}: SUB SP, SP, #n
+\item \textbf{Allocate}: SUB SP, SP, \#n
 \item \textbf{Use}: STR/LDR with [SP, offset]
-\item \textbf{Release}: ADD SP, SP, #n
+\item \textbf{Release}: ADD SP, SP, \#n
+\end{enumerate}
 
 \textbf{Important: Balance}
 
@@ -440,6 +460,7 @@ POP {R4-R6}          ; Restore and release in one instruction
 \item Every SUB must have corresponding ADD
 \item Unbalanced stack causes bugs and crashes
 \item SP must be restored before return
+\end{itemize}
 
 \subsection{Register Preservation}
 
@@ -452,6 +473,7 @@ POP {R4-R6}          ; Restore and release in one instruction
 \item Main function may be using R4-R11
 \item Called function needs registers for its work
 \item Must not corrupt caller's data
+\end{itemize}
 
 \textbf{Solution}
 
@@ -460,12 +482,13 @@ POP {R4-R6}          ; Restore and release in one instruction
 \item Uses registers freely during execution
 \item Restores R4-R11 from stack before return
 \item Caller expects R4-R11 unchanged
+\end{itemize}
 
 \subsubsection{Preservation Pattern}
 
 \textbf{Function Template}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 function:
     ; Prologue: Save registers
     SUB SP, SP, #12      ; Allocate space
@@ -490,6 +513,7 @@ function:
 \item Only preserve registers actually used
 \item If function doesn't use R5, don't save/restore it
 \item Saves stack space and execution time
+\end{itemize}
 
 \subsection{Nested Function Calls (Non-Leaf Functions)}
 
@@ -501,6 +525,7 @@ function:
 \item Doesn't call other functions
 \item LR preserved automatically (not overwritten)
 \item Simple return: MOV PC, LR
+\end{itemize}
 
 \textbf{Non-Leaf Function}
 
@@ -509,10 +534,11 @@ function:
 \item BL overwrites LR with new return address
 \item Original LR lost!
 \item Cannot return to original caller
+\end{itemize}
 
 \textbf{Example Problem}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 main:
     BL funcA         ; LR = address after this BL
 
@@ -529,7 +555,7 @@ funcB:
 
 \textbf{Pattern}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 function:
     ; Save LR first!
     SUB SP, SP, #4
@@ -546,7 +572,7 @@ function:
 
 \textbf{Complete Example}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 main:
     MOV R0, #5
     BL outer         ; LR = return_to_main
@@ -576,7 +602,7 @@ inner:
 
 \textbf{C Code}
 
-\begin{lstlisting}[language=c]
+\begin{verbatim}
 int fact(int n) {
     if (n <= 1)
         return 1;
@@ -588,14 +614,15 @@ int fact(int n) {
 \textbf{Key Points}
 
 \begin{itemize}
-\item Base case: n $\leq$ 1, return 1
-\item Recursive case: return n $\times$ fact(n-1)
+\item Base case: $n \le 1$, return 1
+\item Recursive case: return $n \times$ fact$(n-1)$
 \item Each call creates new stack frame
 \item Stack unwinds as recursion returns
+\end{itemize}
 
 \subsubsection{ARM Assembly Implementation}
 
-\begin{lstlisting}[language=assembly]
+\begin{verbatim}
 fact:
     ; Save LR and n
     SUB SP, SP, #8
@@ -650,9 +677,10 @@ Final: SP = 0x1000 (restored)
 
 \begin{itemize}
 \item 8 bytes (LR + n)
-\item fact(5) needs 5 $\times$ 8 = 40 bytes
+\item fact(5) needs 5 * 8 = 40 bytes
 \item fact(10) needs 80 bytes
 \item Deep recursion can overflow stack!
+\end{itemize}
 
 \subsection{Memory Layout and Stack vs. Heap}
 
@@ -660,26 +688,26 @@ Final: SP = 0x1000 (restored)
 
 \begin{verbatim}
 High Address (0xFFFFFFFF)
-  ┌──────────────┐
-  │   Reserved   │ OS and system
-  ├──────────────┤
-  │    Stack     │ ← SP (grows down)
-  │      $\downarrow$       │   Automatic storage
-  │              │   Function call data
-  │              │   Local variables
-  │              │
-  │   (unused)   │
-  │              │
-  │      ↑       │
-  │    Heap      │   Dynamic allocation
-  │              │   malloc/free, new/delete
-  ├──────────────┤
-  │ Static Data  │   Global variables
-  │              │   String constants
-  ├──────────────┤
-  │    Text      │   Program instructions
-  │ (Code)       │   Read-only
-  └──────────────┘
+  +--------------+
+  |   Reserved   | OS and system
+  +--------------+
+  |    Stack     | <- SP (grows down)
+  |      v       |  Automatic storage
+  |              |  Function call data
+  |              |  Local variables
+  |              |
+  |   (unused)   |
+  |              |
+  |      ^       |
+  |    Heap      |  Dynamic allocation
+  |              |  malloc/free, new/delete
+  +--------------+
+  | Static Data  |  Global variables
+  |              |  String constants
+  +--------------+
+  |    Text      |  Program instructions
+  | (Code)       |  Read-only
+  +--------------+
 Low Address (0x00000000)
 \end{verbatim}
 
@@ -691,6 +719,7 @@ Low Address (0x00000000)
 \item Allocated when function called
 \item Released when function returns
 \item Managed automatically by compiler/runtime
+\end{itemize}
 
 \textbf{Fast Access}
 
@@ -698,6 +727,7 @@ Low Address (0x00000000)
 \item Fixed addressing pattern
 \item SP always points to top
 \item Simple offset calculations
+\end{itemize}
 
 \textbf{Limited Size}
 
@@ -705,6 +735,7 @@ Low Address (0x00000000)
 \item Typically 1-8 MB
 \item Stack overflow if exceeded
 \item Recursion depth limited
+\end{itemize}
 
 \textbf{Scope}
 
@@ -712,6 +743,7 @@ Low Address (0x00000000)
 \item Local to function
 \item Not accessible after return
 \item Perfect for temporary data
+\end{itemize}
 
 \subsubsection{Heap Characteristics}
 
@@ -721,12 +753,14 @@ Low Address (0x00000000)
 \item malloc/free in C
 \item new/delete in C++
 \item Programmer controls lifetime
+\end{itemize}
 
 \textbf{Flexible Size}
 
 \begin{itemize}
 \item Can grow large (limited by available memory)
 \item Variable-sized allocations
+\end{itemize}
 
 \textbf{Manual Management}
 
@@ -734,6 +768,7 @@ Low Address (0x00000000)
 \item Must explicitly free memory
 \item Memory leaks if not freed
 \item Fragmentation possible
+\end{itemize}
 
 \textbf{Global Scope}
 
@@ -741,41 +776,35 @@ Low Address (0x00000000)
 \item Persists until explicitly freed
 \item Can pass pointers across functions
 \item Suitable for data structures
+\end{itemize}
 
 \subsection{Key Takeaways}
 
 \begin{enumerate}
 \item \textbf{Function calling requires} parameter passing, return value handling, and register preservation.
 
-\begin{enumerate}
 \item \textbf{R0-R3 for arguments and returns} - caller doesn't expect preservation.
 
-\begin{enumerate}
 \item \textbf{R4-R11 must be preserved} by callee if used, protecting caller's data.
 
-\begin{enumerate}
 \item \textbf{BL instruction} saves return address in LR and jumps to function.
 
-\begin{enumerate}
 \item \textbf{Return via MOV PC, LR} copies link register to program counter.
 
-\begin{enumerate}
 \item \textbf{Stack is LIFO structure} growing downward from high addresses, pointed to by SP.
 
-\begin{enumerate}
 \item \textbf{Stack usage} includes saving registers, local variables, return addresses, and extra arguments.
 
-\begin{enumerate}
 \item \textbf{Allocate with SUB SP, release with ADD SP} - must balance allocations and releases.
 
-\begin{enumerate}
 \item \textbf{Non-leaf functions} must save LR to stack before making nested calls.
 
-10. \textbf{Recursion} creates multiple stack frames, one per call, unwinding as calls return.
+\item \textbf{Recursion} creates multiple stack frames, one per call, unwinding as calls return.
 
-11. \textbf{Stack vs. Heap} - stack is automatic/local/fast/limited, heap is manual/global/flexible/larger.
+\item \textbf{Stack vs. Heap} - stack is automatic/local/fast/limited, heap is manual/global/flexible/larger.
 
-12. \textbf{Register conventions} enable modularity and prevent conflicts in shared register file.
+\item \textbf{Register conventions} enable modularity and prevent conflicts in shared register file.
+\end{enumerate}
 
 \subsection{Summary}
 

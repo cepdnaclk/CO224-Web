@@ -1,0 +1,420 @@
+\contentsline {section}{Preface}{6}{section*.2}%
+\contentsline {section}{Learning Methods}{7}{section*.3}%
+\contentsline {section}{Introduction}{8}{section*.4}%
+\contentsline {chapter}{\numberline {1}Fundamentals}{9}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Lecture 1: Computer Abstractions and Technology}{9}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Introduction}{9}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}The Big Picture of Computer Systems}{9}{subsection.1.1.2}%
+\contentsline {subsubsection}{Cross-Section of a Computer System (Top to Bottom)}{9}{section*.5}%
+\contentsline {subsubsection}{Human-Related Level (Gray)}{10}{section*.6}%
+\contentsline {subsubsection}{System Level (Blue)}{10}{section*.7}%
+\contentsline {subsubsection}{RTL (Register Transfer Level) - Red/Orange}{10}{section*.8}%
+\contentsline {subsubsection}{Logic Level (Green)}{10}{section*.9}%
+\contentsline {subsubsection}{Circuit Level (Light Gray)}{10}{section*.10}%
+\contentsline {subsubsection}{Substrate Level (Black)}{10}{section*.11}%
+\contentsline {subsubsection}{Purpose of Computer Systems}{10}{section*.12}%
+\contentsline {subsection}{\numberline {1.1.3}Instruction Set Architecture (ISA) - The Key Interface}{11}{subsection.1.1.3}%
+\contentsline {subsubsection}{What is an ISA?}{11}{section*.13}%
+\contentsline {subsubsection}{Example Instructions in an ISA}{11}{section*.14}%
+\contentsline {subsubsection}{Importance of ISA}{11}{section*.15}%
+\contentsline {subsection}{\numberline {1.1.4}From Problem to Execution - The Translation Chain}{11}{subsection.1.1.4}%
+\contentsline {subsubsection}{High-Level Process}{11}{section*.16}%
+\contentsline {subsubsection}{Tool Chain Components}{12}{section*.17}%
+\contentsline {paragraph}{Compiler}{12}{section*.18}%
+\contentsline {paragraph}{Assembler}{12}{section*.19}%
+\contentsline {paragraph}{Linker}{12}{section*.20}%
+\contentsline {subsubsection}{Architecture-Specific Compilation}{12}{section*.21}%
+\contentsline {subsection}{\numberline {1.1.5}Writing Programs at Different Levels}{12}{subsection.1.1.5}%
+\contentsline {subsubsection}{Machine Code (Binary)}{12}{section*.22}%
+\contentsline {subsubsection}{Assembly Language}{12}{section*.23}%
+\contentsline {subsubsection}{High-Level Languages (C, Python, etc.)}{13}{section*.24}%
+\contentsline {subsection}{\numberline {1.1.6}Microarchitecture Details}{13}{subsection.1.1.6}%
+\contentsline {subsubsection}{What is Microarchitecture?}{13}{section*.25}%
+\contentsline {subsubsection}{Hierarchy of Microarchitecture Components}{13}{section*.26}%
+\contentsline {paragraph}{Microarchitecture Level}{13}{section*.27}%
+\contentsline {paragraph}{Functional Units Level}{13}{section*.28}%
+\contentsline {paragraph}{Logic Gate Level}{13}{section*.29}%
+\contentsline {paragraph}{Transistor Level}{14}{section*.30}%
+\contentsline {paragraph}{Semiconductor Level}{14}{section*.31}%
+\contentsline {subsection}{\numberline {1.1.7}Abstraction Concept}{14}{subsection.1.1.7}%
+\contentsline {subsubsection}{What is an Abstraction?}{14}{section*.32}%
+\contentsline {subsubsection}{Hardware Abstraction Hierarchy (Bottom to Top)}{14}{section*.33}%
+\contentsline {paragraph}{1. Substrate (Silicon, Germanium)}{14}{section*.34}%
+\contentsline {paragraph}{2. Transistors}{14}{section*.35}%
+\contentsline {paragraph}{3. Logic Gates}{14}{section*.36}%
+\contentsline {paragraph}{4. Functional Units}{14}{section*.37}%
+\contentsline {paragraph}{5. Microarchitecture}{15}{section*.38}%
+\contentsline {subsubsection}{Software Abstraction Hierarchy (Bottom to Top)}{15}{section*.39}%
+\contentsline {paragraph}{1. Machine Instructions (Binary)}{15}{section*.40}%
+\contentsline {paragraph}{2. Assembly Instructions}{15}{section*.41}%
+\contentsline {paragraph}{3. Programs / Source Code}{15}{section*.42}%
+\contentsline {paragraph}{4. Algorithms and Data Structures}{15}{section*.43}%
+\contentsline {subsubsection}{Relationships Between Hardware and Software Abstractions}{15}{section*.44}%
+\contentsline {paragraph}{Voltage Levels $\leftrightarrow $ Logic Levels}{15}{section*.45}%
+\contentsline {paragraph}{Logic Levels $\leftrightarrow $ Numbers}{15}{section*.46}%
+\contentsline {paragraph}{Numbers $\leftrightarrow $ Instructions}{16}{section*.47}%
+\contentsline {paragraph}{Summary of Relationships}{16}{section*.48}%
+\contentsline {subsubsection}{Complete System}{16}{section*.49}%
+\contentsline {subsection}{\numberline {1.1.8}Performance Theme}{16}{subsection.1.1.8}%
+\contentsline {subsubsection}{Throughout the Lecture Series}{16}{section*.50}%
+\contentsline {subsection}{\numberline {1.1.9}Key Takeaways}{16}{subsection.1.1.9}%
+\contentsline {subsection}{\numberline {1.1.10}Summary}{17}{subsection.1.1.10}%
+\contentsline {section}{\numberline {1.2}Lecture 2: Technology Trends, Moore's Law, and Computer System Organization}{17}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Introduction}{17}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Moore's Law - Foundation of Computer Technology Evolution}{17}{subsection.1.2.2}%
+\contentsline {subsubsection}{Who Was Gordon Moore?}{17}{section*.51}%
+\contentsline {subsubsection}{Moore's Law Definition}{18}{section*.52}%
+\contentsline {subsubsection}{Impact of Moore's Law}{18}{section*.53}%
+\contentsline {subsection}{\numberline {1.2.3}Technology Scaling - Historical Data}{19}{subsection.1.2.3}%
+\contentsline {subsubsection}{Transistor Count Growth (1970-2010)}{19}{section*.54}%
+\contentsline {subsubsection}{The x86 Architecture}{20}{section*.55}%
+\contentsline {subsubsection}{Historical Context}{21}{section*.56}%
+\contentsline {subsection}{\numberline {1.2.4}Feature Size Scaling - Lithography Improvements}{22}{subsection.1.2.4}%
+\contentsline {subsubsection}{What Made Transistor Count Increase Possible?}{22}{section*.57}%
+\contentsline {subsubsection}{What is "Feature Size"?}{22}{section*.58}%
+\contentsline {subsubsection}{How Tiny Are Transistors?}{23}{section*.59}%
+\contentsline {subsubsection}{Transistor Structure}{23}{section*.60}%
+\contentsline {subsection}{\numberline {1.2.5}Technology Roadmaps - ITRS Predictions}{24}{subsection.1.2.5}%
+\contentsline {subsubsection}{ITRS Organization}{24}{section*.61}%
+\contentsline {subsubsection}{Original Roadmap (2001)}{25}{section*.62}%
+\contentsline {subsubsection}{Revised Roadmap (2013)}{25}{section*.63}%
+\contentsline {subsubsection}{Final Roadmap (2015)}{25}{section*.64}%
+\contentsline {subsubsection}{Why the Change? - 3D Technology}{26}{section*.65}%
+\contentsline {subsubsection}{Dissolution of ITRS (2015)}{27}{section*.66}%
+\contentsline {subsection}{\numberline {1.2.6}Why Smaller Transistors Improve Performance}{27}{subsection.1.2.6}%
+\contentsline {subsubsection}{Reason 1: More Complex Circuits}{27}{section*.67}%
+\contentsline {subsubsection}{Reason 2: Faster Switching}{28}{section*.68}%
+\contentsline {subsection}{\numberline {1.2.7}Clock Rate Trends - The Power Wall}{29}{subsection.1.2.7}%
+\contentsline {subsubsection}{Clock Rate Increases (1982-2004)}{29}{section*.69}%
+\contentsline {subsubsection}{The Turning Point (2004-2007)}{29}{section*.70}%
+\contentsline {subsubsection}{The Power Wall Problem}{30}{section*.71}%
+\contentsline {subsubsection}{Dynamic Power Equation}{31}{section*.72}%
+\contentsline {subsubsection}{Overclocking Phenomenon}{33}{section*.73}%
+\contentsline {subsection}{\numberline {1.2.8}Shift to Multi-Core Processors}{34}{subsection.1.2.8}%
+\contentsline {subsubsection}{The Challenge}{34}{section*.74}%
+\contentsline {subsubsection}{Solution: Multiple Processor Cores}{34}{section*.75}%
+\contentsline {subsubsection}{The Plan}{35}{section*.76}%
+\contentsline {subsubsection}{Why Multi-Core Growth Slowed}{36}{section*.77}%
+\contentsline {subsubsection}{Instruction-Level Parallelism vs Multi-Core Parallelism}{39}{section*.78}%
+\contentsline {subsubsection}{Impact on Software Development}{40}{section*.79}%
+\contentsline {subsection}{\numberline {1.2.9}Computer System Organization - Three Layers}{41}{subsection.1.2.9}%
+\contentsline {subsubsection}{Hardware Layer (Bottom)}{41}{section*.80}%
+\contentsline {subsubsection}{System Software Layer (Middle)}{42}{section*.81}%
+\contentsline {subsubsection}{Application Software Layer (Top)}{45}{section*.82}%
+\contentsline {subsection}{\numberline {1.2.10}From High-Level Code to Machine Code - The Translation Process}{46}{subsection.1.2.10}%
+\contentsline {subsubsection}{Example: Swap Function in C}{46}{section*.83}%
+\contentsline {subsubsection}{After Compilation - MIPS Assembly Code}{47}{section*.84}%
+\contentsline {subsubsection}{After Assembly - Machine Code}{48}{section*.85}%
+\contentsline {subsection}{\numberline {1.2.11}Program Execution - Inside the CPU}{49}{subsection.1.2.11}%
+\contentsline {subsubsection}{Block Diagram of Computer}{49}{section*.86}%
+\contentsline {subsubsection}{Inside the CPU - Two Main Components}{50}{section*.87}%
+\contentsline {subsubsection}{Execution Process (Conveyor Belt Analogy)}{52}{section*.88}%
+\contentsline {subsubsection}{Cache Memory}{53}{section*.89}%
+\contentsline {subsection}{\numberline {1.2.12}Real CPU Layout - AMD Barcelona Example}{54}{subsection.1.2.12}%
+\contentsline {subsubsection}{Overview}{54}{section*.90}%
+\contentsline {subsubsection}{Four Processor Cores}{54}{section*.91}%
+\contentsline {subsubsection}{Inside Each Core}{55}{section*.92}%
+\contentsline {subsubsection}{Shared Components}{57}{section*.93}%
+\contentsline {subsubsection}{Additional Information}{59}{section*.94}%
+\contentsline {subsection}{\numberline {1.2.13}Key Takeaways}{60}{subsection.1.2.13}%
+\contentsline {subsection}{\numberline {1.2.14}Summary}{61}{subsection.1.2.14}%
+\contentsline {section}{\numberline {1.3}Lecture 3: Understanding Performance}{62}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Introduction}{62}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Defining and Measuring Performance}{62}{subsection.1.3.2}%
+\contentsline {subsubsection}{Response Time vs. Throughput}{62}{section*.95}%
+\contentsline {subsubsection}{Performance Definition}{63}{section*.96}%
+\contentsline {subsection}{\numberline {1.3.3}CPU Time and Performance Factors}{63}{subsection.1.3.3}%
+\contentsline {subsubsection}{Components of Execution Time}{63}{section*.97}%
+\contentsline {subsubsection}{The CPU Time Equation}{64}{section*.98}%
+\contentsline {subsubsection}{Instruction Count and CPI}{64}{section*.99}%
+\contentsline {subsection}{\numberline {1.3.4}Understanding CPI in Detail}{65}{subsection.1.3.4}%
+\contentsline {subsubsection}{CPI Variability}{65}{section*.100}%
+\contentsline {subsubsection}{CPI Example Calculation}{65}{section*.101}%
+\contentsline {subsubsection}{Instruction Classes}{65}{section*.102}%
+\contentsline {subsection}{\numberline {1.3.5}Performance Optimization Principles}{66}{subsection.1.3.5}%
+\contentsline {subsubsection}{Make the Common Case Fast}{66}{section*.103}%
+\contentsline {subsubsection}{Amdahl's Law}{66}{section*.104}%
+\contentsline {subsubsection}{Amdahl's Law Examples}{66}{section*.105}%
+\contentsline {subsubsection}{Implications of Amdahl's Law}{67}{section*.106}%
+\contentsline {subsection}{\numberline {1.3.6}Complete Performance Analysis}{67}{subsection.1.3.6}%
+\contentsline {subsubsection}{The Complete Performance Equation}{67}{section*.107}%
+\contentsline {subsubsection}{Performance Comparison Example}{68}{section*.108}%
+\contentsline {subsubsection}{Trade-offs in Design}{68}{section*.109}%
+\contentsline {subsection}{\numberline {1.3.7}Practical Performance Considerations}{69}{subsection.1.3.7}%
+\contentsline {subsubsection}{Benchmarking}{69}{section*.110}%
+\contentsline {subsubsection}{Performance Metrics in Practice}{69}{section*.111}%
+\contentsline {subsubsection}{Power and Energy Considerations}{70}{section*.112}%
+\contentsline {subsection}{\numberline {1.3.8}Key Takeaways}{70}{subsection.1.3.8}%
+\contentsline {subsection}{\numberline {1.3.9}Summary}{71}{subsection.1.3.9}%
+\contentsline {chapter}{\numberline {2}ARM Assembly Programming}{73}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Lecture 4: Introduction to ARM Assembly}{73}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Introduction}{73}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}ARM Architecture Overview}{73}{subsection.2.1.2}%
+\contentsline {subsubsection}{RISC Philosophy}{73}{section*.113}%
+\contentsline {subsubsection}{ARM Registers}{74}{section*.114}%
+\contentsline {subsubsection}{Memory Organization}{75}{section*.115}%
+\contentsline {subsection}{\numberline {2.1.3}ARM Instruction Format}{76}{subsection.2.1.3}%
+\contentsline {subsubsection}{Instruction Structure}{76}{section*.116}%
+\contentsline {subsubsection}{Instruction Types}{76}{section*.117}%
+\contentsline {subsubsection}{Operand Types}{77}{section*.118}%
+\contentsline {subsection}{\numberline {2.1.4}Basic ARM Instructions}{77}{subsection.2.1.4}%
+\contentsline {subsubsection}{Arithmetic Instructions}{77}{section*.119}%
+\contentsline {subsubsection}{Logical Instructions}{77}{section*.120}%
+\contentsline {subsubsection}{Shift Operations}{78}{section*.121}%
+\contentsline {subsection}{\numberline {2.1.5}Memory Access Instructions}{79}{subsection.2.1.5}%
+\contentsline {subsubsection}{Load Instructions}{79}{section*.122}%
+\contentsline {subsubsection}{Store Instructions}{79}{section*.123}%
+\contentsline {subsubsection}{Addressing Modes}{80}{section*.124}%
+\contentsline {subsection}{\numberline {2.1.6}Assembly Program Structure}{80}{subsection.2.1.6}%
+\contentsline {subsubsection}{Directives}{80}{section*.125}%
+\contentsline {subsubsection}{Labels}{81}{section*.126}%
+\contentsline {subsubsection}{Simple Program Example}{81}{section*.127}%
+\contentsline {subsection}{\numberline {2.1.7}ARM Development Tools}{81}{subsection.2.1.7}%
+\contentsline {subsubsection}{Toolchain Components}{81}{section*.128}%
+\contentsline {subsubsection}{Compilation Process}{82}{section*.129}%
+\contentsline {subsubsection}{Debugging and Inspection}{82}{section*.130}%
+\contentsline {subsection}{\numberline {2.1.8}Programming in ARM Assembly}{83}{subsection.2.1.8}%
+\contentsline {subsubsection}{Translating C to ARM}{83}{section*.131}%
+\contentsline {subsection}{\numberline {2.1.9}Key Takeaways}{84}{subsection.2.1.9}%
+\contentsline {subsection}{\numberline {2.1.10}Summary}{85}{subsection.2.1.10}%
+\contentsline {section}{\numberline {2.2}Lecture 5: Number Representation and Instruction Encoding}{85}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Introduction}{85}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Number Representation Systems}{85}{subsection.2.2.2}%
+\contentsline {subsubsection}{Unsigned Binary Integers}{85}{section*.132}%
+\contentsline {subsubsection}{Two's Complement Representation}{86}{section*.133}%
+\contentsline {subsubsection}{Sign Extension}{87}{section*.134}%
+\contentsline {subsubsection}{Hexadecimal Notation}{88}{section*.135}%
+\contentsline {subsection}{\numberline {2.2.3}ARM Instruction Encoding}{88}{subsection.2.2.3}%
+\contentsline {subsubsection}{Fixed-Length Instructions}{88}{section*.136}%
+\contentsline {subsubsection}{Data Processing Instruction Format}{89}{section*.137}%
+\contentsline {subsubsection}{Data Transfer Instruction Format}{90}{section*.138}%
+\contentsline {subsubsection}{Immediate Value Encoding}{91}{section*.139}%
+\contentsline {subsection}{\numberline {2.2.4}Logical Operations}{92}{subsection.2.2.4}%
+\contentsline {subsubsection}{Bitwise AND}{92}{section*.140}%
+\contentsline {subsubsection}{Bitwise OR}{93}{section*.141}%
+\contentsline {subsubsection}{Bitwise XOR (Exclusive OR)}{94}{section*.142}%
+\contentsline {subsubsection}{Bitwise NOT}{95}{section*.143}%
+\contentsline {subsubsection}{Shift Operations}{95}{section*.144}%
+\contentsline {subsection}{\numberline {2.2.5}Practical Bit Manipulation Examples}{96}{subsection.2.2.5}%
+\contentsline {subsubsection}{Extracting Bit Fields}{96}{section*.145}%
+\contentsline {subsubsection}{Setting and Clearing Bits}{96}{section*.146}%
+\contentsline {subsubsection}{Checking Flags}{97}{section*.147}%
+\contentsline {subsubsection}{Color Packing/Unpacking}{97}{section*.148}%
+\contentsline {subsection}{\numberline {2.2.6}Key Takeaways}{97}{subsection.2.2.6}%
+\contentsline {subsection}{\numberline {2.2.7}Summary}{98}{subsection.2.2.7}%
+\contentsline {section}{\numberline {2.3}Lecture 6: Branching and Control Flow}{98}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Introduction}{98}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Fundamentals of Conditional Execution}{98}{subsection.2.3.2}%
+\contentsline {subsubsection}{Decision-Making in Computers}{98}{section*.149}%
+\contentsline {subsubsection}{Program Status Register (PSR)}{99}{section*.150}%
+\contentsline {subsection}{\numberline {2.3.3}Comparison Instructions}{100}{subsection.2.3.3}%
+\contentsline {subsubsection}{Compare (CMP)}{100}{section*.151}%
+\contentsline {subsubsection}{Compare Negative (CMN)}{100}{section*.152}%
+\contentsline {subsubsection}{Test (TST)}{100}{section*.153}%
+\contentsline {subsubsection}{Test Equivalence (TEQ)}{101}{section*.154}%
+\contentsline {subsection}{\numberline {2.3.4}Conditional Branch Instructions}{101}{subsection.2.3.4}%
+\contentsline {subsubsection}{Branch if Equal (BEQ)}{101}{section*.155}%
+\contentsline {subsubsection}{Branch if Not Equal (BNE)}{101}{section*.156}%
+\contentsline {subsubsection}{Signed Comparison Branches}{102}{section*.157}%
+\contentsline {subsubsection}{Unsigned Comparison Branches}{102}{section*.158}%
+\contentsline {subsubsection}{Signed vs. Unsigned Example}{103}{section*.159}%
+\contentsline {subsubsection}{Unconditional Branch}{103}{section*.160}%
+\contentsline {subsection}{\numberline {2.3.5}Labels in Assembly}{103}{subsection.2.3.5}%
+\contentsline {subsubsection}{Label Definition}{103}{section*.161}%
+\contentsline {subsubsection}{Label Resolution}{104}{section*.162}%
+\contentsline {subsection}{\numberline {2.3.6}Implementing Control Structures}{104}{subsection.2.3.6}%
+\contentsline {subsubsection}{If Statement}{104}{section*.163}%
+\contentsline {subsubsection}{If-Else Ladder}{105}{section*.164}%
+\contentsline {subsubsection}{While Loop}{105}{section*.165}%
+\contentsline {subsubsection}{For Loop}{106}{section*.166}%
+\contentsline {subsubsection}{Do-While Loop}{106}{section*.167}%
+\contentsline {subsection}{\numberline {2.3.7}Array Access in Loops}{107}{subsection.2.3.7}%
+\contentsline {subsubsection}{Static Array Indexing}{107}{section*.168}%
+\contentsline {subsubsection}{Array Traversal}{107}{section*.169}%
+\contentsline {subsection}{\numberline {2.3.8}PC-Relative Addressing}{108}{subsection.2.3.8}%
+\contentsline {subsubsection}{Branch Instruction Encoding}{108}{section*.170}%
+\contentsline {subsubsection}{Address Calculation}{108}{section*.171}%
+\contentsline {subsubsection}{Advantages of PC-Relative}{109}{section*.172}%
+\contentsline {subsection}{\numberline {2.3.9}Conditional Execution (Alternative to Branching)}{109}{subsection.2.3.9}%
+\contentsline {subsubsection}{Conditional Instruction Suffixes}{109}{section*.173}%
+\contentsline {subsubsection}{Conditional Execution Example}{110}{section*.174}%
+\contentsline {subsubsection}{Advantages and Limitations}{110}{section*.175}%
+\contentsline {subsection}{\numberline {2.3.10}Basic Blocks}{111}{subsection.2.3.10}%
+\contentsline {subsubsection}{Definition}{111}{section*.176}%
+\contentsline {subsubsection}{Importance in Compilation}{111}{section*.177}%
+\contentsline {subsection}{\numberline {2.3.11}Key Takeaways}{112}{subsection.2.3.11}%
+\contentsline {subsection}{\numberline {2.3.12}Summary}{112}{subsection.2.3.12}%
+\contentsline {section}{\numberline {2.4}Lecture 7: Function Call and Return}{112}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Introduction}{113}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Function Calling Fundamentals}{113}{subsection.2.4.2}%
+\contentsline {subsubsection}{Function Calling Steps}{113}{section*.178}%
+\contentsline {subsubsection}{Why Use Functions?}{113}{section*.179}%
+\contentsline {subsection}{\numberline {2.4.3}ARM Register Conventions}{114}{subsection.2.4.3}%
+\contentsline {subsubsection}{Register Usage Rules}{114}{section*.180}%
+\contentsline {subsubsection}{Shared Register File}{114}{section*.181}%
+\contentsline {subsection}{\numberline {2.4.4}Function Call Instructions}{115}{subsection.2.4.4}%
+\contentsline {subsubsection}{Branch and Link (BL)}{115}{section*.182}%
+\contentsline {subsubsection}{Return from Function}{115}{section*.183}%
+\contentsline {subsection}{\numberline {2.4.5}Parameter Passing}{116}{subsection.2.4.5}%
+\contentsline {subsubsection}{Using R0-R3}{116}{section*.184}%
+\contentsline {subsubsection}{More Than 4 Arguments}{116}{section*.185}%
+\contentsline {subsection}{\numberline {2.4.6}Return Values}{117}{subsection.2.4.6}%
+\contentsline {subsubsection}{Primary Return Register (R0)}{117}{section*.186}%
+\contentsline {subsubsection}{64-Bit Return Values}{118}{section*.187}%
+\contentsline {subsection}{\numberline {2.4.7}The Stack}{118}{subsection.2.4.7}%
+\contentsline {subsubsection}{Stack Structure}{118}{section*.188}%
+\contentsline {subsubsection}{Stack Uses}{119}{section*.189}%
+\contentsline {subsection}{\numberline {2.4.8}Stack Operations}{119}{subsection.2.4.8}%
+\contentsline {subsubsection}{Allocating Stack Space (Pushing)}{119}{section*.190}%
+\contentsline {subsubsection}{Storing Values to Stack}{119}{section*.191}%
+\contentsline {subsubsection}{Loading Values from Stack}{120}{section*.192}%
+\contentsline {subsubsection}{Stack Space Lifecycle}{120}{section*.193}%
+\contentsline {subsection}{\numberline {2.4.9}Register Preservation}{120}{subsection.2.4.9}%
+\contentsline {subsubsection}{Why Preserve R4-R11?}{120}{section*.194}%
+\contentsline {subsubsection}{Preservation Pattern}{121}{section*.195}%
+\contentsline {subsection}{\numberline {2.4.10}Nested Function Calls (Non-Leaf Functions)}{121}{subsection.2.4.10}%
+\contentsline {subsubsection}{The Problem}{121}{section*.196}%
+\contentsline {subsubsection}{Solution: Save LR to Stack}{122}{section*.197}%
+\contentsline {subsection}{\numberline {2.4.11}Recursion Example: Factorial}{123}{subsection.2.4.11}%
+\contentsline {subsubsection}{Factorial Function}{123}{section*.198}%
+\contentsline {subsubsection}{ARM Assembly Implementation}{123}{section*.199}%
+\contentsline {subsubsection}{Stack Growth During Recursion}{123}{section*.200}%
+\contentsline {subsection}{\numberline {2.4.12}Memory Layout and Stack vs. Heap}{124}{subsection.2.4.12}%
+\contentsline {subsubsection}{Complete Memory Layout}{124}{section*.201}%
+\contentsline {subsubsection}{Stack Characteristics}{125}{section*.202}%
+\contentsline {subsubsection}{Heap Characteristics}{125}{section*.203}%
+\contentsline {subsection}{\numberline {2.4.13}Key Takeaways}{126}{subsection.2.4.13}%
+\contentsline {subsection}{\numberline {2.4.14}Summary}{126}{subsection.2.4.14}%
+\contentsline {section}{\numberline {2.5}Lecture 8: Memory Access and String Operations}{126}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Introduction}{126}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Character Data and Encoding}{127}{subsection.2.5.2}%
+\contentsline {subsubsection}{ASCII Encoding}{127}{section*.204}%
+\contentsline {subsubsection}{Latin-1 Encoding}{127}{section*.205}%
+\contentsline {subsubsection}{Unicode Encoding}{127}{section*.206}%
+\contentsline {subsection}{\numberline {2.5.3}Byte Load/Store Operations}{128}{subsection.2.5.3}%
+\contentsline {subsubsection}{Load Register Byte (LDRB)}{128}{section*.207}%
+\contentsline {subsubsection}{Store Register Byte (STRB)}{128}{section*.208}%
+\contentsline {subsubsection}{Load Register Signed Byte (LDRSB)}{129}{section*.209}%
+\contentsline {subsubsection}{Memory Alignment}{129}{section*.210}%
+\contentsline {subsection}{\numberline {2.5.4}Half-Word Load/Store Operations}{130}{subsection.2.5.4}%
+\contentsline {subsubsection}{Load Register Half-word (LDRH)}{130}{section*.211}%
+\contentsline {subsubsection}{Store Register Half-word (STRH)}{130}{section*.212}%
+\contentsline {subsubsection}{Load Register Signed Half-word (LDRSH)}{131}{section*.213}%
+\contentsline {subsection}{\numberline {2.5.5}String Copy Example (strcpy)}{131}{subsection.2.5.5}%
+\contentsline {subsubsection}{C Implementation}{131}{section*.214}%
+\contentsline {subsubsection}{ARM Assembly Implementation}{131}{section*.215}%
+\contentsline {subsubsection}{Key Points}{132}{section*.216}%
+\contentsline {subsection}{\numberline {2.5.6}Library Functions: scanf and printf}{133}{subsection.2.5.6}%
+\contentsline {subsubsection}{scanf Function}{133}{section*.217}%
+\contentsline {subsubsection}{printf Function}{133}{section*.218}%
+\contentsline {subsubsection}{Data Section and Format Strings}{134}{section*.219}%
+\contentsline {subsubsection}{scanf vs printf Argument Differences}{135}{section*.220}%
+\contentsline {subsubsection}{Calling Convention Rules}{135}{section*.221}%
+\contentsline {subsection}{\numberline {2.5.7}Compilation, Linking, and Loading}{135}{subsection.2.5.7}%
+\contentsline {subsubsection}{Translation Overview}{135}{section*.222}%
+\contentsline {subsubsection}{Compiler}{136}{section*.223}%
+\contentsline {subsubsection}{Assembler}{136}{section*.224}%
+\contentsline {subsubsection}{Linker}{137}{section*.225}%
+\contentsline {subsubsection}{Static vs Dynamic Linking}{138}{section*.226}%
+\contentsline {subsubsection}{Loader}{139}{section*.227}%
+\contentsline {subsection}{\numberline {2.5.8}Exercises}{140}{subsection.2.5.8}%
+\contentsline {subsubsection}{Common String Operations}{140}{section*.228}%
+\contentsline {subsubsection}{Integer I/O}{140}{section*.229}%
+\contentsline {subsubsection}{Skills Required}{141}{section*.230}%
+\contentsline {subsection}{\numberline {2.5.9}Key Takeaways}{141}{subsection.2.5.9}%
+\contentsline {subsection}{\numberline {2.5.10}Summary}{141}{subsection.2.5.10}%
+\contentsline {chapter}{\numberline {3}Processor Design}{143}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Lecture 9: Microarchitecture and Datapath Design}{143}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Introduction}{143}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Course Context and MIPS ISA}{143}{subsection.3.1.2}%
+\contentsline {subsubsection}{Transition to Hardware Implementation}{143}{section*.231}%
+\contentsline {subsubsection}{MIPS Instruction Categories}{144}{section*.232}%
+\contentsline {subsubsection}{MIPS Instruction Encoding}{144}{section*.233}%
+\contentsline {subsection}{\numberline {3.1.3}Digital Logic Review}{145}{subsection.3.1.3}%
+\contentsline {subsubsection}{Information Encoding}{145}{section*.234}%
+\contentsline {subsubsection}{Combinational Elements}{146}{section*.235}%
+\contentsline {subsubsection}{Sequential Elements (State Elements)}{146}{section*.236}%
+\contentsline {subsubsection}{Clocking and Timing}{147}{section*.237}%
+\contentsline {subsubsection}{Register Operations}{147}{section*.238}%
+\contentsline {subsubsection}{Critical Path and Clock Period}{148}{section*.239}%
+\contentsline {subsection}{\numberline {3.1.4}CPU Execution Stages}{149}{subsection.3.1.4}%
+\contentsline {subsubsection}{Instruction Fetch (IF)}{149}{section*.240}%
+\contentsline {subsubsection}{Instruction Decode (ID)}{149}{section*.241}%
+\contentsline {subsubsection}{Execute (EX)}{150}{section*.242}%
+\contentsline {subsubsection}{Memory Access (MEM)}{151}{section*.243}%
+\contentsline {subsubsection}{Register Write-Back (WB)}{151}{section*.244}%
+\contentsline {subsubsection}{PC Update}{151}{section*.245}%
+\contentsline {subsection}{\numberline {3.1.5}R-Type Instruction Datapath}{152}{subsection.3.1.5}%
+\contentsline {subsubsection}{Register File}{152}{section*.246}%
+\contentsline {subsubsection}{R-Type Execution Flow}{152}{section*.247}%
+\contentsline {subsubsection}{ALU Control}{153}{section*.248}%
+\contentsline {subsection}{\numberline {3.1.6}I-Type Instruction Datapath}{153}{subsection.3.1.6}%
+\contentsline {subsubsection}{Differences from R-Type}{153}{section*.249}%
+\contentsline {subsubsection}{Sign Extension}{153}{section*.250}%
+\contentsline {subsubsection}{Multiplexer for ALU Input}{154}{section*.251}%
+\contentsline {subsection}{\numberline {3.1.7}Load/Store Instruction Datapath}{154}{subsection.3.1.7}%
+\contentsline {subsubsection}{Address Calculation}{154}{section*.252}%
+\contentsline {subsubsection}{Load Word (LW)}{154}{section*.253}%
+\contentsline {subsubsection}{Store Word (SW)}{155}{section*.254}%
+\contentsline {subsubsection}{Data Memory}{155}{section*.255}%
+\contentsline {subsection}{\numberline {3.1.8}Branch Instruction Datapath}{156}{subsection.3.1.8}%
+\contentsline {subsubsection}{Branch Types}{156}{section*.256}%
+\contentsline {subsubsection}{Branch Target Calculation}{156}{section*.257}%
+\contentsline {subsubsection}{Branch Execution}{156}{section*.258}%
+\contentsline {subsubsection}{Sign Extension and Shifting}{157}{section*.259}%
+\contentsline {subsection}{\numberline {3.1.9}Complete Single-Cycle Datapath}{157}{subsection.3.1.9}%
+\contentsline {subsubsection}{Integrated Components}{157}{section*.260}%
+\contentsline {subsubsection}{Control Signals}{159}{section*.261}%
+\contentsline {subsubsection}{Parallel Operations}{159}{section*.262}%
+\contentsline {subsubsection}{Critical Path Analysis}{159}{section*.263}%
+\contentsline {subsubsection}{Single-Cycle Disadvantages}{160}{section*.264}%
+\contentsline {subsection}{\numberline {3.1.10}Key Takeaways}{160}{subsection.3.1.10}%
+\contentsline {subsection}{\numberline {3.1.11}Summary}{161}{subsection.3.1.11}%
+\contentsline {section}{\numberline {3.2}Lecture 10: Processor Control}{161}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Introduction}{161}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Control Unit Overview}{161}{subsection.3.2.2}%
+\contentsline {subsubsection}{Recap of Datapath Components}{161}{section*.265}%
+\contentsline {subsubsection}{Control Unit Purpose}{162}{section*.266}%
+\contentsline {subsubsection}{Instruction Subset for Study}{162}{section*.267}%
+\contentsline {subsection}{\numberline {3.2.3}ALU Operations for Different Instructions}{162}{subsection.3.2.3}%
+\contentsline {subsubsection}{Load/Store Instructions}{162}{section*.268}%
+\contentsline {subsubsection}{Branch Instructions}{163}{section*.269}%
+\contentsline {subsubsection}{R-Type Instructions}{163}{section*.270}%
+\contentsline {subsection}{\numberline {3.2.4}ALU Control Signal}{164}{subsection.3.2.4}%
+\contentsline {subsubsection}{Signal Format}{164}{section*.271}%
+\contentsline {subsubsection}{Control Signal Usage by Instruction}{164}{section*.272}%
+\contentsline {subsection}{\numberline {3.2.5}Two-Stage ALU Control Generation}{164}{subsection.3.2.5}%
+\contentsline {subsubsection}{Design Rationale}{164}{section*.273}%
+\contentsline {subsubsection}{Stage 1: Generate ALUOp}{165}{section*.274}%
+\contentsline {subsubsection}{Stage 2: Generate ALU Control}{165}{section*.275}%
+\contentsline {subsubsection}{Complete ALU Control Path}{166}{section*.276}%
+\contentsline {subsection}{\numberline {3.2.6}Main Control Signals}{166}{subsection.3.2.6}%
+\contentsline {subsubsection}{Complete Signal List}{166}{section*.277}%
+\contentsline {subsubsection}{RegDst (Register Destination)}{167}{section*.278}%
+\contentsline {subsubsection}{Branch}{167}{section*.279}%
+\contentsline {subsubsection}{MemRead}{168}{section*.280}%
+\contentsline {subsubsection}{MemtoReg (Memory to Register)}{168}{section*.281}%
+\contentsline {subsubsection}{MemWrite}{168}{section*.282}%
+\contentsline {subsubsection}{ALUSrc (ALU Source)}{169}{section*.283}%
+\contentsline {subsubsection}{RegWrite}{169}{section*.284}%
+\contentsline {subsection}{\numberline {3.2.7}Control Signal Truth Table}{169}{subsection.3.2.7}%
+\contentsline {subsubsection}{Complete Table}{169}{section*.285}%
+\contentsline {subsubsection}{R-Type Control}{170}{section*.286}%
+\contentsline {subsubsection}{Load Word Control}{170}{section*.287}%
+\contentsline {subsubsection}{Store Word Control}{171}{section*.288}%
+\contentsline {subsubsection}{Branch if Equal Control}{171}{section*.289}%
+\contentsline {subsection}{\numberline {3.2.8}Control Unit Implementation}{172}{subsection.3.2.8}%
+\contentsline {subsubsection}{Input to Control Unit}{172}{section*.290}%
+\contentsline {subsubsection}{Combinational Logic Design}{172}{section*.291}%
+\contentsline {subsubsection}{Control Unit Structure}{172}{section*.292}%
+\contentsline {subsubsection}{Timing Considerations}{173}{section*.293}%
+\contentsline {subsection}{\numberline {3.2.9}Why Separate MemRead and MemWrite?}{173}{subsection.3.2.9}%
+\contentsline {subsubsection}{Initial Observation}{173}{section*.294}%
+\contentsline {subsubsection}{Answer: Yes, Separate Signals Needed}{174}{section*.295}%
+\contentsline {subsubsection}{Future: Pipelined Processors}{174}{section*.296}%
+\contentsline {subsubsection}{Design Philosophy}{174}{section*.297}%
+\contentsline {subsection}{\numberline {3.2.10}Complete Datapath with Control}{175}{subsection.3.2.10}%
+\contentsline {subsubsection}{Integrated System}{175}{section*.298}%
+\contentsline {subsubsection}{Example: Load Word Execution}{175}{section*.299}%
+\contentsline {subsection}{\numberline {3.2.11}Key Takeaways}{176}{subsection.3.2.11}%
+\contentsline {subsection}{\numberline {3.2.12}Summary}{177}{subsection.3.2.12}%
