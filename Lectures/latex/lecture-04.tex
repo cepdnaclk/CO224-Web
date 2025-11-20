@@ -55,40 +55,46 @@ This lecture introduces ARM assembly language programming, providing the foundat
 \textbf{Register Usage Conventions}
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{img/Chapter%202%20ARM%20Conventions.jpg}
-\caption{Computer System Abstraction Layers}
+\includegraphics[width=0.7\textwidth]{img/Chapter 2 ARM Conventions.jpg}
+\caption{ARM Register Conventions}
 \end{figure}
 
-R0-R3:   Argument/result registers
+\textbf{R0-R3: Argument/result registers}
 \begin{itemize}
 \item Pass parameters to functions
 \item Return values from functions
 \item Scratch registers (not preserved)
+\end{itemize}
 
-R4-R11:  Local variable registers
+\textbf{R4-R11: Local variable registers}
 \begin{itemize}
 \item Must be preserved across function calls
 \item Callee saves/restores if used
+\end{itemize}
 
-R12:     Intra-procedure-call scratch register
+\textbf{R12: Intra-procedure-call scratch register}
 \begin{itemize}
 \item Can be corrupted by function calls
 \item Not preserved
+\end{itemize}
 
-R13 (SP): Stack Pointer
+\textbf{R13 (SP): Stack Pointer}
 \begin{itemize}
 \item Points to top of stack
 \item Must always be valid
+\end{itemize}
 
-R14 (LR): Link Register
+\textbf{R14 (LR): Link Register}
 \begin{itemize}
 \item Stores return address on function call
 \item Contains address to return to
+\end{itemize}
 
-R15 (PC): Program Counter
+\textbf{R15 (PC): Program Counter}
 \begin{itemize}
 \item Always points to next instruction
 \item Modifying PC changes execution flow
+\end{itemize}
 
 \textbf{Why So Many Registers?}
 
@@ -97,6 +103,7 @@ R15 (PC): Program Counter
 \item Enables register allocation by compiler
 \item Supports efficient function calls
 \item Improves performance through locality
+\end{itemize}
 
 \subsubsection{Memory Organization}
 
@@ -147,7 +154,7 @@ Content:     78       56       34       12
 
 \begin{lstlisting}[language=assembly]
 ADD R1, R2, R3    ; R1 = R2 + R3
-\end{verbatim}
+\\end{lstlisting}
 
 Encoding includes:
 \begin{itemize}
@@ -188,14 +195,14 @@ Encoding includes:
 
 \begin{lstlisting}[language=assembly]
 ADD R0, R1, R2    ; R0 = R1 + R2 (all registers)
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Immediate Operands}
 
 \begin{lstlisting}[language=assembly]
 ADD R0, R1, #5    ; R0 = R1 + 5 (# indicates immediate)
 MOV R2, #100      ; R2 = 100
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Immediate Value Constraints}
 
@@ -209,7 +216,7 @@ MOV R2, #100      ; R2 = 100
 \begin{lstlisting}[language=assembly]
 ADD R0, R1, R2, LSL #2    ; R0 = R1 + (R2 << 2)
 SUB R3, R4, R5, LSR #1    ; R3 = R4 - (R5 >> 1)
-\end{verbatim}
+\\end{lstlisting}
 
 \subsection{Basic ARM Instructions}
 
@@ -220,13 +227,13 @@ SUB R3, R4, R5, LSR #1    ; R3 = R4 - (R5 >> 1)
 \begin{lstlisting}[language=assembly]
 ADD Rd, Rn, Rm       ; Rd = Rn + Rm
 ADD Rd, Rn, #imm     ; Rd = Rn + immediate
-\end{verbatim}
+\\end{lstlisting}
 
 Examples:
 \begin{lstlisting}[language=assembly]
 ADD R0, R1, R2       ; R0 = R1 + R2
 ADD R3, R3, #1       ; R3 = R3 + 1 (increment)
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Subtraction}
 
@@ -234,20 +241,20 @@ ADD R3, R3, #1       ; R3 = R3 + 1 (increment)
 SUB Rd, Rn, Rm       ; Rd = Rn - Rm
 SUB Rd, Rn, #imm     ; Rd = Rn - immediate
 RSB Rd, Rn, #imm     ; Rd = immediate - Rn (reverse subtract)
-\end{verbatim}
+\\end{lstlisting}
 
 Examples:
 \begin{lstlisting}[language=assembly]
 SUB R0, R1, R2       ; R0 = R1 - R2
 SUB R4, R4, #10      ; R4 = R4 - 10 (decrement)
 RSB R5, R6, #0       ; R5 = 0 - R6 (negate)
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Multiplication} (covered in later tutorials)
 
 \begin{lstlisting}[language=assembly]
 MUL Rd, Rn, Rm       ; Rd = Rn × Rm (lower 32 bits)
-\end{verbatim}
+\\end{lstlisting}
 
 \subsubsection{Logical Instructions}
 
@@ -256,42 +263,42 @@ MUL Rd, Rn, Rm       ; Rd = Rn × Rm (lower 32 bits)
 \begin{lstlisting}[language=assembly]
 AND Rd, Rn, Rm       ; Rd = Rn AND Rm
 AND Rd, Rn, #imm     ; Rd = Rn AND immediate
-\end{verbatim}
+\\end{lstlisting}
 
 Usage: Bit masking, clearing specific bits
 
 Example:
 \begin{lstlisting}[language=assembly]
 AND R0, R0, #0xFF    ; Keep only lower 8 bits
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{OR Operation}
 
 \begin{lstlisting}[language=assembly]
 ORR Rd, Rn, Rm       ; Rd = Rn OR Rm (ORR in ARM)
 ORR Rd, Rn, #imm     ; Rd = Rn OR immediate
-\end{verbatim}
+\\end{lstlisting}
 
 Usage: Setting specific bits
 
 Example:
 \begin{lstlisting}[language=assembly]
 ORR R1, R1, #0x80    ; Set bit 7
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Exclusive OR}
 
 \begin{lstlisting}[language=assembly]
 EOR Rd, Rn, Rm       ; Rd = Rn XOR Rm
 EOR Rd, Rn, #imm     ; Rd = Rn XOR immediate
-\end{verbatim}
+\\end{lstlisting}
 
 Usage: Toggling bits, fast comparison
 
 Example:
 \begin{lstlisting}[language=assembly]
 EOR R2, R2, R2       ; R2 = 0 (XOR with itself)
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Move and Move Not}
 
@@ -299,14 +306,14 @@ EOR R2, R2, R2       ; R2 = 0 (XOR with itself)
 MOV Rd, Rm           ; Rd = Rm
 MOV Rd, #imm         ; Rd = immediate
 MVN Rd, Rm           ; Rd = NOT Rm (bitwise complement)
-\end{verbatim}
+\\end{lstlisting}
 
 Examples:
 \begin{lstlisting}[language=assembly]
 MOV R0, R1           ; Copy R1 to R0
 MOV R2, #0           ; Clear R2
 MVN R3, R4           ; R3 = ~R4 (invert all bits)
-\end{verbatim}
+\\end{lstlisting}
 
 \subsubsection{Shift Operations}
 
@@ -315,54 +322,54 @@ MVN R3, R4           ; R3 = ~R4 (invert all bits)
 \begin{lstlisting}[language=assembly]
 LSL Rd, Rn, #shift   ; Rd = Rn << shift
 MOV Rd, Rn, LSL #shift
-\end{verbatim}
+\\end{lstlisting}
 
 Effect: Multiplies by 2^shift
 
 Example:
 \begin{lstlisting}[language=assembly]
 LSL R0, R1, #2       ; R0 = R1 × 4
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Logical Shift Right (LSR)}
 
 \begin{lstlisting}[language=assembly]
 LSR Rd, Rn, #shift   ; Rd = Rn >> shift (unsigned)
 MOV Rd, Rn, LSR #shift
-\end{verbatim}
+\\end{lstlisting}
 
 Effect: Divides by 2^shift (unsigned)
 
 Example:
 \begin{lstlisting}[language=assembly]
 LSR R0, R1, #3       ; R0 = R1 / 8
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Arithmetic Shift Right (ASR)}
 
 \begin{lstlisting}[language=assembly]
 ASR Rd, Rn, #shift   ; Rd = Rn >> shift (signed)
-\end{verbatim}
+\\end{lstlisting}
 
 Effect: Divides by 2^shift, preserves sign
 
 Example:
 \begin{lstlisting}[language=assembly]
 ASR R0, R1, #2       ; R0 = R1 / 4 (signed)
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Rotate Right (ROR)}
 
 \begin{lstlisting}[language=assembly]
 ROR Rd, Rn, #shift   ; Rotate Rn right by shift
-\end{verbatim}
+\\end{lstlisting}
 
 Effect: Bits rotated off right end reappear at left
 
 Example:
 \begin{lstlisting}[language=assembly]
 ROR R0, R1, #8       ; Rotate R1 right by 8 bits
-\end{verbatim}
+\\end{lstlisting}
 
 \subsection{Memory Access Instructions}
 
@@ -373,49 +380,49 @@ ROR R0, R1, #8       ; Rotate R1 right by 8 bits
 \begin{lstlisting}[language=assembly]
 LDR Rd, [Rn]         ; Rd = Memory[Rn]
 LDR Rd, [Rn, #offset]; Rd = Memory[Rn + offset]
-\end{verbatim}
+\\end{lstlisting}
 
 Examples:
 \begin{lstlisting}[language=assembly]
 LDR R0, [R1]         ; Load word from address in R1
 LDR R2, [R3, #4]     ; Load from address R3+4
 LDR R4, [R5, #-8]    ; Load from address R5-8
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Load Byte (LDRB)}
 
 \begin{lstlisting}[language=assembly]
 LDRB Rd, [Rn, #offset]; Load one byte, zero-extend to 32 bits
-\end{verbatim}
+\\end{lstlisting}
 
 Example:
 \begin{lstlisting}[language=assembly]
 LDRB R0, [R1]        ; R0 = (byte at R1), upper 24 bits = 0
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Load Halfword (LDRH)}
 
 \begin{lstlisting}[language=assembly]
 LDRH Rd, [Rn, #offset]; Load 16 bits, zero-extend to 32 bits
-\end{verbatim}
+\\end{lstlisting}
 
 Example:
 \begin{lstlisting}[language=assembly]
 LDRH R0, [R1, #2]    ; R0 = (halfword at R1+2), upper 16 bits = 0
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Pseudo-Instruction for Loading Addresses}
 
 \begin{lstlisting}[language=assembly]
 LDR Rd, =label       ; Load address of label into Rd
 LDR Rd, =value       ; Load 32-bit constant into Rd
-\end{verbatim}
+\\end{lstlisting}
 
 Examples:
 \begin{lstlisting}[language=assembly]
 LDR R0, =array       ; R0 = address of array
 LDR R1, =0x12345678  ; R1 = 0x12345678 (large immediate)
-\end{verbatim}
+\\end{lstlisting}
 
 \subsubsection{Store Instructions}
 
@@ -424,35 +431,35 @@ LDR R1, =0x12345678  ; R1 = 0x12345678 (large immediate)
 \begin{lstlisting}[language=assembly]
 STR Rd, [Rn]         ; Memory[Rn] = Rd
 STR Rd, [Rn, #offset]; Memory[Rn + offset] = Rd
-\end{verbatim}
+\\end{lstlisting}
 
 Examples:
 \begin{lstlisting}[language=assembly]
 STR R0, [R1]         ; Store R0 to address in R1
 STR R2, [R3, #8]     ; Store R2 to address R3+8
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Store Byte (STRB)}
 
 \begin{lstlisting}[language=assembly]
 STRB Rd, [Rn, #offset]; Store lower 8 bits of Rd
-\end{verbatim}
+\\end{lstlisting}
 
 Example:
 \begin{lstlisting}[language=assembly]
 STRB R0, [R1]        ; Store lower byte of R0 to address R1
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Store Halfword (STRH)}
 
 \begin{lstlisting}[language=assembly]
 STRH Rd, [Rn, #offset]; Store lower 16 bits of Rd
-\end{verbatim}
+\\end{lstlisting}
 
 Example:
 \begin{lstlisting}[language=assembly]
 STRH R0, [R1, #4]    ; Store lower halfword of R0 to R1+4
-\end{verbatim}
+\\end{lstlisting}
 
 \subsubsection{Addressing Modes}
 
@@ -460,27 +467,27 @@ STRH R0, [R1, #4]    ; Store lower halfword of R0 to R1+4
 
 \begin{lstlisting}[language=assembly]
 LDR R0, [R1, #4]     ; R0 = Memory[R1 + 4], R1 unchanged
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Pre-indexed Addressing}
 
 \begin{lstlisting}[language=assembly]
 LDR R0, [R1, #4]!    ; R1 = R1 + 4, then R0 = Memory[R1]
                       ; ! indicates update base register
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Post-indexed Addressing}
 
 \begin{lstlisting}[language=assembly]
 LDR R0, [R1], #4     ; R0 = Memory[R1], then R1 = R1 + 4
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Register Offset}
 
 \begin{lstlisting}[language=assembly]
 LDR R0, [R1, R2]     ; R0 = Memory[R1 + R2]
 LDR R0, [R1, R2, LSL #2] ; R0 = Memory[R1 + (R2 << 2)]
-\end{verbatim}
+\\end{lstlisting}
 
 \subsection{Assembly Program Structure}
 
@@ -492,14 +499,14 @@ LDR R0, [R1, R2, LSL #2] ; R0 = Memory[R1 + (R2 << 2)]
 .text                ; Code section (instructions)
 .data                ; Data section (initialized variables)
 .bss                 ; Uninitialized data section
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Global and External}
 
 \begin{lstlisting}[language=assembly]
 .global main         ; Make symbol visible to linker
 .extern printf       ; Declare external symbol
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Data Definition}
 
@@ -508,7 +515,7 @@ LDR R0, [R1, R2, LSL #2] ; R0 = Memory[R1 + (R2 << 2)]
 .byte value          ; Define byte
 .asciz "string"      ; Define null-terminated string
 .space n             ; Reserve n bytes of space
-\end{verbatim}
+\\end{lstlisting}
 
 \subsubsection{Labels}
 
@@ -528,7 +535,7 @@ label:               ; Label for instruction
 
 array:               ; Label for data
     .word 1, 2, 3, 4
-\end{verbatim}
+\\end{lstlisting}
 
 \subsubsection{Simple Program Example}
 
@@ -546,7 +553,7 @@ main:
     .data
 message:
     .asciz "Hello, ARM!"
-\end{verbatim}
+\\end{lstlisting}
 
 \subsection{ARM Development Tools}
 
@@ -584,13 +591,13 @@ message:
 
 \begin{verbatim}
 C Source (.c)
-    $\downarrow$ [gcc -S]
+    --> [gcc -S]
 Assembly (.s)
-    $\downarrow$ [as]
+    --> [as]
 Object Code (.o)
-    $\downarrow$ [ld]
+    --> [ld]
 Executable (a.out)
-    $\downarrow$ [qemu-arm]
+    --> [qemu-arm]
 Execution
 \end{verbatim}
 
@@ -608,14 +615,14 @@ arm-linux-gnueabi-gcc program.o -o program
 
 # Run with emulator
 qemu-arm program
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{One-Step Compilation}
 
 \begin{lstlisting}[language=bash]
 # Compile, assemble, and link in one command
 arm-linux-gnueabi-gcc program.c -o program
-\end{verbatim}
+\\end{lstlisting}
 
 \subsubsection{Debugging and Inspection}
 
@@ -630,21 +637,21 @@ arm-linux-gnueabi-gdb program  # Start GDB
 (gdb) continue                 # Run to breakpoint
 (gdb) step                     # Execute one instruction
 (gdb) info registers           # Show register values
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Objdump}
 
 \begin{lstlisting}[language=bash]
 # Disassemble binary to assembly
 arm-linux-gnueabi-objdump -d program
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{nm}
 
 \begin{lstlisting}[language=bash]
 # List symbols in object file
 arm-linux-gnueabi-nm program.o
-\end{verbatim}
+\\end{lstlisting}
 
 \subsection{Programming in ARM Assembly}
 
@@ -656,7 +663,7 @@ arm-linux-gnueabi-nm program.o
 int a = 5;
 int b = 10;
 int c = a + b;
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{ARM Assembly:}
 
@@ -664,14 +671,14 @@ int c = a + b;
     MOV R0, #5       ; a = 5
     MOV R1, #10      ; b = 10
     ADD R2, R0, R1   ; c = a + b
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{C Code with Array:}
 
 \begin{lstlisting}[language=c]
 int arr[3] = {1, 2, 3};
 int x = arr[1];
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{ARM Assembly:}
 
@@ -683,7 +690,7 @@ arr:
     .text
     LDR R0, =arr     ; R0 = address of arr
     LDR R1, [R0, #4] ; R1 = arr[1] (offset 4 bytes)
-\end{verbatim}
+\\end{lstlisting}
 
 \subsubsection{Common Patterns}
 
@@ -692,7 +699,7 @@ arr:
 \begin{lstlisting}[language=assembly]
 MOV R0, #0           ; Method 1
 EOR R0, R0, R0       ; Method 2 (XOR with itself)
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Negating a Value}
 
@@ -700,20 +707,20 @@ EOR R0, R0, R0       ; Method 2 (XOR with itself)
 RSB R0, R0, #0       ; R0 = 0 - R0
 MVN R0, R0           ; R0 = ~R0 (bitwise, not arithmetic)
 ADD R0, R0, #1       ; Then add 1 (two's complement)
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Multiplying by Powers of 2}
 
 \begin{lstlisting}[language=assembly]
 LSL R0, R1, #3       ; R0 = R1 × 8 (faster than MUL)
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Dividing by Powers of 2}
 
 \begin{lstlisting}[language=assembly]
 LSR R0, R1, #2       ; R0 = R1 / 4 (unsigned)
 ASR R0, R1, #2       ; R0 = R1 / 4 (signed)
-\end{verbatim}
+\\end{lstlisting}
 
 \textbf{Swapping Two Registers}
 
@@ -721,39 +728,24 @@ ASR R0, R1, #2       ; R0 = R1 / 4 (signed)
 EOR R0, R0, R1       ; XOR-based swap (no temporary)
 EOR R1, R0, R1
 EOR R0, R0, R1
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Key Takeaways}
 
-\begin{enumerate}
-\item \textbf{ARM follows RISC principles} - simple instructions, load/store architecture, large register file, fixed instruction length.
-
-\begin{enumerate}
-\item \textbf{16 registers (R0-R15)} with special purposes: R13 (SP), R14 (LR), R15 (PC), and calling conventions for R0-R11.
-
-\begin{enumerate}
-\item \textbf{Three main instruction categories} - data processing (arithmetic/logic), data transfer (load/store), control flow (branches).
-
-\begin{enumerate}
-\item \textbf{Fixed 32-bit instruction format} simplifies hardware and enables efficient pipelining.
-
-\begin{enumerate}
-\item \textbf{Little-endian byte ordering} - least significant byte stored at lowest address.
-
-\begin{enumerate}
-\item \textbf{Immediate values} indicated by # symbol, with encoding constraints due to fixed instruction size.
-
-\begin{enumerate}
-\item \textbf{Memory access only through LOAD/STORE} - arithmetic operations work on registers only (load/store architecture).
-
-\begin{enumerate}
-\item \textbf{Rich addressing modes} - offset, pre-indexed, post-indexed, register offset with optional shifts.
-
-\begin{enumerate}
-\item \textbf{Cross-compilation toolchain} - arm-linux-gnueabi-gcc, as, ld, and qemu-arm for development on x86.
-
-10. \textbf{Assembly programming requires understanding} of register allocation, instruction selection, and calling conventions.
+\begin{itemize}
+\item \textbf{ARM follows RISC principles} - simple instructions, load/store architecture, large register file, fixed instruction length
+\item \textbf{16 registers (R0-R15)} with special purposes: R13 (SP), R14 (LR), R15 (PC), and calling conventions for R0-R11
+\item \textbf{16 general-purpose registers} (R0-R15) with special roles for SP, LR, and PC
+\item \textbf{Three main instruction categories} - data processing (arithmetic/logic), data transfer (load/store), control flow (branches)
+\item \textbf{Fixed 32-bit instruction format} simplifies hardware and enables efficient pipelining
+\item \textbf{Little-endian byte ordering} - least significant byte stored at lowest address
+\item \textbf{Immediate values} indicated by \# symbol, with encoding constraints due to fixed instruction size
+\item \textbf{Memory access only through LOAD/STORE} - arithmetic operations work on registers only (load/store architecture)
+\item \textbf{Rich addressing modes} - offset, pre-indexed, post-indexed, register offset with optional shifts
+\item \textbf{Cross-compilation toolchain} - arm-linux-gnueabi-gcc, as, ld, and qemu-arm for development on x86
+\item \textbf{Assembly programming requires understanding} of register allocation, instruction selection, and calling conventions
+\end{itemize}
 
 \subsection{Summary}
 
-ARM assembly language provides the low-level interface between software and hardware, revealing how high-level constructs translate to machine operations. The ARM architecture's RISC design emphasizes simplicity and regularity, with a uniform 32-bit instruction format, a generous 16-register set, and a clean separation between computation (using registers) and memory access (through explicit load/store instructions). Understanding ARM assembly is crucial for optimizing performance-critical code, implementing system-level software, and comprehending how processors execute programs. The development toolchain—including cross-compilers, assemblers, linkers, and emulators—enables efficient development and testing of ARM software. Mastering these fundamentals prepares us for more advanced topics including function calling conventions, stack management, and processor microarchitecture implementation.
+ARM assembly language provides the low-level interface between software and hardware, revealing how high-level constructs translate to machine operations. The ARM architecture's RISC design emphasizes simplicity and regularity, with a uniform 32-bit instruction format, a generous 16-register set, and a clean separation between computation (using registers) and memory access (through explicit load/store instructions). Understanding ARM assembly is crucial for optimizing performance-critical code, implementing system-level software, and comprehending how processors execute programs. The development toolchain---including cross-compilers, assemblers, linkers, and emulators---enables efficient development and testing of ARM software. Mastering these fundamentals prepares us for more advanced topics including function calling conventions, stack management, and processor microarchitecture implementation.

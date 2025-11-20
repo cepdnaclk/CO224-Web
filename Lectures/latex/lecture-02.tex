@@ -136,7 +136,7 @@ Moore's Law made computationally intensive applications possible:
 The historical data shows remarkable consistency with Moore's prediction:
 
 \begin{itemize}
-\item \textbf{Vertical Axis:} Number of transistors (10⁵ to 10⁹ - millions to billions)
+\item \textbf{Vertical Axis:} Number of transistors ($10^5$ to $10^9$ - millions to billions)
 \item \textbf{Horizontal Axis:} Time period (1970 to 2010)
 \item \textbf{Blue Dotted Line:} Doubling every 18 months (aggressive prediction)
 \item \textbf{Red-Brown Line:} Doubling every 24 months (Moore's actual prediction)
@@ -686,7 +686,7 @@ Around 2004, the decades-long trend dramatically changed:
 
 \subsubsection{The Power Wall Problem}
 
-**Power Consumption Growth Crisis:
+Power Consumption Growth Crisis:
 
 As clock rates increased, power consumption grew unsustainably:
 
@@ -777,7 +777,7 @@ Various cooling methods were tried:
 
 \subsubsection{Dynamic Power Equation}
 
-**The Physics of Power Consumption:
+The Physics of Power Consumption:
 
 Dynamic power consumption follows this relationship:
 
@@ -814,14 +814,12 @@ Power = Capacitance Load $\times$ Voltage² $\times$ Frequency
 
 \textbf{Net Effect Calculation:}
 
-$$
 \begin{align*}
-	ext{Power Scaling} \&= (\text{Capacitance}) \times (\text{Voltage}^2) \times (\text{Frequency}) \\
-\&= (1\times) \times (\frac{1}{5})^2 \times (300\times) \\
-\&= (1\times) \times (\frac{1}{25}) \times (300\times) \\
-\&= 12\times \text{ power increase}
+\text{Power Scaling} &= (\text{Capacitance}) \times (\text{Voltage}^2) \times (\text{Frequency}) \\
+&= (1\times) \times (\frac{1}{5})^2 \times (300\times) \\
+&= (1\times) \times (\frac{1}{25}) \times (300\times) \\
+&= 12\times \text{ power increase}
 \end{align*}
-$$
 
 \textbf{Key Insight:}
 
@@ -844,7 +842,7 @@ $$
 
 \subsubsection{Overclocking Phenomenon}
 
-**Marketing and User Community Response:
+Marketing and User Community Response:
 
 Emerged prominently around early 2000s during the MHz wars:
 
@@ -932,7 +930,7 @@ By mid-2000s, the semiconductor industry faced a paradox:
 
 \subsubsection{Solution: Multiple Processor Cores}
 
-**Paradigm Shift (2004-2008):
+Paradigm Shift (2004-2008):
 
 Industry pivoted from single-core to multi-core architectures:
 
@@ -1384,7 +1382,7 @@ If parallel programming not done well:
 
 \subsubsection{System Software Layer (Middle)}
 
-**Tool Chain Components:
+Tool Chain Components:
 
 \textbf{Compiler:}
 
@@ -1663,7 +1661,7 @@ SW   $15, 4($2)     # Store temp to v[k+1]
 \textbf{2. Memory Addressing:}
 
 \begin{itemize}
-\item Base address of array in register $4
+\item Base address of array in register \$4
 \item Offset calculated and added to base
 \item Results in absolute memory address
 \end{itemize}
@@ -1671,11 +1669,11 @@ SW   $15, 4($2)     # Store temp to v[k+1]
 \textbf{3. Register Usage:}
 
 \begin{itemize}
-\item \textbf{$4:} Base address of array v (parameter)
-\item \textbf{$5:} Value of k (parameter)
-\item \textbf{$2:} Temporary register for address calculation
-\item \textbf{$15:} Temporary storage for v[k] value
-\item \textbf{$16:} Temporary storage for v[k+1] value
+\item \textbf{\$4:} Base address of array v (parameter)
+\item \textbf{\$5:} Value of k (parameter)
+\item \textbf{\$2:} Temporary register for address calculation
+\item \textbf{\$15:} Temporary storage for v[k] value
+\item \textbf{\$16:} Temporary storage for v[k+1] value
 \end{itemize}
 
 \textbf{Instruction Set Details:}

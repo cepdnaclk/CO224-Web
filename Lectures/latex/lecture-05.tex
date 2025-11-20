@@ -2,23 +2,24 @@
 
 \emph{By Dr. Kisaru Liyanage}
 
-\subsection{Introduction}
+\section{Introduction}
 
 This lecture delves into how computers represent and manipulate data at the binary level. We explore number systems, two's complement representation for signed integers, instruction encoding formats in ARM assembly, and logical operations for bit manipulation. Understanding these fundamentals is essential for programming efficiently in assembly language and comprehending how processors execute arithmetic and logical operations.
 
-\subsection{Number Representation Systems}
+\section{Number Representation Systems}
 
-\subsubsection{Unsigned Binary Integers}
+\subsection{Unsigned Binary Integers}
 
-\textbf{Binary System Basics}
+\subsubsection*{Binary System Basics}
 
 \begin{itemize}
-\item Base-2 number system using digits 0 and 1
-\item Each bit position represents a power of 2
-\item Rightmost bit is least significant (LSB)
-\item Leftmost bit is most significant (MSB)
+    \item Base-2 number system using digits 0 and 1
+    \item Each bit position represents a power of 2
+    \item Rightmost bit is least significant (LSB)
+    \item Leftmost bit is most significant (MSB)
+\end{itemize}
 
-\textbf{Place Value Calculation}
+\subsubsection*{Place Value Calculation}
 
 \begin{verbatim}
 Binary: 1011
@@ -27,13 +28,13 @@ Value = (1 × 2³) + (0 × 2²) + (1 × 2¹) + (1 × 2⁰)
       = 11 (decimal)
 \end{verbatim}
 
-\textbf{N-Bit Unsigned Range}
-
+\end{itemize}\textbf{N-Bit Unsigned Range}
 \begin{itemize}
-\item N bits can represent 2^N different values
-\item Range: 0 to (2^N - 1)
-\item 8 bits: 0 to 255
-\item 32 bits: 0 to 4,294,967,295
+\item N bits can represent $2^N$ different values
+\item Range: $0$ to $(2^N - 1)$
+\item 8 bits: $0$ to $255$
+\item 32 bits: $0$ to $4,294,967,295$
+\end{itemize}
 
 \textbf{Binary to Decimal Conversion}
 
@@ -46,36 +47,36 @@ Example: 10110101
 
 \subsubsection{Two's Complement Representation}
 
-\textbf{Purpose of Two's Complement}
-
+\end{itemize}\textbf{Purpose of Two's Complement}
 \begin{itemize}
 \item Represents both positive and negative integers
 \item Simplifies hardware (same adder for signed/unsigned)
 \item Unique zero representation
 \item Natural overflow behavior
+\end{itemize}
 
-\textbf{Sign Bit}
-
+\end{itemize}\textbf{Sign Bit}
 \begin{itemize}
 \item MSB indicates sign
 \item MSB = 0: Positive number
 \item MSB = 1: Negative number
+\end{itemize}
 
-\textbf{Positive Numbers}
-
+\end{itemize}\textbf{Positive Numbers}
 \begin{itemize}
 \item Same as unsigned binary
 \item MSB is always 0
 \item Example: +5 in 8 bits = 00000101
+\end{itemize}
 
-\textbf{Negative Numbers}
-
+\end{itemize}\textbf{Negative Numbers}
 \begin{itemize}
-\item Represented as 2^N - |value|
+\item Represented as $2^N - |\text{value}|$
 \item Example: -5 in 8 bits:
 \begin{verbatim}
   2^8 - 5 = 256 - 5 = 251 = 11111011
 \end{verbatim}
+\end{itemize}
 
 \textbf{Two's Complement Conversion}
 Method 1 (Invert and Add):
@@ -96,18 +97,16 @@ Add 1:     11111011  (this is -5)
 Method 2 (Subtraction):
 
 \begin{verbatim}
--5 = 2^8 - 5 = 256 - 5 = 251 = 11111011
+-5 = 256 - 5 = 251 = 11111011
 \end{verbatim}
 
-\textbf{N-Bit Signed Range}
-
+\end{itemize}\textbf{N-Bit Signed Range}
 \begin{itemize}
 \item Range: -(2^(N-1)) to +(2^(N-1) - 1)
 \item 8 bits: -128 to +127
 \item 32 bits: -2,147,483,648 to +2,147,483,647
 
-\textbf{Special Cases}
-
+\end{itemize}\textbf{Special Cases}
 \begin{itemize}
 \item Zero: 00000000 (unique representation)
 \item Most negative: 10000000 (-128 in 8 bits)
@@ -116,15 +115,13 @@ Method 2 (Subtraction):
 
 \subsubsection{Sign Extension}
 
-\textbf{Purpose}
-
+\end{itemize}\textbf{Purpose}
 \begin{itemize}
 \item Extend smaller signed value to larger width
 \item Preserve numerical value
 \item Required when loading bytes/halfwords into 32-bit registers
 
-\textbf{Process}
-
+\end{itemize}\textbf{Process}
 \begin{itemize}
 \item Replicate the sign bit (MSB) to fill new bits
 \item Preserves positive/negative value
@@ -137,8 +134,7 @@ Method 2 (Subtraction):
 11111011 (-5) $\rightarrow$ 11111111 11111111 11111111 11111011 (-5)
 \end{verbatim}
 
-\textbf{ARM Instructions for Sign Extension}
-
+\end{itemize}\textbf{ARM Instructions for Sign Extension}
 \begin{itemize}
 \item \textbf{LDRH}: Load halfword (16 bits), zero-extend to 32 bits
 \item \textbf{LDRSH}: Load signed halfword, sign-extend to 32 bits
@@ -147,7 +143,7 @@ Method 2 (Subtraction):
 
 \textbf{Example Usage}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 LDRH R0, [R1]     ; R0 = 0x0000ABCD (zero-extended)
 LDRSH R0, [R1]    ; R0 = 0xFFFFABCD (sign-extended if bit 15 = 1)
 
@@ -157,8 +153,7 @@ LDRSB R0, [R1]    ; R0 = 0xFFFFFFAB (sign-extended if bit 7 = 1)
 
 \subsubsection{Hexadecimal Notation}
 
-\textbf{Why Hexadecimal?}
-
+\end{itemize}\textbf{Why Hexadecimal?}
 \begin{itemize}
 \item Compact representation of binary
 \item One hex digit = 4 binary bits
@@ -202,7 +197,7 @@ Decimal: 63
 
 \textbf{ARM Hexadecimal Usage}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 MOV R0, #0xFF        ; R0 = 255
 MOV R1, #0x100       ; R1 = 256
 LDR R2, =0xDEADBEEF  ; R2 = 3735928559
@@ -212,22 +207,19 @@ LDR R2, =0xDEADBEEF  ; R2 = 3735928559
 
 \subsubsection{Fixed-Length Instructions}
 
-\textbf{32-Bit Instruction Format}
-
+\end{itemize}\textbf{32-Bit Instruction Format}
 \begin{itemize}
 \item Every ARM instruction is exactly 32 bits
 \item Simplifies instruction fetch and decode
 \item Enables efficient pipelining
 
-\textbf{Advantages}
-
+\end{itemize}\textbf{Advantages}
 \begin{itemize}
 \item Predictable instruction boundaries
 \item Simple PC increment (always +4)
 \item Fast decode logic
 
-\textbf{Trade-offs}
-
+\end{itemize}\textbf{Trade-offs}
 \begin{itemize}
 \item Some instructions may "waste" bits
 \item Immediate values limited in size
@@ -244,8 +236,7 @@ LDR R2, =0xDEADBEEF  ; R2 = 3735928559
 
 \textbf{Field Descriptions}
 
-\textbf{Condition (4 bits, bits 28-31)}
-
+\end{itemize}\textbf{Condition (4 bits, bits 28-31)}
 \begin{itemize}
 \item Conditional execution feature
 \item 0000 = EQ (equal, Z=1)
@@ -253,14 +244,12 @@ LDR R2, =0xDEADBEEF  ; R2 = 3735928559
 \item 1010 = GE (greater or equal, signed)
 \item 1110 = AL (always execute, default)
 
-\textbf{I bit (bit 25)}
-
+\end{itemize}\textbf{I bit (bit 25)}
 \begin{itemize}
 \item 0 = Operand2 is register
 \item 1 = Operand2 is immediate value
 
-\textbf{Opcode (4 bits, bits 21-24)}
-
+\end{itemize}\textbf{Opcode (4 bits, bits 21-24)}
 \begin{itemize}
 \item Specifies operation (AND, EOR, SUB, ADD, etc.)
 \item 0100 = ADD
@@ -268,25 +257,21 @@ LDR R2, =0xDEADBEEF  ; R2 = 3735928559
 \item 0000 = AND
 \item 1100 = ORR
 
-\textbf{S bit (bit 20)}
-
+\end{itemize}\textbf{S bit (bit 20)}
 \begin{itemize}
 \item 0 = Don't update condition flags
 \item 1 = Update flags (CPSR)
 
-\textbf{Rn (4 bits, bits 16-19)}
-
+\end{itemize}\textbf{Rn (4 bits, bits 16-19)}
 \begin{itemize}
 \item First operand register number
 \item 0000 = R0, 0001 = R1, etc.
 
-\textbf{Rd (4 bits, bits 12-15)}
-
+\end{itemize}\textbf{Rd (4 bits, bits 12-15)}
 \begin{itemize}
 \item Destination register number
 
-\textbf{Operand2 (12 bits, bits 0-11)}
-
+\end{itemize}\textbf{Operand2 (12 bits, bits 0-11)}
 \begin{itemize}
 \item If I=0: Shift amount and second register
 \item If I=1: 8-bit immediate + 4-bit rotation
@@ -317,49 +302,41 @@ Result: 0xE0810002
 
 \textbf{Key Fields}
 
-\textbf{L bit (bit 20)}
-
+\end{itemize}\textbf{L bit (bit 20)}
 \begin{itemize}
 \item 0 = Store (STR)
 \item 1 = Load (LDR)
 
-\textbf{B bit (bit 22)}
-
+\end{itemize}\textbf{B bit (bit 22)}
 \begin{itemize}
 \item 0 = Word transfer (32 bits)
 \item 1 = Byte transfer (8 bits)
 
-\textbf{P bit (bit 24)}
-
+\end{itemize}\textbf{P bit (bit 24)}
 \begin{itemize}
 \item 0 = Post-indexed addressing
 \item 1 = Pre-indexed or offset addressing
 
-\textbf{U bit (bit 23)}
-
+\end{itemize}\textbf{U bit (bit 23)}
 \begin{itemize}
 \item 0 = Subtract offset from base
 \item 1 = Add offset to base
 
-\textbf{W bit (bit 21)}
-
+\end{itemize}\textbf{W bit (bit 21)}
 \begin{itemize}
 \item 0 = No write-back
 \item 1 = Write-back (update base register)
 
-\textbf{Rn (base register)}
-
+\end{itemize}\textbf{Rn (base register)}
 \begin{itemize}
 \item Contains memory address or base address
 
-\textbf{Rd (data register)}
-
+\end{itemize}\textbf{Rd (data register)}
 \begin{itemize}
 \item For Load: Destination register
 \item For Store: Source register
 
-\textbf{Offset (12 bits)}
-
+\end{itemize}\textbf{Offset (12 bits)}
 \begin{itemize}
 \item Memory address offset
 \item Can be immediate or register
@@ -382,14 +359,12 @@ Result: 0xE5910004
 
 \subsubsection{Immediate Value Encoding}
 
-\textbf{Challenge}
-
+\end{itemize}\textbf{Challenge}
 \begin{itemize}
 \item 32-bit instruction must fit: opcode, registers, immediate
 \item Cannot fit full 32-bit immediate
 
-\textbf{ARM Solution: 8-bit + 4-bit Rotation}
-
+\end{itemize}\textbf{ARM Solution: 8-bit + 4-bit Rotation}
 \begin{itemize}
 \item Immediate field: 12 bits total
 \item Lower 8 bits: Immediate value (0-255)
@@ -415,21 +390,19 @@ Immediate=0xFF, Rotation=12:
   Value = 0xFF ROR 24 = 0xFF000000
 \end{verbatim}
 
-\textbf{Allowed Immediates}
-
+\end{itemize}\textbf{Allowed Immediates}
 \begin{itemize}
 \item Not all 32-bit values can be encoded
 \item Valid: 0xFF, 0xFF00, 0xFF0000, 0xFF000000
 \item Valid: 0xFF000000FF (rotation wraps around)
 \item Invalid: 0x123 (cannot be formed by rotation)
 
-\textbf{Assembler Handling}
-
+\end{itemize}\textbf{Assembler Handling}
 \begin{itemize}
 \item Assembler checks if immediate is valid
 \item Gives error if immediate cannot be encoded
 \item Use LDR pseudo-instruction for arbitrary values:
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
   LDR R0, =0x12345678  ; Loads from literal pool
 \end{verbatim}
 
@@ -437,8 +410,7 @@ Immediate=0xFF, Rotation=12:
 
 \subsubsection{Bitwise AND}
 
-\textbf{Operation}
-
+\end{itemize}\textbf{Operation}
 \begin{itemize}
 \item Performs logical AND on each bit pair
 \item Result bit = 1 only if both input bits are 1
@@ -456,7 +428,7 @@ A | B | A AND B
 
 \textbf{ARM Instruction}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 AND Rd, Rn, Rm       ; Rd = Rn AND Rm
 AND Rd, Rn, #imm     ; Rd = Rn AND immediate
 \end{verbatim}
@@ -465,7 +437,7 @@ AND Rd, Rn, #imm     ; Rd = Rn AND immediate
 
 \textbf{Bit Masking (Extract Specific Bits)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Extract lower 8 bits of R1
 MOV R0, R1
 AND R0, R0, #0xFF    ; R0 = R1 & 0xFF (keep bits 0-7)
@@ -477,14 +449,14 @@ AND R0, R0, #0xFF00  ; R0 = R1 & 0xFF00 (keep bits 8-15)
 
 \textbf{Clearing Specific Bits}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Clear bit 5 of R1
 AND R1, R1, #0xFFFFFFDF  ; Bit 5 mask: ~(1 << 5)
 \end{verbatim}
 
 \textbf{Checking if Bit Set}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 AND R2, R1, #0x80    ; Check if bit 7 is set
 CMP R2, #0           ; Compare with zero
 BEQ bit_clear        ; Branch if bit was clear
@@ -492,8 +464,7 @@ BEQ bit_clear        ; Branch if bit was clear
 
 \subsubsection{Bitwise OR}
 
-\textbf{Operation}
-
+\end{itemize}\textbf{Operation}
 \begin{itemize}
 \item Performs logical OR on each bit pair
 \item Result bit = 1 if either input bit is 1
@@ -511,7 +482,7 @@ A | B | A OR B
 
 \textbf{ARM Instruction}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ORR Rd, Rn, Rm       ; Rd = Rn OR Rm (ORR in ARM)
 ORR Rd, Rn, #imm     ; Rd = Rn OR immediate
 \end{verbatim}
@@ -520,7 +491,7 @@ ORR Rd, Rn, #imm     ; Rd = Rn OR immediate
 
 \textbf{Setting Specific Bits}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Set bit 3 of R1
 ORR R1, R1, #0x08    ; Bit 3 mask: (1 << 3) = 0x08
 
@@ -530,7 +501,7 @@ ORR R1, R1, #0x30    ; Mask: 0x30 = 0b00110000
 
 \textbf{Combining Values}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Combine lower byte of R1 with upper bytes of R2
 AND R1, R1, #0xFF        ; Keep only lower byte
 AND R2, R2, #0xFFFFFF00  ; Keep only upper bytes
@@ -539,8 +510,7 @@ ORR R0, R1, R2           ; Combine
 
 \subsubsection{Bitwise XOR (Exclusive OR)}
 
-\textbf{Operation}
-
+\end{itemize}\textbf{Operation}
 \begin{itemize}
 \item Performs logical XOR on each bit pair
 \item Result bit = 1 if input bits differ
@@ -558,7 +528,7 @@ A | B | A XOR B
 
 \textbf{ARM Instruction}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 EOR Rd, Rn, Rm       ; Rd = Rn EOR Rm (EOR in ARM)
 EOR Rd, Rn, #imm     ; Rd = Rn EOR immediate
 \end{verbatim}
@@ -567,7 +537,7 @@ EOR Rd, Rn, #imm     ; Rd = Rn EOR immediate
 
 \textbf{Toggling Specific Bits}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Toggle bit 2 of R1
 EOR R1, R1, #0x04    ; Bit 2 mask: (1 << 2)
 ; If bit was 0, becomes 1; if was 1, becomes 0
@@ -575,13 +545,13 @@ EOR R1, R1, #0x04    ; Bit 2 mask: (1 << 2)
 
 \textbf{Fast Zero}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 EOR R0, R0, R0       ; R0 = 0 (XOR with itself)
 \end{verbatim}
 
 \textbf{Comparison}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Check if R1 and R2 are equal
 EOR R3, R1, R2       ; R3 = R1 XOR R2
 CMP R3, #0           ; If R3 = 0, R1 == R2
@@ -590,7 +560,7 @@ BEQ values_equal
 
 \textbf{Swapping Without Temporary}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Swap R0 and R1 without using another register
 EOR R0, R0, R1
 EOR R1, R0, R1
@@ -600,15 +570,14 @@ EOR R0, R0, R1
 
 \subsubsection{Bitwise NOT}
 
-\textbf{Operation}
-
+\end{itemize}\textbf{Operation}
 \begin{itemize}
 \item Inverts all bits (0$\rightarrow$1, 1$\rightarrow$0)
 \item Also called complement
 
 \textbf{ARM Instruction}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 MVN Rd, Rm           ; Rd = NOT Rm (Move Not)
 MVN Rd, #imm         ; Rd = NOT immediate
 \end{verbatim}
@@ -617,7 +586,7 @@ MVN Rd, #imm         ; Rd = NOT immediate
 
 \textbf{Creating Bit Masks}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Create mask with all bits set except bit 3
 MOV R0, #0x08        ; 0x08 = 0b00001000
 MVN R1, R0           ; R1 = 0xFFFFFFF7 (all except bit 3)
@@ -625,7 +594,7 @@ MVN R1, R0           ; R1 = 0xFFFFFFF7 (all except bit 3)
 
 \textbf{Negation (with ADD)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Negate R1 (two's complement)
 MVN R1, R1           ; Invert all bits
 ADD R1, R1, #1       ; Add 1
@@ -636,7 +605,7 @@ ADD R1, R1, #1       ; Add 1
 
 \textbf{Logical Shift Left (LSL)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 LSL Rd, Rn, #shift   ; Rd = Rn << shift
 MOV Rd, Rn, LSL #shift
 \end{verbatim}
@@ -648,7 +617,7 @@ MOV Rd, Rn, LSL #shift
 
 \textbf{Logical Shift Right (LSR)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 LSR Rd, Rn, #shift   ; Rd = Rn >> shift (unsigned)
 MOV Rd, Rn, LSR #shift
 \end{verbatim}
@@ -660,7 +629,7 @@ MOV Rd, Rn, LSR #shift
 
 \textbf{Arithmetic Shift Right (ASR)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ASR Rd, Rn, #shift   ; Rd = Rn >> shift (signed)
 \end{verbatim}
 
@@ -671,7 +640,7 @@ ASR Rd, Rn, #shift   ; Rd = Rn >> shift (signed)
 
 \textbf{Rotate Right (ROR)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ROR Rd, Rn, #shift   ; Rotate Rn right by shift
 \end{verbatim}
 
@@ -684,15 +653,15 @@ ROR Rd, Rn, #shift   ; Rotate Rn right by shift
 
 \textbf{Fast Multiplication/Division by Powers of 2}
 
-\begin{lstlisting}[language=assembly]
-LSL R0, R1, #3       ; R0 = R1 × 8 (2^3)
+\begin{lstlisting}[language={[ARM]Assembler}]
+LSL R0, R1, #3       ; R0 = R1 × 8 (multiply by 8)
 LSR R0, R1, #2       ; R0 = R1 / 4 (unsigned)
 ASR R0, R1, #2       ; R0 = R1 / 4 (signed)
 \end{verbatim}
 
 \textbf{Bit Extraction}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Extract bits 8-11 from R1
 LSR R0, R1, #8       ; Shift bits 8-11 to bits 0-3
 AND R0, R0, #0xF     ; Mask to keep only 4 bits
@@ -700,7 +669,7 @@ AND R0, R0, #0xF     ; Mask to keep only 4 bits
 
 \textbf{Bit Positioning}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Move bit 0 to bit 7
 LSL R0, R1, #7       ; Shift left 7 positions
 AND R0, R0, #0x80    ; Keep only bit 7
@@ -712,14 +681,14 @@ AND R0, R0, #0x80    ; Keep only bit 7
 
 \textbf{Extract bits 16-23}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 LSR R0, R1, #16      ; Shift right to position
 AND R0, R0, #0xFF    ; Mask to 8 bits
 \end{verbatim}
 
 \textbf{Extract bits 4-9 (6 bits)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 LSR R0, R1, #4       ; Shift to position 0
 AND R0, R0, #0x3F    ; Mask to 6 bits (0b111111)
 \end{verbatim}
@@ -728,20 +697,20 @@ AND R0, R0, #0x3F    ; Mask to 6 bits (0b111111)
 
 \textbf{Set bits 8-15}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ORR R1, R1, #0xFF00  ; Set bits 8-15
 \end{verbatim}
 
 \textbf{Clear bits 16-23}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 LDR R0, =0xFF00FFFF  ; Mask with bits 16-23 clear
 AND R1, R1, R0       ; Clear bits 16-23 of R1
 \end{verbatim}
 
 \textbf{Toggle bits 0-7}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 EOR R1, R1, #0xFF    ; Toggle lower byte
 \end{verbatim}
 
@@ -749,7 +718,7 @@ EOR R1, R1, #0xFF    ; Toggle lower byte
 
 \textbf{Check if any of bits 4-7 are set}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 AND R2, R1, #0xF0    ; Mask bits 4-7
 CMP R2, #0           ; Check if zero
 BNE bits_set         ; Branch if any bit was set
@@ -757,7 +726,7 @@ BNE bits_set         ; Branch if any bit was set
 
 \textbf{Check if specific pattern matches}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; Check if bits 8-11 are 0b1010
 LSR R0, R1, #8       ; Position bits
 AND R0, R0, #0xF     ; Mask 4 bits
@@ -769,7 +738,7 @@ BEQ pattern_match
 
 \textbf{Pack RGB values (8 bits each)}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; R0 = Red, R1 = Green, R2 = Blue
 LSL R1, R1, #8       ; Green << 8
 LSL R2, R2, #16      ; Blue << 16
@@ -780,7 +749,7 @@ ORR R3, R3, R2       ; Combine with Blue
 
 \textbf{Unpack RGB values}
 
-\begin{lstlisting}[language=assembly]
+\begin{lstlisting}[language={[ARM]Assembler}]
 ; R0 contains 0x00BBGGRR
 AND R1, R0, #0xFF      ; Extract Red
 LSR R2, R0, #8
@@ -792,7 +761,7 @@ AND R3, R3, #0xFF      ; Extract Blue
 \subsection{Key Takeaways}
 
 \begin{enumerate}
-\item \textbf{Unsigned binary integers} represent values from 0 to 2^N - 1 using N bits.
+\item \textbf{Unsigned binary integers} represent values from $0$ to $2^N - 1$ using N bits.
 
 \begin{enumerate}
 \item \textbf{Two's complement} represents signed integers, with MSB as sign bit and range -(2^(N-1)) to +(2^(N-1) - 1).
@@ -831,3 +800,4 @@ AND R3, R3, #0xFF      ; Extract Blue
 \subsection{Summary}
 
 Number representation and instruction encoding form the foundation of low-level programming. Two's complement enables efficient signed arithmetic with simple hardware, while sign extension preserves values across different data sizes. ARM's fixed 32-bit instruction format provides regularity but imposes constraints on immediate values, solved through clever encoding schemes. Logical operations—AND, OR, XOR, and NOT—combined with shift operations, provide powerful tools for bit manipulation essential in systems programming, embedded development, and performance optimization. Mastering these concepts enables efficient assembly programming and deeper understanding of how high-level operations translate to machine instructions. These fundamentals prepare us for more complex topics including branching, function calls, and memory management.
+

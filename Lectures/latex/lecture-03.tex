@@ -106,9 +106,9 @@ CPU Time = Clock Cycles / Clock Rate
 \textbf{Example Calculation}
 
 Program requires 10 billion cycles
-Processor runs at 4 GHz (4 $\times$ 10^9 Hz)
+Processor runs at 4 GHz ($4 \times 10^9$ Hz)
 
-CPU Time = 10 $\times$ 10^9 cycles / (4 $\times$ 10^9 cycles/sec)
+CPU Time = $10 \times 10^9$ cycles / ($4 \times 10^9$ cycles/sec)
          = 2.5 seconds
 
 \subsubsection{Instruction Count and CPI}
@@ -160,7 +160,7 @@ CPU Time = (Instruction Count $\times$ CPI) / Clock Rate
 
 \textbf{Calculating Average CPI}
 
-Average CPI = Σ (CPI\_i $\times$ Instruction Count\_i) / Total Instruction Count
+Average CPI = $\Sigma$ (CPI\_i $\times$ Instruction Count\_i) / Total Instruction Count
 
 Where:
 
@@ -329,7 +329,7 @@ If 90\% of program parallelizes perfectly:
 4 cores:  Speedup = 3.08$\times$
 8 cores:  Speedup = 4.71$\times$
 16 cores: Speedup = 6.40$\times$
-∞ cores:  Speedup = 10.00$\times$ (maximum possible)
+$\infty$ cores:  Speedup = 10.00$\times$ (maximum possible)
 
 The 10\% serial portion ultimately limits speedup to 10$\times$.
 
@@ -387,14 +387,14 @@ Compare two implementations of the same ISA
 
 \textbf{System A:}
 
-CPU Time\_A = (1 $\times$ 10^6 instructions) $\times$ (2.0 cycles/instruction) / (2 $\times$ 10^9 cycles/sec)
-           = 2 $\times$ 10^6 cycles / (2 $\times$ 10^9 cycles/sec)
+CPU Time\_A = ($1 \times 10^6$ instructions) $\times$ (2.0 cycles/instruction) / ($2 \times 10^9$ cycles/sec)
+           = $2 \times 10^6$ cycles / ($2 \times 10^9$ cycles/sec)
            = 0.001 seconds = 1 millisecond
 
 \textbf{System B:}
 
-CPU Time\_B = (1 $\times$ 10^6 instructions) $\times$ (3.0 cycles/instruction) / (3 $\times$ 10^9 cycles/sec)
-           = 3 $\times$ 10^6 cycles / (3 $\times$ 10^9 cycles/sec)
+CPU Time\_B = ($1 \times 10^6$ instructions) $\times$ (3.0 cycles/instruction) / ($3 \times 10^9$ cycles/sec)
+           = $3 \times 10^6$ cycles / ($3 \times 10^9$ cycles/sec)
            = 0.001 seconds = 1 millisecond
 
 \textbf{Result:} Both systems have identical performance despite different clock rates and CPIs.
@@ -457,8 +457,8 @@ CPU Time\_B = (1 $\times$ 10^6 instructions) $\times$ (3.0 cycles/instruction) /
 
 \textbf{MIPS (Million Instructions Per Second)}
 
-MIPS = Instruction Count / (Execution Time $\times$ 10^6)
-     = Clock Rate / (CPI $\times$ 10^6)
+MIPS = Instruction Count / (Execution Time $\times 10^6$)
+     = Clock Rate / (CPI $\times 10^6$)
 
 \textbf{Limitations of MIPS:}
 

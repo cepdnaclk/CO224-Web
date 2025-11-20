@@ -1,395 +1,125 @@
-% Lectures on Computer Architecture
-% Compile with pdfLaTeX
-\documentclass[11pt, a4paper, oneside]{book}
+\documentclass[11pt]{book}
 
-% ---------- FONTS & ENCODING ----------
+% Package imports
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}  % Latin Modern fonts - better than CM
-
-% ---------- LAYOUT ----------
-\usepackage[paper=a4paper, margin=2.5cm, top=3.5cm, bottom=3.5cm, headheight=14pt]{geometry}
+\usepackage{lmodern}
+\usepackage[a4paper, margin=1in]{geometry}
 \usepackage{ragged2e}
 \usepackage{setspace}
-\setstretch{1.1}  % Slightly increased line spacing for readability
-
-% ---------- ESSENTIAL PACKAGES ----------
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsfonts}
 \usepackage{listings}
-\usepackage{enumitem}
-
-% Configure list formatting for consistent alignment
-\setlist[itemize]{leftmargin=*, topsep=8pt, itemsep=4pt, parsep=0pt, partopsep=0pt}
-\setlist[enumerate]{leftmargin=*, topsep=8pt, itemsep=4pt, parsep=0pt, partopsep=0pt}
-
-% ---------- COLORS ----------
 \usepackage{xcolor}
-\definecolor{accentblue}{HTML}{1E9EEB} % tweak hex to taste (bright cyan-blue)
-\definecolor{accentdark}{HTML}{0E6A8A} % darker blue/teal if needed
-\definecolor{accentgray}{gray}{0.45}
+\usepackage{hyperref}
 
-% ---------- HEADER / FOOTER & BACKGROUNDS ----------
-\usepackage{fancyhdr}
-\usepackage{tikz}
-\usepackage{eso-pic} % add to background
+% Image path
+\graphicspath{{./img/}}
 
-\pagestyle{fancy}
-\fancyhf{} % clear header/footer
-% page number at top-right (small)
-\fancyhead[R]{\footnotesize\thepage}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-
-% Decorative bars drawn on every page (full bleed to paper edge)
-% Adjusted to remove interior white margins and reach trim edges.
-\AddToShipoutPictureBG{%
-  \begin{tikzpicture}[remember picture,overlay]
-    % Top bar: full width flush with top edge
-    \fill [accentblue] (current page.north west) rectangle ([yshift=-0.30cm] current page.north east);
-    % Thin separator line below top bar
-    % Bottom bar enlarged (from 0.55cm to 0.90cm)
-    \fill [accentblue] (current page.south west) rectangle ([yshift=1.20cm] current page.south east);
-    % Thin separator line above enlarged bottom bar
-  \end{tikzpicture}%
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdftitle={CO224 Lecture Notes},
+    pdfauthor={Dr. Isuru Nawinne},
 }
 
-% To avoid the decorative bars covering content, push text away from top/bottom:
-% Reduce head/foot separation to reflect thinner bars now
-\setlength{\headsep}{20pt}
-\setlength{\footskip}{30pt}
-
-% ---------- TITLE / COVER STYLING ----------
-\usepackage{titling}
-\pretitle{\vspace*{4cm}\raggedright} % push title down similar to sample
-\posttitle{\par\vspace{0.5em}}
-\preauthor{\vspace{2em}\raggedright\small}
-\postauthor{\par\vspace{0.5em}}
-\predate{}\postdate{}
-
-% ---------- SECTION / HEADING STYLES ----------
-\usepackage{titlesec}
-\titleformat{\chapter}[display]
-  {\normalfont\Huge\bfseries\sffamily\color{accentblue}}
-  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
-\titlespacing*{\chapter}{0pt}{0pt}{30pt}
-
-\titleformat{\section}
-  {\Large\bfseries\sffamily\color{accentblue}}
-  {\thesection}{1em}{}
-\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
-
-\titleformat{\subsection}
-  {\large\bfseries\sffamily\color{accentdark}}
-  {\thesubsection}{1em}{}
-\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
-
-\titleformat{\subsubsection}
-  {\normalsize\bfseries\sffamily\color{accentdark}}
-  {\thesubsubsection}{1em}{}
-\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
-
-\titleformat{\paragraph}[runin]
-  {\normalsize\bfseries\color{black}}
-  {}{0em}{}
-\titlespacing*{\paragraph}{0pt}{2ex plus 1ex minus .2ex}{1em}
-
-% ---------- TABLE OF CONTENTS STYLING ----------
-\usepackage{tocloft}
-\renewcommand{\cftsecfont}{\sffamily\small\color{accentblue}}
-\renewcommand{\cftsecpagefont}{\sffamily\small\color{accentblue}}
-\renewcommand{\cftbeforesecskip}{4pt}
-\renewcommand{\contentsname}{\color{accentblue}\Large\bfseries Content}
-
-% ---------- CODE LISTINGS ----------
+% Listings setup for code blocks
 \lstset{
     basicstyle=\ttfamily\small,
     breaklines=true,
     frame=single,
-    numbers=left,
-    numberstyle=\tiny\color{gray},
-    tabsize=4,
-    backgroundcolor=\color{gray!10},
-    commentstyle=\color{green!60!black},
-    keywordstyle=\color{blue},
-    stringstyle=\color{red!70!black}
+    backgroundcolor=\color{gray!10}
 }
 
-% ---------- HYPERREF AND URL ----------
-\usepackage{url}
-\usepackage{hyperref}
-\hypersetup{
-  colorlinks=true,
-  linkcolor=accentdark,
-  urlcolor=accentblue,
-  citecolor=accentblue,
-  pdftitle={Lectures on Computer Architecture},
-  pdfauthor={Dr. Isuru Nawinne},
-  bookmarksnumbered=true,
-  bookmarksopen=true
-}
-
-% ---------- DOCUMENT ----------
 \begin{document}
 
-% ----------------- COVER PAGE -----------------
+% Title page
 \begin{titlepage}
-  \thispagestyle{empty}
-  \vspace*{3cm}
-  \begin{center}
-  % Title
-  {\Huge\bfseries Lectures on\\[0.5em] Computer Architecture\par}
-  \vspace{3cm}
-  % Author
-  {\Large By Isuru Nawinne\par}
-  \end{center}
-  \vfill
+    \centering
+    \vspace*{2cm}
+    {\Huge\bfseries CO224 Lecture Notes\\[0.5cm]}
+    {\Large Computer Architecture\\[1.5cm]}
+    {\large\bfseries Dr. Isuru Nawinne\\[0.3cm]}
+    {\large Department of Computer Engineering\\[0.2cm]}
+    {\large University of Peradeniya\\[2cm]}
+    \vfill
+    {\large \today}
 \end{titlepage}
 
-% ----------------- COPYRIGHT PAGE -----------------
-\clearpage
-\thispagestyle{empty}
-\vspace*{1cm}
-
-\begin{center}
-{\Large\bfseries Lectures on Computer Architecture}\par
-\vspace{0.5cm}
-{\large By Isuru Nawinne}\par
-\end{center}
-
-\vspace{1.5cm}
-
-\noindent\textcopyright\ 2025, by Creative Commons. This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International. To view a copy of this license, visit \url{https://creativecommons.org/licenses/by-nc/4.0/} or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA. This license allows reusers to distribute, remix, adapt, and build upon the material in any medium or format, so long as attribution is given to the creator. The license allows only for non-commercial use.\par
-
-\vspace{0.8cm}
-
-\noindent\textbf{ISBN} 978-624-92913-0-0\par
-
-\vspace{0.8cm}
-
-\noindent Downloadable ebook and supplementary material available at\par
-\noindent\url{https://cepdnaclk.github.io/Computer-Architecture-Web}\par
-
-\vspace{0.8cm}
-
-\noindent\textbf{Publisher:}\par
-\noindent Dr. Isuru Nawinne,\par
-\noindent Department of Computer Engineering, Faculty of Engineering,\par
-\noindent University of Peradeniya,\par
-\noindent Peradeniya 20400,\par
-\noindent Sri Lanka.\par
-\noindent\href{mailto:isurunawinne@eng.pdn.ac.lk}{isurunawinne@eng.pdn.ac.lk} \url{https://people.ce.pdn.ac.lk/staff/academic/isuru-nawinne/}\par
-
-\cleardoublepage
-\pagestyle{fancy}
-
-% Set page numbering for front matter
-\pagenumbering{arabic}
-
-% ----------------- FRONT MATTER -----------------
+% Table of contents
 \tableofcontents
-\clearpage
+\newpage
 
-% ----------------- PREFACE -----------------
+% Preface
 \section*{Preface}
 \addcontentsline{toc}{section}{Preface}
+This document contains comprehensive lecture notes for CO224 - Computer Architecture course, covering fundamental concepts of computer systems, ARM assembly programming, processor design, memory hierarchy, and multiprocessor systems.
 
-Computer architecture sits at the heart of modern computing. It is the discipline that reveals how machines execute instructions, manage data, and achieve programmability—bridging the conceptual world of algorithms and the physical realities of hardware. Over many years of teaching this subject to undergraduate students, I have found that curiosity grows not only from understanding what computers do, but from discovering how they do it and why they're designed that way.\par
+\newpage
 
-\vspace{0.5cm}
-
-This book, \emph{Lectures on Computer Architecture}, is built upon the lecture series delivered to undergraduate cohorts. Each section distills core ideas, clarifies subtle concepts, and connects theory to the practical systems. The video lectures grew from classroom sessions, refined through questions, discussions, and repeated teaching experience. The accompanying notes are designed to complement the videos rather than duplicate it, offering multiple modalities through which students can explore the subject.\par
-
-\vspace{0.5cm}
-
-My goal is to provide a learning resource that is rigorous yet approachable, structured yet flexible, and suitable for both guided instruction and independent study. Whether used as a primary course text, or a guide for self-study, I hope this book supports students in creating a solid cognitive model of how computers are built.\par
-
-\vspace{0.5cm}
-
-I am grateful to all my students over the years whose questions and feedback helped refine these explanations, and to everyone who encouraged the development of a resource that unifies both lecture and text. It is my hope that this book helps you to see computer architecture not merely as a subject to be completed, but as a foundation for understanding the modern machines that shape our world.\par
-
-\vspace{0.5cm}
-
-I would like to convey my sincere appreciation to Dr. Kisaru Liyanage and Dr. Swarnalatha Radhakrishnan for their valuable contributions in delivering selected lectures. My profound thanks go to Kanishka Gunawardana and Sanka Peeris, for helping me edit this book and setting up the interactive web version. Their careful attention to detail, thoughtful feedback, and commitment to ensuring the clarity and accuracy have contributed greatly to the quality and reliability of this work.\par
-
-\vspace{1cm}
-
-\noindent Isuru Nawinne\par
-\noindent Senior Lecturer in Computer Engineering\par
-
-\clearpage
-
-% ----------------- LEARNING METHODS -----------------
+% Learning Methods
 \section*{Learning Methods}
 \addcontentsline{toc}{section}{Learning Methods}
-
-This book is designed to support active, independent, and flexible learning, aligning closely with flipped learning and self-directed study practices.\par
-
-\vspace{0.5cm}
-
-The flipped-learning approach encourages students to engage with key concepts before coming to class or attempting exercises. Each section in this book includes a corresponding video lecture that introduces the fundamental ideas, explains core mechanisms, and walks through examples. Watching the video beforehand allows learners to arrive at discussions or problem-solving sessions better prepared, able to ask informed questions, and ready to dive deeper.\par
-
-\vspace{0.5cm}
-
-Flipped-learning transforms the role of classroom or study time: instead of passively receiving information, students actively seek and apply it. With multiple modalities of the videos as the initial exposure and the book as a reference and reinforcement tool, learners can use their interactive time: whether in discussions; tutorials; labs; or group study; to focus on reasoning, analysis, and synthesis.\par
-
-\vspace{0.5cm}
-
-Computer architecture is a subject that rewards curiosity and exploration. To support self-directed learning, each chapter is structured so students can progress at their own pace. The notes are carefully layered. They begin with foundational principles and incrementally build toward more advanced ideas.\par
-
-\vspace{0.5cm}
-
-Students are encouraged to:\par
-
-\vspace{0.3cm}
-
+These lecture notes are designed to support active learning. Students are encouraged to:
 \begin{itemize}
-\item Watch the video lectures as many times as needed to internalize concepts;
-\item Revisit diagrams and derivations to strengthen visual and mathematical intuition;
-\item Use end-of-section summaries and conceptual checkpoints to evaluate their understanding; and
-\item Make connections between topics—for example, how pipelining interacts with branching, or how memory hierarchy influences performance.
+    \item Read the material before class
+    \item Take additional notes during lectures
+    \item Practice with the provided examples
+    \item Complete assignments and exercises
 \end{itemize}
 
-\vspace{0.5cm}
+\newpage
 
-This style of learning builds autonomy, critical thinking, and long-term retention—key skills for an engineer.\par
-
-\clearpage
-
-% ----------------- INTRODUCTION -----------------
+% Introduction
 \section*{Introduction}
 \addcontentsline{toc}{section}{Introduction}
+Computer Architecture is the science and art of selecting and interconnecting hardware components to create computers that meet functional, performance, and cost goals. This course explores the design principles and implementation of modern computer systems.
 
-This book follows a gradual progression from fundamental concepts to advanced architectural mechanisms, mirroring the structure of the lecture series. The material is organized into twenty sections, each corresponding to a major topic typically covered in an undergraduate computer architecture course.\par
+\newpage
 
-\vspace{0.5cm}
-
-\noindent\textbf{How the Book Is Organized}\par
-
-\vspace{0.3cm}
-
-The first set of chapters: Computer Abstractions, Technology Trends, and Performance establish the context and quantitative foundation needed to reason about architectural decisions. These are followed by chapters on Assembly Language Programming, Number Representation, Branching, Function Calls, and Memory Access which build the low-level understanding of how instructions operate.\par
-
-\vspace{0.5cm}
-
-Midway through the book, the focus shifts to the execution engine itself: Microarchitecture, Datapath, Control, and the progression from Single-Cycle Execution to Pipelined Processors. The chapters such as Pipeline Analysis help students understand real-world engineering challenges.\par
-
-\vspace{0.5cm}
-
-The later sections explore the memory subsystem in depth: Memory Hierarchy, Caching, Direct Mapped and Associative Cache Control, Multi-Level Caches, and Virtual Memory, before extending the architectural view to Multiprocessors, Storage, and Interfacing.\par
-
-\vspace{0.5cm}
-
-Each chapter includes:\par
-
-\vspace{0.3cm}
-
-\begin{itemize}
-\item A complete video lecture that introduces and explains concepts
-\item Written notes highlighting definitions, diagrams, examples, and reasoning steps
-\item Clarifications of common misconceptions
-\item Connections to earlier and later material
-\item Guidance on how the topic relates to real processors and modern systems
-\end{itemize}
-
-\vspace{0.5cm}
-
-\noindent\textbf{How to Use the Videos and Notes}\par
-
-\vspace{0.3cm}
-
-The recommended learning sequence is:\par
-
-\vspace{0.3cm}
-
-\begin{enumerate}
-\item Start with the video lecture to gain an intuitive, big-picture understanding.
-\item Read the notes from the corresponding chapter to clarify details, solidify concepts, and explore more formal explanations.
-\item Revisit the video or specific parts of the chapter if some ideas feel unclear—the two formats reinforce each other.
-\item Use diagrams and worked examples as anchors for your understanding; architecture is highly visual and spatial.
-\item Progress through sections sequentially, as many topics build directly on earlier ones.
-\end{enumerate}
-
-\vspace{0.5cm}
-
-For review, you may find it helpful to skim chapter summaries and rewatch short segments of the videos rather than re-reading entire chapters.\par
-
-\clearpage
-
-% Update section command to format lecture titles in blue
-\let\oldsection\section
-\renewcommand{\section}[1]{{\color{accentblue}\oldsection{#1}}}
-
-% ----------------- MAIN CONTENT -----------------
+% Chapter 1: Fundamentals
 \chapter{Fundamentals}
 
-% Lecture 1: Computer Abstractions and Technology
 \input{lecture-01}
-
-% % Lecture 2: Technology Trends
 \input{lecture-02}
+\input{lecture-03}
 
-% % Lecture 3: Understanding Performance
-% \input{lecture-03}
+% Chapter 2: ARM Assembly Programming
+\chapter{ARM Assembly Programming}
 
-% \chapter{ARM Assembly Programming}
-
-% % Lecture 4: Introduction to ARM Assembly
-% \input{lecture-04}
-
-% % Lecture 5: Number Representation and Data Processing
-% \input{lecture-05}
-
-% % Lecture 6: Branching
+\input{lecture-04}
+\input{lecture-05}
 % \input{lecture-06}
-
-% % Lecture 7: Function Call and Return
 % \input{lecture-07}
-
-% % Lecture 8: Memory Access
 % \input{lecture-08}
 
-% \chapter{Processor Architecture}
+% Chapter 3: Processor Design
+% \chapter{Processor Design}
 
-% % Lecture 9: Microarchitecture and Datapath
 % \input{lecture-09}
-
-% % Lecture 10: Processor Control
 % \input{lecture-10}
-
-% % Lecture 11: Single-Cycle Execution
 % \input{lecture-11}
-
-% % Lecture 12: Pipelined Processors
 % \input{lecture-12}
-
-% % Lecture 13: Pipeline Operation and Timing
 % \input{lecture-13}
 
-% \chapter{Memory Systems}
+% Chapter 4: Memory Hierarchy
+% \chapter{Memory Hierarchy}
 
-% % Lecture 14: Memory Hierarchy and Caching
 % \input{lecture-14}
-
-% % Lecture 15: Direct Mapped Cache Control
 % \input{lecture-15}
-
-% % Lecture 16: Associative Cache Control
 % \input{lecture-16}
-
-% % Lecture 17: Multi-Level Caching
 % \input{lecture-17}
-
-% % Lecture 18: Virtual Memory
 % \input{lecture-18}
 
+% Chapter 5: Advanced Topics
 % \chapter{Advanced Topics}
 
-% % Lecture 19: Multiprocessors
 % \input{lecture-19}
-
-% % Lecture 20: Storage and Interfacing
 % \input{lecture-20}
 
 \end{document}
