@@ -599,9 +599,9 @@ exit:
 <p><strong>Dynamic Offset Calculation</strong></p>
 
 <ul>
-<li></code>R3, LSL #2<code> means R3 × 4 (shift left 2 = multiply by 4)</li>
-<li>Words are 4 bytes, so array element i is at base + (i × 4)</li>
-<li>Efficient: shift is faster than multiplication</li>
+<li><code>R3, LSL #2</code> means <code>R3 × 4</code> (shift left by 2 = multiply by 4)</li>
+<li>Words are 4 bytes, so array element <code>i</code> is at <code>base + (i * 4)</code></li>
+<li>Shifting is typically faster than an explicit multiply (uses the barrel shifter)</li>
 </ul>
 
 <h3>6.7.2 Array Traversal</h3>
