@@ -208,11 +208,12 @@
 <ul>
 <li>CPU requests a single WORD</li>
 <li>Use word offset bits as MUX select signal</li>
-<li>Example: 2 words in block</li>
-</ul>
-<p>- Offset MSB = 0 → Select first word</p>
-<p>- Offset MSB = 1 → Select second word</p>
+<li>Example: 2 words in block
 <ul>
+<li>Offset MSB = 0 → Select first word</li>
+<li>Offset MSB = 1 → Select second word</li>
+</ul>
+</li>
 <li>Multiplexer extracts correct word from block</li>
 </ul>
 
@@ -515,11 +516,12 @@
 
 <ul>
 <li>Use word offset as demultiplexer select signal</li>
-<li>Example with 2 words per block:</li>
-</ul>
-<p>- Word offset = 0 → Write to first word</p>
-<p>- Word offset = 1 → Write to second word</p>
+<li>Example with 2 words per block:
 <ul>
+<li>Word offset = 0 → Write to first word</li>
+<li>Word offset = 1 → Write to second word</li>
+</ul>
+</li>
 <li>Demultiplexer directs data to correct word position</li>
 </ul>
 
@@ -572,11 +574,14 @@
 
 <ul>
 <li>If invalid entry: Not too serious (data was garbage anyway)</li>
-<li>If tag mismatch: <strong>SERIOUS problem!</strong></li>
+<li>If tag mismatch: <strong>SERIOUS problem!</strong>
+<ul>
+<li>Overwrote valid data for different block</li>
+<li>That block's data now corrupted</li>
+<li>Future accesses to that block get wrong data</li>
 </ul>
-<p>- Overwrote valid data for different block</p>
-<p>- That block's data now corrupted</p>
-<p>- Future accesses to that block get wrong data</p>
+</li>
+</ul>
 
 <p><strong>Initial Conclusion:</strong></p>
 

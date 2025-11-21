@@ -615,15 +615,42 @@ SHAMT: bits 6-10 (shift amount)
 
 <p><strong>Function Field Encoding</strong>:</p>
 
-<pre><code>
-Funct     | Operation | ALU Control
-----------|-----------|-------------
-0x20      | ADD       | 0010
-0x22      | SUB       | 0110
-0x24      | AND       | 0000
-0x25      | OR        | 0001
-0x2A      | SLT       | 0111
-</code></pre>
+<table>
+<thead>
+<tr>
+<th>Funct</th>
+<th>Operation</th>
+<th>ALU Control</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x20</td>
+<td>ADD</td>
+<td>0010</td>
+</tr>
+<tr>
+<td>0x22</td>
+<td>SUB</td>
+<td>0110</td>
+</tr>
+<tr>
+<td>0x24</td>
+<td>AND</td>
+<td>0000</td>
+</tr>
+<tr>
+<td>0x25</td>
+<td>OR</td>
+<td>0001</td>
+</tr>
+<tr>
+<td>0x2A</td>
+<td>SLT</td>
+<td>0111</td>
+</tr>
+</tbody>
+</table>
 
 <p><strong>ALU Control Logic</strong>:</p>
 
