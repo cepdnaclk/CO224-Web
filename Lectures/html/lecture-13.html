@@ -510,10 +510,11 @@ Offset: 16-bit immediate (bits 0-15)
 
 <ul>
 <li>Control Unit: Decode opcode → Generate control signals (~50 ps)</li>
-<li>Register File: Read RS ($9) and RT ($8 address, value not needed)</li>
-</ul>
-<p>- Read delay: ~90 ps (dominant)</p>
+<li>Register File: Read RS ($9) and RT ($8 address, value not needed)
 <ul>
+<li>Read delay: ~90 ps (dominant)</li>
+</ul>
+</li>
 <li>Sign Extender: Extend 32 to 32 bits (~10 ps, negligible)</li>
 </ul>
 

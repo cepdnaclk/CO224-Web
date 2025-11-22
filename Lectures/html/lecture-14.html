@@ -464,11 +464,12 @@
 
 <ul>
 <li>Trick the CPU into thinking memory is BOTH fast AND large</li>
-<li>Desired characteristics:</li>
-</ul>
-<p>- Fast access times (like SRAM: < 1 ns)</p>
-<p>- Large capacity (like Disk: terabytes)</p>
+<li>Desired characteristics:
 <ul>
+<li>Fast access times (like SRAM: &lt; 1 ns)</li>
+<li>Large capacity (like Disk: terabytes)</li>
+</ul>
+</li>
 <li>These characteristics don't exist in single technology</li>
 <li>Solution: Implement memory as a HIERARCHY</li>
 </ul>
@@ -1970,11 +1971,12 @@ Valid Bit ────────┘
 <ul>
 <li><strong>Input:</strong> Stored tag, Address tag</li>
 <li><strong>Function:</strong> Multi-bit equality check</li>
-<li><strong>Components:</strong></li>
-</ul>
-<p>- N XNOR gates (N = tag bit width)</p>
-<p>- 1 N-input AND gate</p>
+<li><strong>Components:</strong>
 <ul>
+<li>N XNOR gates (N = tag bit width)</li>
+<li>1 N-input AND gate</li>
+</ul>
+</li>
 <li><strong>Output:</strong> 1 if equal, 0 if not equal</li>
 <li><strong>Type:</strong> Combinational logic</li>
 <li><strong>Delay:</strong> Part of hit latency</li>
